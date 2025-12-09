@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านค้าของฉัน</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+        .product, .cart-section { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        button { background-color: #28a745; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; }
+        button.delete { background-color: #dc3545; }
+        button.checkout { background-color: #0088cc; width: 100%; font-size: 1.2em; }
+        input, textarea { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <h2>🛒 รายการสินค้า</h2>
+    <div class="product">
+        <h3>สินค้า A (เสื้อยืด)</h3>
+        <p>ราคา: 250 บาท</p>
+        <button onclick="addToCart('001', 'เสื้อยืด', 250)">ใส่ตะกร้า</button>
+    </div>
+    <div class="product">
+        <h3>สินค้า B (กางเกงยีนส์)</h3>
+        <p>ราคา: 590 บาท</p>
+        <button onclick="addToCart('002', 'กางเกงยีนส์', 590)">ใส่ตะกร้า</button>
+    </div>
+
+    <div class="cart-section">
+        <h2>🛍️ ตะกร้าของฉัน</h2>
+        <ul id="cartList"></ul>
+        <p><strong>รวมทั้งหมด: <span id="totalPrice">0</span> บาท</strong></p>
+    </div>
+
+    <div class="cart-section">
+        <h3>📦 ข้อมูลจัดส่ง</h3>
+        <input type="text" id="customerName" placeholder="ชื่อ-นามสกุล">
+        <input type="text" id="customerPhone" placeholder="เบอร์โทรศัพท์">
+        <textarea id="customerAddress" placeholder="ที่อยู่จัดส่ง"></textarea>
+        
+        <button class="checkout" onclick="sendToTelegram()">✅ ยืนยันการสั่งซื้อ</button>
+    </div>
+
+    <script>
+        // 1. ตั้งค่าตัวแปรตะกร้า และโหลดจาก LocalStorage (ถ้ามี)
+        let cart = JSON.parse(localStorage.getItem('myShopCart')) || [];
+        updateCartDisplay();
+
+        // 2. ฟังก์ชันเพิ่มสินค้า
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ id, name, price, qty: 1 });
+            }
+            saveCart();
+            alert(`เพิ่ม ${name} ลงตะกร้าแล้ว`);
+        }
+
+        // 3. ฟังก์ชันลบสินค้า
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+        }
+
+        // 4. บันทึกลง LocalStorage และอัปเดตหน้าจอ
+        function saveCart() {
+            localStorage.setItem('myShopCart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const list = document.getElementById('cartList');
+            const totalEl = document.getElementById('totalPrice');
+            list.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                list.innerHTML += `
+                    <li>
+                        ${item.name} x ${item.qty} (${item.price * item.qty} บ.)
+                        <button class="delete" onclick="removeFromCart(${index})" style="padding: 2px 5px; font-size: 12px;">ลบ</button>
+                    </li>
+                `;
+            });
+            totalEl.innerText = total.toLocaleString();
+        }
+
+        // 5. ฟังก์ชันส่งข้อมูลเข้า Telegram (ไฮไลท์สำคัญ)
+        function sendToTelegram() {
+            if (cart.length === 0) return alert('ตะกร้าว่างเปล่า!');
+            
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+
+            if (!name || !phone || !address) return alert('กรุณากรอกข้อมูลจัดส่งให้ครบ');
+
+            // --- ตั้งค่า TELEGRAM ตรงนี้ ---
+            const BOT_TOKEN = '7577129821:AAH8ep3Tb6TYVnS2g14n2Ck5MpsuEevjdGA'; // ใส่ Token ที่ได้จาก BotFather
+            const CHAT_ID = '7299129094';     // ใส่ Chat ID ของคุณ
+            // -----------------------------
+
+            // สร้างข้อความที่จะส่ง
+            let message = `🛒 *มีออเดอร์ใหม่!*\n`;
+            message += `------------------\n`;
+            message += `👤 *ลูกค้า:* ${name}\n`;
+            message += `📞 *โทร:* ${phone}\n`;
+            message += `🏠 *ที่อยู่:* ${address}\n`;
+            message += `------------------\n`;
+            message += `📦 *รายการสินค้า:*\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                message += `- ${item.name} (x${item.qty}) : ${item.price * item.qty} บ.\n`;
+                total += item.price * item.qty;
+            });
+            
+            message += `\n💰 *ยอดรวมทั้งสิ้น: ${total.toLocaleString()} บาท*`;
+
+            // ส่งข้อมูลผ่าน API ของ Telegram
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('ส่งออเดอร์เรียบร้อย! ทางร้านจะติดต่อกลับทางอีเมล/เบอร์โทรครับ');
+                    // ล้างตะกร้าหลังสั่งซื้อสำเร็จ
+                    cart = [];
+                    saveCart();
+                    // รีเฟรชหน้า หรือ พาไปหน้าขอบคุณ
+                    // window.location.href = 'thankyou.html'; 
+                } else {
+                    alert('เกิดข้อผิดพลาดในการส่งออเดอร์');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('ไม่สามารถเชื่อมต่อระบบได้');
+            });
+        }
+    </script>
+</body>
+</html>
