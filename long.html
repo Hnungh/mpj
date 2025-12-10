@@ -5,124 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ร้านค้าของฉัน</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-        .product, .cart-section { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
-        button { background-color: #28a745; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; }
-        button.delete { background-color: #dc3545; }
-        button.checkout { background-color: #0088cc; width: 100%; font-size: 1.2em; }
-        input, textarea { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .product, .cart-item { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .btn { background-color: #28a745; color: white; border: none; padding: 10px; cursor: pointer; width: 100%; }
+        .btn-danger { background-color: #dc3545; width: auto; padding: 5px 10px; }
+        #cart-section { background-color: #f9f9f9; padding: 15px; margin-top: 20px; border-radius: 10px; display: none; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <h2>🛒 รายการสินค้า</h2>
-    <div class="product">
-        <h3>สินค้า A (เสื้อยืด)</h3>
-        <p>ราคา: 250 บาท</p>
-        <button onclick="addToCart('001', 'เสื้อยืด', 250)">ใส่ตะกร้า</button>
-    </div>
-    <div class="product">
-        <h3>สินค้า B (กางเกงยีนส์)</h3>
-        <p>ราคา: 590 บาท</p>
-        <button onclick="addToCart('002', 'กางเกงยีนส์', 590)">ใส่ตะกร้า</button>
-    </div>
+    <h2>สินค้าแนะนำ</h2>
+    <div id="product-list"></div>
 
-    <div class="cart-section">
-        <h2>🛍️ ตะกร้าของฉัน</h2>
-        <ul id="cartList"></ul>
-        <p><strong>รวมทั้งหมด: <span id="totalPrice">0</span> บาท</strong></p>
-    </div>
+    <hr>
 
-    <div class="cart-section">
-        <h3>📦 ข้อมูลจัดส่ง</h3>
-        <input type="text" id="customerName" placeholder="ชื่อ-นามสกุล">
-        <input type="text" id="customerPhone" placeholder="เบอร์โทรศัพท์">
-        <textarea id="customerAddress" placeholder="ที่อยู่จัดส่ง"></textarea>
+    <div id="cart-section">
+        <h3>🛒 ตะกร้าสินค้า</h3>
+        <ul id="cart-items" style="padding-left: 20px;"></ul>
+        <p><strong>ยอดรวม: <span id="total-price">0</span> บาท</strong></p>
         
-        <button class="checkout" onclick="sendToTelegram()">✅ ยืนยันการสั่งซื้อ</button>
+        <h4>ข้อมูลจัดส่ง</h4>
+        <input type="text" id="customer-name" placeholder="ชื่อ-นามสกุล">
+        <input type="tel" id="customer-phone" placeholder="เบอร์โทรศัพท์">
+        <textarea id="customer-address" placeholder="ที่อยู่จัดส่ง" rows="3"></textarea>
+        
+        <button class="btn" onclick="checkout()">ยืนยันการสั่งซื้อ (ส่งเข้า Telegram)</button>
     </div>
 
     <script>
-        // 1. ตั้งค่าตัวแปรตะกร้า และโหลดจาก LocalStorage (ถ้ามี)
-        let cart = JSON.parse(localStorage.getItem('myShopCart')) || [];
-        updateCartDisplay();
+        // --- 1. การตั้งค่า (แก้ไขตรงนี้) ---
+        const TELEGRAM_TOKEN = 'YOUR_BOT_TOKEN_HERE'; // ใส่ Token จาก BotFather
+        const CHAT_ID = 'YOUR_CHAT_ID_HERE';          // ใส่ Chat ID ของคุณ
+        
+        // --- 2. ข้อมูลสินค้า ---
+        const products = [
+            { id: 1, name: "เสื้อยืดสีดำ", price: 200 },
+            { id: 2, name: "กางเกงยีนส์", price: 590 },
+            { id: 3, name: "หมวกแก๊ป", price: 150 }
+        ];
 
-        // 2. ฟังก์ชันเพิ่มสินค้า
-        function addToCart(id, name, price) {
-            const existingItem = cart.find(item => item.id === id);
-            if (existingItem) {
-                existingItem.qty += 1;
-            } else {
-                cart.push({ id, name, price, qty: 1 });
-            }
-            saveCart();
-            alert(`เพิ่ม ${name} ลงตะกร้าแล้ว`);
+        let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+
+        // --- 3. ฟังก์ชันแสดงสินค้าหน้าเว็บ ---
+        function renderProducts() {
+            const list = document.getElementById('product-list');
+            list.innerHTML = products.map(p => `
+                <div class="product">
+                    <strong>${p.name}</strong> - ${p.price} บาท
+                    <br><br>
+                    <button class="btn" onclick="addToCart(${p.id})">เพิ่มลงตะกร้า</button>
+                </div>
+            `).join('');
         }
 
-        // 3. ฟังก์ชันลบสินค้า
+        // --- 4. ฟังก์ชันเพิ่มลงตะกร้า (Logic ของคุณ) ---
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            saveCart();
+            renderCart();
+        }
+
+        // ฟังก์ชันลบสินค้า
         function removeFromCart(index) {
             cart.splice(index, 1);
             saveCart();
+            renderCart();
         }
 
-        // 4. บันทึกลง LocalStorage และอัปเดตหน้าจอ
+        // บันทึกลงเครื่อง
         function saveCart() {
-            localStorage.setItem('myShopCart', JSON.stringify(cart));
-            updateCartDisplay();
+            localStorage.setItem('myCart', JSON.stringify(cart));
         }
 
-        function updateCartDisplay() {
-            const list = document.getElementById('cartList');
-            const totalEl = document.getElementById('totalPrice');
-            list.innerHTML = '';
-            let total = 0;
+        // --- 5. ฟังก์ชันแสดงตะกร้า (สำคัญ! ต้องมีส่วนนี้ถึงจะเห็นข้อมูล) ---
+        function renderCart() {
+            const cartSection = document.getElementById('cart-section');
+            const cartList = document.getElementById('cart-items');
+            const totalSpan = document.getElementById('total-price');
 
-            cart.forEach((item, index) => {
-                total += item.price * item.qty;
-                list.innerHTML += `
+            if (cart.length === 0) {
+                cartSection.style.display = 'none';
+                return;
+            }
+
+            cartSection.style.display = 'block';
+            let total = 0;
+            
+            cartList.innerHTML = cart.map((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                return `
                     <li>
-                        ${item.name} x ${item.qty} (${item.price * item.qty} บ.)
-                        <button class="delete" onclick="removeFromCart(${index})" style="padding: 2px 5px; font-size: 12px;">ลบ</button>
+                        ${item.name} x ${item.quantity} = ${itemTotal} บ. 
+                        <button class="btn-danger" onclick="removeFromCart(${index})">ลบ</button>
                     </li>
                 `;
-            });
-            totalEl.innerText = total.toLocaleString();
+            }).join('');
+
+            totalSpan.innerText = total.toLocaleString();
         }
 
-        // 5. ฟังก์ชันส่งข้อมูลเข้า Telegram (ไฮไลท์สำคัญ)
-        function sendToTelegram() {
-            if (cart.length === 0) return alert('ตะกร้าว่างเปล่า!');
-            
-            const name = document.getElementById('customerName').value;
-            const phone = document.getElementById('customerPhone').value;
-            const address = document.getElementById('customerAddress').value;
+        // --- 6. ฟังก์ชัน Checkout ส่งเข้า Telegram ---
+        function checkout() {
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value;
 
-            if (!name || !phone || !address) return alert('กรุณากรอกข้อมูลจัดส่งให้ครบ');
-
-            // --- ตั้งค่า TELEGRAM ตรงนี้ ---
-            const BOT_TOKEN = '7577129821:AAH8ep3Tb6TYVnS2g14n2Ck5MpsuEevjdGA'; // ใส่ Token ที่ได้จาก BotFather
-            const CHAT_ID = '7299129094';     // ใส่ Chat ID ของคุณ
-            // -----------------------------
+            if (!name || !phone || !address) {
+                alert("กรุณากรอกชื่อ เบอร์โทร และที่อยู่ให้ครบถ้วน");
+                return;
+            }
 
             // สร้างข้อความที่จะส่ง
-            let message = `🛒 *มีออเดอร์ใหม่!*\n`;
+            let message = `📦 *ออเดอร์ใหม่จากเว็บไซต์*\n`;
             message += `------------------\n`;
-            message += `👤 *ลูกค้า:* ${name}\n`;
-            message += `📞 *โทร:* ${phone}\n`;
-            message += `🏠 *ที่อยู่:* ${address}\n`;
-            message += `------------------\n`;
-            message += `📦 *รายการสินค้า:*\n`;
-            
             let total = 0;
             cart.forEach(item => {
-                message += `- ${item.name} (x${item.qty}) : ${item.price * item.qty} บ.\n`;
-                total += item.price * item.qty;
+                message += `- ${item.name} (${item.quantity} ชิ้น) : ${item.price * item.quantity} บ.\n`;
+                total += item.price * item.quantity;
             });
-            
-            message += `\n💰 *ยอดรวมทั้งสิ้น: ${total.toLocaleString()} บาท*`;
+            message += `------------------\n`;
+            message += `💰 *ยอดรวม: ${total.toLocaleString()} บาท*\n`;
+            message += `👤 ชื่อ: ${name}\n`;
+            message += `📞 โทร: ${phone}\n`;
+            message += `🏠 ที่อยู่: ${address}`;
 
-            // ส่งข้อมูลผ่าน API ของ Telegram
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            // ยิงข้อมูลไปหา Telegram (ไม่ต้องใช้ Server ตัวเอง)
+            const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
             
             fetch(url, {
                 method: 'POST',
@@ -134,22 +152,28 @@
                 })
             })
             .then(response => {
-                if (response.ok) {
-                    alert('ส่งออเดอร์เรียบร้อย! ทางร้านจะติดต่อกลับทางอีเมล/เบอร์โทรครับ');
-                    // ล้างตะกร้าหลังสั่งซื้อสำเร็จ
-                    cart = [];
+                if(response.ok) {
+                    alert("ส่งออเดอร์เรียบร้อย! ทางร้านจะติดต่อกลับเพื่อแจ้งเลขบัญชี");
+                    cart = []; // ล้างตะกร้า
                     saveCart();
-                    // รีเฟรชหน้า หรือ พาไปหน้าขอบคุณ
-                    // window.location.href = 'thankyou.html'; 
+                    renderCart();
+                    // ล้างฟอร์ม
+                    document.getElementById('customer-name').value = '';
+                    document.getElementById('customer-phone').value = '';
+                    document.getElementById('customer-address').value = '';
                 } else {
-                    alert('เกิดข้อผิดพลาดในการส่งออเดอร์');
+                    alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('ไม่สามารถเชื่อมต่อระบบได้');
+            .catch(err => {
+                console.error(err);
+                alert("เชื่อมต่อไม่ได้");
             });
         }
+
+        // เริ่มต้นทำงาน
+        renderProducts();
+        renderCart();
     </script>
 </body>
 </html>
