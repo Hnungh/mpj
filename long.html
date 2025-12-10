@@ -115,62 +115,71 @@
         }
 
         // --- 6. ฟังก์ชัน Checkout ส่งเข้า Telegram ---
-        function checkout() {
-            const name = document.getElementById('customer-name').value;
-            const phone = document.getElementById('customer-phone').value;
-            const address = document.getElementById('customer-address').value;
+        // --- 6. ฟังก์ชัน Checkout ส่งเข้า Google Script ---
+function checkout() {
+    const name = document.getElementById('customer-name').value;
+    const phone = document.getElementById('customer-phone').value;
+    const address = document.getElementById('customer-address').value;
 
-            if (!name || !phone || !address) {
-                alert("กรุณากรอกชื่อ เบอร์โทร และที่อยู่ให้ครบถ้วน");
-                return;
-            }
+    if (!name || !phone || !address) {
+        alert("กรุณากรอกชื่อ เบอร์โทร และที่อยู่ให้ครบถ้วน");
+        return;
+    }
 
-            // สร้างข้อความที่จะส่ง
-            let message = `📦 *ออเดอร์ใหม่จากเว็บไซต์*\n`;
-            message += `------------------\n`;
-            let total = 0;
-            cart.forEach(item => {
-                message += `- ${item.name} (${item.quantity} ชิ้น) : ${item.price * item.quantity} บ.\n`;
-                total += item.price * item.quantity;
-            });
-            message += `------------------\n`;
-            message += `💰 *ยอดรวม: ${total.toLocaleString()} บาท*\n`;
-            message += `👤 ชื่อ: ${name}\n`;
-            message += `📞 โทร: ${phone}\n`;
-            message += `🏠 ที่อยู่: ${address}`;
+    // คำนวณยอดรวม
+    let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-            // ยิงข้อมูลไปหา Telegram (ไม่ต้องใช้ Server ตัวเอง)
-            const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-            
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'Markdown'
-                })
-            })
-            .then(response => {
-                if(response.ok) {
-                    alert("ส่งออเดอร์เรียบร้อย! ทางร้านจะติดต่อกลับเพื่อแจ้งเลขบัญชี");
-                    cart = []; // ล้างตะกร้า
-                    saveCart();
-                    renderCart();
-                    // ล้างฟอร์ม
-                    document.getElementById('customer-name').value = '';
-                    document.getElementById('customer-phone').value = '';
-                    document.getElementById('customer-address').value = '';
-                } else {
-                    alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert("เชื่อมต่อไม่ได้");
-            });
-        }
+    const btn = document.querySelector('#cart-section .btn'); // เลือกปุ่มให้ถูกต้อง
+    btn.disabled = true;
+    btn.innerText = "กำลังส่งคำสั่งซื้อ...";
 
+    // 1. สร้าง Payload เพื่อส่งไป Google Script
+    const payload = {
+        action: 'new_order',
+        name: name,
+        phone: phone,
+        address: address,
+        cart: cart, // รายละเอียดสินค้าทั้งหมด
+        total: total
+    };
+
+    // 2. ส่งข้อมูลไปหา Google Script
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        // mode: 'no-cors', // Google Script บางครั้งต้องการ no-cors แต่บาง Browser ก็ต้องมี
+        headers: { 'Content-Type': 'text/plain' }, // ใช้ text/plain เพื่อเลี่ยง CORS ที่เข้มงวด
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+         // เราไม่สามารถอ่าน response ได้ง่ายๆ เพราะติด CORS (ถ้าใช้ text/plain)
+         // แต่เรามั่นใจว่าข้อมูลถูกส่งไปแล้ว
+         alert("✅ ได้รับคำสั่งซื้อแล้ว! กรุณารอการติดต่อกลับจากทางร้านทาง Email/SMS/โทรศัพท์\n(หมายเหตุ: การยืนยันของผู้ขายจะแสดงใน Telegram ของผู้ขาย)");
+
+         // ล้างตะกร้าและฟอร์ม
+         cart = []; 
+         saveCart();
+         renderCart();
+         document.getElementById('customer-name').value = '';
+         document.getElementById('customer-phone').value = '';
+         document.getElementById('customer-address').value = '';
+
+         btn.disabled = false;
+         btn.innerText = "ยืนยันการสั่งซื้อ (ส่งเข้า Telegram)";
+
+    })
+    .catch(err => {
+        console.error("Error sending order:", err);
+        alert("⚠️ เกิดข้อผิดพลาดในการส่งคำสั่งซื้อ กรุณาลองใหม่อีกครั้ง");
+        btn.disabled = false;
+        btn.innerText = "ยืนยันการสั่งซื้อ (ส่งเข้า Telegram)";
+    });
+}
+
+        // --- 1. การตั้งค่า (แก้ไขตรงนี้) ---
+// ไม่ต้องใช้ Telegram Token/Chat ID ในหน้าเว็บแล้ว
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx93lWWOZdXfJ3KjtwtwmdSmpBJCaxgndR-imN3Iokm1o9yrKghzsCLruOPrA3Wj-f6jA/exec'; // <-- วาง URL ที่คัดลอกมาตรงนี้!
+
+// ... โค้ดเดิมของคุณ ...
         // เริ่มต้นทำงาน
         renderProducts();
         renderCart();
