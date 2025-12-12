@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="th">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Checkout - Nexus Wear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/sdk/analytics_sdk.js"></script>
+  <style>
+        /* =======================================
+        GLOBAL STYLES (FROM INDEX/PRODUCT/CART)
+        ======================================= */
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: #000000;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            z-index: 1000;
+            border-bottom: 2px solid #000000;
+        }
+
+        .nav-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #000000;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cart-badge.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            margin-top: 80px;
+            padding: 40px 40px 120px;
+            background: #F5F5F5;
+        }
+
+        .page-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 42px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #000000;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        /* =======================================
+        CHECKOUT SPECIFIC STYLES
+        ======================================= */
+        .checkout-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Form is wider than summary */
+            gap: 40px;
+        }
+
+        /* Form Card Styling */
+        .checkout-form, .order-summary {
+            background: #FFFFFF;
+            padding: 40px;
+            border: 3px solid #000000;
+        }
+        
+        .form-section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #000000;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], 
+        input[type="email"], 
+        input[type="tel"], 
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #D0D0D0;
+            background: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            color: #000000;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-appearance: none; /* เพื่อความเป็นระเบียบในทุกเบราว์เซอร์ */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input:focus, 
+        select:focus,
+        textarea:focus {
+            border-color: #000000;
+            outline: none;
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        select {
+             /* Custom arrow for select consistent with minimal style */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 30px;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            position: sticky;
+            top: 120px; /* Adjust based on nav height */
+            height: fit-content;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #E0E0E0;
+            font-size: 15px;
+        }
+
+        .summary-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .summary-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-total .label {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .summary-total .price {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #FF4500; /* Highlight color for price */
+        }
+
+        /* Action Button (Consistent with product.html btn-primary) */
+        .btn-primary {
+            width: 100%;
+            padding: 18px 32px;
+            background: #000000;
+            color: #FFFFFF;
+            border: 2px solid #000000;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background: #FFFFFF;
+            color: #000000;
+            box-shadow: 4px 4px 0px #000000;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0px #000000;
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .order-summary {
+                position: static;
+                top: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0 20px;
+                height: 70px;
+            }
+            main {
+                margin-top: 70px;
+                padding: 16px;
+            }
+            .page-title {
+                font-size: 32px;
+            }
+            .checkout-form, .order-summary {
+                padding: 24px;
+            }
+            .form-group.grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .summary-total .label {
+                font-size: 20px;
+            }
+            .summary-total .price {
+                font-size: 24px;
+            }
+        }
+    </style>
+ </head>
+ <body>
+  <div class="page-wrapper">
+   <header class="top-nav" role="banner">
+    <nav class="nav-content">
+     <a href="index.html" class="logo-text" id="brandLogo">
+      NEXUS WEAR
+     </a>
+     <div class="nav-icons">
+      <a href="cart.html" class="icon-btn" aria-label="Shopping Cart">
+       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+       </svg>
+       <span class="cart-badge" id="cartBadge">
+        0
+       </span>
+      </a>
+     </div>
+    </nav>
+   </header>
+   <main role="main">
+    <div class="checkout-container">
+     <h1 class="page-title">
+      CHECKOUT
+     </h1>
+     <div class="checkout-grid">
+      <div class="checkout-form">
+       <form id="checkoutForm">
+        <h2 class="form-section-title">
+         1. CONTACT & SHIPPING
+        </h2>
+        <div class="form-group grid">
+         <div>
+          <label for="firstName">
+           First Name
+          </label>
+          <input type="text" id="firstName" name="firstName" required="">
+         </div>
+         <div>
+          <label for="lastName">
+           Last Name
+          </label>
+          <input type="text" id="lastName" name="lastName" required="">
+         </div>
+        </div>
+        <div class="form-group">
+         <label for="email">
+          Email
+         </label>
+         <input type="email" id="email" name="email" required="">
+        </div>
+        <div class="form-group">
+         <label for="phone">
+          Phone Number
+         </label>
+         <input type="tel" id="phone" name="phone" required="">
+        </div>
+        <div class="form-group">
+         <label for="address">
+          Street Address
+         </label>
+         <input type="text" id="address" name="address" required="">
+        </div>
+        <div class="form-group grid">
+         <div>
+          <label for="city">
+           City
+          </label>
+          <input type="text" id="city" name="city" required="">
+         </div>
+         <div>
+          <label for="zipCode">
+           Zip Code
+          </label>
+          <input type="text" id="zipCode" name="zipCode" required="">
+         </div>
+        </div>
+        
+        <h2 class="form-section-title" style="margin-top: 40px;">
+         2. PAYMENT
+        </h2>
+        <div class="form-group">
+         <label for="paymentMethod">
+          Select Method
+         </label>
+         <select id="paymentMethod" name="paymentMethod" required="">
+          <option value="">
+           -- Select Payment Method --
+          </option>
+          <option value="credit_card">
+           Credit Card
+          </option>
+          <option value="bank_transfer">
+           Bank Transfer (QR Code)
+          </option>
+          <option value="cod">
+           Cash on Delivery (COD)
+          </option>
+         </select>
+        </div>
+        <div class="form-group">
+            <label for="notes">
+             Order Notes (Optional)
+            </label>
+            <textarea id="notes" name="notes" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" id="placeOrderBtn">
+         PLACE ORDER &amp; PAY
+        </button>
+       </form>
+      </div>
+      <div class="order-summary">
+       <h2 class="form-section-title">
+        ORDER SUMMARY
+       </h2>
+       <div id="summaryItemsContainer">
+        <div style="text-align: center; padding: 30px 0; color: #666;">
+            Loading cart items...
+        </div>
+       </div>
+       <div class="summary-item">
+        <span class="label">
+         Subtotal
+        </span>
+        <span class="value" id="subtotalPrice">
+         ฿0.00
+        </span>
+       </div>
+       <div class="summary-item">
+        <span class="label">
+         Shipping
+        </span>
+        <span class="value" id="shippingPrice">
+         ฿50.00
+        </span>
+       </div>
+       <div class="summary-total">
+        <span class="label">
+         TOTAL
+        </span>
+        <span class="price" id="finalTotalPrice">
+         ฿0.00
+        </span>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="toast" class="toast">
+     Notification Message
+    </div>
+   </main>
+   </div>
+  <script>
+    // ============================================
+    // UTILITY FUNCTIONS (FROM CART.HTML)
+    // ============================================
+    const SHIPPING_FEE = 50;
+
+    function formatPrice(price) {
+        return `฿${price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        // ใช้ class .toast.show และสีที่สอดคล้องกับสไตล์
+        toast.className = `toast show ${type}`; 
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+    
+    // Minimal Toast CSS for functionality (assuming full toast CSS is in global styles or copied)
+    // To ensure the toast works, let's include its minimal style definition here as a reminder
+    const style = document.createElement('style');
+    style.textContent = `
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000;
+            color: #FFFFFF;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid #FFFFFF;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -10px);
+        }
+        .toast.error {
+            background: #FF4500; /* Use a vivid error color */
+            border-color: #000000;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // ============================================
+    // DATA & STATE MANAGEMENT (ADAPTED FROM CART.HTML)
+    // ============================================
+    let cartItems = [];
+    let isDataSdkReady = false;
+
+    // Data SDK Handler
+    const dataHandler = {
+        onDataChanged(data) {
+            cartItems = data || [];
+            updateCartBadge();
+            renderOrderSummary(); // Update summary when cart changes
+        }
+    };
+
+    async function initializeDataSdk() {
+        if (!window.dataSdk) {
+            console.error('Data SDK not available');
+            return;
+        }
+        try {
+            const result = await window.dataSdk.init(dataHandler);
+            if (result && result.isOk) {
+                isDataSdkReady = true;
+                // Fetch initial data immediately (if init doesn't return it)
+                const items = await window.dataSdk.get();
+                if (items.isOk) {
+                    cartItems = items.value || [];
+                    updateCartBadge();
+                    renderOrderSummary();
+                }
+            } else {
+                console.error('Failed to initialize Data SDK');
+            }
+        } catch (err) {
+            console.error('Data SDK initialization error:', err);
+        }
+    }
+    
+    function updateCartBadge() {
+        const badge = document.getElementById('cartBadge');
+        if (!badge) return;
+        
+        const count = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
+        badge.textContent = count;
+        if (count > 0) {
+            badge.classList.add('active');
+        } else {
+            badge.classList.remove('active');
+        }
+    }
+
+    // ============================================
+    // CHECKOUT LOGIC & RENDERING
+    // ============================================
+
+    function renderOrderSummary() {
+        const container = document.getElementById('summaryItemsContainer');
+        const subtotalEl = document.getElementById('subtotalPrice');
+        const totalEl = document.getElementById('finalTotalPrice');
+        const placeOrderBtn = document.getElementById('placeOrderBtn');
+
+        if (!container || !subtotalEl || !totalEl || !placeOrderBtn) return;
+
+        if (cartItems.length === 0) {
+            container.innerHTML = `<div style="text-align: center; padding: 40px 0;">
+                <p>No items in cart. <a href="index.html" style="color: #000000; font-weight: 600;">Go Shopping</a></p>
+            </div>`;
+            subtotalEl.textContent = formatPrice(0);
+            totalEl.textContent = formatPrice(0);
+            placeOrderBtn.disabled = true;
+            placeOrderBtn.textContent = 'CART IS EMPTY';
+            return;
+        }
+        
+        placeOrderBtn.disabled = false;
+        placeOrderBtn.textContent = 'PLACE ORDER & PAY';
+
+        let subtotal = 0;
+
+        const itemsHtml = cartItems.map(item => {
+            const itemPrice = item.price * item.quantity;
+            subtotal += itemPrice;
+            
+            // ใช้ชื่อสินค้า, ตัวเลือก และราคารวม
+            const itemOptions = (item.size || item.color) ? 
+                `<span style="color:#666; font-size:12px;">(${item.size || ''}${item.size && item.color ? ', ' : ''}${item.color || ''})</span>` : 
+                '';
+                
+            return `
+                <div class="summary-item">
+                    <span class="label" style="font-weight: 500;">
+                        ${item.name} ${itemOptions} x ${item.quantity}
+                    </span>
+                    <span class="value">
+                        ${formatPrice(itemPrice)}
+                    </span>
+                </div>
+            `;
+        }).join('');
+
+        const finalTotal = subtotal + SHIPPING_FEE;
+
+        container.innerHTML = itemsHtml;
+        subtotalEl.textContent = formatPrice(subtotal);
+        totalEl.textContent = formatPrice(finalTotal);
+    }
+    
+    // Function to handle the actual order placement
+    async function handlePlaceOrder(event) {
+        event.preventDefault(); // Stop default form submission
+        
+        if (cartItems.length === 0) {
+            showToast('ตะกร้าสินค้าว่างเปล่า ไม่สามารถดำเนินการต่อได้', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('placeOrderBtn');
+        btn.disabled = true;
+        btn.textContent = 'PROCESSING...';
+        
+        // 1. Gather Form Data
+        const form = event.target;
+        const formData = {
+            firstName: form.firstName.value,
+            lastName: form.lastName.value,
+            email: form.email.value,
+            phone: form.phone.value,
+            address: form.address.value,
+            city: form.city.value,
+            zipCode: form.zipCode.value,
+            paymentMethod: form.paymentMethod.value,
+            notes: form.notes.value,
+            items: cartItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                size: item.size,
+                color: item.color
+            })),
+            subtotal: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+            shipping: SHIPPING_FEE,
+            total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + SHIPPING_FEE,
+        };
+        
+        // 2. Mock API Call for Order Creation (Placeholder for backend interaction)
+        console.log('Order Data:', formData);
+
+        // Simulate a successful order process
+        try {
+            // Wait for 1.5 seconds to simulate network latency
+            await new Promise(resolve => setTimeout(resolve, 1500)); 
+
+            // Clear the cart via Data SDK after successful "order"
+            const clearResult = await window.dataSdk.clear(); 
+            if (clearResult.isOk) {
+                 showToast('Order Placed Successfully! (Cart Cleared)', 'success');
+                 // Redirect to a thank you page or update the UI
+                 // For now, reload to show empty cart message
+                 setTimeout(() => {
+                     window.location.reload(); 
+                 }, 1500);
+            } else {
+                 showToast('Order Placed, but failed to clear cart!', 'error');
+            }
+
+        } catch (error) {
+            console.error('Order placement failed:', error);
+            showToast('Order Placement Failed. Please try again.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'PLACE ORDER & PAY';
+        }
+    }
+
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize Data SDK to get cart items and update badge
+        await initializeDataSdk(); 
+        
+        // Attach event listener for form submission
+        document.getElementById('checkoutForm').addEventListener('submit', handlePlaceOrder);
+    });
+
+    // ELEMENT SDK (Minimal implementation for config consistency)
+    if (window.elementSdk) {
+        const defaultConfig = { 
+            page_title: 'CHECKOUT', 
+            brand_name: 'NEXUS WEAR', 
+            // ... color and font defaults (omitted for brevity) ... 
+        };
+
+        window.elementSdk.init({
+            defaultConfig: defaultConfig,
+            onConfigChange: (config) => {
+                // Minimal Config change handler
+                document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+                document.getElementById('brandLogo').textContent = config.brand_name || defaultConfig.brand_name;
+                // ... other basic color/font updates (omitted for brevity) ...
+            }
+        });
+    }
+
+  </script>
+ </body>
+</html>
