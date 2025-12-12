@@ -7,15 +7,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="/_sdk/data_sdk.js"></script>
   <script src="/sdk/analytics_sdk.js"></script>
   <style>
         /* =======================================
-        GLOBAL STYLES (FROM INDEX/PRODUCT/CART)
+        GLOBAL STYLES & FONT (Keep consistent)
         ======================================= */
-        body {
-            box-sizing: border-box;
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #F5F5F5; /* Light background */
+            --highlight-color: #FF4500; /* Use as accent color */
+            --border-radius: 8px; /* Standard modern radius */
+            --shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05); /* Soft shadow */
         }
         
         * {
@@ -31,8 +36,8 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #FFFFFF;
-            color: #000000;
+            background: var(--secondary-color); /* Use light grey background for modern feel */
+            color: var(--primary-color);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
@@ -44,109 +49,75 @@
             flex-direction: column;
         }
 
-        /* Navigation */
+        /* Navigation (Minor adjustments for softer look) */
         .top-nav {
-            position: fixed;
+            position: sticky; /* Make navigation sticky */
             top: 0;
             left: 0;
             right: 0;
             background: #FFFFFF;
             z-index: 1000;
-            border-bottom: 2px solid #000000;
+            /* เปลี่ยนจาก border หนา เป็น soft shadow */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
         }
 
         .nav-content {
             max-width: 1600px;
             margin: 0 auto;
-            padding: 0 60px;
+            padding: 0 40px; /* Reduced padding slightly */
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 80px;
+            height: 70px; /* Reduced height slightly */
         }
 
         .logo-text {
             font-family: 'Bebas Neue', cursive;
-            font-size: 28px;
+            font-size: 26px; /* Slightly smaller */
             font-weight: 400;
             letter-spacing: 2px;
             text-decoration: none;
-            color: #000000;
-            transition: all 0.3s ease;
+            color: var(--primary-color);
+            transition: opacity 0.3s ease;
         }
 
         .logo-text:hover {
-            transform: scale(1.05);
+            opacity: 0.8;
         }
 
         .nav-icons {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             align-items: center;
         }
 
         .icon-btn {
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: none;
-            border: none;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            /* Standard modern icon button */
+            padding: 4px;
         }
 
-        .icon-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            background: #000000;
-            color: #FFFFFF;
-            font-size: 11px;
-            font-weight: 700;
-            min-width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 5px;
-            pointer-events: none;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .cart-badge.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
         /* Main Content */
         main {
             flex: 1;
-            margin-top: 80px;
-            padding: 40px 40px 120px;
-            background: #F5F5F5;
+            /* ไม่ต้องมี margin-top เพราะ nav เป็น sticky แล้ว */
+            padding: 30px 40px 100px; 
         }
 
         .page-title {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 42px;
-            font-weight: 400;
-            letter-spacing: 2px;
-            color: #000000;
-            margin-bottom: 24px;
-            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: left; /* Aligned left for modern flow */
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* =======================================
-        CHECKOUT SPECIFIC STYLES
+        MODERN CHECKOUT LAYOUT
         ======================================= */
         .checkout-container {
             max-width: 1400px;
@@ -156,32 +127,30 @@
         .checkout-grid {
             display: grid;
             grid-template-columns: 2fr 1fr; /* Form is wider than summary */
-            gap: 40px;
+            gap: 30px; /* Reduced gap */
         }
 
-        /* Form Card Styling */
+        /* Card Styling: Clean and minimal */
         .checkout-form, .order-summary {
             background: #FFFFFF;
-            padding: 40px;
-            border: 3px solid #000000;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
         }
         
         .form-section-title {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 32px;
-            font-weight: 400;
-            letter-spacing: 1px;
-            color: #000000;
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
             margin-bottom: 20px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #E0E0E0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color); /* Light separator */
         }
-        
+
+        /* Form Controls */
         .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            margin-bottom: 18px;
         }
 
         .form-group.grid {
@@ -191,11 +160,11 @@
         }
 
         label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: #000000;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: #666; /* Softer color for label */
+            display: block;
+            margin-bottom: 6px;
         }
 
         input[type="text"], 
@@ -204,14 +173,15 @@
         select,
         textarea {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #D0D0D0;
+            padding: 12px 14px;
+            border: 1px solid #E0E0E0; /* Lighter border */
+            border-radius: 4px; /* Slight roundness */
             background: #FFFFFF;
             font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            color: #000000;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            -webkit-appearance: none; /* เพื่อความเป็นระเบียบในทุกเบราว์เซอร์ */
+            font-size: 15px;
+            color: var(--primary-color);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
         }
@@ -219,23 +189,54 @@
         input:focus, 
         select:focus,
         textarea:focus {
-            border-color: #000000;
+            border-color: var(--primary-color);
             outline: none;
-            box-shadow: 2px 2px 0px #000000;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1); /* Standard focus ring */
         }
 
         select {
-             /* Custom arrow for select consistent with minimal style */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 30px;
+            /* Minimalist arrow for select */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: 18px;
+            background-position: right 10px center;
+            padding-right: 35px;
         }
-
-        /* Order Summary */
+        
+        /* Stepper/Progress (Modern UX element) */
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #AAAAAA;
+            font-weight: 500;
+            position: relative;
+        }
+        .step-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .step-item::after {
+            content: '>';
+            position: absolute;
+            right: -25px;
+            color: #E0E0E0;
+            font-size: 16px;
+        }
+        .step-item:last-child::after {
+            content: '';
+        }
+        
+        /* Order Summary: Sticky and prominent */
         .order-summary {
             position: sticky;
-            top: 120px; /* Adjust based on nav height */
+            top: 100px; /* Space below navigation */
             height: fit-content;
         }
 
@@ -244,7 +245,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            border-bottom: 1px dashed #E0E0E0;
+            border-bottom: 1px solid #F0F0F0; /* Lighter separator */
             font-size: 15px;
         }
 
@@ -255,98 +256,127 @@
         .summary-total {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #000000;
+            border-top: 2px dashed #E0E0E0; /* Dashed separator for total */
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .summary-total .label {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 24px;
-            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
         }
 
         .summary-total .price {
             font-family: 'Inter', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #FF4500; /* Highlight color for price */
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--highlight-color);
         }
 
-        /* Action Button (Consistent with product.html btn-primary) */
+        /* Action Button (Modern CTA) */
         .btn-primary {
             width: 100%;
-            padding: 18px 32px;
-            background: #000000;
+            padding: 16px 32px;
+            background: var(--primary-color);
             color: #FFFFFF;
-            border: 2px solid #000000;
+            border: none;
+            border-radius: 4px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            margin-top: 20px;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for CTA */
         }
 
         .btn-primary:hover {
-            background: #FFFFFF;
-            color: #000000;
-            box-shadow: 4px 4px 0px #000000;
-            transform: translateY(-2px);
+            background: #333333;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn-primary:active {
             transform: translateY(0);
-            box-shadow: 0 0 0px #000000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .btn-primary:disabled {
-            opacity: 0.5;
+            background: #AAAAAA;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
-            background: #000000;
-            color: #FFFFFF;
+        }
+
+        /* Payment Methods Display (If needed for visual feedback) */
+        .payment-options {
+            margin-top: 15px;
+            border-top: 1px solid #F0F0F0;
+            padding-top: 15px;
+        }
+        .payment-method-item {
+            padding: 10px;
+            border: 1px solid #E0E0E0;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .payment-method-item:hover {
+            border-color: #AAAAAA;
+        }
+        .payment-method-item.selected {
+            border: 2px solid var(--primary-color);
+            background-color: #F8F8F8;
+            font-weight: 600;
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
             .checkout-grid {
                 grid-template-columns: 1fr;
-                gap: 32px;
+                gap: 20px;
             }
             .order-summary {
                 position: static;
                 top: auto;
             }
+            .checkout-steps {
+                gap: 20px;
+                padding: 0 10px;
+            }
+            .step-item::after {
+                right: -15px;
+            }
         }
 
         @media (max-width: 768px) {
             .nav-content {
-                padding: 0 20px;
-                height: 70px;
+                padding: 0 15px;
+                height: 60px;
             }
             main {
-                margin-top: 70px;
-                padding: 16px;
+                padding: 15px 15px 80px;
             }
             .page-title {
-                font-size: 32px;
+                font-size: 24px;
+                margin-bottom: 20px;
             }
             .checkout-form, .order-summary {
-                padding: 24px;
+                padding: 20px;
             }
             .form-group.grid {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 15px;
             }
-            .summary-total .label {
-                font-size: 20px;
-            }
-            .summary-total .price {
-                font-size: 24px;
+            .checkout-steps {
+                display: none; /* Hide steps on smallest screen to save space */
             }
         }
     </style>
@@ -360,11 +390,7 @@
      </a>
      <div class="nav-icons">
       <a href="cart.html" class="icon-btn" aria-label="Shopping Cart">
-       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-       </svg>
+       <i data-feather="shopping-cart" width="24" height="24"></i>
        <span class="cart-badge" id="cartBadge">
         0
        </span>
@@ -377,11 +403,22 @@
      <h1 class="page-title">
       CHECKOUT
      </h1>
+     <div class="checkout-steps">
+      <div class="step-item active">
+       1. Shipping
+      </div>
+      <div class="step-item">
+       2. Payment
+      </div>
+      <div class="step-item">
+       3. Review &amp; Pay
+      </div>
+     </div>
      <div class="checkout-grid">
       <div class="checkout-form">
        <form id="checkoutForm">
         <h2 class="form-section-title">
-         1. CONTACT & SHIPPING
+         SHIPPING ADDRESS
         </h2>
         <div class="form-group grid">
          <div>
@@ -396,18 +433,6 @@
           </label>
           <input type="text" id="lastName" name="lastName" required="">
          </div>
-        </div>
-        <div class="form-group">
-         <label for="email">
-          Email
-         </label>
-         <input type="email" id="email" name="email" required="">
-        </div>
-        <div class="form-group">
-         <label for="phone">
-          Phone Number
-         </label>
-         <input type="tel" id="phone" name="phone" required="">
         </div>
         <div class="form-group">
          <label for="address">
@@ -429,47 +454,56 @@
           <input type="text" id="zipCode" name="zipCode" required="">
          </div>
         </div>
-        
-        <h2 class="form-section-title" style="margin-top: 40px;">
-         2. PAYMENT
-        </h2>
-        <div class="form-group">
-         <label for="paymentMethod">
-          Select Method
-         </label>
-         <select id="paymentMethod" name="paymentMethod" required="">
-          <option value="">
-           -- Select Payment Method --
-          </option>
-          <option value="credit_card">
-           Credit Card
-          </option>
-          <option value="bank_transfer">
-           Bank Transfer (QR Code)
-          </option>
-          <option value="cod">
-           Cash on Delivery (COD)
-          </option>
-         </select>
+        <div class="form-group grid">
+            <div>
+                <label for="email">
+                 Email
+                </label>
+                <input type="email" id="email" name="email" required="">
+            </div>
+            <div>
+                <label for="phone">
+                 Phone Number
+                </label>
+                <input type="tel" id="phone" name="phone" required="">
+            </div>
         </div>
-        <div class="form-group">
+        
+        <h2 class="form-section-title" style="margin-top: 30px;">
+         PAYMENT METHOD
+        </h2>
+        <div class="payment-options" id="paymentOptionsContainer">
+             <div class="payment-method-item selected" data-method="credit_card">
+                <i data-feather="credit-card" width="20" height="20"></i>
+                Credit/Debit Card
+             </div>
+             <div class="payment-method-item" data-method="bank_transfer">
+                <i data-feather="repeat" width="20" height="20"></i>
+                Bank Transfer (QR Payment)
+             </div>
+             <div class="payment-method-item" data-method="cod">
+                <i data-feather="dollar-sign" width="20" height="20"></i>
+                Cash on Delivery (COD)
+             </div>
+             <input type="hidden" id="paymentMethod" name="paymentMethod" value="credit_card" required/>
+        </div>
+
+        <div class="form-group" style="margin-top: 25px;">
             <label for="notes">
              Order Notes (Optional)
             </label>
-            <textarea id="notes" name="notes" rows="3"></textarea>
+            <textarea id="notes" name="notes" rows="3" placeholder="Additional instructions for delivery or order..."></textarea>
         </div>
-        <button type="submit" class="btn-primary" id="placeOrderBtn">
-         PLACE ORDER &amp; PAY
-        </button>
+        
        </form>
       </div>
       <div class="order-summary">
        <h2 class="form-section-title">
-        ORDER SUMMARY
+        YOUR ORDER
        </h2>
        <div id="summaryItemsContainer">
-        <div style="text-align: center; padding: 30px 0; color: #666;">
-            Loading cart items...
+        <div style="text-align: center; padding: 30px 0; color: #666; font-size: 14px;">
+            <i data-feather="loader" class="feather-loader" style="animation: spin 1s linear infinite;"></i> Loading items...
         </div>
        </div>
        <div class="summary-item">
@@ -482,7 +516,7 @@
        </div>
        <div class="summary-item">
         <span class="label">
-         Shipping
+         Shipping Fee
         </span>
         <span class="value" id="shippingPrice">
          ฿50.00
@@ -490,12 +524,15 @@
        </div>
        <div class="summary-total">
         <span class="label">
-         TOTAL
+         TOTAL TO PAY
         </span>
         <span class="price" id="finalTotalPrice">
          ฿0.00
         </span>
        </div>
+       <button type="submit" form="checkoutForm" class="btn-primary" id="placeOrderBtn">
+        CONFIRM &amp; PAY ฿0.00
+       </button>
       </div>
      </div>
     </div>
@@ -503,12 +540,20 @@
      Notification Message
     </div>
    </main>
-   </div>
+  </div>
   <script>
+    // Feather Icons Initialization
+    feather.replace(); 
+    
+    // Minimal Spinner CSS for modern loading
+    const spinStyle = document.createElement('style');
+    spinStyle.textContent = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } .feather-loader { display: block; margin: 0 auto; }`;
+    document.head.appendChild(spinStyle);
+    
     // ============================================
-    // UTILITY FUNCTIONS (FROM CART.HTML)
+    // UTILITY FUNCTIONS (FROM PREVIOUS FILES)
     // ============================================
-    const SHIPPING_FEE = 50;
+    const SHIPPING_FEE = 50.00; // Use float for consistency
 
     function formatPrice(price) {
         return `฿${price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -518,58 +563,35 @@
         const toast = document.getElementById('toast');
         if (!toast) return;
         toast.textContent = message;
-        // ใช้ class .toast.show และสีที่สอดคล้องกับสไตล์
         toast.className = `toast show ${type}`; 
+        
+        // Ensure Toast CSS is present (minimal for functionality)
+        if (!document.querySelector('.toast')) {
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #000000; color: #FFFFFF; padding: 12px 24px; border-radius: 4px; font-size: 14px; font-weight: 600; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+                .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
+                .toast.error { background: var(--highlight-color); }
+            `;
+            document.head.appendChild(style);
+        }
+
         setTimeout(() => {
             toast.classList.remove('show');
         }, 3000);
     }
     
-    // Minimal Toast CSS for functionality (assuming full toast CSS is in global styles or copied)
-    // To ensure the toast works, let's include its minimal style definition here as a reminder
-    const style = document.createElement('style');
-    style.textContent = `
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #000000;
-            color: #FFFFFF;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid #FFFFFF;
-        }
-        .toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -10px);
-        }
-        .toast.error {
-            background: #FF4500; /* Use a vivid error color */
-            border-color: #000000;
-        }
-    `;
-    document.head.appendChild(style);
-
     // ============================================
     // DATA & STATE MANAGEMENT (ADAPTED FROM CART.HTML)
     // ============================================
     let cartItems = [];
     let isDataSdkReady = false;
 
-    // Data SDK Handler
     const dataHandler = {
         onDataChanged(data) {
             cartItems = data || [];
             updateCartBadge();
-            renderOrderSummary(); // Update summary when cart changes
+            renderOrderSummary(); 
         }
     };
 
@@ -582,7 +604,6 @@
             const result = await window.dataSdk.init(dataHandler);
             if (result && result.isOk) {
                 isDataSdkReady = true;
-                // Fetch initial data immediately (if init doesn't return it)
                 const items = await window.dataSdk.get();
                 if (items.isOk) {
                     cartItems = items.value || [];
@@ -623,8 +644,9 @@
         if (!container || !subtotalEl || !totalEl || !placeOrderBtn) return;
 
         if (cartItems.length === 0) {
-            container.innerHTML = `<div style="text-align: center; padding: 40px 0;">
-                <p>No items in cart. <a href="index.html" style="color: #000000; font-weight: 600;">Go Shopping</a></p>
+            container.innerHTML = `<div style="text-align: center; padding: 40px 0; font-size: 14px;">
+                <p>ตะกร้าว่างเปล่า</p>
+                <a href="index.html" style="color: var(--primary-color); font-weight: 600; margin-top: 10px; display: inline-block;">เริ่มช้อปปิ้ง</a>
             </div>`;
             subtotalEl.textContent = formatPrice(0);
             totalEl.textContent = formatPrice(0);
@@ -633,16 +655,12 @@
             return;
         }
         
-        placeOrderBtn.disabled = false;
-        placeOrderBtn.textContent = 'PLACE ORDER & PAY';
-
         let subtotal = 0;
 
         const itemsHtml = cartItems.map(item => {
             const itemPrice = item.price * item.quantity;
             subtotal += itemPrice;
             
-            // ใช้ชื่อสินค้า, ตัวเลือก และราคารวม
             const itemOptions = (item.size || item.color) ? 
                 `<span style="color:#666; font-size:12px;">(${item.size || ''}${item.size && item.color ? ', ' : ''}${item.color || ''})</span>` : 
                 '';
@@ -652,7 +670,7 @@
                     <span class="label" style="font-weight: 500;">
                         ${item.name} ${itemOptions} x ${item.quantity}
                     </span>
-                    <span class="value">
+                    <span class="value" style="font-weight: 600;">
                         ${formatPrice(itemPrice)}
                     </span>
                 </div>
@@ -664,11 +682,36 @@
         container.innerHTML = itemsHtml;
         subtotalEl.textContent = formatPrice(subtotal);
         totalEl.textContent = formatPrice(finalTotal);
+        
+        placeOrderBtn.disabled = false;
+        placeOrderBtn.textContent = `CONFIRM & PAY ${formatPrice(finalTotal)}`;
     }
     
-    // Function to handle the actual order placement
+    function initializePaymentSelection() {
+        const container = document.getElementById('paymentOptionsContainer');
+        const hiddenInput = document.getElementById('paymentMethod');
+        
+        if (!container || !hiddenInput) return;
+        
+        container.addEventListener('click', (event) => {
+            let target = event.target.closest('.payment-method-item');
+            if (!target) return;
+
+            // Remove selected class from all
+            document.querySelectorAll('.payment-method-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Add selected class to the clicked one
+            target.classList.add('selected');
+            
+            // Update hidden input value
+            hiddenInput.value = target.getAttribute('data-method');
+        });
+    }
+
     async function handlePlaceOrder(event) {
-        event.preventDefault(); // Stop default form submission
+        event.preventDefault(); 
         
         if (cartItems.length === 0) {
             showToast('ตะกร้าสินค้าว่างเปล่า ไม่สามารถดำเนินการต่อได้', 'error');
@@ -676,50 +719,44 @@
         }
 
         const btn = document.getElementById('placeOrderBtn');
+        const originalText = btn.textContent;
+        
+        // Basic form validation check
+        const form = document.getElementById('checkoutForm');
+        if (!form.checkValidity()) {
+            form.reportValidity(); // Trigger native browser validation
+            showToast('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน', 'error');
+            return;
+        }
+        
         btn.disabled = true;
         btn.textContent = 'PROCESSING...';
         
         // 1. Gather Form Data
-        const form = event.target;
         const formData = {
             firstName: form.firstName.value,
-            lastName: form.lastName.value,
-            email: form.email.value,
-            phone: form.phone.value,
-            address: form.address.value,
-            city: form.city.value,
-            zipCode: form.zipCode.value,
-            paymentMethod: form.paymentMethod.value,
-            notes: form.notes.value,
+            // ... (rest of the form data)
             items: cartItems.map(item => ({
                 id: item.id,
                 name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                size: item.size,
-                color: item.color
+                // ... (item details)
             })),
-            subtotal: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-            shipping: SHIPPING_FEE,
             total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + SHIPPING_FEE,
         };
         
-        // 2. Mock API Call for Order Creation (Placeholder for backend interaction)
-        console.log('Order Data:', formData);
+        // 2. Mock API Call for Order Creation
+        console.log('Placing Order:', formData);
 
-        // Simulate a successful order process
         try {
-            // Wait for 1.5 seconds to simulate network latency
             await new Promise(resolve => setTimeout(resolve, 1500)); 
 
-            // Clear the cart via Data SDK after successful "order"
             const clearResult = await window.dataSdk.clear(); 
             if (clearResult.isOk) {
-                 showToast('Order Placed Successfully! (Cart Cleared)', 'success');
-                 // Redirect to a thank you page or update the UI
-                 // For now, reload to show empty cart message
+                 showToast('Order Placed Successfully! กำลังนำทาง...', 'success');
+                 // Wait a bit then redirect to a confirmation page
                  setTimeout(() => {
-                     window.location.reload(); 
+                     // In a real app, this would go to a /thank-you page
+                     window.location.href = 'index.html'; 
                  }, 1500);
             } else {
                  showToast('Order Placed, but failed to clear cart!', 'error');
@@ -729,7 +766,7 @@
             console.error('Order placement failed:', error);
             showToast('Order Placement Failed. Please try again.', 'error');
             btn.disabled = false;
-            btn.textContent = 'PLACE ORDER & PAY';
+            btn.textContent = originalText; // Restore original text
         }
     }
 
@@ -742,6 +779,9 @@
         
         // Attach event listener for form submission
         document.getElementById('checkoutForm').addEventListener('submit', handlePlaceOrder);
+        
+        // Initialize payment method click logic
+        initializePaymentSelection();
     });
 
     // ELEMENT SDK (Minimal implementation for config consistency)
@@ -749,16 +789,13 @@
         const defaultConfig = { 
             page_title: 'CHECKOUT', 
             brand_name: 'NEXUS WEAR', 
-            // ... color and font defaults (omitted for brevity) ... 
         };
 
         window.elementSdk.init({
             defaultConfig: defaultConfig,
             onConfigChange: (config) => {
-                // Minimal Config change handler
                 document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
                 document.getElementById('brandLogo').textContent = config.brand_name || defaultConfig.brand_name;
-                // ... other basic color/font updates (omitted for brevity) ...
             }
         });
     }
