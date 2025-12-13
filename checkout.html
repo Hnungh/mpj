@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="th">
+<html lang="th" class="h-full">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,7 +131,7 @@
     .cart-item {
       display: flex;
       gap: 16px;
-      padding: 16px 0;
+      padding: 20px 0;
       border-bottom: 1px solid #E0E0E0;
     }
 
@@ -163,6 +163,13 @@
 
     .item-details {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .item-info {
+      flex: 1;
     }
 
     .item-name {
@@ -175,13 +182,68 @@
     .item-meta {
       font-size: 12px;
       color: #666666;
-      margin-bottom: 6px;
+    }
+
+    .item-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .item-price {
       font-size: 15px;
       font-weight: 700;
       color: #000000;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #CCCCCC;
+      background: #FFFFFF;
+      color: #000000;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .qty-btn:hover {
+      background: #000000;
+      color: #FFFFFF;
+      border-color: #000000;
+    }
+
+    .qty-btn:active {
+      transform: scale(0.9);
+    }
+
+    .qty-input {
+      width: 50px;
+      height: 32px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid #E0E0E0;
+      background: #FFFFFF;
+      color: #000000;
+      border-radius: 4px;
+      padding: 0;
+    }
+
+    .qty-input:focus {
+      outline: none;
+      border-color: #000000;
     }
 
     .summary-divider {
@@ -299,6 +361,177 @@
       gap: 16px;
     }
 
+    /* Custom Select */
+    .custom-select-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select-trigger {
+      width: 100%;
+      padding: 14px 16px;
+      padding-right: 44px;
+      border: 2px solid #E0E0E0;
+      background: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #000000;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .custom-select-trigger:hover {
+      border-color: #CCCCCC;
+    }
+
+    .custom-select-trigger.active {
+      border-color: #000000;
+      background: #FAFAFA;
+    }
+
+    .custom-select-trigger.has-value {
+      color: #000000;
+    }
+
+    .custom-select-trigger.placeholder {
+      color: #999999;
+    }
+
+    .select-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: #666666;
+    }
+
+    .select-text {
+      flex: 1;
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      color: #666666;
+      transition: transform 0.2s ease;
+    }
+
+    .custom-select-trigger.active .select-arrow {
+      transform: translateY(-50%) rotate(180deg);
+      color: #000000;
+    }
+
+    .custom-dropdown {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      max-height: 280px;
+      overflow-y: auto;
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s;
+    }
+
+    /* Default: Opens downward */
+    .custom-dropdown:not(.open-upward) {
+      top: calc(100% + 8px);
+      transform-origin: top center;
+      transform: scaleY(0.95) translateY(-10px);
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                  visibility 0.25s, 
+                  transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .custom-dropdown:not(.open-upward).active {
+      opacity: 1;
+      visibility: visible;
+      transform: scaleY(1) translateY(0);
+    }
+
+    /* Opens upward when near bottom */
+    .custom-dropdown.open-upward {
+      bottom: calc(100% + 8px);
+      transform-origin: bottom center;
+      transform: scaleY(0.95) translateY(10px);
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                  visibility 0.25s, 
+                  transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .custom-dropdown.open-upward.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scaleY(1) translateY(0);
+    }
+
+    .dropdown-option {
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #000000;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #F5F5F5;
+    }
+
+    .dropdown-option:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-option:hover {
+      background: #F5F5F5;
+    }
+
+    .dropdown-option.selected {
+      background: #E8F4FF;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    .dropdown-option.selected::before {
+      content: '✓ ';
+      margin-right: 8px;
+      font-weight: 700;
+    }
+
+    /* Scrollbar Styling */
+    .custom-dropdown {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
+
+    .custom-dropdown::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-dropdown::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 8px 0;
+    }
+
+    .custom-dropdown::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      border: 2px solid #FFFFFF;
+    }
+
+    .custom-dropdown::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
     /* Email Toggle */
     .email-toggle-section {
       margin-top: 20px;
@@ -394,42 +627,38 @@
     .payment-options {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .payment-option {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 18px 20px;
-      border: 2px solid #E0E0E0;
+      gap: 14px;
+      padding: 14px 18px;
+      border: 1.5px solid #E0E0E0;
       background: #FFFFFF;
-      border-radius: 2px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .payment-option:hover {
-      border-color: #CCCCCC;
-      background: #FAFAFA;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .payment-option.selected {
       border-color: #000000;
       background: #FAFAFA;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     }
 
     .payment-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       flex: 1;
     }
 
     .payment-logo {
-      width: 50px;
-      height: 30px;
+      width: 44px;
+      height: 26px;
       flex-shrink: 0;
     }
 
@@ -438,15 +667,15 @@
     }
 
     .payment-name {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #000000;
       margin-bottom: 2px;
     }
 
     .payment-desc {
-      font-size: 12px;
-      color: #666666;
+      font-size: 11px;
+      color: #888888;
     }
 
     .payment-radio {
@@ -817,7 +1046,7 @@
   <style>@view-transition { navigation: auto; }</style>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
- <body>
+ <body class="h-full">
   <div class="page-wrapper"><!-- Header -->
    <header class="checkout-header">
     <div class="header-content">
@@ -840,11 +1069,11 @@
       </svg>
      </div>
      <h2 class="success-title" id="successTitle">ORDER CONFIRMED!</h2>
-     <p class="success-message">ขອบคุณสำหรับคำสั่งซื้อของคุณ เราได้รับออเดอร์แล้วและกำลังเ��รียมจัดส่ง</p>
+     <p class="success-message">ขอบคุณสำหรับคำสั่งซื้อของคุณ เราได้รับออเดอร์แล้วและกำลังเตรียมจัดส่ง</p>
      <div class="order-number" id="orderNumber">
       ORDER #NW-00000
      </div>
-     <div class="success-actions"><button class="success-btn" onclick="closeSuccessModal()">VIEW ORDER</button> <a href="#" class="success-btn secondary">BACK TO SHOP</a>
+     <div class="success-actions"><button class="success-btn" onclick="closeSuccessModal()">VIEW ORDER</button> <a href="#" class="success-btn secondary" target="_blank" rel="noopener noreferrer">BACK TO SHOP</a>
      </div>
     </div>
    </div><!-- Toast -->
@@ -855,8 +1084,8 @@
      <p class="page-subtitle">Complete Your Order</p><!-- Order Summary -->
      <section class="order-summary">
       <h2 class="summary-title">Order Summary</h2>
-      <div class="cart-items" id="cartItems">
-       <div class="cart-item">
+      <div class="cart-items">
+       <div class="cart-item" data-item-id="1">
         <div class="item-image">
          <svg viewbox="0 0 100 100"><rect width="100" height="100" fill="#404040" /> <text x="50" y="60" text-anchor="middle" font-family="Bebas Neue" font-size="40" fill="#FFFFFF">
            NW
@@ -864,31 +1093,43 @@
          </svg>
         </div>
         <div class="item-details">
-         <div class="item-name">
-          OVERSIZED TECH HOODIE
+         <div class="item-info">
+          <div class="item-name">
+           OVERSIZED TECH HOODIE
+          </div>
+          <div class="item-meta">
+           Size: M | Color: Black
+          </div>
          </div>
-         <div class="item-meta">
-          Size: M | Color: Black | Qty: 1
-         </div>
-         <div class="item-price">
-          $18.90
+         <div class="item-bottom">
+          <div class="item-price">
+           $18.90
+          </div>
+          <div class="quantity-control"><button type="button" class="qty-btn" onclick="updateQuantity(1, -1)">−</button> <input type="number" class="qty-input" value="1" min="1" max="99" data-unit-price="18.90" onchange="updateQuantityInput(1)"> <button type="button" class="qty-btn" onclick="updateQuantity(1, 1)">+</button>
+          </div>
          </div>
         </div>
        </div>
-       <div class="cart-item">
+       <div class="cart-item" data-item-id="2">
         <div class="item-image">
          <svg viewbox="0 0 100 100"><rect width="100" height="100" fill="#404040" /> <circle cx="50" cy="50" r="30" fill="#FFFFFF" />
          </svg>
         </div>
         <div class="item-details">
-         <div class="item-name">
-          CARGO UTILITY PANTS
+         <div class="item-info">
+          <div class="item-name">
+           CARGO UTILITY PANTS
+          </div>
+          <div class="item-meta">
+           Size: L | Color: Olive
+          </div>
          </div>
-         <div class="item-meta">
-          Size: L | Color: Olive | Qty: 1
-         </div>
-         <div class="item-price">
-          $22.90
+         <div class="item-bottom">
+          <div class="item-price">
+           $22.90
+          </div>
+          <div class="quantity-control"><button type="button" class="qty-btn" onclick="updateQuantity(2, -1)">−</button> <input type="number" class="qty-input" value="1" min="1" max="99" data-unit-price="22.90" onchange="updateQuantityInput(2)"> <button type="button" class="qty-btn" onclick="updateQuantity(2, 1)">+</button>
+          </div>
          </div>
         </div>
        </div>
@@ -896,7 +1137,7 @@
       <div class="summary-divider"></div>
       <div class="summary-row"><span class="summary-label">Subtotal</span> <span class="summary-value" id="subtotal">$41.80</span>
       </div>
-      <div class="summary-row"><span class="summary-label">Shipping</span> <span class="summary-value" id="shipping">FREE</span>
+      <div class="summary-row"><span class="summary-label">Shipping</span> <span class="summary-value">FREE</span>
       </div>
       <div class="summary-row"><span class="summary-label">Tax</span> <span class="summary-value" id="tax">$2.92</span>
       </div>
@@ -908,20 +1149,105 @@
        <h2 class="section-title">Customer Information</h2>
        <div class="form-group"><label for="customerName" class="form-label">Full Name <span class="required">*</span></label> <input type="text" id="customerName" class="form-input" required placeholder="Enter your full name">
        </div>
-       <div class="form-group"><label for="customerPhone" class="form-label">Phone Number <span class="required">*</span></label> <input type="tel" id="customerPhone" class="form-input" required placeholder="012-345-678">
+       <div class="form-group"><label for="customerPhone" class="form-label">Phone Number <span class="required">*</span></label> <input type="tel" id="customerPhone" class="form-input" required placeholder="012-345-6789">
        </div>
       </section><!-- Shipping Address -->
       <section class="form-section">
        <h2 class="section-title">Shipping Address</h2>
        <div class="form-group"><label for="shippingAddress" class="form-label">Address <span class="required">*</span></label> <textarea id="shippingAddress" class="form-textarea" required placeholder="House number, street name, village"></textarea>
        </div>
-       <div class="form-group"><label for="deliveryNote" class="form-label">Delivery Note</label> <input type="text" id="deliveryNote" class="form-input" placeholder="Special instructions (optional)">
-       </div>
        <div class="form-row">
-        <div class="form-group"><label for="shippingProvince" class="form-label">Province <span class="required">*</span></label> <select id="shippingProvince" class="form-select" required> <option value="">Select Province</option> <option value="Phnom Penh">Phnom Penh</option> <option value="Kandal">Kandal</option> <option value="Siem Reap">Siem Reap</option> <option value="Battambang">Battambang</option> <option value="Kampong Cham">Kampong Cham</option> <option value="Kampong Speu">Kampong Speu</option> <option value="Kampong Thom">Kampong Thom</option> <option value="Kampot">Kampot</option> <option value="Kep">Kep</option> <option value="Koh Kong">Koh Kong</option> <option value="Kratie">Kratie</option> <option value="Mondulkiri">Mondulkiri</option> <option value="Oddar Meanchey">Oddar Meanchey</option> <option value="Pailin">Pailin</option> <option value="Preah Vihear">Preah Vihear</option> <option value="Prey Veng">Prey Veng</option> <option value="Pursat">Pursat</option> <option value="Ratanakiri">Ratanakiri</option> <option value="Sihanoukville">Sihanoukville</option> <option value="Stung Treng">Stung Treng</option> <option value="Svay Rieng">Svay Rieng</option> <option value="Takeo">Takeo</option> <option value="Banteay Meanchey">Banteay Meanchey</option> <option value="Kampong Chhnang">Kampong Chhnang</option> <option value="Preah Sihanouk">Preah Sihanouk</option> </select>
+        <div class="form-group"><label for="shippingProvince" class="form-label">Province <span class="required">*</span></label>
+         <div class="custom-select-wrapper">
+          <div class="custom-select-trigger placeholder" id="provinceSelector" data-required="true">
+           <svg class="select-icon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /> <circle cx="12" cy="10" r="3" />
+           </svg><span class="select-text">Select a province</span>
+           <svg class="select-arrow" viewbox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+           </svg>
+          </div>
+          <div class="custom-dropdown" id="provinceDropdown">
+           <div class="dropdown-option" data-value="Phnom Penh">
+            Phnom Penh
+           </div>
+           <div class="dropdown-option" data-value="Kandal">
+            Kandal
+           </div>
+           <div class="dropdown-option" data-value="Siem Reap">
+            Siem Reap
+           </div>
+           <div class="dropdown-option" data-value="Battambang">
+            Battambang
+           </div>
+           <div class="dropdown-option" data-value="Kampong Cham">
+            Kampong Cham
+           </div>
+           <div class="dropdown-option" data-value="Kampong Speu">
+            Kampong Speu
+           </div>
+           <div class="dropdown-option" data-value="Kampong Thom">
+            Kampong Thom
+           </div>
+           <div class="dropdown-option" data-value="Kampot">
+            Kampot
+           </div>
+           <div class="dropdown-option" data-value="Kep">
+            Kep
+           </div>
+           <div class="dropdown-option" data-value="Koh Kong">
+            Koh Kong
+           </div>
+           <div class="dropdown-option" data-value="Kratie">
+            Kratie
+           </div>
+           <div class="dropdown-option" data-value="Mondulkiri">
+            Mondulkiri
+           </div>
+           <div class="dropdown-option" data-value="Oddar Meanchey">
+            Oddar Meanchey
+           </div>
+           <div class="dropdown-option" data-value="Pailin">
+            Pailin
+           </div>
+           <div class="dropdown-option" data-value="Preah Vihear">
+            Preah Vihear
+           </div>
+           <div class="dropdown-option" data-value="Prey Veng">
+            Prey Veng
+           </div>
+           <div class="dropdown-option" data-value="Pursat">
+            Pursat
+           </div>
+           <div class="dropdown-option" data-value="Ratanakiri">
+            Ratanakiri
+           </div>
+           <div class="dropdown-option" data-value="Sihanoukville">
+            Sihanoukville
+           </div>
+           <div class="dropdown-option" data-value="Stung Treng">
+            Stung Treng
+           </div>
+           <div class="dropdown-option" data-value="Svay Rieng">
+            Svay Rieng
+           </div>
+           <div class="dropdown-option" data-value="Takeo">
+            Takeo
+           </div>
+           <div class="dropdown-option" data-value="Banteay Meanchey">
+            Banteay Meanchey
+           </div>
+           <div class="dropdown-option" data-value="Kampong Chhnang">
+            Kampong Chhnang
+           </div>
+           <div class="dropdown-option" data-value="Preah Sihanouk">
+            Preah Sihanouk
+           </div>
+          </div><input type="hidden" id="shippingProvince" required>
+         </div>
         </div>
         <div class="form-group"><label for="shippingPostal" class="form-label">Postal Code</label> <input type="text" id="shippingPostal" class="form-input" placeholder="12000">
         </div>
+       </div>
+       <div class="form-group"><label for="deliveryNote" class="form-label">Delivery Note</label> <input type="text" id="deliveryNote" class="form-input" placeholder="Special instructions (optional)">
        </div><!-- Email Toggle -->
        <div class="email-toggle-section">
         <div class="toggle-container">
@@ -993,7 +1319,7 @@
    </footer>
   </div>
   <script>
-    // Order Data with Data SDK
+    // Order Data Storage
     let orderHistory = [];
 
     const orderDataHandler = {
@@ -1004,7 +1330,6 @@
 
     async function initializeOrderSystem() {
       if (!window.dataSdk) {
-        console.error('Data SDK not available');
         return;
       }
 
@@ -1014,12 +1339,154 @@
       }
     }
 
+    // Update Quantity Function
+    function updateQuantity(itemId, change) {
+      const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+      if (!cartItem) return;
+
+      const qtyInput = cartItem.querySelector('.qty-input');
+      let currentQty = parseInt(qtyInput.value);
+      let newQty = currentQty + change;
+
+      if (newQty < 1) newQty = 1;
+      if (newQty > 99) newQty = 99;
+
+      qtyInput.value = newQty;
+      updateOrderTotal();
+    }
+
+    // Update Quantity from Input
+    function updateQuantityInput(itemId) {
+      const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+      if (!cartItem) return;
+
+      const qtyInput = cartItem.querySelector('.qty-input');
+      let qty = parseInt(qtyInput.value);
+
+      if (isNaN(qty) || qty < 1) qty = 1;
+      if (qty > 99) qty = 99;
+
+      qtyInput.value = qty;
+      updateOrderTotal();
+    }
+
+    // Update Order Total
+    function updateOrderTotal() {
+      const allQtyInputs = document.querySelectorAll('.qty-input');
+      let subtotal = 0;
+
+      allQtyInputs.forEach(input => {
+        const unitPrice = parseFloat(input.getAttribute('data-unit-price'));
+        const qty = parseInt(input.value);
+        subtotal += unitPrice * qty;
+      });
+
+      const tax = subtotal * 0.07;
+      const total = subtotal + tax;
+
+      const subtotalEl = document.getElementById('subtotal');
+      const taxEl = document.getElementById('tax');
+      const totalEl = document.getElementById('totalAmount');
+
+      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+      if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+    }
+
     // Generate Order ID
     function generateOrderId() {
       const timestamp = Date.now();
       const random = Math.floor(Math.random() * 10000);
       return `NW-${timestamp}-${random}`;
     }
+
+    // Custom Province Dropdown
+    const provinceSelector = document.getElementById('provinceSelector');
+    const provinceDropdown = document.getElementById('provinceDropdown');
+    const provinceHiddenInput = document.getElementById('shippingProvince');
+    const provinceOptions = provinceDropdown.querySelectorAll('.dropdown-option');
+
+    let selectedProvince = '';
+
+    // Calculate if dropdown should open upward
+    function shouldOpenUpward(triggerElement, dropdownHeight = 280) {
+      const rect = triggerElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Space below the trigger
+      const spaceBelow = viewportHeight - rect.bottom;
+      
+      // Space above the trigger
+      const spaceAbove = rect.top;
+      
+      // If not enough space below but more space above, open upward
+      if (spaceBelow < dropdownHeight + 20 && spaceAbove > spaceBelow) {
+        return true;
+      }
+      
+      return false;
+    }
+
+    // Toggle Dropdown
+    provinceSelector.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isActive = provinceDropdown.classList.contains('active');
+      
+      if (isActive) {
+        // Close: remove active but keep direction class until animation ends
+        provinceDropdown.classList.remove('active');
+        provinceSelector.classList.remove('active');
+      } else {
+        // Open: set direction first, then activate
+        if (shouldOpenUpward(provinceSelector)) {
+          provinceDropdown.classList.add('open-upward');
+        } else {
+          provinceDropdown.classList.remove('open-upward');
+        }
+        
+        // Small delay to ensure direction class is applied before animation
+        setTimeout(() => {
+          provinceDropdown.classList.add('active');
+          provinceSelector.classList.add('active');
+        }, 10);
+      }
+    });
+
+    // Select Option
+    provinceOptions.forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        const value = this.getAttribute('data-value');
+        const text = this.textContent;
+        
+        // Update selected state
+        provinceOptions.forEach(opt => opt.classList.remove('selected'));
+        this.classList.add('selected');
+        
+        // Update trigger
+        const selectText = provinceSelector.querySelector('.select-text');
+        selectText.textContent = text;
+        provinceSelector.classList.remove('placeholder');
+        provinceSelector.classList.add('has-value');
+        
+        // Update hidden input
+        provinceHiddenInput.value = value;
+        selectedProvince = value;
+        
+        // Close dropdown
+        provinceDropdown.classList.remove('active');
+        provinceSelector.classList.remove('active');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!provinceSelector.contains(e.target) && !provinceDropdown.contains(e.target)) {
+        provinceDropdown.classList.remove('active');
+        provinceSelector.classList.remove('active');
+      }
+    });
 
     // Email Toggle
     const emailToggle = document.getElementById('emailToggle');
@@ -1046,7 +1513,7 @@
       element.classList.add('selected');
     }
 
-    // Get selected payment method
+    // Get Selected Payment Method
     function getSelectedPaymentMethod() {
       const selected = document.querySelector('.payment-option.selected');
       return selected ? selected.getAttribute('data-method') : 'khqr';
@@ -1064,7 +1531,7 @@
         }
 
         if (orderHistory.length >= 999) {
-          showToast('Order limit reached (999 orders)', 'error');
+          showToast('Maximum limit of 999 orders reached. Please contact support.', 'error');
           return;
         }
 
@@ -1115,7 +1582,30 @@
         if (createResult.isOk) {
           showSuccessModal(orderId);
           checkoutForm.reset();
+          
+          // Reset province dropdown
+          if (provinceSelector && provinceHiddenInput) {
+            const selectText = provinceSelector.querySelector('.select-text');
+            if (selectText) selectText.textContent = 'Select a province';
+            provinceSelector.classList.add('placeholder');
+            provinceSelector.classList.remove('has-value');
+            provinceHiddenInput.value = '';
+            selectedProvince = '';
+            provinceOptions.forEach(opt => opt.classList.remove('selected'));
+          }
+          
           if (emailInputContainer) emailInputContainer.classList.remove('active');
+          const firstPaymentOption = document.querySelector('.payment-option[data-method="khqr"]');
+          if (firstPaymentOption) {
+            selectPayment(firstPaymentOption);
+          }
+          
+          // Reset quantity inputs
+          const allQtyInputs = document.querySelectorAll('.qty-input');
+          allQtyInputs.forEach(input => {
+            input.value = 1;
+          });
+          updateOrderTotal();
         } else {
           showToast('Failed to place order. Please try again.', 'error');
         }
@@ -1222,12 +1712,31 @@
         checkoutFooter.style.background = surfaceColor;
       }
 
+      const summaryTotal = document.querySelector('.summary-total');
+      if (summaryTotal) {
+        summaryTotal.style.background = surfaceColor;
+      }
+
+      const successIcon = document.querySelector('.success-icon');
+      if (successIcon) {
+        successIcon.style.background = surfaceColor;
+      }
+
       const customFont = config.font_family || defaultConfig.font_family;
       const baseSize = config.font_size || defaultConfig.font_size;
       const baseFontStack = '-apple-system, BlinkMacSystemFont, sans-serif';
 
       document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
       document.body.style.fontSize = `${baseSize}px`;
+
+      if (pageTitleEl) {
+        pageTitleEl.style.fontSize = `${baseSize * 3.5}px`;
+      }
+
+      const sectionTitles = document.querySelectorAll('.section-title, .summary-title');
+      sectionTitles.forEach(title => {
+        title.style.fontSize = `${baseSize * 1.75}px`;
+      });
     }
 
     if (window.elementSdk) {
@@ -1297,10 +1806,8 @@
       });
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      initializeOrderSystem();
-    });
+    // Initialize
+    initializeOrderSystem();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9acbae42165c4b58',t:'MTc2NTUyNjM0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ad3253131834ba6',t:'MTc2NTYwNDYyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ </html>
