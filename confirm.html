@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="th" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - Nexus Wear</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F5F5F5;
+      color: #000000;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .confirm-header {
+      background: #000000;
+      color: #FFFFFF;
+      padding: 24px 60px;
+      border-bottom: 3px solid #FF0000;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 32px;
+      letter-spacing: 3px;
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+
+    .secure-badge svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Main Content */
+    .confirm-main {
+      flex: 1;
+      padding: 60px 24px;
+    }
+
+    .confirm-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Success Banner */
+    .success-banner {
+      background: #FFFFFF;
+      border: 3px solid #FF0000;
+      padding: 48px 40px;
+      text-align: center;
+      margin-bottom: 32px;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .success-icon-wrapper {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+      background: #FF0000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes iconPop {
+      0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    .success-icon {
+      width: 50px;
+      height: 50px;
+      color: #FFFFFF;
+    }
+
+    .success-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 56px;
+      letter-spacing: 4px;
+      color: #000000;
+      margin-bottom: 12px;
+    }
+
+    .success-subtitle {
+      font-size: 16px;
+      color: #666666;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .success-desc {
+      font-size: 14px;
+      color: #999999;
+    }
+
+    /* Order ID Card */
+    .order-id-card {
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      padding: 32px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+    }
+
+    .order-id-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #E0E0E0;
+    }
+
+    .order-id-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #666666;
+    }
+
+    .order-id-value {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 32px;
+      font-weight: 900;
+      color: #FF0000;
+      letter-spacing: 2px;
+    }
+
+    .order-date-time {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: #666666;
+    }
+
+    .order-date-time svg {
+      width: 16px;
+      height: 16px;
+      color: #FF0000;
+    }
+
+    .processing-message {
+      font-size: 14px;
+      color: #666666;
+      line-height: 1.8;
+    }
+
+    /* Details Grid */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .detail-card {
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      padding: 24px;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .detail-card:hover {
+      border-color: #FF0000;
+      transform: translateY(-2px);
+    }
+
+    .detail-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .detail-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #FF0000;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-title svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .detail-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .detail-label {
+      color: #666666;
+      font-weight: 500;
+    }
+
+    .detail-value {
+      color: #000000;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .address-text {
+      color: #000000;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* Order Items Section */
+    .order-items-section {
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      padding: 32px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: #000000;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-header svg {
+      width: 24px;
+      height: 24px;
+      color: #FF0000;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 24px;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .item-row:last-child {
+      border-bottom: none;
+    }
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .item-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .item-quantity {
+      font-size: 12px;
+      color: #666666;
+    }
+
+    .item-price {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: #000000;
+      font-weight: 700;
+    }
+
+    .order-summary {
+      border-top: 2px solid #E0E0E0;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .summary-row.total {
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 2px solid #000000;
+    }
+
+    .summary-label {
+      color: #666666;
+      font-weight: 600;
+    }
+
+    .summary-label.total {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: #000000;
+    }
+
+    .summary-value {
+      color: #000000;
+      font-weight: 700;
+    }
+
+    .summary-value.total {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 36px;
+      letter-spacing: 2px;
+      color: #FF0000;
+    }
+
+    /* Status Timeline */
+    .status-timeline {
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      padding: 32px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+    }
+
+    .timeline-items {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    .timeline-items::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #E0E0E0;
+      z-index: 0;
+    }
+
+    .timeline-item {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-dot {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 12px;
+      background: #FFFFFF;
+      border: 3px solid #FF0000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-dot.inactive {
+      border-color: #E0E0E0;
+    }
+
+    .timeline-dot svg {
+      width: 18px;
+      height: 18px;
+      color: #FF0000;
+    }
+
+    .timeline-dot.inactive svg {
+      color: #CCCCCC;
+    }
+
+    .timeline-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000000;
+    }
+
+    .timeline-label.inactive {
+      color: #CCCCCC;
+    }
+
+    .timeline-desc {
+      font-size: 10px;
+      color: #666666;
+      margin-top: 4px;
+    }
+
+    .timeline-desc.inactive {
+      color: #CCCCCC;
+    }
+
+    /* Action Buttons */
+    .action-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .action-btn {
+      padding: 18px 32px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-align: center;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .action-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .action-btn.primary {
+      background: #FF0000;
+      color: #FFFFFF;
+      border-color: #FF0000;
+    }
+
+    .action-btn.primary:hover {
+      background: #CC0000;
+      border-color: #CC0000;
+      transform: translateY(-2px);
+    }
+
+    .action-btn.secondary {
+      background: #FFFFFF;
+      color: #000000;
+      border-color: #000000;
+    }
+
+    .action-btn.secondary:hover {
+      background: #000000;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    /* Help Section */
+    .help-section {
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      padding: 32px;
+      border-radius: 2px;
+      text-align: center;
+    }
+
+    .help-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: #000000;
+      margin-bottom: 12px;
+    }
+
+    .help-text {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .help-contacts {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .help-contact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #FF0000;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .help-contact:hover {
+      color: #CC0000;
+      transform: translateY(-2px);
+    }
+
+    .help-contact svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Footer */
+    .confirm-footer {
+      background: #000000;
+      color: #FFFFFF;
+      border-top: 3px solid #FF0000;
+      padding: 32px 40px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: #CCCCCC;
+      margin-bottom: 16px;
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 24px;
+      letter-spacing: 4px;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+    }
+
+    .footer-badges {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #999999;
+    }
+
+    .footer-badge svg {
+      width: 16px;
+      height: 16px;
+      color: #FF0000;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .loading-overlay.active {
+      display: flex;
+    }
+
+    .loading-content {
+      text-align: center;
+      background: #FFFFFF;
+      padding: 40px;
+      border-radius: 2px;
+      border: 2px solid #000000;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #E0E0E0;
+      border-top-color: #FF0000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: #000000;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      padding: 16px 24px;
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #000000;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 10000;
+      max-width: 350px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.error {
+      border-color: #FF0000;
+      color: #FF0000;
+    }
+
+    .toast.success {
+      border-color: #00CC00;
+      color: #00CC00;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      border-radius: 2px;
+    }
+
+    .empty-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+      color: #CCCCCC;
+    }
+
+    .empty-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 36px;
+      letter-spacing: 3px;
+      color: #000000;
+      margin-bottom: 12px;
+    }
+
+    .empty-message {
+      font-size: 15px;
+      color: #666666;
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .empty-action {
+      display: inline-block;
+      padding: 16px 40px;
+      background: #FF0000;
+      color: #FFFFFF;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      border: 2px solid #FF0000;
+    }
+
+    .empty-action:hover {
+      background: #CC0000;
+      border-color: #CC0000;
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .confirm-header {
+        padding: 16px 20px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .brand-logo {
+        font-size: 24px;
+      }
+
+      .confirm-main {
+        padding: 40px 16px;
+      }
+
+      .success-banner {
+        padding: 32px 24px;
+      }
+
+      .success-title {
+        font-size: 40px;
+      }
+
+      .order-id-card {
+        padding: 20px;
+      }
+
+      .order-id-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .order-items-section {
+        padding: 24px 20px;
+      }
+
+      .timeline-items {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+
+      .timeline-items::before {
+        display: none;
+      }
+
+      .action-section {
+        grid-template-columns: 1fr;
+      }
+
+      .help-contacts {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .confirm-footer {
+        padding: 24px 20px;
+      }
+
+      .footer-badges {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        max-width: none;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body class="h-full"><!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+   <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">
+     LOADING ORDER...
+    </div>
+   </div>
+  </div><!-- Toast -->
+  <div class="toast" id="toast"></div>
+  <div class="page-wrapper"><!-- Header -->
+   <header class="confirm-header">
+    <div class="header-content"><a href="#" class="brand-logo" id="headerBrand">NEXUS WEAR</a>
+     <div class="secure-badge">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /> <path d="M9 12l2 2 4-4" />
+      </svg><span>Secure Confirmation</span>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main class="confirm-main">
+    <div class="confirm-container"><!-- Main Content Area -->
+     <div id="mainContent" class="hidden"><!-- Success Banner -->
+      <div class="success-banner">
+       <div class="success-icon-wrapper">
+        <svg class="success-icon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+       </div>
+       <h1 class="success-title" id="successTitle">ORDER CONFIRMED</h1>
+       <p class="success-subtitle" id="successSubtitle">Thank you for your order!</p>
+       <p class="success-desc">A confirmation email has been sent to your inbox</p>
+      </div><!-- Order ID Card -->
+      <div class="order-id-card">
+       <div class="order-id-header">
+        <div>
+         <div class="order-id-label">
+          Order Number
+         </div>
+         <div class="order-id-value" id="orderIdDisplay">
+          Loading...
+         </div>
+        </div>
+        <div class="order-date-time">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline>
+         </svg><span id="orderDateTime">-</span>
+        </div>
+       </div>
+       <p class="processing-message" id="processingMsg">Your order is being prepared for shipment. You will receive a shipping confirmation email soon.</p>
+      </div><!-- Details Grid -->
+      <div class="details-grid"><!-- Customer Info -->
+       <div class="detail-card">
+        <div class="detail-title">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4"></circle>
+         </svg> Customer
+        </div>
+        <div class="detail-content">
+         <div class="detail-row"><span class="detail-label">Name</span> <span class="detail-value" id="customerName">-</span>
+         </div>
+         <div class="detail-row"><span class="detail-label">Email</span> <span class="detail-value" id="customerEmail">-</span>
+         </div>
+         <div class="detail-row"><span class="detail-label">Phone</span> <span class="detail-value" id="customerPhone">-</span>
+         </div>
+        </div>
+       </div><!-- Payment Info -->
+       <div class="detail-card">
+        <div class="detail-title">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /> <line x1="1" y1="10" x2="23" y2="10" />
+         </svg> Payment
+        </div>
+        <div class="detail-content">
+         <div class="detail-row"><span class="detail-label">Method</span> <span class="detail-value" id="paymentMethod">-</span>
+         </div>
+         <div class="detail-row"><span class="detail-label">Status</span> <span class="detail-value" id="paymentStatus">-</span>
+         </div>
+        </div>
+       </div><!-- Shipping Address -->
+       <div class="detail-card full-width">
+        <div class="detail-title">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /> <circle cx="12" cy="10" r="3"></circle>
+         </svg> Shipping Address
+        </div>
+        <div class="address-text" id="customerAddress">
+         -
+        </div>
+       </div>
+      </div><!-- Order Items -->
+      <div class="order-items-section">
+       <h2 class="section-header">
+        <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /> <line x1="3" y1="6" x2="21" y2="6" /> <path d="M16 10a4 4 0 0 1-8 0" />
+        </svg> Order Items</h2>
+       <div class="items-list" id="orderItemsList"><!-- Items will be populated here -->
+       </div>
+       <div class="order-summary">
+        <div class="summary-row"><span class="summary-label">Subtotal</span> <span class="summary-value" id="subtotalAmount">฿0</span>
+        </div>
+        <div class="summary-row"><span class="summary-label">Shipping</span> <span class="summary-value" id="shippingAmount">฿100</span>
+        </div>
+        <div class="summary-row total"><span class="summary-label total">Total</span> <span class="summary-value total" id="totalAmount">฿0</span>
+        </div>
+       </div>
+      </div><!-- Status Timeline -->
+      <div class="status-timeline">
+       <h2 class="section-header">
+        <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline>
+        </svg> Order Timeline</h2>
+       <div class="timeline-items">
+        <div class="timeline-item">
+         <div class="timeline-dot">
+          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+         </div>
+         <div class="timeline-label">
+          Confirmed
+         </div>
+         <div class="timeline-desc">
+          Order received
+         </div>
+        </div>
+        <div class="timeline-item">
+         <div class="timeline-dot">
+          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+         </div>
+         <div class="timeline-label">
+          Processing
+         </div>
+         <div class="timeline-desc">
+          Preparing items
+         </div>
+        </div>
+        <div class="timeline-item">
+         <div class="timeline-dot inactive">
+          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle>
+          </svg>
+         </div>
+         <div class="timeline-label inactive">
+          Shipped
+         </div>
+         <div class="timeline-desc inactive">
+          On the way
+         </div>
+        </div>
+        <div class="timeline-item">
+         <div class="timeline-dot inactive">
+          <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle>
+          </svg>
+         </div>
+         <div class="timeline-label inactive">
+          Delivered
+         </div>
+         <div class="timeline-desc inactive">
+          At your door
+         </div>
+        </div>
+       </div>
+      </div><!-- Action Buttons -->
+      <div class="action-section"><a href="index.html" class="action-btn primary">
+        <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        </svg> Continue Shopping </a> <button onclick="window.print()" class="action-btn secondary">
+        <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /> <polyline points="14 2 14 8 20 8"></polyline>
+        </svg> Print Invoice </button>
+      </div><!-- Help Section -->
+      <div class="help-section">
+       <h3 class="help-title">Need Assistance?</h3>
+       <p class="help-text">If you have any questions about your order, our support team is here to help you 24/7.</p>
+       <div class="help-contacts"><a href="#" class="help-contact" id="supportEmailLink">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /> <polyline points="22,6 12,13 2,6"></polyline>
+         </svg><span id="supportEmail">support@nexuswear.com</span> </a> <a href="#" class="help-contact" id="supportPhoneLink">
+         <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+         </svg><span id="supportPhone">02-XXX-XXXX</span> </a>
+       </div>
+      </div>
+     </div><!-- Empty State -->
+     <div id="emptyState" class="empty-state hidden">
+      <svg class="empty-icon" viewbox="0 0 100 100" fill="none" stroke="#CCCCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><!-- Box --> <rect x="15" y="35" width="70" height="50" rx="2" /> <line x1="15" y1="50" x2="85" y2="50" /> <path d="M 35 35 L 50 20 L 65 35" /> <line x1="50" y1="20" x2="50" y2="35" /> <!-- X Mark --> <line x1="38" y1="60" x2="62" y2="75" stroke="#FF0000" stroke-width="4" /> <line x1="62" y1="60" x2="38" y2="75" stroke="#FF0000" stroke-width="4" />
+      </svg>
+      <h2 class="empty-title">Order Not Found</h2>
+      <p class="empty-message">We couldn't find an order with this ID.<br>
+        Please check your link or contact our support team for assistance.</p><a href="index.html" class="empty-action">Go to Homepage</a>
+     </div>
+    </div>
+   </main><!-- Footer -->
+   <footer class="confirm-footer">
+    <p class="footer-text">Your order has been successfully placed</p>
+    <div class="footer-brand" id="footerBrand">
+     NEXUS WEAR
+    </div>
+    <div class="footer-badges">
+     <div class="footer-badge">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg> SSL Encrypted
+     </div>
+     <div class="footer-badge">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      </svg> Secure Payment
+     </div>
+     <div class="footer-badge">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline> <polyline points="1 20 1 14 7 14"></polyline> <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+      </svg> Easy Returns
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Configuration
+    const defaultConfig = {
+      brand_name: 'NEXUS WEAR',
+      support_email: 'support@nexuswear.com',
+      support_phone: '02-XXX-XXXX',
+      success_title: 'ORDER CONFIRMED',
+      success_message: 'Thank you for your order!',
+      processing_message: 'Your order is being prepared for shipment. You will receive a shipping confirmation email soon.'
+    };
+
+    // Global state
+    let currentOrderId = null;
+    let allOrders = [];
+
+    // Data SDK Handler
+    const dataHandler = {
+      onDataChanged(data) {
+        allOrders = data;
+        
+        if (currentOrderId) {
+          const order = allOrders.find(o => o.order_id === currentOrderId);
+          if (order) {
+            displayOrderDetails(order);
+          }
+        }
+      }
+    };
+
+    // Element SDK Implementation
+    async function onConfigChange(config) {
+      const elements = {
+        headerBrand: document.getElementById('headerBrand'),
+        footerBrand: document.getElementById('footerBrand'),
+        supportEmail: document.getElementById('supportEmail'),
+        supportEmailLink: document.getElementById('supportEmailLink'),
+        supportPhone: document.getElementById('supportPhone'),
+        supportPhoneLink: document.getElementById('supportPhoneLink'),
+        successTitle: document.getElementById('successTitle'),
+        successSubtitle: document.getElementById('successSubtitle'),
+        processingMsg: document.getElementById('processingMsg')
+      };
+
+      const cfg = {
+        brand_name: config.brand_name || defaultConfig.brand_name,
+        support_email: config.support_email || defaultConfig.support_email,
+        support_phone: config.support_phone || defaultConfig.support_phone,
+        success_title: config.success_title || defaultConfig.success_title,
+        success_message: config.success_message || defaultConfig.success_message,
+        processing_message: config.processing_message || defaultConfig.processing_message
+      };
+
+      if (elements.headerBrand) elements.headerBrand.textContent = cfg.brand_name;
+      if (elements.footerBrand) elements.footerBrand.textContent = cfg.brand_name;
+      if (elements.supportEmail) elements.supportEmail.textContent = cfg.support_email;
+      if (elements.supportEmailLink) elements.supportEmailLink.href = `mailto:${cfg.support_email}`;
+      if (elements.supportPhone) elements.supportPhone.textContent = cfg.support_phone;
+      if (elements.supportPhoneLink) elements.supportPhoneLink.href = `tel:${cfg.support_phone}`;
+      if (elements.successTitle) elements.successTitle.textContent = cfg.success_title;
+      if (elements.successSubtitle) elements.successSubtitle.textContent = cfg.success_message;
+      if (elements.processingMsg) elements.processingMsg.textContent = cfg.processing_message;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['brand_name', config.brand_name || defaultConfig.brand_name],
+        ['support_email', config.support_email || defaultConfig.support_email],
+        ['support_phone', config.support_phone || defaultConfig.support_phone],
+        ['success_title', config.success_title || defaultConfig.success_title],
+        ['success_message', config.success_message || defaultConfig.success_message],
+        ['processing_message', config.processing_message || defaultConfig.processing_message]
+      ]);
+    }
+
+    // Initialize Element SDK
+    async function initElementSDK() {
+      if (window.elementSdk) {
+        await window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+
+        await onConfigChange(window.elementSdk.config);
+      }
+    }
+
+    // Initialize Data SDK
+    async function initDataSDK() {
+      if (!window.dataSdk) {
+        showToast('System not available', 'error');
+        return false;
+      }
+
+      const result = await window.dataSdk.init(dataHandler);
+      if (!result.isOk) {
+        showToast('Cannot connect to database', 'error');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Get Order ID from URL
+    function getOrderIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('order_id') || localStorage.getItem('last_order_id');
+    }
+
+    // Display Order Details
+    function displayOrderDetails(order) {
+      const mainContent = document.getElementById('mainContent');
+      const emptyState = document.getElementById('emptyState');
+
+      if (!order) {
+        if (mainContent) mainContent.classList.add('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+
+      if (mainContent) mainContent.classList.remove('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
+
+      // Order ID
+      const orderIdDisplay = document.getElementById('orderIdDisplay');
+      if (orderIdDisplay && order.order_id) {
+        orderIdDisplay.textContent = order.order_id;
+      }
+
+      // Order Date Time
+      const orderDateTime = document.getElementById('orderDateTime');
+      if (orderDateTime && order.order_date) {
+        const date = new Date(order.order_date);
+        orderDateTime.textContent = date.toLocaleString('th-TH', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      // Customer Info
+      const customerName = document.getElementById('customerName');
+      const customerEmail = document.getElementById('customerEmail');
+      const customerPhone = document.getElementById('customerPhone');
+      const customerAddress = document.getElementById('customerAddress');
+
+      if (customerName && order.customer_name) {
+        customerName.textContent = order.customer_name;
+      }
+      if (customerEmail && order.customer_email) {
+        customerEmail.textContent = order.customer_email;
+      }
+      if (customerPhone && order.customer_phone) {
+        customerPhone.textContent = order.customer_phone;
+      }
+      if (customerAddress && order.customer_address) {
+        customerAddress.textContent = order.customer_address;
+      }
+
+      // Payment Info
+      const paymentMethod = document.getElementById('paymentMethod');
+      const paymentStatus = document.getElementById('paymentStatus');
+
+      if (paymentMethod && order.payment_method) {
+        const methods = {
+          'khqr': 'KHQR Payment',
+          'card': 'Credit Card',
+          'truemoney': 'TrueMoney Wallet',
+          'promptpay': 'PromptPay',
+          'bank': 'Bank Transfer'
+        };
+        paymentMethod.textContent = methods[order.payment_method] || order.payment_method;
+      }
+
+      if (paymentStatus && order.payment_status) {
+        const statuses = {
+          'paid': 'Paid',
+          'pending': 'Pending',
+          'processing': 'Processing',
+          'failed': 'Failed'
+        };
+        paymentStatus.textContent = statuses[order.payment_status] || order.payment_status;
+      }
+
+      // Order Items
+      if (order.items) {
+        displayOrderItems(order.items);
+      }
+
+      // Total Amount
+      const totalAmount = document.getElementById('totalAmount');
+      if (totalAmount && order.total_amount) {
+        totalAmount.textContent = order.total_amount;
+      }
+    }
+
+    // Display Order Items
+    function displayOrderItems(itemsString) {
+      const itemsList = document.getElementById('orderItemsList');
+      const subtotalAmount = document.getElementById('subtotalAmount');
+      const shippingAmount = document.getElementById('shippingAmount');
+
+      if (!itemsList) return;
+
+      try {
+        const items = JSON.parse(itemsString);
+        
+        itemsList.innerHTML = items.map(item => `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-name">${item.name || 'Product'}</div>
+              <div class="item-quantity">Quantity: ${item.quantity || 1}</div>
+            </div>
+            <div class="item-price">${item.price || '฿0'}</div>
+          </div>
+        `).join('');
+
+        // Calculate subtotal
+        let subtotal = 0;
+        items.forEach(item => {
+          const priceStr = item.price || '฿0';
+          const priceNum = parseFloat(priceStr.replace(/[฿,]/g, ''));
+          const qty = parseInt(item.quantity) || 1;
+          subtotal += priceNum * qty;
+        });
+
+        const shipping = 100;
+        
+        if (subtotalAmount) {
+          subtotalAmount.textContent = `฿${subtotal.toLocaleString('th-TH')}`;
+        }
+        if (shippingAmount) {
+          shippingAmount.textContent = `฿${shipping.toLocaleString('th-TH')}`;
+        }
+
+        const totalAmount = document.getElementById('totalAmount');
+        if (totalAmount) {
+          totalAmount.textContent = `฿${(subtotal + shipping).toLocaleString('th-TH')}`;
+        }
+
+      } catch (e) {
+        itemsList.innerHTML = `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-name">Order items information unavailable</div>
+            </div>
+          </div>
+        `;
+        
+        if (subtotalAmount) subtotalAmount.textContent = '฿0';
+        if (shippingAmount) shippingAmount.textContent = '฿0';
+      }
+    }
+
+    // Show Toast
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+
+      toast.textContent = message;
+      toast.className = 'toast show';
+      
+      if (type === 'error') toast.classList.add('error');
+      if (type === 'success') toast.classList.add('success');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.className = 'toast';
+        }, 300);
+      }, 3500);
+    }
+
+    // Initialize Page
+    async function initializePage() {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      if (loadingOverlay) loadingOverlay.classList.add('active');
+
+      // Initialize SDKs
+      await initElementSDK();
+      const sdkReady = await initDataSDK();
+
+      if (!sdkReady) {
+        if (loadingOverlay) loadingOverlay.classList.remove('active');
+        const mainContent = document.getElementById('mainContent');
+        const emptyState = document.getElementById('emptyState');
+        if (mainContent) mainContent.classList.add('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+
+      // Get Order ID
+      currentOrderId = getOrderIdFromURL();
+
+      // Wait for data to load
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      if (loadingOverlay) loadingOverlay.classList.remove('active');
+
+      if (currentOrderId) {
+        const order = allOrders.find(o => o.order_id === currentOrderId);
+        displayOrderDetails(order);
+        
+        if (!order) {
+          showToast('Order not found', 'error');
+        } else {
+          showToast('Order loaded successfully', 'success');
+        }
+      } else {
+        const mainContent = document.getElementById('mainContent');
+        const emptyState = document.getElementById('emptyState');
+        
+        if (mainContent) mainContent.classList.add('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
+        
+        showToast('No order ID provided', 'error');
+      }
+    }
+
+    // Initialize on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializePage);
+    } else {
+      initializePage();
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9adaca7e266f5805',t:'MTc2NTY4NDc5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  </html>
