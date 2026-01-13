@@ -8,47 +8,56 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: #FFF; color: #000; padding-bottom: 120px; }
+        body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #000; padding-bottom: 100px; overflow-x: hidden; }
 
         /* Navigation */
         .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #FFF; z-index: 1000; border-bottom: 2px solid #000; height: 65px; display: flex; align-items: center; padding: 0 20px; }
         .logo-text { font-family: 'Bebas Neue'; font-size: 26px; text-decoration: none; color: #000; letter-spacing: 2px; }
 
-        /* Image Slider & Pagination */
-        .slider-container { position: relative; width: 100%; aspect-ratio: 1/1; background: #f0f0f0; margin-top: 65px; overflow: hidden; border-bottom: 3px solid #000; }
-        .slider-wrapper { display: flex; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
-        .slide { min-width: 100%; height: 100%; cursor: zoom-in; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
-        .pagination-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: 600; z-index: 10; }
-
-        /* Product Info */
-        .product-info { padding: 25px 20px; }
-        .price-text { font-size: 38px; font-weight: 900; color: #FF4500; line-height: 1; }
-        .name-text { font-size: 18px; font-weight: 500; color: #333; margin-top: 8px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
-        .desc-text { margin-top: 20px; font-size: 15px; color: #555; line-height: 1.8; border-top: 1px solid #eee; padding-top: 20px; }
-
-        /* Bottom Bar with Seller Logo */
-        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 3px solid #000; padding: 15px 20px; display: flex; align-items: center; gap: 15px; z-index: 1000; max-width: 800px; margin: 0 auto; }
-        .seller-info { display: flex; flex-direction: column; align-items: center; text-decoration: none; min-width: 60px; }
-        .seller-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #000; object-fit: cover; }
-        .seller-name { font-size: 10px; font-weight: 700; color: #000; margin-top: 4px; text-transform: uppercase; }
+        /* Professional Slider */
+        .slider-viewport { position: relative; width: 100%; aspect-ratio: 1/1; margin-top: 65px; overflow: hidden; background: #F9F9F9; border-bottom: 2px solid #000; }
+        .slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); height: 100%; }
+        .slide { min-width: 100%; height: 100%; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
         
-        .btn-action { flex: 1; height: 50px; font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 1px; transition: 0.2s; border: 2.5px solid #000; }
-        .btn-add { background: #fff; color: #000; }
-        .btn-buy { background: #000; color: #fff; }
+        .pg-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; font-family: 'Inter'; z-index: 10; letter-spacing: 1px; }
 
-        /* Full Selection Sheet */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; }
-        .sheet { position: fixed; bottom: -100%; left: 0; right: 0; background: #fff; z-index: 2001; border-top: 4px solid #000; padding: 25px; transition: 0.4s; max-width: 800px; margin: 0 auto; border-radius: 20px 20px 0 0; }
-        .sheet.active { bottom: 0; }
+        /* Content Area */
+        .content-main { padding: 25px 20px; max-width: 800px; margin: 0 auto; }
+        .price-tag { font-family: 'Inter'; font-size: 34px; font-weight: 900; color: #FF4500; letter-spacing: -1px; }
+        .product-name { font-size: 16px; font-weight: 500; color: #444; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
         
-        .option-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-        .chip { padding: 10px 18px; border: 2px solid #eee; font-size: 14px; font-weight: 600; cursor: pointer; }
-        .chip.active { border-color: #000; background: #000; color: #fff; }
+        .section-divider { margin: 25px 0; border-top: 1px solid #EEE; }
+        .section-title { font-family: 'Bebas Neue'; font-size: 22px; color: #000; letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
+        .desc-body { font-size: 14px; color: #666; line-height: 1.8; text-align: justify; }
 
-        /* Fullscreen Image Zoom */
-        #zoomOverlay { position: fixed; inset: 0; background: #fff; z-index: 3000; display: none; align-items: center; justify-content: center; }
-        #zoomOverlay img { width: 100%; max-height: 90vh; object-fit: contain; }
+        /* Professional Bottom Bar */
+        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #FFF; border-top: 2px solid #000; padding: 12px 20px; display: flex; align-items: center; gap: 12px; z-index: 1001; max-width: 800px; margin: 0 auto; height: 85px; }
+        .seller-hub { display: flex; flex-direction: column; align-items: center; text-decoration: none; min-width: 65px; transition: 0.2s; }
+        .seller-hub:active { transform: scale(0.9); }
+        .seller-avatar { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid #000; padding: 2px; object-fit: cover; }
+        .seller-label { font-size: 9px; font-weight: 800; color: #000; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .btn-core { flex: 1; height: 52px; font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 1.5px; border: 2.5px solid #000; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .btn-add { background: #FFF; color: #000; }
+        .btn-buy { background: #000; color: #FFF; }
+        .btn-core:active { transform: translateY(2px); background: #f0f0f0; color: #000; }
+        .btn-buy:active { background: #333; color: #FFF; }
+
+        /* Full-Screen Gallery Viewer */
+        #galleryView { position: fixed; inset: 0; background: #000; z-index: 5000; display: none; flex-direction: column; }
+        .gv-header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: #FFF; }
+        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.3s ease; }
+        .gv-slide { min-width: 100%; display: flex; align-items: center; justify-content: center; height: 100%; }
+        .gv-slide img { width: 100%; max-height: 80vh; object-fit: contain; }
+
+        /* Selection Sheet (The Pop-up) */
+        .sheet-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; backdrop-filter: blur(4px); }
+        .sheet-body { position: fixed; bottom: -100%; left: 0; right: 0; background: #FFF; z-index: 2001; border-top: 4px solid #000; padding: 30px; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-width: 800px; margin: 0 auto; border-radius: 24px 24px 0 0; }
+        .sheet-body.active { bottom: 0; }
+        .chip-box { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .chip { padding: 12px 22px; border: 2px solid #EEE; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .chip.active { border-color: #000; background: #000; color: #FFF; }
     </style>
 </head>
 <body>
@@ -57,144 +66,168 @@
         <a href="index.html" class="logo-text">NEXUS WEAR</a>
     </nav>
 
-    <div class="slider-container" id="sliderContainer">
-        <div class="slider-wrapper" id="sliderWrapper"></div>
-        <div class="pagination-badge" id="pagination">1 / 1</div>
+    <div class="slider-viewport" id="sliderViewport">
+        <div class="slider-track" id="sliderTrack"></div>
+        <div class="pg-badge" id="pgBadge">1 / 1</div>
     </div>
 
-    <main class="product-info">
-        <div class="price-text" id="pPrice">฿0.00</div>
-        <h1 class="name-text" id="pName">PRODUCT NAME</h1>
-        <div class="desc-text" id="pDesc"></div>
+    <main class="content-main">
+        <div class="price-tag" id="domPrice">฿0.00</div>
+        <h1 class="product-name" id="domName">PRODUCT NAME</h1>
+        
+        <div class="section-divider"></div>
+        
+        <span class="section-title">PRODUCT DETAILS</span>
+        <div class="desc-body" id="domDesc"></div>
     </main>
 
-    <div class="bottom-bar">
-        <a href="seller-profile.html" class="seller-info" id="sellerLink">
-            <img src="https://via.placeholder.com/100" class="seller-logo" id="sellerLogo">
-            <span class="seller-name" id="sellerName">SHOP</span>
+    <div class="action-bar">
+        <a href="#" class="seller-hub" id="domSellerLink">
+            <img src="" class="seller-avatar" id="domSellerLogo">
+            <span class="seller-label" id="domSellerName">OFFICIAL</span>
         </a>
-        <button class="btn-action btn-add" onclick="openSheet('cart')">ADD TO CART</button>
-        <button class="btn-action btn-buy" onclick="openSheet('buy')">BUY NOW</button>
+        <button class="btn-core btn-add" onclick="triggerSheet('cart')">ADD TO CART</button>
+        <button class="btn-core btn-buy" onclick="triggerSheet('buy')">BUY NOW</button>
     </div>
 
-    <div class="overlay" id="overlay" onclick="closeSheet()"></div>
-    <div class="sheet" id="sheet">
-        <h2 id="sheetTitle" style="font-family:'Bebas Neue'; font-size:22px; margin-bottom:15px;">SELECT OPTIONS</h2>
-        <div id="optionsContainer">
-            <p style="font-size:12px; font-weight:700; margin-bottom:10px;">COLOR</p>
-            <div class="option-grid" id="colorGrid"></div>
-            <p style="font-size:12px; font-weight:700; margin-bottom:10px;">SIZE</p>
-            <div class="option-grid" id="sizeGrid"></div>
+    <div class="sheet-mask" id="sheetMask" onclick="hideSheet()"></div>
+    <div class="sheet-body" id="sheetBody">
+        <div style="font-family:'Bebas Neue'; font-size:24px; margin-bottom:20px; border-bottom:2px solid #000; padding-bottom:10px;">CONFIGURE ITEM</div>
+        
+        <p style="font-size:11px; font-weight:800; margin-bottom:10px; color:#888;">SELECT COLOR</p>
+        <div class="chip-box" id="colorGrid"></div>
+        
+        <p style="font-size:11px; font-weight:800; margin-bottom:10px; color:#888;">SELECT SIZE</p>
+        <div class="chip-box" id="sizeGrid"></div>
+
+        <button id="finalBtn" class="btn-core btn-buy" style="width:100%; height:60px;">CONFIRM SELECTION</button>
+    </div>
+
+    <div id="galleryView">
+        <div class="gv-header">
+            <span id="gvCount">1 / 1</span>
+            <span style="font-size:30px; cursor:pointer;" onclick="closeGallery()">×</span>
         </div>
-        <button id="confirmBtn" class="btn-action btn-buy" style="width:100%; margin-top:10px;">CONFIRM</button>
-    </div>
-
-    <div id="zoomOverlay" onclick="this.style.display='none'">
-        <img id="zoomImg">
-        <div style="position:absolute; top:20px; right:20px; font-size:30px;">×</div>
+        <div class="gv-track" id="gvTrack"></div>
     </div>
 
     <script>
-        const MOCK_PRODUCT = {
-            id: 'oversized-tee-black',
-            name: 'Classic Black Oversized Tee - Premium Cotton 100%',
-            price: 790,
-            desc: 'เสื้อยืดทรงโอเวอร์ไซส์ที่ออกแบบมาเพื่อความสบายและสไตล์ที่โดดเด่น ผลิตจากผ้าฝ้ายพรีเมียมหนาพิเศษ ระบายอากาศได้ดี เย็บตะเข็บคู่เพื่อความทนทาน เหมาะสำหรับการแต่งตัวแนว Streetwear ยุคใหม่',
+        // --- REAL PRODUCT DATA SYSTEM ---
+        const PRODUCT = {
+            id: 'nw-772-black',
+            name: 'Essential Oversized Heavy Cotton Tee / Noir Edition',
+            price: 1290,
+            description: 'Experience the pinnacle of streetwear comfort. Crafted from 300GSM premium heavy-weight cotton, this piece features a drop-shoulder silhouette and reinforced double-stitched seams. Minimalist aesthetics blended with durability for the modern urban explorer.',
             images: [
                 'https://hnungh.github.io/mcl/img/oversized-tee-black.jpg',
-                'https://hnungh.github.io/mcl/img/hoodie-grey.jpg', // ตัวอย่างรูปเพิ่ม
-                'https://hnungh.github.io/mcl/img/cargo-pants-olive.jpg'
+                'https://hnungh.github.io/mcl/img/hoodie-grey.jpg',
+                'https://hnungh.github.io/mcl/img/cargo-pants-olive.jpg',
+                'https://hnungh.github.io/mcl/img/sunglasses-retro.jpg'
             ],
-            colors: ['Black', 'White', 'Graphite'],
-            sizes: ['S', 'M', 'L', 'XL'],
+            colors: ['Noir Black', 'Stone White', 'Carbon'],
+            sizes: ['S', 'M', 'L', 'XL', 'XXL'],
             seller: {
-                name: 'NEXUS OFFICIAL',
+                name: 'NEXUS STORE',
                 logo: 'https://via.placeholder.com/100/000000/FFFFFF?text=NW',
-                link: 'nexus-store.html'
+                link: 'seller-profile.html'
             }
         };
 
-        let currentImgIndex = 0;
+        let currentIdx = 0;
         let selectedColor = null;
         let selectedSize = null;
 
-        function init() {
-            // Render Slider
-            const wrapper = document.getElementById('sliderWrapper');
-            MOCK_PRODUCT.images.forEach((img, i) => {
-                const div = document.createElement('div');
-                div.className = 'slide';
-                div.innerHTML = `<img src="${img}" onclick="zoomImg('${img}')">`;
-                wrapper.appendChild(div);
-            });
-            updatePagination();
-
-            // Render Text
-            document.getElementById('pPrice').innerText = `฿${MOCK_PRODUCT.price.toLocaleString()}`;
-            document.getElementById('pName').innerText = MOCK_PRODUCT.name;
-            document.getElementById('pDesc').innerText = MOCK_PRODUCT.desc;
+        function renderEngine() {
+            // Render Price & Identity
+            document.getElementById('domPrice').innerText = `฿${PRODUCT.price.toLocaleString()}`;
+            document.getElementById('domName').innerText = PRODUCT.name;
+            document.getElementById('domDesc').innerText = PRODUCT.description;
 
             // Render Seller
-            document.getElementById('sellerLogo').src = MOCK_PRODUCT.seller.logo;
-            document.getElementById('sellerName').innerText = MOCK_PRODUCT.seller.name;
-            document.getElementById('sellerLink').href = MOCK_PRODUCT.seller.link;
+            document.getElementById('domSellerLogo').src = PRODUCT.seller.logo;
+            document.getElementById('domSellerName').innerText = PRODUCT.seller.name;
+            document.getElementById('domSellerLink').href = PRODUCT.seller.link;
 
-            // Render Chips
-            document.getElementById('colorGrid').innerHTML = MOCK_PRODUCT.colors.map(c => `<div class="chip" onclick="selectChip(this, 'color', '${c}')">${c}</div>`).join('');
-            document.getElementById('sizeGrid').innerHTML = MOCK_PRODUCT.sizes.map(s => `<div class="chip" onclick="selectChip(this, 'size', '${s}')">${s}</div>`).join('');
+            // Render Images in Slider & Gallery
+            const track = document.getElementById('sliderTrack');
+            const gvTrack = document.getElementById('gvTrack');
+            
+            PRODUCT.images.forEach((src, i) => {
+                // Main Slider
+                track.innerHTML += `<div class="slide"><img src="${src}" onclick="openGallery(${i})"></div>`;
+                // Fullscreen Gallery
+                gvTrack.innerHTML += `<div class="gv-slide"><img src="${src}"></div>`;
+            });
 
-            setupSliderTouch();
+            // Render Config Chips
+            document.getElementById('colorGrid').innerHTML = PRODUCT.colors.map(c => `<div class="chip" onclick="setChip(this, 'color', '${c}')">${c}</div>`).join('');
+            document.getElementById('sizeGrid').innerHTML = PRODUCT.sizes.map(s => `<div class="chip" onclick="setChip(this, 'size', '${s}')">${s}</div>`).join('');
+
+            updatePagination();
+            initTouchLogic();
         }
 
-        // --- Slider Logic ---
+        // --- NAVIGATION LOGIC ---
         function updatePagination() {
-            document.getElementById('pagination').innerText = `${currentImgIndex + 1} / ${MOCK_PRODUCT.images.length}`;
-            document.getElementById('sliderWrapper').style.transform = `translateX(-${currentImgIndex * 100}%)`;
+            document.getElementById('pgBadge').innerText = `${currentIdx + 1} / ${PRODUCT.images.length}`;
+            document.getElementById('sliderTrack').style.transform = `translateX(-${currentIdx * 100}%)`;
+            
+            document.getElementById('gvCount').innerText = `${currentIdx + 1} / ${PRODUCT.images.length}`;
+            document.getElementById('gvTrack').style.transform = `translateX(-${currentIdx * 100}%)`;
         }
 
-        function setupSliderTouch() {
+        function initTouchLogic() {
             let startX = 0;
-            const container = document.getElementById('sliderContainer');
-            container.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-            container.addEventListener('touchend', e => {
+            const handleTouch = (e, isGallery) => {
                 let diff = startX - e.changedTouches[0].clientX;
                 if (Math.abs(diff) > 50) {
-                    if (diff > 0 && currentImgIndex < MOCK_PRODUCT.images.length - 1) currentImgIndex++;
-                    else if (diff < 0 && currentImgIndex > 0) currentImgIndex--;
+                    if (diff > 0 && currentIdx < PRODUCT.images.length - 1) currentIdx++;
+                    else if (diff < 0 && currentIdx > 0) currentIdx--;
                     updatePagination();
                 }
-            });
+            };
+
+            document.getElementById('sliderViewport').addEventListener('touchstart', e => startX = e.touches[0].clientX);
+            document.getElementById('sliderViewport').addEventListener('touchend', e => handleTouch(e, false));
+            
+            document.getElementById('galleryView').addEventListener('touchstart', e => startX = e.touches[0].clientX);
+            document.getElementById('galleryView').addEventListener('touchend', e => handleTouch(e, true));
         }
 
-        function zoomImg(src) {
-            const zoom = document.getElementById('zoomOverlay');
-            document.getElementById('zoomImg').src = src;
-            zoom.style.display = 'flex';
+        // --- INTERACTION LOGIC ---
+        function openGallery(idx) {
+            currentIdx = idx;
+            updatePagination();
+            document.getElementById('galleryView').style.display = 'flex';
         }
 
-        // --- Selection Logic ---
-        function openSheet(mode) {
-            document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => document.getElementById('sheet').classList.add('active'), 10);
-            document.getElementById('confirmBtn').onclick = () => {
-                if(!selectedSize || !selectedColor) return alert('กรุณาเลือกตัวเลือกให้ครบ');
-                alert(mode === 'cart' ? 'เพิ่มลงตะกร้าแล้ว!' : 'กำลังไปหน้าชำระเงิน...');
+        function closeGallery() {
+            document.getElementById('galleryView').style.display = 'none';
+        }
+
+        function triggerSheet(mode) {
+            document.getElementById('sheetMask').style.display = 'block';
+            setTimeout(() => document.getElementById('sheetBody').classList.add('active'), 10);
+            
+            document.getElementById('finalBtn').onclick = () => {
+                if(!selectedColor || !selectedSize) return alert('SELECT ALL OPTIONS');
+                location.href = mode === 'buy' ? 'checkout.html' : 'cart.html';
             };
         }
 
-        function closeSheet() {
-            document.getElementById('sheet').classList.remove('active');
-            setTimeout(() => document.getElementById('overlay').style.display = 'none', 300);
+        function hideSheet() {
+            document.getElementById('sheetBody').classList.remove('active');
+            setTimeout(() => document.getElementById('sheetMask').style.display = 'none', 400);
         }
 
-        function selectChip(el, type, val) {
+        function setChip(el, type, val) {
             el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
             if(type === 'color') selectedColor = val;
             else selectedSize = val;
         }
 
-        window.onload = init;
+        window.onload = renderEngine;
     </script>
 </body>
 </html>
