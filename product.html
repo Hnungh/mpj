@@ -8,211 +8,190 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #000000; padding-bottom: 100px; }
+        body { font-family: 'Inter', sans-serif; background: #FFF; color: #000; padding-bottom: 120px; }
 
-        /* Navigation (Fixed Header) */
-        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #FFF; z-index: 1000; border-bottom: 2px solid #000; height: 70px; display: flex; align-items: center; padding: 0 30px; }
-        .logo-text { font-family: 'Bebas Neue', cursive; font-size: 28px; text-decoration: none; color: #000; letter-spacing: 2px; }
-        .nav-icons { margin-left: auto; display: flex; gap: 15px; }
-        .cart-badge { position: absolute; top: -5px; right: -5px; background: #000; color: #fff; font-size: 11px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; transform: scale(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .cart-badge.active { transform: scale(1); }
+        /* Navigation */
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #FFF; z-index: 1000; border-bottom: 2px solid #000; height: 65px; display: flex; align-items: center; padding: 0 20px; }
+        .logo-text { font-family: 'Bebas Neue'; font-size: 26px; text-decoration: none; color: #000; letter-spacing: 2px; }
 
-        /* Layout Container */
-        main { max-width: 1200px; margin: 70px auto 0; padding: 20px; }
-        .main-image-container { width: 100%; aspect-ratio: 1/1; border: 3px solid #000; overflow: hidden; background: #f0f0f0; }
-        .main-image { width: 100%; height: 100%; object-fit: cover; }
+        /* Image Slider & Pagination */
+        .slider-container { position: relative; width: 100%; aspect-ratio: 1/1; background: #f0f0f0; margin-top: 65px; overflow: hidden; border-bottom: 3px solid #000; }
+        .slider-wrapper { display: flex; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .slide { min-width: 100%; height: 100%; cursor: zoom-in; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .pagination-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: 600; z-index: 10; }
 
-        .product-header { margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .product-cat { font-family: 'Bebas Neue'; color: #888; letter-spacing: 2px; font-size: 18px; }
-        .product-title { font-family: 'Bebas Neue'; font-size: 42px; line-height: 1; margin: 5px 0; letter-spacing: 1px; }
-        .product-price { font-size: 32px; font-weight: 800; color: #FF4500; margin-top: 10px; }
+        /* Product Info */
+        .product-info { padding: 25px 20px; }
+        .price-text { font-size: 38px; font-weight: 900; color: #FF4500; line-height: 1; }
+        .name-text { font-size: 18px; font-weight: 500; color: #333; margin-top: 8px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
+        .desc-text { margin-top: 20px; font-size: 15px; color: #555; line-height: 1.8; border-top: 1px solid #eee; padding-top: 20px; }
 
-        /* Professional Action Bar */
-        .sticky-footer { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 3px solid #000; padding: 20px; z-index: 999; display: flex; gap: 15px; }
-        .btn-main { flex: 1; height: 55px; font-family: 'Bebas Neue'; font-size: 20px; letter-spacing: 2px; border: 2px solid #000; cursor: pointer; transition: 0.3s; }
+        /* Bottom Bar with Seller Logo */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 3px solid #000; padding: 15px 20px; display: flex; align-items: center; gap: 15px; z-index: 1000; max-width: 800px; margin: 0 auto; }
+        .seller-info { display: flex; flex-direction: column; align-items: center; text-decoration: none; min-width: 60px; }
+        .seller-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #000; object-fit: cover; }
+        .seller-name { font-size: 10px; font-weight: 700; color: #000; margin-top: 4px; text-transform: uppercase; }
+        
+        .btn-action { flex: 1; height: 50px; font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 1px; transition: 0.2s; border: 2.5px solid #000; }
         .btn-add { background: #fff; color: #000; }
         .btn-buy { background: #000; color: #fff; }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        /* Custom Selection Sheet (Premium Style) */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; opacity: 0; transition: 0.3s; }
-        .sheet { position: fixed; bottom: -100%; left: 0; right: 0; background: #fff; z-index: 2001; border-top: 5px solid #000; padding: 30px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); max-width: 800px; margin: 0 auto; }
+        /* Full Selection Sheet */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; }
+        .sheet { position: fixed; bottom: -100%; left: 0; right: 0; background: #fff; z-index: 2001; border-top: 4px solid #000; padding: 25px; transition: 0.4s; max-width: 800px; margin: 0 auto; border-radius: 20px 20px 0 0; }
         .sheet.active { bottom: 0; }
-        .sheet-header { display: flex; gap: 20px; margin-bottom: 30px; }
-        .sheet-img { width: 120px; height: 120px; border: 3px solid #000; object-fit: cover; }
         
-        .option-title { font-family: 'Bebas Neue'; font-size: 20px; margin-bottom: 12px; display: block; letter-spacing: 1px; }
-        .option-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
-        .chip { padding: 10px 20px; border: 2px solid #eee; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .option-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .chip { padding: 10px 18px; border: 2px solid #eee; font-size: 14px; font-weight: 600; cursor: pointer; }
         .chip.active { border-color: #000; background: #000; color: #fff; }
 
-        /* Quantity */
-        .qty-box { display: flex; align-items: center; border: 2px solid #000; width: fit-content; }
-        .qty-btn { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; cursor: pointer; }
-        .qty-num { width: 60px; text-align: center; font-weight: 700; font-size: 18px; border-left: 2px solid #000; border-right: 2px solid #000; }
-
-        .toast { position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 15px 30px; font-family: 'Bebas Neue'; letter-spacing: 1px; z-index: 3000; display: none; }
+        /* Fullscreen Image Zoom */
+        #zoomOverlay { position: fixed; inset: 0; background: #fff; z-index: 3000; display: none; align-items: center; justify-content: center; }
+        #zoomOverlay img { width: 100%; max-height: 90vh; object-fit: contain; }
     </style>
 </head>
 <body>
 
     <nav class="top-nav">
         <a href="index.html" class="logo-text">NEXUS WEAR</a>
-        <div class="nav-icons">
-            <a href="cart.html" style="position:relative">
-                <svg width="28" height="28" fill="none" stroke="#000" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                <span class="cart-badge" id="cartBadge">0</span>
-            </a>
-        </div>
     </nav>
 
-    <main>
-        <div class="main-image-container">
-            <img id="mainImg" class="main-image" src="" alt="Product">
-        </div>
-        
-        <div class="product-header">
-            <span class="product-cat" id="productCat">CATEGORY</span>
-            <h1 class="product-title" id="productName">PRODUCT NAME</h1>
-            <p class="product-price" id="productPrice">฿0.00</p>
-        </div>
+    <div class="slider-container" id="sliderContainer">
+        <div class="slider-wrapper" id="sliderWrapper"></div>
+        <div class="pagination-badge" id="pagination">1 / 1</div>
+    </div>
 
-        <div style="margin-top:20px; color:#555; line-height:1.8;" id="productDesc"></div>
+    <main class="product-info">
+        <div class="price-text" id="pPrice">฿0.00</div>
+        <h1 class="name-text" id="pName">PRODUCT NAME</h1>
+        <div class="desc-text" id="pDesc"></div>
     </main>
 
-    <div class="sticky-footer">
-        <button class="btn-main btn-add" onclick="openSelection('cart')">ADD TO CART</button>
-        <button class="btn-main btn-buy" onclick="openSelection('buy')">BUY IT NOW</button>
+    <div class="bottom-bar">
+        <a href="seller-profile.html" class="seller-info" id="sellerLink">
+            <img src="https://via.placeholder.com/100" class="seller-logo" id="sellerLogo">
+            <span class="seller-name" id="sellerName">SHOP</span>
+        </a>
+        <button class="btn-action btn-add" onclick="openSheet('cart')">ADD TO CART</button>
+        <button class="btn-action btn-buy" onclick="openSheet('buy')">BUY NOW</button>
     </div>
 
-    <div class="overlay" id="overlay" onclick="closeSelection()"></div>
+    <div class="overlay" id="overlay" onclick="closeSheet()"></div>
     <div class="sheet" id="sheet">
-        <div class="sheet-header">
-            <img id="sheetImg" class="sheet-img" src="">
-            <div>
-                <h2 id="sheetName" style="font-family:'Bebas Neue'; font-size:24px;">PRODUCT NAME</h2>
-                <p id="sheetPrice" style="font-size:24px; font-weight:800; color:#FF4500;">฿0.00</p>
-            </div>
+        <h2 id="sheetTitle" style="font-family:'Bebas Neue'; font-size:22px; margin-bottom:15px;">SELECT OPTIONS</h2>
+        <div id="optionsContainer">
+            <p style="font-size:12px; font-weight:700; margin-bottom:10px;">COLOR</p>
+            <div class="option-grid" id="colorGrid"></div>
+            <p style="font-size:12px; font-weight:700; margin-bottom:10px;">SIZE</p>
+            <div class="option-grid" id="sizeGrid"></div>
         </div>
-
-        <span class="option-title">SELECT COLOR</span>
-        <div class="option-grid" id="colorGrid"></div>
-
-        <span class="option-title">SELECT SIZE</span>
-        <div class="option-grid" id="sizeGrid"></div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <span class="option-title" style="margin:0;">QUANTITY</span>
-            <div class="qty-box">
-                <div class="qty-btn" onclick="changeQty(-1)">-</div>
-                <div class="qty-num" id="qtyDisplay">1</div>
-                <div class="qty-btn" onclick="changeQty(1)">+</div>
-            </div>
-        </div>
-
-        <button id="confirmBtn" class="btn-main btn-buy" style="width:100%;">CONFIRM SELECTION</button>
+        <button id="confirmBtn" class="btn-action btn-buy" style="width:100%; margin-top:10px;">CONFIRM</button>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div id="zoomOverlay" onclick="this.style.display='none'">
+        <img id="zoomImg">
+        <div style="position:absolute; top:20px; right:20px; font-size:30px;">×</div>
+    </div>
 
     <script>
-        const MOCK_DATA = [
-            { id: 'oversized-tee-black', name: 'Classic Black Oversized Tee', price: 790, cat: 'OVERSIZED TEE', sizes: ['XS','S','M','L','XL'], colors: ['Black','White'], image: 'https://hnungh.github.io/mcl/img/oversized-tee-black.jpg', desc: 'Premium cotton 100%, heavy weight fabric. Perfect for street style look.' },
-            { id: 'cargo-pants-olive', name: 'Military Olive Cargo', price: 1590, cat: 'CARGO PANTS', sizes: ['30','32','34','36'], colors: ['Olive','Dark'], image: 'https://hnungh.github.io/mcl/img/cargo-pants-olive.jpg', desc: 'Durable cargo pants with multi-functional pockets.' }
-        ];
+        const MOCK_PRODUCT = {
+            id: 'oversized-tee-black',
+            name: 'Classic Black Oversized Tee - Premium Cotton 100%',
+            price: 790,
+            desc: 'เสื้อยืดทรงโอเวอร์ไซส์ที่ออกแบบมาเพื่อความสบายและสไตล์ที่โดดเด่น ผลิตจากผ้าฝ้ายพรีเมียมหนาพิเศษ ระบายอากาศได้ดี เย็บตะเข็บคู่เพื่อความทนทาน เหมาะสำหรับการแต่งตัวแนว Streetwear ยุคใหม่',
+            images: [
+                'https://hnungh.github.io/mcl/img/oversized-tee-black.jpg',
+                'https://hnungh.github.io/mcl/img/hoodie-grey.jpg', // ตัวอย่างรูปเพิ่ม
+                'https://hnungh.github.io/mcl/img/cargo-pants-olive.jpg'
+            ],
+            colors: ['Black', 'White', 'Graphite'],
+            sizes: ['S', 'M', 'L', 'XL'],
+            seller: {
+                name: 'NEXUS OFFICIAL',
+                logo: 'https://via.placeholder.com/100/000000/FFFFFF?text=NW',
+                link: 'nexus-store.html'
+            }
+        };
 
-        let currentProduct = null;
+        let currentImgIndex = 0;
         let selectedColor = null;
         let selectedSize = null;
-        let qty = 1;
 
         function init() {
-            const id = new URLSearchParams(window.location.search).get('id') || MOCK_DATA[0].id;
-            currentProduct = MOCK_DATA.find(p => p.id === id);
-            renderPage();
-            updateCartCount();
+            // Render Slider
+            const wrapper = document.getElementById('sliderWrapper');
+            MOCK_PRODUCT.images.forEach((img, i) => {
+                const div = document.createElement('div');
+                div.className = 'slide';
+                div.innerHTML = `<img src="${img}" onclick="zoomImg('${img}')">`;
+                wrapper.appendChild(div);
+            });
+            updatePagination();
+
+            // Render Text
+            document.getElementById('pPrice').innerText = `฿${MOCK_PRODUCT.price.toLocaleString()}`;
+            document.getElementById('pName').innerText = MOCK_PRODUCT.name;
+            document.getElementById('pDesc').innerText = MOCK_PRODUCT.desc;
+
+            // Render Seller
+            document.getElementById('sellerLogo').src = MOCK_PRODUCT.seller.logo;
+            document.getElementById('sellerName').innerText = MOCK_PRODUCT.seller.name;
+            document.getElementById('sellerLink').href = MOCK_PRODUCT.seller.link;
+
+            // Render Chips
+            document.getElementById('colorGrid').innerHTML = MOCK_PRODUCT.colors.map(c => `<div class="chip" onclick="selectChip(this, 'color', '${c}')">${c}</div>`).join('');
+            document.getElementById('sizeGrid').innerHTML = MOCK_PRODUCT.sizes.map(s => `<div class="chip" onclick="selectChip(this, 'size', '${s}')">${s}</div>`).join('');
+
+            setupSliderTouch();
         }
 
-        function renderPage() {
-            document.getElementById('mainImg').src = currentProduct.image;
-            document.getElementById('productName').innerText = currentProduct.name;
-            document.getElementById('productPrice').innerText = `฿${currentProduct.price.toLocaleString()}`;
-            document.getElementById('productCat').innerText = currentProduct.cat;
-            document.getElementById('productDesc').innerText = currentProduct.desc;
-            
-            // Sheet Content
-            document.getElementById('sheetImg').src = currentProduct.image;
-            document.getElementById('sheetName').innerText = currentProduct.name;
-            document.getElementById('sheetPrice').innerText = `฿${currentProduct.price.toLocaleString()}`;
-
-            // Render Options
-            document.getElementById('colorGrid').innerHTML = currentProduct.colors.map(c => `<div class="chip" onclick="selectOption(this, 'color', '${c}')">${c}</div>`).join('');
-            document.getElementById('sizeGrid').innerHTML = currentProduct.sizes.map(s => `<div class="chip" onclick="selectOption(this, 'size', '${s}')">${s}</div>`).join('');
+        // --- Slider Logic ---
+        function updatePagination() {
+            document.getElementById('pagination').innerText = `${currentImgIndex + 1} / ${MOCK_PRODUCT.images.length}`;
+            document.getElementById('sliderWrapper').style.transform = `translateX(-${currentImgIndex * 100}%)`;
         }
 
-        function openSelection(mode) {
-            document.getElementById('overlay').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('overlay').style.opacity = '1';
-                document.getElementById('sheet').classList.add('active');
-            }, 10);
-
-            document.getElementById('confirmBtn').onclick = () => {
-                if(!selectedColor || !selectedSize) {
-                    showToast('PLEASE SELECT ALL OPTIONS');
-                    return;
+        function setupSliderTouch() {
+            let startX = 0;
+            const container = document.getElementById('sliderContainer');
+            container.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+            container.addEventListener('touchend', e => {
+                let diff = startX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0 && currentImgIndex < MOCK_PRODUCT.images.length - 1) currentImgIndex++;
+                    else if (diff < 0 && currentImgIndex > 0) currentImgIndex--;
+                    updatePagination();
                 }
-                mode === 'cart' ? processAddCart() : processBuyNow();
+            });
+        }
+
+        function zoomImg(src) {
+            const zoom = document.getElementById('zoomOverlay');
+            document.getElementById('zoomImg').src = src;
+            zoom.style.display = 'flex';
+        }
+
+        // --- Selection Logic ---
+        function openSheet(mode) {
+            document.getElementById('overlay').style.display = 'block';
+            setTimeout(() => document.getElementById('sheet').classList.add('active'), 10);
+            document.getElementById('confirmBtn').onclick = () => {
+                if(!selectedSize || !selectedColor) return alert('กรุณาเลือกตัวเลือกให้ครบ');
+                alert(mode === 'cart' ? 'เพิ่มลงตะกร้าแล้ว!' : 'กำลังไปหน้าชำระเงิน...');
             };
         }
 
-        function closeSelection() {
+        function closeSheet() {
             document.getElementById('sheet').classList.remove('active');
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => document.getElementById('overlay').style.display = 'none', 400);
+            setTimeout(() => document.getElementById('overlay').style.display = 'none', 300);
         }
 
-        function selectOption(el, type, val) {
+        function selectChip(el, type, val) {
             el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
             if(type === 'color') selectedColor = val;
-            if(type === 'size') selectedSize = val;
-        }
-
-        function changeQty(v) {
-            qty = Math.max(1, qty + v);
-            document.getElementById('qtyDisplay').innerText = qty;
-        }
-
-        function processAddCart() {
-            let cart = JSON.parse(localStorage.getItem('nexus_cart')) || [];
-            cart.push({...currentProduct, color: selectedColor, size: selectedSize, quantity: qty});
-            localStorage.setItem('nexus_cart', JSON.stringify(cart));
-            showToast('ADDED TO CART ✓');
-            updateCartCount();
-            closeSelection();
-        }
-
-        function processBuyNow() {
-            const item = [{...currentProduct, color: selectedColor, size: selectedSize, quantity: qty}];
-            localStorage.setItem('buynow_item', JSON.stringify(item));
-            window.location.href = 'checkout.html?mode=direct';
-        }
-
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('nexus_cart')) || [];
-            const badge = document.getElementById('cartBadge');
-            if(cart.length > 0) {
-                badge.innerText = cart.length;
-                badge.classList.add('active');
-            }
-        }
-
-        function showToast(m) {
-            const t = document.getElementById('toast');
-            t.innerText = m;
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2500);
+            else selectedSize = val;
         }
 
         window.onload = init;
