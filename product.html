@@ -11,7 +11,7 @@
         body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #000; padding-bottom: 110px; }
 
         /* Navigation */
-        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #FFF; z-index: 1000; border-bottom: 2px solid #000; height: 65px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 2px solid #000; height: 65px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
         .logo-text { font-family: 'Bebas Neue'; font-size: 26px; text-decoration: none; color: #000; letter-spacing: 2px; }
         
         .nav-icons { display: flex; gap: 8px; align-items: center; }
@@ -21,34 +21,33 @@
         .cart-badge { position: absolute; top: 2px; right: 2px; background: #FF4500; color: #FFF; font-size: 10px; font-weight: 900; padding: 2px 5px; border-radius: 10px; min-width: 18px; text-align: center; display: none; }
 
         /* Real Slider System */
-        .slider-viewport { position: relative; width: 100%; aspect-ratio: 1/1; margin-top: 65px; overflow: hidden; background: #F2F2F2; border-bottom: 2px solid #000; }
-        .slider-track { display: flex; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); height: 100%; will-change: transform; }
-        .slide { min-width: 100%; height: 100%; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-        .pg-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; z-index: 10; letter-spacing: 1px; }
+        .slider-viewport { position: relative; width: 100%; height: 65vh; max-height: 600px; margin-top: 65px; overflow: hidden; background: #FAFAFA; border-bottom: 2px solid #000; touch-action: pan-y; }
+        .slider-track { display: flex; transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); height: 100%; will-change: transform; }
+        .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; user-select: none; -webkit-user-drag: none; }
+        .pg-badge { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.85); color: #fff; padding: 8px 16px; border-radius: 25px; font-size: 13px; font-weight: 700; z-index: 10; letter-spacing: 0.5px; backdrop-filter: blur(10px); }
 
         /* Content Area */
-        .content-main { padding: 25px 20px; max-width: 800px; margin: 0 auto; }
-        .price-tag { font-family: 'Inter'; font-size: 36px; font-weight: 900; color: #FF4500; letter-spacing: -1.5px; line-height: 1; }
-        .product-name { font-size: 17px; font-weight: 500; color: #333; margin: 10px 0; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
+        .content-main { padding: 32px 24px; max-width: 800px; margin: 0 auto; }
+        .price-section { margin-bottom: 20px; }
+        .price-tag { font-family: 'Inter'; font-size: 44px; font-weight: 900; color: #FF4500; letter-spacing: -2px; line-height: 1; margin-bottom: 12px; }
+        .product-name { font-size: 19px; font-weight: 600; color: #1a1a1a; margin: 0; text-transform: uppercase; letter-spacing: 0.8px; line-height: 1.5; }
         
-        .section-divider { margin: 25px 0 20px 0; border-top: 1px solid #EEE; }
-        .section-title { font-family: 'Bebas Neue'; font-size: 22px; color: #000; letter-spacing: 2px; margin-bottom: 12px; display: block; }
-        .desc-body { font-size: 14px; color: #666; line-height: 1.8; }
+        .section-divider { margin: 28px 0; border-top: 1px solid #E5E5E5; }
+        .section-title { font-family: 'Bebas Neue'; font-size: 24px; color: #000; letter-spacing: 2px; margin-bottom: 14px; display: block; }
+        .desc-body { font-size: 15px; color: #666; line-height: 1.8; }
 
         /* Bottom Bar */
-        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #FFF; border-top: 2px solid #000; padding: 12px 20px; display: flex; align-items: center; gap: 15px; z-index: 1001; max-width: 800px; margin: 0 auto; height: 90px; }
+        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); border-top: 2px solid #000; padding: 14px 20px; display: flex; align-items: center; gap: 15px; z-index: 1001; max-width: 800px; margin: 0 auto; height: 90px; }
         .seller-hub { display: flex; flex-direction: column; align-items: center; text-decoration: none; min-width: 60px; }
-        .seller-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2.5px solid #000; object-fit: cover; background: #F5F5F5; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .seller-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2.5px solid #000; object-fit: cover; background: #F5F5F5; display: flex; align-items: center; justify-content: center; font-size: 24px; }
         .seller-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .seller-label { font-size: 9px; font-weight: 800; color: #000; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        .btn-core { flex: 1; height: 54px; font-family: 'Bebas Neue'; font-size: 19px; letter-spacing: 1.5px; border: 2.5px solid #000; transition: 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .btn-core { flex: 1; height: 54px; font-family: 'Bebas Neue'; font-size: 19px; letter-spacing: 1.5px; border: 2.5px solid #000; transition: all 0.2s ease; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .btn-add { background: #FFF; color: #000; }
         .btn-buy { background: #000; color: #FFF; }
-        .btn-core:active { transform: scale(0.97); background: #f0f0f0; color: #000; }
-
-
+        .btn-core:active { transform: scale(0.97); }
 
         /* Toast Notification */
         .toast { position: fixed; bottom: 110px; left: 20px; right: 20px; max-width: 760px; margin: 0 auto; background: #000; color: #FFF; padding: 16px 20px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: all 0.3s ease; z-index: 2000; pointer-events: none; border-radius: 8px; }
@@ -79,8 +78,9 @@
         .gv-count { font-family: 'Inter'; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
         .gv-close { font-size: 30px; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
         .gv-close:active { opacity: 0.6; }
-        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); overflow: hidden; will-change: transform; }
-        .gv-slide { min-width: 100%; display: flex; align-items: center; justify-content: center; height: 100%; }
+        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); overflow: hidden; will-change: transform; touch-action: pan-y; }
+        .gv-slide { min-width: 100%; display: flex; align-items: center; justify-content: center; height: 100%; padding: 20px; }
+        .gv-slide img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
         .gv-slide-placeholder { font-size: 200px; }
 
         /* Selection Sheet */
@@ -145,10 +145,12 @@
    </div>
   </div><!-- Main Content -->
   <div class="content-main" id="mainContent">
-   <div class="price-tag" id="priceTag">
-    ฿0
+   <div class="price-section">
+    <div class="price-tag" id="priceTag">
+     ฿0
+    </div>
+    <h1 class="product-name" id="productName">Loading...</h1>
    </div>
-   <h1 class="product-name" id="productName">Loading...</h1>
    <div class="section-divider"></div><span class="section-title">Product Details</span>
    <div class="desc-body" id="productDescription"></div>
   </div><!-- Bottom Action Bar -->
@@ -295,7 +297,7 @@
             
             selectedProduct.images.forEach((src, i) => {
                 track.innerHTML += `<div class="slide"><img src="${src}" onclick="openGallery(${i})" onerror="this.parentElement.innerHTML='<div class=\\'slide-placeholder\\' onclick=\\'openGallery(${i})\\'>🖼️</div>'"></div>`;
-                gvTrack.innerHTML += `<div class="gv-slide"><img src="${src}" style="width: 100%; max-height: 85vh; object-fit: contain;" onerror="this.parentElement.innerHTML='<div class=\\'gv-slide-placeholder\\'>🖼️</div>'"></div>`;
+                gvTrack.innerHTML += `<div class="gv-slide"><img src="${src}" onerror="this.parentElement.innerHTML='<div class=\\'gv-slide-placeholder\\'>🖼️</div>'"></div>`;
             });
 
             renderSeller(selectedProduct.seller);
@@ -315,6 +317,7 @@
 
         function initSwipe() {
             let startX = 0;
+            let currentX = 0;
             let isDragging = false;
             const container = document.getElementById('sliderViewport');
             const gv = document.getElementById('galleryView');
@@ -323,19 +326,19 @@
 
             const handleStart = (e) => {
                 startX = e.touches ? e.touches[0].clientX : e.clientX;
+                currentX = startX;
                 isDragging = true;
             };
 
             const handleMove = (e) => {
                 if (!isDragging) return;
-                e.preventDefault();
+                currentX = e.touches ? e.touches[0].clientX : e.clientX;
             };
 
             const handleEnd = (e) => {
                 if (!isDragging) return;
                 isDragging = false;
-                let endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-                let diff = startX - endX;
+                let diff = startX - currentX;
                 
                 if (Math.abs(diff) > 50) {
                     if (diff > 0 && currentIdx < selectedProduct.images.length - 1) currentIdx++;
@@ -346,7 +349,7 @@
 
             // Main slider
             container.addEventListener('touchstart', handleStart, { passive: true });
-            container.addEventListener('touchmove', handleMove, { passive: false });
+            container.addEventListener('touchmove', handleMove, { passive: true });
             container.addEventListener('touchend', handleEnd, { passive: true });
             container.addEventListener('mousedown', handleStart);
             container.addEventListener('mousemove', handleMove);
@@ -354,7 +357,7 @@
 
             // Gallery slider
             gv.addEventListener('touchstart', handleStart, { passive: true });
-            gv.addEventListener('touchmove', handleMove, { passive: false });
+            gv.addEventListener('touchmove', handleMove, { passive: true });
             gv.addEventListener('touchend', handleEnd, { passive: true });
             gv.addEventListener('mousedown', handleStart);
             gv.addEventListener('mousemove', handleMove);
@@ -368,7 +371,7 @@
             const hub = document.getElementById('sellerHub');
             
             if (seller.logo && seller.logo.startsWith('http')) {
-                avatar.innerHTML = `<img src="${seller.logo}" alt="${seller.name}" onerror="this.innerHTML='🏪'">`;
+                avatar.innerHTML = `<img src="${seller.logo}" alt="${seller.name}" onerror="this.parentElement.innerHTML='🏪'">`;
             } else {
                 avatar.innerHTML = seller.logo || '🏪';
             }
@@ -479,8 +482,6 @@
             if(type === 'color') selectedColor = val; else selectedSize = val;
         }
 
-
-
         // 5. INTERACTION
         function openGallery(i) { 
             currentIdx = i; 
@@ -565,5 +566,5 @@
         // Initialize
         window.onload = loadSystem;
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bdb90ff91ea45ad',t:'MTc2ODM3NzI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bddc9dd94e350cb',t:'MTc2ODQwMDU3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
