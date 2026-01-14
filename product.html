@@ -73,8 +73,8 @@
         .slide-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 100px; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); cursor: pointer; }
 
         /* Full Gallery */
-        #galleryView { position: fixed; inset: 0; background: #000; z-index: 5000; display: none; flex-direction: column; }
-        #galleryView.active { display: flex; }
+        #galleryView { position: fixed; inset: 0; background: #000; z-index: 5000; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        #galleryView.active { opacity: 1; pointer-events: auto; }
         .gv-header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: #FFF; }
         .gv-count { font-family: 'Inter'; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; }
         .gv-close { font-size: 30px; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
@@ -86,15 +86,26 @@
         /* Selection Sheet */
         .sheet-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; backdrop-filter: blur(5px); }
         .sheet-mask.active { display: block; }
-        .sheet-body { position: fixed; bottom: -100%; left: 0; right: 0; background: #FFF; z-index: 2001; border-top: 4px solid #000; padding: 30px; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-width: 800px; margin: 0 auto; border-radius: 25px 25px 0 0; }
+        .sheet-body { position: fixed; bottom: -100%; left: 0; right: 0; background: #FFF; z-index: 2001; border-top: 4px solid #000; padding: 30px; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-width: 800px; margin: 0 auto; border-radius: 25px 25px 0 0; max-height: 85vh; overflow-y: auto; }
         .sheet-body.active { bottom: 0; }
         .sheet-title { font-family: 'Bebas Neue'; font-size: 24px; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; letter-spacing: 2px; }
+        .sheet-product-preview { display: flex; gap: 15px; margin-bottom: 25px; padding: 15px; background: #F8F8F8; border-radius: 8px; align-items: center; }
+        .sheet-product-img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 2px solid #E0E0E0; }
+        .sheet-product-info { flex: 1; }
+        .sheet-product-name { font-size: 14px; font-weight: 600; color: #000; margin-bottom: 6px; }
+        .sheet-product-price { font-size: 18px; font-weight: 900; color: #FF4500; }
         .sheet-label { font-size: 11px; font-weight: 800; margin-bottom: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
         .chip-box { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
         .chip { padding: 12px 20px; border: 2px solid #EEE; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.15s; }
         .chip:active { transform: scale(0.95); }
         .chip.active { border-color: #000; background: #000; color: #FFF; }
         .chip.sold-out { opacity: 0.3; cursor: not-allowed; }
+        .quantity-control { display: flex; align-items: center; gap: 12px; margin-bottom: 25px; }
+        .qty-btn { width: 32px; height: 32px; border: 2px solid #CCCCCC; background: #FFFFFF; color: #000000; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; transition: all 0.2s ease; }
+        .qty-btn:hover { background: #000000; color: #FFFFFF; border-color: #000000; }
+        .qty-btn:active { transform: scale(0.9); }
+        .qty-input { width: 60px; height: 36px; text-align: center; font-size: 15px; font-weight: 700; border: 2px solid #E0E0E0; background: #FFFFFF; color: #000000; border-radius: 6px; padding: 0; }
+        .qty-input:focus { outline: none; border-color: #000000; }
         .final-btn { width: 100%; height: 60px; font-family: 'Bebas Neue'; font-size: 19px; letter-spacing: 1.5px; border: 2.5px solid #000; background: #000; color: #FFF; cursor: pointer; }
     </style>
   <style>@view-transition { navigation: auto; }</style>
@@ -109,7 +120,12 @@
   </div><!-- Top Navigation -->
   <nav class="top-nav"><a href="#" class="logo-text" id="brandLogo" onclick="window.history.back(); return false;">NEXUS</a>
    <div class="nav-icons"><button class="icon-btn" aria-label="Share" id="shareBtn" onclick="handleShare()">
-     <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle> <circle cx="6" cy="12" r="3"></circle> <circle cx="18" cy="19" r="3"></circle> <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line> <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+     <svg width="26" height="26" viewbox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+       <g transform="translate(2.000000, 5.000000)" stroke="#000000" stroke-width="2.5">
+        <polyline points="13 0 20 7 13 14"></polyline>
+        <path d="M0,12 C0,12 0,7 7,7 L20,7"></path>
+       </g>
+      </g>
      </svg></button> <a href="cart.html" class="icon-btn" aria-label="Cart" id="cartBtn">
      <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle> <circle cx="20" cy="21" r="1"></circle> <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
      </svg><span class="cart-badge" id="cartBadge">0</span> </a>
@@ -146,13 +162,22 @@
    <div class="sheet-title">
     CONFIGURE ITEM
    </div>
+   <div class="sheet-product-preview"><img id="sheetProductImage" src="" alt="Product" class="sheet-product-img">
+    <div class="sheet-product-info">
+     <div class="sheet-product-name" id="sheetProductName"></div>
+     <div class="sheet-product-price" id="sheetProductPrice"></div>
+    </div>
+   </div>
    <p class="sheet-label">Select Color</p>
    <div class="chip-box" id="sheetColorGrid"></div>
    <p class="sheet-label">Select Size</p>
-   <div class="chip-box" id="sheetSizeGrid"></div><button id="finalBtn" class="final-btn">CONFIRM</button>
+   <div class="chip-box" id="sheetSizeGrid"></div>
+   <p class="sheet-label">Quantity</p>
+   <div class="quantity-control"><button type="button" class="qty-btn" onclick="updateQuantity(-1)">−</button> <input type="number" class="qty-input" id="quantityInput" value="1" min="1" max="99" onchange="validateQuantity()"> <button type="button" class="qty-btn" onclick="updateQuantity(1)">+</button>
+   </div><button id="finalBtn" class="final-btn">CONFIRM</button>
   </div><!-- Full Gallery View -->
   <div id="galleryView">
-   <div class="gv-header"><span class="gv-count" id="gvCount">1 / 1</span> <span class="gv-close" onclick="closeGallery()">×</span>
+   <div class="gv-header"><span class="gv-count" id="gvCount">1 / 1</span> <span class="gv-close" onclick="closeGallery()">✕</span>
    </div>
    <div class="gv-track" id="gvTrack"></div>
   </div>
@@ -210,6 +235,7 @@
         let selectedColor = null;
         let selectedSize = null;
         let sheetMode = 'cart';
+        let currentQuantity = 1;
 
         // 2. ENGINE: Load Data From URL
         function loadSystem() {
@@ -330,7 +356,16 @@
         }
 
         function toggleSheet(mode) {
-            // Render chips first
+            sheetMode = mode;
+            currentQuantity = 1;
+            
+            // Set product preview
+            document.getElementById('sheetProductImage').src = selectedProduct.images[0];
+            document.getElementById('sheetProductName').textContent = selectedProduct.name;
+            document.getElementById('sheetProductPrice').textContent = `฿${selectedProduct.price.toLocaleString()}`;
+            document.getElementById('quantityInput').value = currentQuantity;
+            
+            // Render chips
             const colorGrid = document.getElementById('sheetColorGrid');
             const sizeGrid = document.getElementById('sheetSizeGrid');
             
@@ -353,12 +388,34 @@
                 
                 if (mode === 'cart') {
                     addToCart();
-                    showToast(`เพิ่ม ${selectedProduct.name} ลงตะกร้าแล้ว!`);
+                    showToast(`เพิ่ม ${selectedProduct.name} (${currentQuantity}) ลงตะกร้าแล้ว! 🛒`);
                 } else {
                     showToast('กำลังไปหน้าชำระเงิน...');
                 }
                 hideSheet();
             };
+        }
+        
+        function updateQuantity(delta) {
+            const input = document.getElementById('quantityInput');
+            let newValue = currentQuantity + delta;
+            
+            if (newValue < 1) newValue = 1;
+            if (newValue > 99) newValue = 99;
+            
+            currentQuantity = newValue;
+            input.value = currentQuantity;
+        }
+        
+        function validateQuantity() {
+            const input = document.getElementById('quantityInput');
+            let value = parseInt(input.value) || 1;
+            
+            if (value < 1) value = 1;
+            if (value > 99) value = 99;
+            
+            currentQuantity = value;
+            input.value = currentQuantity;
         }
 
         function addToCart() {
@@ -372,7 +429,7 @@
                 color: selectedColor,
                 size: selectedSize,
                 image: selectedProduct.images[0],
-                quantity: 1
+                quantity: currentQuantity
             };
             
             const existingIndex = cart.findIndex(i => 
@@ -380,7 +437,7 @@
             );
             
             if (existingIndex >= 0) {
-                cart[existingIndex].quantity += 1;
+                cart[existingIndex].quantity += currentQuantity;
             } else {
                 cart.push(item);
             }
@@ -406,11 +463,11 @@
         function openGallery(i) { 
             currentIdx = i; 
             updatePagination(); 
-            document.getElementById('galleryView').style.display = 'flex'; 
+            document.getElementById('galleryView').classList.add('active');
         }
         
         function closeGallery() { 
-            document.getElementById('galleryView').style.display = 'none'; 
+            document.getElementById('galleryView').classList.remove('active');
         }
 
         // Share functionality
@@ -421,9 +478,12 @@
                     text: `Check out ${selectedProduct.name} - ฿${selectedProduct.price.toLocaleString()}`,
                     url: window.location.href
                 }).then(() => {
-                    showToast('แชร์สำเร็จ!');
-                }).catch(() => {
-                    copyToClipboard();
+                    showToast('แชร์สำเร็จ! ✓');
+                }).catch((error) => {
+                    // User cancelled share - don't show error
+                    if (error.name !== 'AbortError') {
+                        copyToClipboard();
+                    }
                 });
             } else {
                 copyToClipboard();
@@ -433,9 +493,9 @@
         function copyToClipboard() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(() => {
-                showToast('คัดลอกลิงก์แล้ว!');
+                showToast('คัดลอกลิงก์แล้ว! ✓');
             }).catch(() => {
-                showToast('ไม่สามารถคัดลอกได้');
+                // Silently fail - don't show error
             });
         }
 
@@ -445,8 +505,13 @@
             const cart = cartData ? JSON.parse(cartData) : [];
             const badge = document.getElementById('cartBadge');
             const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            badge.textContent = totalItems;
-            badge.style.display = totalItems > 0 ? 'block' : 'none';
+            
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
         }
 
         // Toast
@@ -478,5 +543,5 @@
         // Initialize
         window.onload = loadSystem;
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bdadf69d50255a1',t:'MTc2ODM3MDAwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bdb90ff91ea45ad',t:'MTc2ODM3NzI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
