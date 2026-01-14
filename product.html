@@ -13,59 +13,57 @@
         /* Navigation */
         .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #FFF; z-index: 1000; border-bottom: 2px solid #000; height: 65px; display: flex; align-items: center; padding: 0 20px; }
         .logo-text { font-family: 'Bebas Neue'; font-size: 26px; text-decoration: none; color: #000; letter-spacing: 2px; }
-        .nav-right { margin-left: auto; position: relative; }
-        .cart-badge { position: absolute; top: -5px; right: -8px; background: #FF4500; color: #fff; font-size: 10px; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid #fff; }
 
-        /* Smooth Slider System */
-        .slider-viewport { position: relative; width: 100%; aspect-ratio: 1/1; margin-top: 65px; overflow: hidden; background: #F2F2F2; border-bottom: 2px solid #000; touch-action: pan-y; }
-        .slider-track { display: flex; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); height: 100%; will-change: transform; }
+        /* Real Slider System */
+        .slider-viewport { position: relative; width: 100%; aspect-ratio: 1/1; margin-top: 65px; overflow: hidden; background: #F2F2F2; border-bottom: 2px solid #000; }
+        .slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); height: 100%; }
         .slide { min-width: 100%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-        .pg-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; z-index: 10; }
+        .pg-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; z-index: 10; letter-spacing: 1px; }
 
-        /* Quantity Control Styles */
-        .quantity-control { display: flex; align-items: center; gap: 12px; }
-        .qty-btn { width: 28px; height: 28px; border: 1px solid #CCCCCC; background: #FFFFFF; color: #000000; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; transition: all 0.2s ease; }
-        .qty-btn:hover { background: #000000; color: #FFFFFF; border-color: #000000; }
-        .qty-btn:active { transform: scale(0.9); }
-        .qty-input { width: 50px; height: 32px; text-align: center; font-size: 14px; font-weight: 600; border: 1px solid #E0E0E0; background: #FFFFFF; color: #000000; border-radius: 4px; padding: 0; }
-        .qty-input:focus { outline: none; border-color: #000000; }
+        /* Content Area */
+        .content-main { padding: 25px 20px; max-width: 800px; margin: 0 auto; }
+        .price-tag { font-family: 'Inter'; font-size: 36px; font-weight: 900; color: #FF4500; letter-spacing: -1.5px; line-height: 1; }
+        .product-name { font-size: 17px; font-weight: 500; color: #333; margin: 10px 0; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
+        
+        .section-divider { margin: 25px 0 20px 0; border-top: 1px solid #EEE; }
+        .section-title { font-family: 'Bebas Neue'; font-size: 22px; color: #000; letter-spacing: 2px; margin-bottom: 12px; display: block; }
+        .desc-body { font-size: 14px; color: #666; line-height: 1.8; }
 
-        /* Bottom Bar & Sheet */
+        /* Bottom Bar */
         .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #FFF; border-top: 2px solid #000; padding: 12px 20px; display: flex; align-items: center; gap: 15px; z-index: 1001; max-width: 800px; margin: 0 auto; height: 90px; }
-        .seller-avatar { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #000; object-fit: cover; }
-        .btn-core { flex: 1; height: 54px; font-family: 'Bebas Neue'; font-size: 19px; letter-spacing: 1.5px; border: 2.5px solid #000; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .seller-hub { display: flex; flex-direction: column; align-items: center; text-decoration: none; min-width: 60px; }
+        .seller-avatar { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #000; object-fit: cover; background: #eee; }
+        .seller-label { font-size: 9px; font-weight: 800; color: #000; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .btn-core { flex: 1; height: 54px; font-family: 'Bebas Neue'; font-size: 19px; letter-spacing: 1.5px; border: 2.5px solid #000; transition: 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .btn-add { background: #FFF; color: #000; }
         .btn-buy { background: #000; color: #FFF; }
-
-        /* Selection Sheet Upgraded */
-        .sheet-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; backdrop-filter: blur(5px); }
-        .sheet-body { position: fixed; bottom: -100%; left: 0; right: 0; background: #FFF; z-index: 2001; border-top: 4px solid #000; padding: 25px; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-width: 800px; margin: 0 auto; border-radius: 25px 25px 0 0; }
-        .sheet-body.active { bottom: 0; }
-        .sheet-product-info { display: flex; gap: 15px; margin-bottom: 20px; }
-        .sheet-img { width: 100px; height: 100px; border: 2px solid #000; object-fit: cover; }
-        .chip-box { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .chip { padding: 10px 16px; border: 2px solid #EEE; font-size: 12px; font-weight: 700; cursor: pointer; }
-        .chip.active { border-color: #000; background: #000; color: #FFF; }
+        .btn-core:active { transform: scale(0.97); background: #f0f0f0; color: #000; }
 
         /* Full Gallery */
         #galleryView { position: fixed; inset: 0; background: #000; z-index: 5000; display: none; flex-direction: column; }
         .gv-header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: #FFF; }
-        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.4s ease; will-change: transform; }
+        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.3s ease; }
         .gv-slide { min-width: 100%; display: flex; align-items: center; justify-content: center; height: 100%; }
-        .gv-slide img { width: 100%; max-height: 80vh; object-fit: contain; }
+        .gv-slide img { width: 100%; max-height: 85vh; object-fit: contain; }
+
+        /* Selection Sheet */
+        .sheet-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; backdrop-filter: blur(5px); }
+        .sheet-body { position: fixed; bottom: -100%; left: 0; right: 0; background: #FFF; z-index: 2001; border-top: 4px solid #000; padding: 30px; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-width: 800px; margin: 0 auto; border-radius: 25px 25px 0 0; }
+        .sheet-body.active { bottom: 0; }
+        .chip-box { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .chip { padding: 12px 20px; border: 2px solid #EEE; font-size: 13px; font-weight: 700; cursor: pointer; }
+        .chip.active { border-color: #000; background: #000; color: #FFF; }
+
+        /* Error States */
+        #errorPage { display: none; text-align: center; padding: 100px 20px; }
     </style>
 </head>
 <body>
 
     <nav class="top-nav">
         <a href="index.html" class="logo-text">NEXUS WEAR</a>
-        <div class="nav-right">
-            <a href="cart.html">
-                <svg width="28" height="28" fill="none" stroke="#000" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                <span class="cart-badge" id="cartBadgeCount">0</span>
-            </a>
-        </div>
     </nav>
 
     <div id="productContainer">
@@ -74,71 +72,77 @@
             <div class="pg-badge" id="pgBadge">0 / 0</div>
         </div>
 
-        <main class="p-5 max-w-3xl mx-auto">
-            <div id="domPrice" class="text-4xl font-black text-orange-600">฿0.00</div>
-            <h1 id="domName" class="text-lg font-medium mt-2 uppercase tracking-wide">---</h1>
-            <div class="my-6 border-t border-gray-100"></div>
-            <span class="font-['Bebas_Neue'] text-2xl tracking-widest">PRODUCT DETAILS</span>
-            <div id="domDesc" class="text-sm text-gray-500 leading-relaxed mt-3">---</div>
+        <main class="content-main">
+            <div class="price-tag" id="domPrice">฿0.00</div>
+            <h1 class="product-name" id="domName">---</h1>
+            <div class="section-divider"></div>
+            <span class="section-title">PRODUCT DETAILS</span>
+            <div class="desc-body" id="domDesc">---</div>
         </main>
 
         <div class="action-bar">
-            <a href="#" class="flex flex-col items-center min-w-[65px]" id="domSellerLink">
+            <a href="#" class="seller-hub" id="domSellerLink">
                 <img src="" class="seller-avatar" id="domSellerLogo">
-                <span class="text-[9px] font-extrabold mt-1 uppercase" id="domSellerName">---</span>
+                <span class="seller-label" id="domSellerName">---</span>
             </a>
             <button class="btn-core btn-add" onclick="toggleSheet('cart')">ADD TO CART</button>
             <button class="btn-core btn-buy" onclick="toggleSheet('buy')">BUY NOW</button>
         </div>
     </div>
 
+    <div id="errorPage">
+        <h1 style="font-family:'Bebas Neue'; font-size:40px;">PRODUCT NOT FOUND</h1>
+        <p style="margin:20px 0; color:#666;">สินค้านี้ไม่มีอยู่ในระบบ หรือถูกนำออกไปแล้ว</p>
+        <a href="index.html" style="text-decoration:underline; font-weight:700;">BACK TO SHOP</a>
+    </div>
+
     <div class="sheet-mask" id="sheetMask" onclick="hideSheet()"></div>
     <div class="sheet-body" id="sheetBody">
-        <div class="sheet-product-info">
-            <img src="" id="sheetImg" class="sheet-img">
-            <div class="flex flex-col justify-end">
-                <div id="sheetPrice" class="text-2xl font-black text-orange-600">฿0.00</div>
-                <div id="sheetStock" class="text-[10px] text-gray-400">SELECT OPTIONS</div>
-            </div>
-        </div>
-        
-        <p class="text-[10px] font-bold mb-2 text-gray-400">COLOR</p>
+        <div style="font-family:'Bebas Neue'; font-size:24px; margin-bottom:20px; border-bottom:2px solid #000; padding-bottom:10px;">CONFIGURE ITEM</div>
+        <p style="font-size:11px; font-weight:800; margin-bottom:10px; color:#888;">SELECT COLOR</p>
         <div class="chip-box" id="colorGrid"></div>
-        
-        <p class="text-[10px] font-bold mb-2 text-gray-400">SIZE</p>
+        <p style="font-size:11px; font-weight:800; margin-bottom:10px; color:#888;">SELECT SIZE</p>
         <div class="chip-box" id="sizeGrid"></div>
-
-        <div class="flex justify-between items-center mb-6">
-            <p class="text-[10px] font-bold text-gray-400">QUANTITY</p>
-            <div class="quantity-control">
-                <button type="button" class="qty-btn" onclick="updateQty(-1)">−</button>
-                <input type="number" id="qtyInput" class="qty-input" value="1" min="1" max="99" readonly>
-                <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
-            </div>
-        </div>
-
-        <button id="finalBtn" class="btn-core btn-buy w-full">CONFIRM</button>
+        <button id="finalBtn" class="btn-core btn-buy" style="width:100%; height:60px;">CONFIRM</button>
     </div>
 
     <div id="galleryView">
         <div class="gv-header">
-            <span id="gvCount" class="font-bold tracking-widest">1 / 1</span>
-            <span class="text-3xl cursor-pointer" onclick="closeGallery()">×</span>
+            <span id="gvCount">1 / 1</span>
+            <span style="font-size:30px; cursor:pointer;" onclick="closeGallery()">×</span>
         </div>
         <div class="gv-track" id="gvTrack"></div>
     </div>
 
     <script>
-        const MOCK_DATA = [
+        // 1. DATA CENTER (เพิ่มข้อมูลจริงตรงนี้)
+        const MOCK_PRODUCTS_DATA = [
             {
                 id: 'oversized-tee-black',
-                name: 'Essential Oversized Heavy Cotton Tee',
-                price: 1290,
-                desc: 'Experience the pinnacle of streetwear comfort. Crafted from 300GSM premium heavy-weight cotton.',
-                images: ['https://hnungh.github.io/mcl/img/oversized-tee-black.jpg', 'https://hnungh.github.io/mcl/img/hoodie-grey.jpg'],
-                colors: ['Noir Black', 'Stone White'],
+                name: 'Classic Black Oversized Tee',
+                price: 790,
+                desc: 'Premium cotton 100%, heavy weight fabric. Minimalist aesthetics blended with durability for the modern urban explorer.',
+                images: [
+                    'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
+                    'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
+                ],
+                colors: ['Black', 'White'],
                 sizes: ['S', 'M', 'L', 'XL'],
-                seller: { name: 'NEXUS STORE', logo: 'https://via.placeholder.com/100/000?text=NW', link: '#' }
+                seller: { name: 'NEXUS OFFICIAL', logo: 'https://via.placeholder.com/100/000?text=NW', link: 'shop.html' }
+            },
+            {
+                id: 'cargo-pants-olive',
+                name: 'Military Olive Cargo Pants',
+                price: 1590,
+                desc: 'Durable military-style cargo pants with 6-pocket functional design.',
+                images: [
+                    'https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg',
+                    'https://hnungh.github.io/mpj/img/sunglasses-retro.jpg',
+                    'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'
+                ],
+                colors: ['Olive', 'Dark'],
+                sizes: ['30', '32', '34', '36'],
+                seller: { name: 'STREET WEAR', logo: 'https://via.placeholder.com/100/000?text=SW', link: 'shop.html' }
             }
         ];
 
@@ -146,25 +150,36 @@
         let selectedProduct = null;
         let selectedColor = null;
         let selectedSize = null;
-        let quantity = 1;
 
-        function load() {
-            const id = new URLSearchParams(window.location.search).get('id') || MOCK_DATA[0].id;
-            selectedProduct = MOCK_DATA.find(p => p.id === id) || MOCK_DATA[0];
-            render();
+        // 2. ENGINE: Load Data From URL
+        function loadSystem() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            selectedProduct = MOCK_PRODUCTS_DATA.find(p => p.id === productId);
+
+            if (!selectedProduct) {
+                document.getElementById('productContainer').style.display = 'none';
+                document.getElementById('errorPage').style.display = 'block';
+                return;
+            }
+
+            renderProduct();
         }
 
-        function render() {
+        // 3. RENDER: Build UI Automatically
+        function renderProduct() {
+            document.getElementById('pageTitle').innerText = `${selectedProduct.name} - Nexus Wear`;
             document.getElementById('domPrice').innerText = `฿${selectedProduct.price.toLocaleString()}`;
             document.getElementById('domName').innerText = selectedProduct.name;
             document.getElementById('domDesc').innerText = selectedProduct.desc;
             document.getElementById('domSellerName').innerText = selectedProduct.seller.name;
             document.getElementById('domSellerLogo').src = selectedProduct.seller.logo;
-            document.getElementById('sheetImg').src = selectedProduct.images[0];
-            document.getElementById('sheetPrice').innerText = `฿${selectedProduct.price.toLocaleString()}`;
+            document.getElementById('domSellerLink').href = selectedProduct.seller.link;
 
             const track = document.getElementById('sliderTrack');
             const gvTrack = document.getElementById('gvTrack');
+            
             selectedProduct.images.forEach((src, i) => {
                 track.innerHTML += `<div class="slide"><img src="${src}" onclick="openGallery(${i})"></div>`;
                 gvTrack.innerHTML += `<div class="gv-slide"><img src="${src}"></div>`;
@@ -172,52 +187,51 @@
 
             document.getElementById('colorGrid').innerHTML = selectedProduct.colors.map(c => `<div class="chip" onclick="setChip(this, 'color', '${c}')">${c}</div>`).join('');
             document.getElementById('sizeGrid').innerHTML = selectedProduct.sizes.map(s => `<div class="chip" onclick="setChip(this, 'size', '${s}')">${s}</div>`).join('');
-            
+
             updatePagination();
-            setupSwipe('sliderViewport');
-            setupSwipe('galleryView');
+            initSwipe();
         }
 
+        // 4. SLIDER LOGIC
         function updatePagination() {
             const total = selectedProduct.images.length;
-            const offset = -currentIdx * 100;
-            document.getElementById('sliderTrack').style.transform = `translateX(${offset}%)`;
-            document.getElementById('gvTrack').style.transform = `translateX(${offset}%)`;
             document.getElementById('pgBadge').innerText = `${currentIdx + 1} / ${total}`;
+            document.getElementById('sliderTrack').style.transform = `translateX(-${currentIdx * 100}%)`;
             document.getElementById('gvCount').innerText = `${currentIdx + 1} / ${total}`;
+            document.getElementById('gvTrack').style.transform = `translateX(-${currentIdx * 100}%)`;
         }
 
-        function setupSwipe(id) {
+        function initSwipe() {
             let startX = 0;
-            const el = document.getElementById(id);
-            el.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-            el.addEventListener('touchend', e => {
+            const container = document.getElementById('sliderViewport');
+            const gv = document.getElementById('galleryView');
+
+            const handleEnd = (e) => {
                 let diff = startX - e.changedTouches[0].clientX;
                 if (Math.abs(diff) > 50) {
                     if (diff > 0 && currentIdx < selectedProduct.images.length - 1) currentIdx++;
                     else if (diff < 0 && currentIdx > 0) currentIdx--;
                     updatePagination();
                 }
-            });
+            };
+
+            container.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+            container.addEventListener('touchend', handleEnd);
+            gv.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+            gv.addEventListener('touchend', handleEnd);
         }
 
-        function updateQty(val) {
-            quantity = Math.max(1, Math.min(99, quantity + val));
-            document.getElementById('qtyInput').value = quantity;
-        }
-
-        function setChip(el, type, val) {
-            el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            if(type === 'color') selectedColor = val; else selectedSize = val;
-        }
-
+        // 5. INTERACTION
+        function openGallery(i) { currentIdx = i; updatePagination(); document.getElementById('galleryView').style.display = 'flex'; }
+        function closeGallery() { document.getElementById('galleryView').style.display = 'none'; }
+        
         function toggleSheet(mode) {
             document.getElementById('sheetMask').style.display = 'block';
             setTimeout(() => document.getElementById('sheetBody').classList.add('active'), 10);
             document.getElementById('finalBtn').onclick = () => {
-                if(!selectedColor || !selectedSize) return alert('กรุณาเลือกตัวเลือก');
-                alert('ADDED TO CART'); hideSheet();
+                if(!selectedColor || !selectedSize) return alert('กรุณาเลือก สี และ ไซส์');
+                alert(`SUCCESS: Added ${selectedProduct.name} to ${mode}`);
+                hideSheet();
             };
         }
 
@@ -226,10 +240,13 @@
             setTimeout(() => document.getElementById('sheetMask').style.display = 'none', 400);
         }
 
-        function openGallery(i) { currentIdx = i; updatePagination(); document.getElementById('galleryView').style.display = 'flex'; }
-        function closeGallery() { document.getElementById('galleryView').style.display = 'none'; }
+        function setChip(el, type, val) {
+            el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            if(type === 'color') selectedColor = val; else selectedSize = val;
+        }
 
-        window.onload = load;
+        window.onload = loadSystem;
     </script>
 </body>
 </html>
