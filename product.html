@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="pageTitle">Product Detail - Nexus Wear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="pageTitle">Product Detail - Nexus Wear</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #000; padding-bottom: 110px; }
 
@@ -41,81 +41,145 @@
         .btn-buy { background: #000; color: #FFF; }
         .btn-core:active { transform: scale(0.97); background: #f0f0f0; color: #000; }
 
+        /* Accordion Details */
+        .detail-block { border-bottom: 1px solid #E5E5E5; }
+        .detail-header { padding: 18px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .detail-label { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .detail-icon { width: 18px; height: 18px; transition: transform 0.3s; }
+        .detail-icon.open { transform: rotate(180deg); }
+        .detail-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .detail-content.open { max-height: 500px; padding-bottom: 18px; }
+        .detail-list { list-style: none; padding: 0; }
+        .detail-list li { font-size: 14px; color: #666; line-height: 1.8; padding-left: 18px; position: relative; }
+        .detail-list li::before { content: '•'; position: absolute; left: 0; font-weight: 900; color: #000; }
+
+        /* Toast Notification */
+        .toast { position: fixed; bottom: 110px; left: 20px; right: 20px; max-width: 760px; margin: 0 auto; background: #000; color: #FFF; padding: 16px 20px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: all 0.3s ease; z-index: 2000; pointer-events: none; border-radius: 8px; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Loading Overlay */
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; }
+        .loading-overlay.active { display: flex; }
+        .loading-spinner { width: 48px; height: 48px; border: 3px solid #E0E0E0; border-top-color: #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Error State */
+        .error-state { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; min-height: 50vh; }
+        .error-state.active { display: flex; }
+        .error-icon { font-size: 64px; margin-bottom: 20px; }
+        .error-title { font-family: 'Bebas Neue'; font-size: 32px; letter-spacing: 2px; margin-bottom: 12px; }
+        .error-message { font-size: 14px; color: #666; margin-bottom: 24px; }
+        .error-btn { padding: 16px 32px; background: #000; color: #FFF; border: 2px solid #000; font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 1.5px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .error-btn:active { transform: scale(0.97); }
+
+        /* Slide Placeholder */
+        .slide-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 100px; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); cursor: pointer; }
+
         /* Full Gallery */
         #galleryView { position: fixed; inset: 0; background: #000; z-index: 5000; display: none; flex-direction: column; }
+        #galleryView.active { display: flex; }
         .gv-header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: #FFF; }
-        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.3s ease; }
+        .gv-close { font-size: 30px; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .gv-close:active { opacity: 0.6; }
+        .gv-track { flex: 1; display: flex; align-items: center; transition: transform 0.3s ease; overflow: hidden; }
         .gv-slide { min-width: 100%; display: flex; align-items: center; justify-content: center; height: 100%; }
-        .gv-slide img { width: 100%; max-height: 85vh; object-fit: contain; }
+        .gv-slide-placeholder { font-size: 200px; }
 
         /* Selection Sheet */
         .sheet-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; backdrop-filter: blur(5px); }
+        .sheet-mask.active { display: block; }
         .sheet-body { position: fixed; bottom: -100%; left: 0; right: 0; background: #FFF; z-index: 2001; border-top: 4px solid #000; padding: 30px; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); max-width: 800px; margin: 0 auto; border-radius: 25px 25px 0 0; }
         .sheet-body.active { bottom: 0; }
+        .sheet-title { font-family: 'Bebas Neue'; font-size: 24px; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; letter-spacing: 2px; }
+        .sheet-label { font-size: 11px; font-weight: 800; margin-bottom: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
         .chip-box { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
-        .chip { padding: 12px 20px; border: 2px solid #EEE; font-size: 13px; font-weight: 700; cursor: pointer; }
+        .chip { padding: 12px 20px; border: 2px solid #EEE; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.15s; }
+        .chip:active { transform: scale(0.95); }
         .chip.active { border-color: #000; background: #000; color: #FFF; }
-
-        /* Error States */
-        #errorPage { display: none; text-align: center; padding: 100px 20px; }
+        .chip.sold-out { opacity: 0.3; cursor: not-allowed; }
+        .final-btn { width: 100%; height: 60px; font-family: 'Bebas Neue'; font-size: 19px; letter-spacing: 1.5px; border: 2.5px solid #000; background: #000; color: #FFF; cursor: pointer; }
     </style>
-</head>
-<body>
-
-    <nav class="top-nav">
-        <a href="index.html" class="logo-text">NEXUS WEAR</a>
-    </nav>
-
-    <div id="productContainer">
-        <div class="slider-viewport" id="sliderViewport">
-            <div class="slider-track" id="sliderTrack"></div>
-            <div class="pg-badge" id="pgBadge">0 / 0</div>
-        </div>
-
-        <main class="content-main">
-            <div class="price-tag" id="domPrice">฿0.00</div>
-            <h1 class="product-name" id="domName">---</h1>
-            <div class="section-divider"></div>
-            <span class="section-title">PRODUCT DETAILS</span>
-            <div class="desc-body" id="domDesc">---</div>
-        </main>
-
-        <div class="action-bar">
-            <a href="#" class="seller-hub" id="domSellerLink">
-                <img src="" class="seller-avatar" id="domSellerLogo">
-                <span class="seller-label" id="domSellerName">---</span>
-            </a>
-            <button class="btn-core btn-add" onclick="toggleSheet('cart')">ADD TO CART</button>
-            <button class="btn-core btn-buy" onclick="toggleSheet('buy')">BUY NOW</button>
-        </div>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body><!-- Loading Overlay -->
+  <div class="loading-overlay active" id="loadingOverlay">
+   <div class="loading-spinner"></div>
+  </div><!-- Toast Notification -->
+  <div class="toast" id="toast"><span id="toastMessage">Added to cart</span>
+  </div><!-- Top Navigation -->
+  <nav class="top-nav"><a href="#" class="logo-text" id="brandLogo" onclick="window.history.back(); return false;">NEXUS</a>
+  </nav><!-- Error State -->
+  <div class="error-state" id="errorState">
+   <div class="error-icon">
+    ⚠️
+   </div>
+   <h2 class="error-title">Product Not Found</h2>
+   <p class="error-message">The product you're looking for doesn't exist or has been removed.</p><a href="#" class="error-btn" onclick="window.history.back(); return false;">Go Back</a>
+  </div><!-- Image Slider -->
+  <div class="slider-viewport" id="sliderViewport">
+   <div class="slider-track" id="sliderTrack"></div>
+   <div class="pg-badge" id="pgBadge">
+    1/5
+   </div>
+  </div><!-- Main Content -->
+  <div class="content-main" id="mainContent">
+   <div class="price-tag" id="priceTag">
+    ฿0
+   </div>
+   <h1 class="product-name" id="productName">Loading...</h1>
+   <div class="section-divider"></div><span class="section-title">Product Details</span>
+   <div class="desc-body" id="productDescription"></div>
+   <div class="section-divider"></div><!-- Product Details Accordion -->
+   <div id="detailsAccordion">
+    <div class="detail-block">
+     <div class="detail-header" onclick="toggleDetail('specifications')"><span class="detail-label">Specifications</span>
+      <svg class="detail-icon" id="iconSpecifications" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+     </div>
+     <div class="detail-content" id="contentSpecifications">
+      <ul class="detail-list" id="specificationsList"></ul>
+     </div>
     </div>
-
-    <div id="errorPage">
-        <h1 style="font-family:'Bebas Neue'; font-size:40px;">PRODUCT NOT FOUND</h1>
-        <p style="margin:20px 0; color:#666;">สินค้านี้ไม่มีอยู่ในระบบ หรือถูกนำออกไปแล้ว</p>
-        <a href="index.html" style="text-decoration:underline; font-weight:700;">BACK TO SHOP</a>
+    <div class="detail-block">
+     <div class="detail-header" onclick="toggleDetail('shipping')"><span class="detail-label">Shipping &amp; Returns</span>
+      <svg class="detail-icon" id="iconShipping" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+     </div>
+     <div class="detail-content" id="contentShipping">
+      <ul class="detail-list">
+       <li>Free shipping on orders over ฿2,000</li>
+       <li>Express delivery available</li>
+       <li>30-day return policy</li>
+       <li>Original packaging required</li>
+      </ul>
+     </div>
     </div>
-
-    <div class="sheet-mask" id="sheetMask" onclick="hideSheet()"></div>
-    <div class="sheet-body" id="sheetBody">
-        <div style="font-family:'Bebas Neue'; font-size:24px; margin-bottom:20px; border-bottom:2px solid #000; padding-bottom:10px;">CONFIGURE ITEM</div>
-        <p style="font-size:11px; font-weight:800; margin-bottom:10px; color:#888;">SELECT COLOR</p>
-        <div class="chip-box" id="colorGrid"></div>
-        <p style="font-size:11px; font-weight:800; margin-bottom:10px; color:#888;">SELECT SIZE</p>
-        <div class="chip-box" id="sizeGrid"></div>
-        <button id="finalBtn" class="btn-core btn-buy" style="width:100%; height:60px;">CONFIRM</button>
-    </div>
-
-    <div id="galleryView">
-        <div class="gv-header">
-            <span id="gvCount">1 / 1</span>
-            <span style="font-size:30px; cursor:pointer;" onclick="closeGallery()">×</span>
-        </div>
-        <div class="gv-track" id="gvTrack"></div>
-    </div>
-
-    <script>
-        // 1. DATA CENTER (เพิ่มข้อมูลจริงตรงนี้)
+   </div>
+  </div><!-- Bottom Action Bar -->
+  <div class="action-bar"><a href="#" class="seller-hub" id="sellerHub">
+    <div style="font-size: 28px;" id="sellerAvatar">
+     🏪
+    </div><span class="seller-label" id="sellerLabel">SHOP</span> </a> <button class="btn-core btn-add" onclick="toggleSheet('cart')">ADD TO CART</button> <button class="btn-core btn-buy" onclick="toggleSheet('buy')">BUY NOW</button>
+  </div><!-- Selection Sheet -->
+  <div class="sheet-mask" id="sheetMask" onclick="hideSheet()"></div>
+  <div class="sheet-body" id="sheetBody">
+   <div class="sheet-title">
+    CONFIGURE ITEM
+   </div>
+   <p class="sheet-label">Select Color</p>
+   <div class="chip-box" id="sheetColorGrid"></div>
+   <p class="sheet-label">Select Size</p>
+   <div class="chip-box" id="sheetSizeGrid"></div><button id="finalBtn" class="final-btn">CONFIRM</button>
+  </div><!-- Full Gallery View -->
+  <div id="galleryView">
+   <div class="gv-header"><span id="gvCount">1 / 1</span> <span class="gv-close" onclick="closeGallery()">×</span>
+   </div>
+   <div class="gv-track" id="gvTrack"></div>
+  </div>
+  <script>
+        // 1. DATA CENTER (Real product database)
         const MOCK_PRODUCTS_DATA = [
             {
                 id: 'oversized-tee-black',
@@ -128,7 +192,15 @@
                 ],
                 colors: ['Black', 'White'],
                 sizes: ['S', 'M', 'L', 'XL'],
-                seller: { name: 'NEXUS OFFICIAL', logo: 'https://via.placeholder.com/100/000?text=NW', link: 'shop.html' }
+                soldOutSizes: [],
+                specifications: [
+                    'Material: 100% Premium Cotton',
+                    'Weight: 280g',
+                    'Oversized fit',
+                    'Pre-shrunk fabric',
+                    'Made in Thailand'
+                ],
+                seller: { name: 'NEXUS OFFICIAL', logo: 'https://via.placeholder.com/100/000?text=NW', link: '#' }
             },
             {
                 id: 'cargo-pants-olive',
@@ -142,14 +214,24 @@
                 ],
                 colors: ['Olive', 'Dark'],
                 sizes: ['30', '32', '34', '36'],
-                seller: { name: 'STREET WEAR', logo: 'https://via.placeholder.com/100/000?text=SW', link: 'shop.html' }
+                soldOutSizes: [],
+                specifications: [
+                    'Material: Cotton Ripstop',
+                    'Weight: 450g',
+                    '6-pocket design',
+                    'Reinforced stitching',
+                    'Made in Vietnam'
+                ],
+                seller: { name: 'STREET WEAR', logo: 'https://via.placeholder.com/100/000?text=SW', link: '#' }
             }
         ];
 
+        // State
         let currentIdx = 0;
         let selectedProduct = null;
         let selectedColor = null;
         let selectedSize = null;
+        let sheetMode = 'cart';
 
         // 2. ENGINE: Load Data From URL
         function loadSystem() {
@@ -159,35 +241,39 @@
             selectedProduct = MOCK_PRODUCTS_DATA.find(p => p.id === productId);
 
             if (!selectedProduct) {
-                document.getElementById('productContainer').style.display = 'none';
-                document.getElementById('errorPage').style.display = 'block';
+                showError();
                 return;
             }
 
+            // Set defaults
+            selectedColor = selectedProduct.colors[0];
+            selectedSize = selectedProduct.sizes[0];
+
             renderProduct();
+            hideLoading();
         }
 
         // 3. RENDER: Build UI Automatically
         function renderProduct() {
             document.getElementById('pageTitle').innerText = `${selectedProduct.name} - Nexus Wear`;
-            document.getElementById('domPrice').innerText = `฿${selectedProduct.price.toLocaleString()}`;
-            document.getElementById('domName').innerText = selectedProduct.name;
-            document.getElementById('domDesc').innerText = selectedProduct.desc;
-            document.getElementById('domSellerName').innerText = selectedProduct.seller.name;
-            document.getElementById('domSellerLogo').src = selectedProduct.seller.logo;
-            document.getElementById('domSellerLink').href = selectedProduct.seller.link;
+            document.getElementById('brandLogo').innerText = 'NEXUS';
+            document.getElementById('priceTag').innerText = `฿${selectedProduct.price.toLocaleString()}`;
+            document.getElementById('productName').innerText = selectedProduct.name;
+            document.getElementById('productDescription').innerText = selectedProduct.desc;
 
             const track = document.getElementById('sliderTrack');
             const gvTrack = document.getElementById('gvTrack');
             
+            track.innerHTML = '';
+            gvTrack.innerHTML = '';
+            
             selectedProduct.images.forEach((src, i) => {
-                track.innerHTML += `<div class="slide"><img src="${src}" onclick="openGallery(${i})"></div>`;
-                gvTrack.innerHTML += `<div class="gv-slide"><img src="${src}"></div>`;
+                track.innerHTML += `<div class="slide"><img src="${src}" onclick="openGallery(${i})" onerror="this.parentElement.innerHTML='<div class=\\'slide-placeholder\\' onclick=\\'openGallery(${i})\\'>🖼️</div>'"></div>`;
+                gvTrack.innerHTML += `<div class="gv-slide"><img src="${src}" style="width: 100%; max-height: 85vh; object-fit: contain;" onerror="this.parentElement.innerHTML='<div class=\\'gv-slide-placeholder\\'>🖼️</div>'"></div>`;
             });
 
-            document.getElementById('colorGrid').innerHTML = selectedProduct.colors.map(c => `<div class="chip" onclick="setChip(this, 'color', '${c}')">${c}</div>`).join('');
-            document.getElementById('sizeGrid').innerHTML = selectedProduct.sizes.map(s => `<div class="chip" onclick="setChip(this, 'size', '${s}')">${s}</div>`).join('');
-
+            renderSpecifications(selectedProduct.specifications);
+            renderSeller(selectedProduct.seller);
             updatePagination();
             initSwipe();
         }
@@ -221,32 +307,168 @@
             gv.addEventListener('touchend', handleEnd);
         }
 
-        // 5. INTERACTION
-        function openGallery(i) { currentIdx = i; updatePagination(); document.getElementById('galleryView').style.display = 'flex'; }
-        function closeGallery() { document.getElementById('galleryView').style.display = 'none'; }
-        
+        // Render specifications
+        function renderSpecifications(specs) {
+            const list = document.getElementById('specificationsList');
+            list.innerHTML = '';
+
+            specs.forEach(spec => {
+                const li = document.createElement('li');
+                li.textContent = spec;
+                list.appendChild(li);
+            });
+        }
+
+        // Render seller
+        function renderSeller(seller) {
+            const avatar = document.getElementById('sellerAvatar');
+            const label = document.getElementById('sellerLabel');
+            const hub = document.getElementById('sellerHub');
+            
+            if (seller.logo.startsWith('http')) {
+                avatar.innerHTML = `<img src="${seller.logo}" alt="${seller.name}" class="seller-avatar" onerror="this.parentElement.innerHTML='🏪'">`;
+            } else {
+                avatar.textContent = seller.logo;
+            }
+            
+            label.textContent = seller.name;
+            hub.href = seller.link;
+        }
+
+        // Sheet functionality
         function toggleSheet(mode) {
-            document.getElementById('sheetMask').style.display = 'block';
-            setTimeout(() => document.getElementById('sheetBody').classList.add('active'), 10);
-            document.getElementById('finalBtn').onclick = () => {
-                if(!selectedColor || !selectedSize) return alert('กรุณาเลือก สี และ ไซส์');
-                alert(`SUCCESS: Added ${selectedProduct.name} to ${mode}`);
-                hideSheet();
-            };
+            sheetMode = mode;
+            const mask = document.getElementById('sheetMask');
+            const body = document.getElementById('sheetBody');
+            
+            renderSheetContent();
+            
+            mask.classList.add('active');
+            setTimeout(() => {
+                body.classList.add('active');
+            }, 10);
         }
 
         function hideSheet() {
-            document.getElementById('sheetBody').classList.remove('active');
-            setTimeout(() => document.getElementById('sheetMask').style.display = 'none', 400);
+            const mask = document.getElementById('sheetMask');
+            const body = document.getElementById('sheetBody');
+            
+            body.classList.remove('active');
+            setTimeout(() => {
+                mask.classList.remove('active');
+            }, 400);
         }
 
-        function setChip(el, type, val) {
-            el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            if(type === 'color') selectedColor = val; else selectedSize = val;
+        function renderSheetContent() {
+            const colorGrid = document.getElementById('sheetColorGrid');
+            const sizeGrid = document.getElementById('sheetSizeGrid');
+            
+            colorGrid.innerHTML = '';
+            sizeGrid.innerHTML = '';
+
+            selectedProduct.colors.forEach(color => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.textContent = color;
+                if (color === selectedColor) {
+                    chip.classList.add('active');
+                }
+                chip.onclick = () => selectSheetColor(color);
+                colorGrid.appendChild(chip);
+            });
+
+            selectedProduct.sizes.forEach(size => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.textContent = size;
+                if (selectedProduct.soldOutSizes.includes(size)) {
+                    chip.classList.add('sold-out');
+                } else {
+                    if (size === selectedSize) {
+                        chip.classList.add('active');
+                    }
+                    chip.onclick = () => selectSheetSize(size);
+                }
+                sizeGrid.appendChild(chip);
+            });
         }
 
-        window.onload = loadSystem;
+        function selectSheetColor(color) {
+            selectedColor = color;
+            document.querySelectorAll('#sheetColorGrid .chip').forEach(chip => {
+                chip.classList.toggle('active', chip.textContent === color);
+            });
+        }
+
+        function selectSheetSize(size) {
+            selectedSize = size;
+            document.querySelectorAll('#sheetSizeGrid .chip:not(.sold-out)').forEach(chip => {
+                chip.classList.toggle('active', chip.textContent === size);
+            });
+        }
+
+        document.getElementById('finalBtn').addEventListener('click', () => {
+            hideSheet();
+            if (sheetMode === 'cart') {
+                showToast(`Added to cart: ${selectedSize}, ${selectedColor}`);
+            } else {
+                showToast('Proceeding to checkout...');
+            }
+        });
+
+        // Accordion toggle
+        function toggleDetail(id) {
+            const content = document.getElementById(`content${id.charAt(0).toUpperCase() + id.slice(1)}`);
+            const icon = document.getElementById(`icon${id.charAt(0).toUpperCase() + id.slice(1)}`);
+            
+            const isOpen = content.classList.contains('open');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        // Gallery functionality
+        function openGallery(index) {
+            currentIdx = index;
+            document.getElementById('galleryView').classList.add('active');
+            updatePagination();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            document.getElementById('galleryView').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Loading & Error
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        function showError() {
+            hideLoading();
+            document.getElementById('errorState').classList.add('active');
+            document.getElementById('sliderViewport').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.querySelector('.action-bar').style.display = 'none';
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSystem();
+        });
     </script>
-</body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bda8b12e6b199a6',t:'MTc2ODM2NjU0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
