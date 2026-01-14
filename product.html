@@ -335,86 +335,42 @@
             hub.href = seller.link;
         }
 
-        // Sheet functionality
         function toggleSheet(mode) {
-            sheetMode = mode;
-            const mask = document.getElementById('sheetMask');
-            const body = document.getElementById('sheetBody');
-            
-            renderSheetContent();
-            
-            mask.classList.add('active');
-            setTimeout(() => {
-                body.classList.add('active');
-            }, 10);
-        }
-
-        function hideSheet() {
-            const mask = document.getElementById('sheetMask');
-            const body = document.getElementById('sheetBody');
-            
-            body.classList.remove('active');
-            setTimeout(() => {
-                mask.classList.remove('active');
-            }, 400);
-        }
-
-        function renderSheetContent() {
+            // Render chips first
             const colorGrid = document.getElementById('sheetColorGrid');
             const sizeGrid = document.getElementById('sheetSizeGrid');
             
-            colorGrid.innerHTML = '';
-            sizeGrid.innerHTML = '';
+            colorGrid.innerHTML = selectedProduct.colors.map(c => 
+                `<div class="chip ${c === selectedColor ? 'active' : ''}" onclick="setChip(this, 'color', '${c}')">${c}</div>`
+            ).join('');
+            
+            sizeGrid.innerHTML = selectedProduct.sizes.map(s => 
+                `<div class="chip ${s === selectedSize ? 'active' : ''}" onclick="setChip(this, 'size', '${s}')">${s}</div>`
+            ).join('');
 
-            selectedProduct.colors.forEach(color => {
-                const chip = document.createElement('div');
-                chip.className = 'chip';
-                chip.textContent = color;
-                if (color === selectedColor) {
-                    chip.classList.add('active');
+            document.getElementById('sheetMask').style.display = 'block';
+            setTimeout(() => document.getElementById('sheetBody').classList.add('active'), 10);
+            
+            document.getElementById('finalBtn').onclick = () => {
+                if(!selectedColor || !selectedSize) {
+                    showToast('กรุณาเลือก สี และ ไซส์');
+                    return;
                 }
-                chip.onclick = () => selectSheetColor(color);
-                colorGrid.appendChild(chip);
-            });
-
-            selectedProduct.sizes.forEach(size => {
-                const chip = document.createElement('div');
-                chip.className = 'chip';
-                chip.textContent = size;
-                if (selectedProduct.soldOutSizes.includes(size)) {
-                    chip.classList.add('sold-out');
-                } else {
-                    if (size === selectedSize) {
-                        chip.classList.add('active');
-                    }
-                    chip.onclick = () => selectSheetSize(size);
-                }
-                sizeGrid.appendChild(chip);
-            });
+                showToast(`SUCCESS: Added ${selectedProduct.name} to ${mode}`);
+                hideSheet();
+            };
         }
 
-        function selectSheetColor(color) {
-            selectedColor = color;
-            document.querySelectorAll('#sheetColorGrid .chip').forEach(chip => {
-                chip.classList.toggle('active', chip.textContent === color);
-            });
+        function hideSheet() {
+            document.getElementById('sheetBody').classList.remove('active');
+            setTimeout(() => document.getElementById('sheetMask').style.display = 'none', 400);
         }
 
-        function selectSheetSize(size) {
-            selectedSize = size;
-            document.querySelectorAll('#sheetSizeGrid .chip:not(.sold-out)').forEach(chip => {
-                chip.classList.toggle('active', chip.textContent === size);
-            });
+        function setChip(el, type, val) {
+            el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            if(type === 'color') selectedColor = val; else selectedSize = val;
         }
-
-        document.getElementById('finalBtn').addEventListener('click', () => {
-            hideSheet();
-            if (sheetMode === 'cart') {
-                showToast(`Added to cart: ${selectedSize}, ${selectedColor}`);
-            } else {
-                showToast('Proceeding to checkout...');
-            }
-        });
 
         // Accordion toggle
         function toggleDetail(id) {
@@ -426,17 +382,15 @@
             icon.classList.toggle('open');
         }
 
-        // Gallery functionality
-        function openGallery(index) {
-            currentIdx = index;
-            document.getElementById('galleryView').classList.add('active');
-            updatePagination();
-            document.body.style.overflow = 'hidden';
+        // 5. INTERACTION
+        function openGallery(i) { 
+            currentIdx = i; 
+            updatePagination(); 
+            document.getElementById('galleryView').style.display = 'flex'; 
         }
-
-        function closeGallery() {
-            document.getElementById('galleryView').classList.remove('active');
-            document.body.style.overflow = '';
+        
+        function closeGallery() { 
+            document.getElementById('galleryView').style.display = 'none'; 
         }
 
         // Toast
@@ -466,9 +420,7 @@
         }
 
         // Initialize
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSystem();
-        });
+        window.onload = loadSystem;
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bda8b12e6b199a6',t:'MTc2ODM2NjU0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bdabd5d16672ca3',t:'MTc2ODM2ODYwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
