@@ -7,8 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
+  
   <style>
     body {
       box-sizing: border-box;
@@ -1319,495 +1318,164 @@
    </footer>
   </div>
   <script>
-    // Order Data Storage
-    let orderHistory = [];
+   const CART_KEY = 'BARDS_CART';
+let cartItems = [];
 
-    const orderDataHandler = {
-      onDataChanged(data) {
-        orderHistory = data;
-      }
-    };
+async function initializeOrderSystem() {
+    const stored = localStorage.getItem(CART_KEY);
+    cartItems = stored ? JSON.parse(stored) : [];
 
-    async function initializeOrderSystem() {
-      if (!window.dataSdk) {
+    if (cartItems.length === 0) {
+        alert("Your cart is empty. Please select items first.");
+        window.location.href = "index.html";
         return;
-      }
-
-      const initResult = await window.dataSdk.init(orderDataHandler);
-      if (!initResult.isOk) {
-        console.error('Failed to initialize order system');
-      }
     }
 
-    // Update Quantity Function
-    function updateQuantity(itemId, change) {
-      const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
-      if (!cartItem) return;
+    renderOrderSummary();
+    calculateFinalTotal();
 
-      const qtyInput = cartItem.querySelector('.qty-input');
-      let currentQty = parseInt(qtyInput.value);
-      let newQty = currentQty + change;
-
-      if (newQty < 1) newQty = 1;
-      if (newQty > 99) newQty = 99;
-
-      qtyInput.value = newQty;
-      updateOrderTotal();
+    if (window.dataSdk) {
+        await window.dataSdk.init({ 
+            onDataChanged: (data) => console.log('Sync') 
+        });
     }
+}
 
-    // Update Quantity from Input
-    function updateQuantityInput(itemId) {
-      const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
-      if (!cartItem) return;
+function renderOrderSummary() {
+    const container = document.getElementById('cartItemsList') || document.querySelector('.cart-items');
+    if (!container) return;
 
-      const qtyInput = cartItem.querySelector('.qty-input');
-      let qty = parseInt(qtyInput.value);
+    container.innerHTML = cartItems.map((item, index) => `
+        <div class="cart-item">
+            <div class="item-image">
+                <img src="${item.image}" onerror="this.src='https://via.placeholder.com/60?text=NW'" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <div class="item-details">
+                <div class="item-info">
+                    <div class="item-name">${item.name.toUpperCase()}</div>
+                    <div class="item-meta">Size: ${item.size || '-'} | Color: ${item.color || '-'}</div>
+                </div>
+                <div class="item-bottom">
+                    <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                    <div class="quantity-control">
+                        <button type="button" class="qty-btn" onclick="changeQuantity(${index}, -1)">−</button>
+                        <input type="number" class="qty-input" value="${item.quantity}" readonly>
+                        <button type="button" class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
-      if (isNaN(qty) || qty < 1) qty = 1;
-      if (qty > 99) qty = 99;
+function calculateFinalTotal() {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const tax = subtotal * 0.07;
+    const total = subtotal + tax;
 
-      qtyInput.value = qty;
-      updateOrderTotal();
+    const subtotalEl = document.getElementById('subtotal');
+    const taxEl = document.getElementById('tax');
+    const totalEl = document.getElementById('totalAmount');
+
+    if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+    if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
+    if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+}
+
+window.changeQuantity = function(index, delta) {
+    const newQty = cartItems[index].quantity + delta;
+    if (newQty >= 1 && newQty <= 99) {
+        cartItems[index].quantity = newQty;
+        localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
+        renderOrderSummary();
+        calculateFinalTotal();
     }
+};
 
-    // Update Order Total
-    function updateOrderTotal() {
-      const allQtyInputs = document.querySelectorAll('.qty-input');
-      let subtotal = 0;
+const provinceSelector = document.getElementById('provinceSelector');
+const provinceDropdown = document.getElementById('provinceDropdown');
+const provinceHiddenInput = document.getElementById('shippingProvince');
 
-      allQtyInputs.forEach(input => {
-        const unitPrice = parseFloat(input.getAttribute('data-unit-price'));
-        const qty = parseInt(input.value);
-        subtotal += unitPrice * qty;
-      });
-
-      const tax = subtotal * 0.07;
-      const total = subtotal + tax;
-
-      const subtotalEl = document.getElementById('subtotal');
-      const taxEl = document.getElementById('tax');
-      const totalEl = document.getElementById('totalAmount');
-
-      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-      if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
-      if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
-    }
-
-    // Generate Order ID
-    function generateOrderId() {
-      const timestamp = Date.now();
-      const random = Math.floor(Math.random() * 10000);
-      return `NW-${timestamp}-${random}`;
-    }
-
-    // Custom Province Dropdown
-    const provinceSelector = document.getElementById('provinceSelector');
-    const provinceDropdown = document.getElementById('provinceDropdown');
-    const provinceHiddenInput = document.getElementById('shippingProvince');
-    const provinceOptions = provinceDropdown.querySelectorAll('.dropdown-option');
-
-    let selectedProvince = '';
-
-    // Calculate if dropdown should open upward
-    function shouldOpenUpward(triggerElement, dropdownHeight = 280) {
-      const rect = triggerElement.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      // Space below the trigger
-      const spaceBelow = viewportHeight - rect.bottom;
-      
-      // Space above the trigger
-      const spaceAbove = rect.top;
-      
-      // If not enough space below but more space above, open upward
-      if (spaceBelow < dropdownHeight + 20 && spaceAbove > spaceBelow) {
-        return true;
-      }
-      
-      return false;
-    }
-
-    // Toggle Dropdown
-    provinceSelector.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const isActive = provinceDropdown.classList.contains('active');
-      
-      if (isActive) {
-        // Close: remove active but keep direction class until animation ends
-        provinceDropdown.classList.remove('active');
-        provinceSelector.classList.remove('active');
-      } else {
-        // Open: set direction first, then activate
-        if (shouldOpenUpward(provinceSelector)) {
-          provinceDropdown.classList.add('open-upward');
-        } else {
-          provinceDropdown.classList.remove('open-upward');
-        }
-        
-        // Small delay to ensure direction class is applied before animation
-        setTimeout(() => {
-          provinceDropdown.classList.add('active');
-          provinceSelector.classList.add('active');
-        }, 10);
-      }
-    });
-
-    // Select Option
-    provinceOptions.forEach(option => {
-      option.addEventListener('click', function(e) {
+if (provinceSelector) {
+    provinceSelector.addEventListener('click', (e) => {
         e.stopPropagation();
-        
-        const value = this.getAttribute('data-value');
-        const text = this.textContent;
-        
-        // Update selected state
-        provinceOptions.forEach(opt => opt.classList.remove('selected'));
-        this.classList.add('selected');
-        
-        // Update trigger
-        const selectText = provinceSelector.querySelector('.select-text');
-        selectText.textContent = text;
-        provinceSelector.classList.remove('placeholder');
-        provinceSelector.classList.add('has-value');
-        
-        // Update hidden input
-        provinceHiddenInput.value = value;
-        selectedProvince = value;
-        
-        // Close dropdown
-        provinceDropdown.classList.remove('active');
-        provinceSelector.classList.remove('active');
-      });
+        provinceDropdown.classList.toggle('active');
+        provinceSelector.classList.toggle('active');
     });
+}
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!provinceSelector.contains(e.target) && !provinceDropdown.contains(e.target)) {
-        provinceDropdown.classList.remove('active');
-        provinceSelector.classList.remove('active');
-      }
-    });
-
-    // Email Toggle
-    const emailToggle = document.getElementById('emailToggle');
-    const emailInputContainer = document.getElementById('emailInputContainer');
-    const customerEmail = document.getElementById('customerEmail');
-
-    if (emailToggle && emailInputContainer && customerEmail) {
-      emailToggle.addEventListener('change', function() {
-        if (this.checked) {
-          emailInputContainer.classList.add('active');
-          customerEmail.required = true;
-        } else {
-          emailInputContainer.classList.remove('active');
-          customerEmail.required = false;
-          customerEmail.value = '';
+document.querySelectorAll('.dropdown-option').forEach(option => {
+    option.addEventListener('click', function() {
+        const val = this.dataset.value;
+        const text = this.textContent.trim();
+        if (provinceSelector) {
+            provinceSelector.querySelector('.select-text').textContent = text;
+            provinceSelector.classList.remove('placeholder');
+            provinceSelector.classList.add('has-value');
         }
-      });
-    }
+        if (provinceHiddenInput) provinceHiddenInput.value = val;
+        provinceDropdown.classList.remove('active');
+    });
+});
 
-    // Payment Selection
-    function selectPayment(element) {
-      const allOptions = document.querySelectorAll('.payment-option');
-      allOptions.forEach(opt => opt.classList.remove('selected'));
-      element.classList.add('selected');
-    }
+const emailToggle = document.getElementById('emailToggle');
+if (emailToggle) {
+    emailToggle.addEventListener('change', function() {
+        const container = document.getElementById('emailInputContainer');
+        const input = document.getElementById('customerEmail');
+        if (container) container.classList.toggle('active', this.checked);
+        if (input) input.required = this.checked;
+    });
+}
 
-    // Get Selected Payment Method
-    function getSelectedPaymentMethod() {
-      const selected = document.querySelector('.payment-option.selected');
-      return selected ? selected.getAttribute('data-method') : 'khqr';
-    }
-
-    // Form Submission
-    const checkoutForm = document.getElementById('checkoutForm');
-    if (checkoutForm) {
-      checkoutForm.addEventListener('submit', async (e) => {
+const checkoutForm = document.getElementById('checkoutForm');
+if (checkoutForm) {
+    checkoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (!window.dataSdk) {
-          showToast('Order system not available', 'error');
-          return;
-        }
-
-        if (orderHistory.length >= 999) {
-          showToast('Maximum limit of 999 orders reached. Please contact support.', 'error');
-          return;
+        if (provinceHiddenInput && !provinceHiddenInput.value) {
+            alert("Please select a province.");
+            return;
         }
 
         const submitBtn = document.getElementById('submitBtn');
-        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loading = document.getElementById('loadingOverlay');
 
         if (submitBtn) submitBtn.disabled = true;
-        if (loadingOverlay) loadingOverlay.classList.add('active');
+        if (loading) loading.classList.add('active');
 
-        const customerName = document.getElementById('customerName').value;
-        const customerPhone = document.getElementById('customerPhone').value;
-        const shippingAddress = document.getElementById('shippingAddress').value;
-        const deliveryNote = document.getElementById('deliveryNote').value;
-        const shippingProvince = document.getElementById('shippingProvince').value;
-        const shippingPostal = document.getElementById('shippingPostal').value;
-        const totalAmount = document.getElementById('totalAmount').textContent;
-        const paymentMethod = getSelectedPaymentMethod();
-
-        let customerEmailValue = '';
-        if (emailToggle && emailToggle.checked) {
-          customerEmailValue = document.getElementById('customerEmail').value;
-        }
-
-        const orderId = generateOrderId();
-
+        const orderId = `NW-${Date.now().toString().slice(-6)}`;
         const orderData = {
-          order_id: orderId,
-          customer_name: customerName,
-          customer_email: customerEmailValue,
-          customer_phone: customerPhone,
-          shipping_address: shippingAddress,
-          delivery_note: deliveryNote,
-          shipping_province: shippingProvince,
-          shipping_postal: shippingPostal,
-          payment_method: paymentMethod,
-          total_amount: totalAmount,
-          order_date: new Date().toISOString(),
-          status: 'pending'
+            order_id: orderId,
+            customer: {
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                email: document.getElementById('customerEmail')?.value || 'N/A',
+                address: document.getElementById('shippingAddress').value,
+                province: provinceHiddenInput?.value,
+                postal: document.getElementById('shippingPostal')?.value || ''
+            },
+            items: cartItems,
+            total_price: document.getElementById('totalAmount').textContent,
+            payment_method: 'KHQR',
+            status: 'pending_payment',
+            created_at: new Date().toISOString()
         };
+
+        sessionStorage.setItem('PENDING_ORDER', JSON.stringify(orderData));
+
+        if (window.dataSdk) {
+            await window.dataSdk.create(orderData);
+        }
 
         await new Promise(resolve => setTimeout(resolve, 1500));
 
-        const createResult = await window.dataSdk.create(orderData);
+        localStorage.removeItem(CART_KEY);
+        window.location.href = 'payment.html';
+    });
+}
 
-        if (loadingOverlay) loadingOverlay.classList.remove('active');
-        if (submitBtn) submitBtn.disabled = false;
-
-        if (createResult.isOk) {
-          showSuccessModal(orderId);
-          checkoutForm.reset();
-          
-          // Reset province dropdown
-          if (provinceSelector && provinceHiddenInput) {
-            const selectText = provinceSelector.querySelector('.select-text');
-            if (selectText) selectText.textContent = 'Select a province';
-            provinceSelector.classList.add('placeholder');
-            provinceSelector.classList.remove('has-value');
-            provinceHiddenInput.value = '';
-            selectedProvince = '';
-            provinceOptions.forEach(opt => opt.classList.remove('selected'));
-          }
-          
-          if (emailInputContainer) emailInputContainer.classList.remove('active');
-          const firstPaymentOption = document.querySelector('.payment-option[data-method="khqr"]');
-          if (firstPaymentOption) {
-            selectPayment(firstPaymentOption);
-          }
-          
-          // Reset quantity inputs
-          const allQtyInputs = document.querySelectorAll('.qty-input');
-          allQtyInputs.forEach(input => {
-            input.value = 1;
-          });
-          updateOrderTotal();
-        } else {
-          showToast('Failed to place order. Please try again.', 'error');
-        }
-      });
-    }
-
-    // Show Success Modal
-    function showSuccessModal(orderId) {
-      const modal = document.getElementById('successModal');
-      const orderNumber = document.getElementById('orderNumber');
-
-      if (orderNumber) {
-        orderNumber.textContent = `ORDER #${orderId}`;
-      }
-
-      if (modal) {
-        modal.classList.add('active');
-      }
-    }
-
-    // Close Success Modal
-    function closeSuccessModal() {
-      const modal = document.getElementById('successModal');
-      if (modal) {
-        modal.classList.remove('active');
-      }
-    }
-
-    // Toast Notification
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      if (!toast) return;
-
-      toast.textContent = message;
-      toast.className = 'toast show';
-      
-      if (type === 'error') {
-        toast.classList.add('error');
-      } else if (type === 'success') {
-        toast.classList.add('success');
-      }
-
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => {
-          toast.className = 'toast';
-        }, 300);
-      }, 3000);
-    }
-
-    // Element SDK Configuration
-    const defaultConfig = {
-      page_title: 'SECURE CHECKOUT',
-      brand_name: 'NEXUS WEAR',
-      success_message: 'ORDER CONFIRMED!',
-      footer_text: '© 2024 NEXUS WEAR. Secure Checkout.',
-      background_color: '#F5F5F5',
-      surface_color: '#000000',
-      text_color: '#000000',
-      primary_action_color: '#FF0000',
-      secondary_action_color: '#666666',
-      font_family: 'Inter',
-      font_size: 16
-    };
-
-    async function onConfigChange(config) {
-      const pageTitle = config.page_title || defaultConfig.page_title;
-      const brandName = config.brand_name || defaultConfig.brand_name;
-      const successMessage = config.success_message || defaultConfig.success_message;
-      const footerText = config.footer_text || defaultConfig.footer_text;
-
-      const pageTitleEl = document.getElementById('pageTitle');
-      if (pageTitleEl) pageTitleEl.textContent = pageTitle;
-
-      const brandNameEl = document.getElementById('brandName');
-      if (brandNameEl) brandNameEl.textContent = brandName;
-
-      const successTitleEl = document.getElementById('successTitle');
-      if (successTitleEl) successTitleEl.textContent = successMessage;
-
-      const footerTextEl = document.getElementById('footerText');
-      if (footerTextEl) footerTextEl.textContent = footerText;
-
-      const bgColor = config.background_color || defaultConfig.background_color;
-      const surfaceColor = config.surface_color || defaultConfig.surface_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
-
-      document.body.style.background = bgColor;
-      document.body.style.color = textColor;
-
-      const submitBtn = document.getElementById('submitBtn');
-      if (submitBtn) {
-        submitBtn.style.background = primaryColor;
-      }
-
-      const checkoutHeader = document.querySelector('.checkout-header');
-      if (checkoutHeader) {
-        checkoutHeader.style.background = surfaceColor;
-      }
-
-      const checkoutFooter = document.querySelector('.checkout-footer');
-      if (checkoutFooter) {
-        checkoutFooter.style.background = surfaceColor;
-      }
-
-      const summaryTotal = document.querySelector('.summary-total');
-      if (summaryTotal) {
-        summaryTotal.style.background = surfaceColor;
-      }
-
-      const successIcon = document.querySelector('.success-icon');
-      if (successIcon) {
-        successIcon.style.background = surfaceColor;
-      }
-
-      const customFont = config.font_family || defaultConfig.font_family;
-      const baseSize = config.font_size || defaultConfig.font_size;
-      const baseFontStack = '-apple-system, BlinkMacSystemFont, sans-serif';
-
-      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
-      document.body.style.fontSize = `${baseSize}px`;
-
-      if (pageTitleEl) {
-        pageTitleEl.style.fontSize = `${baseSize * 3.5}px`;
-      }
-
-      const sectionTitles = document.querySelectorAll('.section-title, .summary-title');
-      sectionTitles.forEach(title => {
-        title.style.fontSize = `${baseSize * 1.75}px`;
-      });
-    }
-
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => {
-                config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            },
-            {
-              get: () => config.surface_color || defaultConfig.surface_color,
-              set: (value) => {
-                config.surface_color = value;
-                window.elementSdk.setConfig({ surface_color: value });
-              }
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => {
-                config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            },
-            {
-              get: () => config.primary_action_color || defaultConfig.primary_action_color,
-              set: (value) => {
-                config.primary_action_color = value;
-                window.elementSdk.setConfig({ primary_action_color: value });
-              }
-            },
-            {
-              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
-              set: (value) => {
-                config.secondary_action_color = value;
-                window.elementSdk.setConfig({ secondary_action_color: value });
-              }
-            }
-          ],
-          borderables: [],
-          fontEditable: {
-            get: () => config.font_family || defaultConfig.font_family,
-            set: (value) => {
-              config.font_family = value;
-              window.elementSdk.setConfig({ font_family: value });
-            }
-          },
-          fontSizeable: {
-            get: () => config.font_size || defaultConfig.font_size,
-            set: (value) => {
-              config.font_size = value;
-              window.elementSdk.setConfig({ font_size: value });
-            }
-          }
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ['page_title', config.page_title || defaultConfig.page_title],
-          ['brand_name', config.brand_name || defaultConfig.brand_name],
-          ['success_message', config.success_message || defaultConfig.success_message],
-          ['footer_text', config.footer_text || defaultConfig.footer_text]
-        ])
-      });
-    }
-
-    // Initialize
-    initializeOrderSystem();
+document.addEventListener('DOMContentLoaded', initializeOrderSystem);
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ad3253131834ba6',t:'MTc2NTYwNDYyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
  </html>
