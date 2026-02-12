@@ -1645,7 +1645,7 @@
         }
 
         function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('NEXUS_CART')) || [];
+            const cart = JSON.parse(localStorage.getItem('BARDS_CART')) || [];
             const count = cart.reduce((total, item) => total + (item.quantity || 0), 0);
             const badge = document.getElementById('cartBadge');
             
