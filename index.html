@@ -1644,13 +1644,13 @@
             };
         }
 
-        // Update cart badge in UI
         function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('NEXUS_CART')) || [];
+            const count = cart.reduce((total, item) => total + (item.quantity || 0), 0);
             const badge = document.getElementById('cartBadge');
+            
             if (!badge) return;
 
-            const count = getCartCount();
-            
             badge.textContent = count;
             
             if (count > 0) {
@@ -1659,6 +1659,7 @@
                 badge.classList.remove('active');
             }
         }
+
         
         // ============================================
         // CAROUSEL LISTING - DYNAMIC IMPLEMENTATION
@@ -2032,16 +2033,8 @@
         // GLOBAL CART FUNCTIONS (for use in other pages)
         // ============================================
         
-        // Make cart functions globally available
-        window.nexusCart = {
-            addToCart,
-            removeFromCart,
-            updateCartQty,
-            getCartItems,
-            getCartCount,
-            getCartTotal,
-            clearCart
-        };
+   window.addEventListener('pageshow', updateCartBadge);
+   updateCartBadge();
     </script>
  </body>
 </html>
