@@ -1,254 +1,152 @@
 <!doctype html>
 <html lang="en" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KHQR Payment - NEXUS WEAR</title>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-  <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'nexus-black': '#0a0a0a',
-                        'nexus-red': '#dc2626',
-                        'nexus-dark': '#1a1a1a',
-                        'nexus-gray': '#2a2a2a',
-                        'nexus-light': '#f5f5f5'
-                    },
-                    fontFamily: {
-                        'bebas': ['Bebas Neue', 'sans-serif'],
-                        'inter': ['Inter', 'sans-serif']
-                    }
-                }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHQR Payment - NEXUS WEAR</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <style>
+        .gradient-border { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 2px; }
+        .qr-glow { box-shadow: 0 0 40px rgba(220, 38, 38, 0.2); }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: #dc2626; animation: scan 2s linear infinite; opacity: 0.5; }
+        @keyframes scan { 0% { top: 10%; } 100% { top: 90%; } }
+        .confetti { position: absolute; width: 8px; height: 8px; animation: fall 3s ease-in-out forwards; }
+        @keyframes fall { to { transform: translateY(500px) rotate(720deg); opacity: 0; } }
+    </style>
+</head>
+<body class="h-full bg-[#0a0a0a] font-sans text-white">
+    <div class="max-w-lg mx-auto px-4 py-8">
+        
+        <div id="waiting-state" class="text-center">
+            <div class="bg-[#1a1a1a] rounded-2xl p-6 mb-6 border border-gray-800 text-left">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-gray-400 text-sm">Order: <span id="order-id" class="text-white font-mono">--</span></span>
+                    <span id="countdown" class="text-red-500 font-mono text-sm">15:00</span>
+                </div>
+                <p class="text-gray-400 text-xs uppercase tracking-widest">Total Amount</p>
+                <p id="total-amount" class="text-5xl font-bold mt-1">$0.00</p>
+            </div>
+
+            <div class="gradient-border rounded-3xl mb-8">
+                <div class="bg-[#1a1a1a] rounded-3xl p-8">
+                    <div class="flex items-center justify-center gap-2 mb-6 text-xl font-bold tracking-tighter">
+                        <span class="text-white">KH</span><span class="text-red-600">QR</span>
+                        <div class="w-px h-4 bg-gray-700 mx-2"></div>
+                        <span class="text-sm text-gray-400">ABA BANK</span>
+                    </div>
+
+                    <div class="relative bg-white p-4 rounded-xl qr-glow inline-block">
+                        <div class="scan-line"></div>
+                        <div id="qr-code" class="w-56 h-56 flex items-center justify-center bg-gray-50">
+                            </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <p class="font-bold text-white uppercase" id="merchant-display">POEUY LOK</p>
+                        <p class="text-gray-500 text-xs">Scan with ABA Mobile</p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="simulate-btn" class="w-full bg-red-600 hover:bg-red-700 py-4 rounded-xl font-bold shadow-lg transition-all">
+                CONFIRM PAYMENT
+            </button>
+        </div>
+
+        <div id="success-state" class="hidden text-center py-10">
+            <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
+            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+            </div>
+            <h2 class="text-3xl font-bold mb-2">SUCCESSFUL!</h2>
+            <p class="text-gray-400 mb-8">Your payment has been verified.</p>
+            <button onclick="window.location.href='index.html'" class="w-full bg-[#1a1a1a] border border-gray-700 py-4 rounded-xl font-bold">CONTINUE SHOPPING</button>
+        </div>
+
+    </div>
+
+    <script>
+        const MY_CONFIG = {
+            abaAccount: "013946223", 
+            merchantName: "POEUY LOK",
+            city: "Phnom Penh"
+        };
+
+        function createKHQR(amount, orderId) {
+            const tag = (id, val) => {
+                const s = val.toString();
+                return id.toString().padStart(2, '0') + s.length.toString().padStart(2, '0') + s;
+            };
+
+            // โครงสร้าง Tag 29 ตาม Payload ที่คุณส่งมา (ABA P2P)
+            const tag29_inner = 
+                tag(0, "abaakhppxxx@aba") + 
+                tag(1, "013946224") + 
+                tag(2, "ABA Bank") + 
+                tag(6, "abaP2P") + 
+                tag(12, "623C91ADA8F5") + 
+                tag(20, "013946224") + 
+                tag(30, MY_CONFIG.abaAccount) + 
+                tag(40, "Dual");
+
+            let payload = "000201";
+            payload += "010212"; // 12 = Dynamic
+            payload += tag(29, tag29_inner);
+            payload += "52040000";
+            payload += "5303840"; // USD
+            payload += tag(54, amount.toFixed(2));
+            payload += "5802KH";
+            payload += tag(59, MY_CONFIG.merchantName);
+            payload += tag(60, MY_CONFIG.city);
+            payload += tag(62, tag(1, orderId));
+            payload += "6304"; 
+
+            return payload;
+        }
+
+        function init() {
+            const stored = sessionStorage.getItem('PENDING_ORDER');
+            const data = stored ? JSON.parse(stored) : { order_id: "NW-001", total_price: "1.30" };
+            const price = parseFloat(data.total_price.toString().replace('$', ''));
+
+            document.getElementById('order-id').textContent = data.order_id;
+            document.getElementById('total-amount').textContent = `$${price.toFixed(2)}`;
+
+            const khqr = createKHQR(price, data.order_id);
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(khqr)}&ecc=H`;
+            document.getElementById('qr-code').innerHTML = `<img src="${qrUrl}" class="w-full h-full">`;
+
+            // Countdown
+            let sec = 900;
+            const timer = setInterval(() => {
+                sec--;
+                const m = Math.floor(sec/60), s = sec%60;
+                document.getElementById('countdown').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if(sec <= 0) clearInterval(timer);
+            }, 1000);
+
+            // Success Click
+            document.getElementById('simulate-btn').onclick = () => {
+                document.getElementById('waiting-state').classList.add('hidden');
+                document.getElementById('success-state').classList.remove('hidden');
+                localStorage.removeItem('NEXUS_CART');
+                createConfetti();
+            };
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            for (let i = 0; i < 40; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + '%';
+                c.style.backgroundColor = ['#dc2626','#ffffff','#22c55e'][Math.floor(Math.random()*3)];
+                c.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(c);
             }
         }
+
+        document.addEventListener('DOMContentLoaded', init);
     </script>
-  <style>
-        html, body { height: 100%; }
-        .gradient-border { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 2px; }
-        .qr-glow { box-shadow: 0 0 60px rgba(220, 38, 38, 0.3), 0 0 100px rgba(220, 38, 38, 0.1); }
-        .pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse-ring { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
-        .waiting-dots::after { content: ''; animation: dots 1.5s steps(4, end) infinite; }
-        @keyframes dots { 0%, 20% { content: ''; } 40% { content: '.'; } 60% { content: '..'; } 80%, 100% { content: '...'; } }
-        .scan-line { position: absolute; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #dc2626, transparent); animation: scan 2s ease-in-out infinite; }
-        @keyframes scan { 0%, 100% { top: 10%; opacity: 0; } 50% { top: 90%; opacity: 1; } }
-        .float-animation { animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .success-checkmark { animation: checkmark 0.5s ease-in-out forwards; }
-        @keyframes checkmark { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
-        .confetti { position: absolute; width: 10px; height: 10px; animation: confetti-fall 3s ease-in-out forwards; }
-        @keyframes confetti-fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(400px) rotate(720deg); opacity: 0; } }
-    </style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="h-full bg-nexus-black font-inter text-white overflow-auto">
-  <div id="app-wrapper" class="min-h-full w-full flex flex-col">
-   <header class="bg-nexus-black border-b border-nexus-gray/50 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="flex items-center justify-between h-16">
-      <div class="flex items-center gap-3">
-       <div class="w-10 h-10 bg-nexus-red rounded-lg flex items-center justify-center"><span class="font-bebas text-xl text-white">NW</span></div>
-       <span id="merchant-name" class="font-bebas text-2xl tracking-wider text-white">NEXUS WEAR</span>
-      </div>
-      <div class="flex items-center gap-2 text-nexus-light/60 text-sm">
-       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-       <span>Secure KHQR Payment</span>
-      </div>
-     </div>
-    </div>
-   </header>
-
-   <main class="flex-1 py-6 sm:py-10">
-    <div class="max-w-lg mx-auto px-4">
-     <div id="payment-container">
-      
-      <div id="waiting-state" class="text-center">
-       <div class="bg-nexus-dark rounded-2xl p-6 mb-6 border border-nexus-gray/30">
-        <div class="flex justify-between text-sm text-nexus-light/60 mb-2">
-         <span>Order ID: <span id="order-id" class="text-white font-mono">#NXW-LOADING</span></span>
-         <span>Expires in: <span id="countdown" class="text-nexus-red font-mono">15:00</span></span>
-        </div>
-        <div class="h-px bg-nexus-gray/50 my-3"></div>
-        <p class="text-nexus-light/60 text-sm">Total Amount</p>
-        <p id="total-amount" class="font-bebas text-6xl text-white tracking-widest">$0.00</p>
-       </div>
-
-       <div class="relative mb-8">
-        <div class="gradient-border rounded-3xl">
-         <div class="bg-nexus-dark rounded-3xl p-6 sm:p-8">
-          <div class="flex items-center justify-center gap-3 mb-6">
-            <span class="font-bebas text-3xl text-white tracking-widest">KHQR</span>
-            <div class="w-px h-6 bg-nexus-gray"></div>
-            <img src="https://bakong.nbc.org.kh/assets/img/bakong-logo-white.png" class="h-8" alt="Bakong">
-          </div>
-
-          <div class="relative qr-glow rounded-2xl bg-white p-4 float-animation">
-           <div class="scan-line"></div>
-           <div id="qr-code" class="w-56 h-56 mx-auto bg-white flex items-center justify-center text-black">
-               <p class="text-xs animate-pulse">Generating Secure QR...</p>
-           </div>
-           <div class="mt-4 text-center">
-            <p id="display-merchant-name" class="text-nexus-dark font-bold text-sm tracking-tight uppercase">NEXUS WEAR</p>
-            <p class="text-gray-400 text-[10px]">Individual ABA Account Payment</p>
-           </div>
-          </div>
-          <p class="mt-6 text-nexus-light/70 text-sm">Scan with <b>ABA Mobile</b> or any Banking App</p>
-         </div>
-        </div>
-       </div>
-
-       <div class="bg-nexus-gray/30 rounded-xl p-4 mb-8 border border-nexus-gray/30">
-        <div class="flex items-center justify-center gap-3">
-          <div class="w-2 h-2 bg-yellow-500 rounded-full animate-ping"></div>
-          <span class="text-yellow-500 text-sm font-medium">Waiting for your transaction...</span>
-        </div>
-       </div>
-
-       <div class="space-y-3">
-           <button id="simulate-btn" class="w-full bg-nexus-red hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-nexus-red/30 transition-all">
-             CONFIRM PAYMENT
-           </button> 
-           <button onclick="if(confirm('Cancel order?')) window.location.href='index.html'" class="w-full text-nexus-light/40 text-sm hover:text-white transition-colors">
-             Cancel Order & Return to Shop
-           </button>
-       </div>
-      </div>
-
-      <div id="success-state" class="hidden text-center py-10">
-       <div id="confetti-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-       <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 success-checkmark shadow-lg shadow-green-500/20">
-        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
-       </div>
-       <h2 class="font-bebas text-5xl text-white mb-2 tracking-widest">SUCCESS!</h2>
-       <p class="text-nexus-light/60 mb-8">We've received your payment.</p>
-       <div class="bg-nexus-dark border border-nexus-gray/50 rounded-2xl p-6 text-left mb-8">
-          <div class="flex justify-between mb-2">
-            <span class="text-nexus-light/40 text-sm">Order ID</span>
-            <span id="success-order-id" class="text-white font-mono">#NXW-000</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-nexus-light/40 text-sm">Amount Paid</span>
-            <span id="success-amount" class="text-green-500 font-bold">$0.00</span>
-          </div>
-       </div>
-       <button onclick="window.location.href='index.html'" class="w-full bg-nexus-red py-4 rounded-xl font-bold">CONTINUE SHOPPING</button>
-      </div>
-
-     </div>
-    </div>
-   </main>
-  </div>
-
-  <script>
-    // --- KHQR SETTINGS (ใช้เลขบัญชี ABA ของคุณ) ---
-    const MY_CONFIG = {
-        abaAccount: "013946223", // <--- ใส่เลขบัญชี ABA 9 หลักของคุณตรงนี้
-        merchantName: "BARDS SHOP",
-        city: "PHNOM PENH"
-    };
-
-    let currentOrder = null;
-    let timer;
-
-    // 1. Function สร้าง KHQR String มาตรฐานสำหรับ Individual Account
-    function createKHQR(amount, orderId) {
-        const tag = (id, val) => id.toString().padStart(2, '0') + val.toString().length.toString().padStart(2, '0') + val;
-        
-        // Tag 29 สำหรับเลขบัญชีธนาคาร (Individual)
-        const merchantData = tag(0, "000101") + tag(1, MY_CONFIG.abaAccount);
-        
-        let khqr = "";
-        khqr += tag(0, "01"); // Payload Ind.
-        khqr += tag(1, "12"); // Dynamic QR
-        khqr += tag(29, merchantData); 
-        khqr += tag(52, "5999"); // Merchant Category
-        khqr += tag(53, "840");  // Currency USD (840)
-        khqr += tag(54, amount.toFixed(2)); // Amount
-        khqr += tag(58, "KH");   // Country
-        khqr += tag(59, MY_CONFIG.merchantName);
-        khqr += tag(60, MY_CONFIG.city);
-        khqr += tag(62, tag(1, orderId)); // Invoice/Order ID
-        khqr += "6304"; // CRC Placeholder
-        return khqr;
-    }
-
-    // 2. Initialize ระบบตอนโหลดหน้า
-    async function startPaymentProcess() {
-        const stored = sessionStorage.getItem('PENDING_ORDER');
-        if (!stored) {
-            window.location.href = 'index.html';
-            return;
-        }
-
-        currentOrder = JSON.parse(stored);
-        const price = parseFloat(currentOrder.total_price.replace('$', ''));
-
-        // แสดงผลข้อมูลจริงบนหน้าจอ
-        document.getElementById('order-id').textContent = `#${currentOrder.order_id}`;
-        document.getElementById('total-amount').textContent = `$${price.toFixed(2)}`;
-
-        // เจนรูป QR จริง (ใช้ API ดึงรูปจาก String ที่เราสร้าง)
-        const khqrString = createKHQR(price, currentOrder.order_id);
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(khqrString)}&ecc=M`;
-        document.getElementById('qr-code').innerHTML = `<img src="${qrUrl}" class="w-full h-full p-1">`;
-
-        startTimer();
-
-        // บันทึกออเดอร์ลง Database ผ่าน SDK
-        if (window.dataSdk) {
-            await window.dataSdk.create(currentOrder);
-        }
-    }
-
-    function startTimer() {
-        let seconds = 15 * 60;
-        timer = setInterval(() => {
-            seconds--;
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            document.getElementById('countdown').textContent = `${m}:${s.toString().padStart(2, '0')}`;
-            if (seconds <= 0) clearInterval(timer);
-        }, 1000);
-    }
-
-    // 3. จัดการตอนกดปุ่ม Confirm (จ่ายเงินสำเร็จ)
-    document.getElementById('simulate-btn').addEventListener('click', () => {
-        const btn = document.getElementById('simulate-btn');
-        btn.disabled = true;
-        btn.innerHTML = "VERIFYING...";
-
-        setTimeout(() => {
-            clearInterval(timer);
-            localStorage.removeItem('NEXUS_CART'); // ล้างตะกร้าสินค้าจริง
-            
-            document.getElementById('waiting-state').classList.add('hidden');
-            document.getElementById('success-state').classList.remove('hidden');
-            
-            document.getElementById('success-order-id').textContent = `#${currentOrder.order_id}`;
-            document.getElementById('success-amount').textContent = currentOrder.total_price;
-            
-            // เอฟเฟกต์ฉลอง
-            createConfetti();
-        }, 2000);
-    });
-
-    function createConfetti() {
-        const container = document.getElementById('confetti-container');
-        for (let i = 0; i < 40; i++) {
-            const c = document.createElement('div');
-            c.className = 'confetti';
-            c.style.left = Math.random() * 100 + '%';
-            c.style.backgroundColor = ['#dc2626','#ffffff','#22c55e'][Math.floor(Math.random()*3)];
-            c.style.animationDelay = Math.random() * 2 + 's';
-            container.appendChild(c);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', startPaymentProcess);
-  </script>
- </body>
+</body>
 </html>
