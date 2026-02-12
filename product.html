@@ -238,7 +238,7 @@
         }
 
         function addToLocalStorage(newItem) {
-            let cart = JSON.parse(localStorage.getItem('ECOM_CART')) || [];
+            let cart = JSON.parse(localStorage.getItem('BARDS_CART')) || [];
             const existing = cart.findIndex(item => 
                 item.id === newItem.id && item.color === newItem.color && item.size === newItem.size
             );
@@ -246,11 +246,11 @@
             if(existing > -1) cart[existing].quantity += newItem.quantity;
             else cart.push(newItem);
 
-            localStorage.setItem('ECOM_CART', JSON.stringify(cart));
+            localStorage.setItem('BARDS_CART', JSON.stringify(cart));
         }
 
         function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('ECOM_CART')) || [];
+            const cart = JSON.parse(localStorage.getItem('BARDS_CART')) || [];
             const count = cart.reduce((total, item) => total + item.quantity, 0);
             const badge = document.getElementById('cartBadgeCount');
             if(count > 0) {
