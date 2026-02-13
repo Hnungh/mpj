@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ABA Pay</title>
+
+<!-- QR library -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<style>
+body{font-family:sans-serif;text-align:center;padding:30px;background:#f5f6fa}
+.box{background:#fff;padding:20px;border-radius:14px;max-width:420px;margin:auto;box-shadow:0 8px 25px rgba(0,0,0,.08)}
+input,select,button{padding:12px;margin:8px;width:90%;font-size:16px;border-radius:8px;border:1px solid #ddd}
+button{background:#0f9d58;color:#fff;border:none;font-weight:bold;cursor:pointer}
+button:hover{opacity:.9}
+#qrcode{margin-top:20px}
+.small{font-size:12px;color:#666;word-break:break-all}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Pay with ABA</h2>
+
+<input id="amount" type="number" step="0.01" value="1.00">
+<select id="currency">
+<option value="840">USD</option>
+<option value="116">KHR</option>
+</select>
+
+<button onclick="createPayment()">Generate Payment</button>
+
+<div id="qrcode"></div>
+<br>
+<a id="deeplink" target="_blank"></a>
+<p class="small" id="raw"></p>
+</div>
+
+<script>
+// CRC16
+function crc16(data){
+let crc=0xFFFF;
+for(let i=0;i<data.length;i++){
+let x=((crc>>8)^data.charCodeAt(i))&0xFF;
+x^=x>>4;
+crc=((crc<<8)^(x<<12)^(x<<5)^x)&0xFFFF;
+}
+return crc.toString(16).toUpperCase().padStart(4,'0');
+}
+
+function tag(id,value){
+return id+value.length.toString().padStart(2,'0')+value;
+}
+
+function generateKHQR(amount,currency){
+
+const acc="013946223"; // <<< ใส่เลขบัญชี ABA
+const name="BARDS SHOP";
+const city="PHNOM PENH";
+
+// ABA account info
+const gui=tag("00","abaakhpp");
+const accTag=tag("01",acc);
+const merchant=tag("29",gui+accTag);
+
+let data="";
+data+=tag("00","01");
+data+=tag("01","12");
+data+=merchant;
+data+=tag("52","5999");
+data+=tag("53",currency);
+data+=tag("54",amount);
+data+=tag("58","KH");
+data+=tag("59",name);
+data+=tag("60",city);
+data+="6304";
+
+return data+crc16(data);
+}
+
+function createPayment(){
+
+const amount=document.getElementById("amount").value;
+const currency=document.getElementById("currency").value;
+
+const qr=generateKHQR(amount,currency);
+
+// show text
+document.getElementById("raw").innerText=qr;
+
+// QR image
+document.getElementById("qrcode").innerHTML="";
+new QRCode(document.getElementById("qrcode"),{
+text:qr,width:230,height:230
+});
+
+// create deeplink
+const base64=btoa(qr);
+const link="https://link.ababank.com/qr/"+base64;
+
+const btn=document.getElementById("deeplink");
+btn.href=link;
+btn.innerText="👉 Open ABA App & Pay";
+}
+</script>
+
+</body>
+</html>
