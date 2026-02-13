@@ -1,84 +1,101 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <title>ABA KHQR Generator</title>
-    <script src="https://cdn.jsdelivr.net"></script>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding: 20px; }
-        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
-    </style>
+<meta charset="UTF-8">
+<title>ABA KHQR Generator</title>
+
+<!-- IMPORTANT: ตัวนี้ทำให้ QR แสดง -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    #qrcode { margin-top: 20px; display: flex; justify-content: center; }
+    input, select, button { padding:8px; margin:4px; }
+</style>
 </head>
+
 <body>
-    <h2>ABA KHQR Dynamic Generator</h2>
-    
-    <div style="margin-bottom: 10px;">
-        <input type="text" id="amount" placeholder="ระบุจำนวนเงิน" value="1.00">
-        <select id="currency">
-            <option value="840">USD</option>
-            <option value="116">KHR</option>
-        </select>
-        <button onclick="generateKHQR()">สร้าง QR Code</button>
-    </div>
+<h2>ABA KHQR Dynamic Generator</h2>
 
-    <div id="qrcode"></div>
-    <p id="qr-text" style="word-break: break-all; color: #666; font-size: 12px;"></p>
+<div style="margin-bottom: 10px;">
+    <input type="number" step="0.01" id="amount" placeholder="ระบุจำนวนเงิน" value="1.00">
+    <select id="currency">
+        <option value="840">USD</option>
+        <option value="116">KHR</option>
+    </select>
+    <button onclick="generateKHQR()">สร้าง QR Code</button>
+</div>
 
-    <script>
-        // ฟังก์ชันคำนวณ CRC16 (CCITT-FALSE) ตามมาตรฐาน EMVCo
-        function crc16(data) {
-            let crc = 0xFFFF;
-            for (let i = 0; i < data.length; i++) {
-                let x = ((crc >> 8) ^ data.charCodeAt(i)) & 0xFF;
-                x ^= x >> 4;
-                crc = ((crc << 8) ^ (x << 12) ^ (x << 5) ^ x) & 0xFFFF;
-            }
-            return crc.toString(16).toUpperCase().padStart(4, '0');
+<div id="qrcode"></div>
+<p id="qr-text" style="word-break: break-all; color: #666; font-size: 12px;"></p>
+
+<script>
+
+// ================= CRC16 (EMVCo) =================
+function crc16(data) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < data.length; i++) {
+        crc ^= data.charCodeAt(i) << 8;
+        for (let j = 0; j < 8; j++) {
+            crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
         }
+    }
+    return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+}
 
-        // ฟังก์ชันจัดรูปแบบ Tag (ID + Length + Value)
-        function formatTag(id, value) {
-            const len = value.length.toString().padStart(2, '0');
-            return id + len + value;
-        }
+// ================= Tag formatter =================
+function formatTag(id, value) {
+    const len = value.length.toString().padStart(2, '0');
+    return id + len + value;
+}
 
-        function generateKHQR() {
-            const merchantID = "1407908"; // *** ใส่ ABA Merchant ID ของคุณที่นี่ ***
-            const merchantName = "BARDS";
-            const amount = document.getElementById('amount').value;
-            const currency = document.getElementById('currency').value;
+// ================= MAIN =================
+function generateKHQR() {
 
-            // 1. สร้าง Merchant Account Info (Tag 30) สำหรับ ABA
-            const subTag00 = formatTag("00", "jp.org.jsqr");
-            const subTag01 = formatTag("01", merchantID); 
-            const merchantAccountInfo = formatTag("30", subTag00 + subTag01);
+    const merchantID = "1407908"; // <<< ใส่ Merchant KHQR จริง
+    const merchantName = "BARDS";
 
-            // 2. รวบรวม Tags ทั้งหมด (ไม่รวม CRC)
-            let qrData = "";
-            qrData += formatTag("00", "01");               // Payload Format
-            qrData += formatTag("01", "12");               // Dynamic QR
-            qrData += merchantAccountInfo;                 // Tag 30
-            qrData += formatTag("52", "5999");             // Merchant Category
-            qrData += formatTag("53", currency);           // Currency (840 หรือ 116)
-            qrData += formatTag("54", amount);             // Amount
-            qrData += formatTag("58", "KH");               // Country
-            qrData += formatTag("59", merchantName);       // Merchant Name
-            qrData += formatTag("60", "Phnom Penh");      // City
-            qrData += "6304";                              // Tag CRC (ID 63, Len 04)
+    let amount = document.getElementById('amount').value;
+    if (!amount || amount <= 0) amount = "1.00";
+    amount = parseFloat(amount).toFixed(2);
 
-            // 3. คำนวณหาค่า CRC และต่อท้าย
-            const finalCRC = crc16(qrData);
-            const finalQR = qrData + finalCRC;
+    const currency = document.getElementById('currency').value;
 
-            // แสดงผล
-            document.getElementById('qr-text').innerText = finalQR;
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: finalQR,
-                width: 256,
-                height: 256
-            });
-        }
-    </script>
+    // ABA Merchant Account (Tag 30)
+    const subTag00 = formatTag("00", "jp.org.jsqr");
+    const subTag01 = formatTag("01", merchantID);
+    const merchantAccountInfo = formatTag("30", subTag00 + subTag01);
+
+    let qrData = "";
+    qrData += formatTag("00", "01");       // Payload format
+    qrData += formatTag("01", "12");       // Dynamic
+    qrData += merchantAccountInfo;
+    qrData += formatTag("52", "5999");     // Category
+    qrData += formatTag("53", currency);
+    qrData += formatTag("54", amount);
+    qrData += formatTag("58", "KH");
+    qrData += formatTag("59", merchantName);
+    qrData += formatTag("60", "Phnom Penh");
+    qrData += "6304";
+
+    const finalCRC = crc16(qrData);
+    const finalQR = qrData + finalCRC;
+
+    // แสดง text
+    document.getElementById('qr-text').innerText = finalQR;
+
+    // ล้าง QR เก่า
+    document.getElementById('qrcode').innerHTML = "";
+
+    // สร้าง QR ใหม่
+    new QRCode(document.getElementById("qrcode"), {
+        text: finalQR,
+        width: 260,
+        height: 260,
+        correctLevel: QRCode.CorrectLevel.M
+    });
+}
+
+</script>
 </body>
 </html>
