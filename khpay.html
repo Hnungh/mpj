@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ABA KHQR Generator</title>
+    <script src="https://cdn.jsdelivr.net"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; }
+        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+    <h2>ABA KHQR Dynamic Generator</h2>
+    
+    <div style="margin-bottom: 10px;">
+        <input type="text" id="amount" placeholder="ระบุจำนวนเงิน" value="1.00">
+        <select id="currency">
+            <option value="840">USD</option>
+            <option value="116">KHR</option>
+        </select>
+        <button onclick="generateKHQR()">สร้าง QR Code</button>
+    </div>
+
+    <div id="qrcode"></div>
+    <p id="qr-text" style="word-break: break-all; color: #666; font-size: 12px;"></p>
+
+    <script>
+        // ฟังก์ชันคำนวณ CRC16 (CCITT-FALSE) ตามมาตรฐาน EMVCo
+        function crc16(data) {
+            let crc = 0xFFFF;
+            for (let i = 0; i < data.length; i++) {
+                let x = ((crc >> 8) ^ data.charCodeAt(i)) & 0xFF;
+                x ^= x >> 4;
+                crc = ((crc << 8) ^ (x << 12) ^ (x << 5) ^ x) & 0xFFFF;
+            }
+            return crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        // ฟังก์ชันจัดรูปแบบ Tag (ID + Length + Value)
+        function formatTag(id, value) {
+            const len = value.length.toString().padStart(2, '0');
+            return id + len + value;
+        }
+
+        function generateKHQR() {
+            const merchantID = "1407908"; // *** ใส่ ABA Merchant ID ของคุณที่นี่ ***
+            const merchantName = "BARDS";
+            const amount = document.getElementById('amount').value;
+            const currency = document.getElementById('currency').value;
+
+            // 1. สร้าง Merchant Account Info (Tag 30) สำหรับ ABA
+            const subTag00 = formatTag("00", "jp.org.jsqr");
+            const subTag01 = formatTag("01", merchantID); 
+            const merchantAccountInfo = formatTag("30", subTag00 + subTag01);
+
+            // 2. รวบรวม Tags ทั้งหมด (ไม่รวม CRC)
+            let qrData = "";
+            qrData += formatTag("00", "01");               // Payload Format
+            qrData += formatTag("01", "12");               // Dynamic QR
+            qrData += merchantAccountInfo;                 // Tag 30
+            qrData += formatTag("52", "5999");             // Merchant Category
+            qrData += formatTag("53", currency);           // Currency (840 หรือ 116)
+            qrData += formatTag("54", amount);             // Amount
+            qrData += formatTag("58", "KH");               // Country
+            qrData += formatTag("59", merchantName);       // Merchant Name
+            qrData += formatTag("60", "Phnom Penh");      // City
+            qrData += "6304";                              // Tag CRC (ID 63, Len 04)
+
+            // 3. คำนวณหาค่า CRC และต่อท้าย
+            const finalCRC = crc16(qrData);
+            const finalQR = qrData + finalCRC;
+
+            // แสดงผล
+            document.getElementById('qr-text').innerText = finalQR;
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), {
+                text: finalQR,
+                width: 256,
+                height: 256
+            });
+        }
+    </script>
+</body>
+</html>
