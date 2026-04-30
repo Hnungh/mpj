@@ -48,12 +48,10 @@
         /* BODY */
         .p-body { padding:20px 18px 0; max-width:800px; margin:0 auto; }
         .price-line { display:flex; align-items:baseline; gap:8px; }
-        .price { font-family:'DM Mono',monospace; font-size:32px; font-weight:500; color:var(--orange); line-height:1; }
+        .price { font-family:'DM Mono',monospace; font-size:32px; font-weight:500; color:#C8001A; line-height:1; }
         .price-currency { font-size:12px; color:var(--gray-400); font-weight:500; letter-spacing:.5px; }
         .p-name { font-size:17px; font-weight:600; margin-top:7px; line-height:1.35; color:var(--black); letter-spacing:-.2px; }
         .meta-line { display:flex; align-items:center; gap:8px; margin-top:9px; flex-wrap:wrap; }
-        .stars { font-size:11px; color:var(--orange); }
-        .rating-val { font-size:12px; font-weight:600; }
         .meta-dot { width:3px; height:3px; border-radius:50%; background:var(--gray-300); }
         .meta-chip { font-size:10px; font-weight:600; padding:3px 8px; border-radius:6px; }
         .chip-green { background:#DCFCE7; color:var(--green); }
@@ -105,7 +103,7 @@
         .sheet-handle { width:38px; height:4px; border-radius:2px; background:var(--gray-200); margin:10px auto 20px; }
         .sheet-header { display:flex; gap:14px; align-items:flex-end; margin-bottom:22px; }
         .sheet-thumb { width:72px; height:72px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--gray-200); }
-        .sheet-price { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--orange); }
+        .sheet-price { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:#C8001A; }
         .sheet-hint { font-size:10px; color:var(--gray-400); font-weight:600; letter-spacing:1.5px; text-transform:uppercase; margin-top:5px; }
         .sh-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gray-400); margin-bottom:10px; }
         .sh-chips { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:18px; }
@@ -131,15 +129,22 @@
         .fg-count { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,.5); }
         .fg-close { width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.1); border:none; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
         .fg-track { flex:1; display:flex; align-items:center; transition:transform .4s cubic-bezier(.22,1,.36,1); }
-        .fg-slide { min-width:100%; display:flex; align-items:center; justify-content:center; padding:0 18px; }
-        .fg-slide img { width:100%; max-height:78vh; object-fit:contain; border-radius:10px; }
+        .fg-slide { min-width:100%; display:flex; align-items:center; justify-content:center; }
+        .fg-slide img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:0; }
 
-        /* TOAST */
-        .toast { position:fixed; bottom:92px; left:50%; transform:translateX(-50%) translateY(8px); background:var(--black); color:#fff; padding:11px 20px; border-radius:24px; font-size:13px; font-weight:500; z-index:9999; opacity:0; transition:opacity .25s,transform .25s; white-space:nowrap; display:flex; align-items:center; gap:8px; pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.22); }
+        /* TOAST — minimal popup */
+        .toast { position:fixed; bottom:96px; left:50%; transform:translateX(-50%) translateY(6px); background:var(--black); color:#fff; padding:12px 18px 12px 14px; border-radius:14px; font-size:13px; font-weight:500; z-index:9999; opacity:0; transition:opacity .28s,transform .28s; white-space:nowrap; display:flex; align-items:center; gap:10px; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px; }
         .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast-icon-wrap { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .toast-icon-wrap.success { background:rgba(22,163,74,.25); }
+        .toast-icon-wrap.warn    { background:rgba(234,179,8,.2); }
+        .toast-text { display:flex; flex-direction:column; gap:1px; }
+        .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
+        .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); font-weight:400; }
 
         /* ANIM */
         @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
         .fu { animation:fadeUp .4s ease both; }
         .d1 { animation-delay:.07s; } .d2 { animation-delay:.14s; } .d3 { animation-delay:.21s; }
 
@@ -161,7 +166,7 @@
     </div>
     <div class="cart-wrap">
         <a href="cart.html" class="icon-btn">
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="6.5" cy="15.5" r="1"/><circle cx="14" cy="15.5" r="1"/><path d="M1 1h3l1.9 9.4a1.4 1.4 0 0 0 1.4 1.1h6.9a1.4 1.4 0 0 0 1.4-1.1L17.5 4H4.5"/></svg>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
         </a>
         <span class="cart-badge" id="cartBadge"></span>
     </div>
@@ -178,7 +183,7 @@
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="5" cy="12.5" r="1"/><circle cx="11.5" cy="12.5" r="1"/><path d="M1 1h2.5l1.6 8a1.1 1.1 0 0 0 1.1.9h5.3a1.1 1.1 0 0 0 1.1-.9l1.3-5.5H3.7"/></svg>
         ADD
     </button>
-    <button class="btn-buy" onclick="openSheet('buy')">BUY NOW →</button>
+    <button class="btn-buy" onclick="openSheet('buy')">BUY NOW</button>
 </div>
 
 <div class="mask" id="mask" onclick="hideSheet()"></div>
@@ -215,8 +220,11 @@
 </div>
 
 <div class="toast" id="toast">
-    <span id="toastIcon">✅</span>
-    <span id="toastMsg">Added to cart</span>
+    <div class="toast-icon-wrap" id="toastIconWrap"></div>
+    <div class="toast-text">
+        <div class="toast-title" id="toastTitle">Done</div>
+        <div class="toast-sub"  id="toastSub"></div>
+    </div>
 </div>
 
 <script>
@@ -271,7 +279,7 @@ const PRODUCTS = {
         rating: 4.6, reviews: 58,
         stock: 'low-stock',
         desc: 'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
-        images: ['https://hnungh.github.io/mj/img/sunglasses-retro.jpg'],
+        images: ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
         colors: [{ name:'Glossy Black', hex:'#111111' }, { name:'Tortoise', hex:'#8B5E3C' }],
         sizes: ['One Size'],
         specs: { Frame:'Acetate', Lens:'UV400', Style:'Square Retro', 'Lens Width':'52mm' }
@@ -303,17 +311,15 @@ function init() {
 
 /* ─── BUILD PAGE ─── */
 function buildPage() {
-    const filledStars  = Math.round(P.rating);
-    const starsHtml = '★'.repeat(filledStars) + '☆'.repeat(5 - filledStars);
     const stockMap = { 'in-stock': ['chip-green','In Stock'], 'low-stock': ['chip-amber','Low Stock'], 'out-of-stock': ['chip-gray','Out of Stock'] };
     const [stockCls, stockLabel] = stockMap[P.stock] || stockMap['in-stock'];
     const multiImg = P.images.length > 1;
 
+    const priceUSD = (P.price / 33).toFixed(2); // THB → USD approx
+
     const slidesHtml  = P.images.map((s,i) => `<div class="g-slide"><img src="${s}" onclick="openFg(${i})" loading="${i?'lazy':'eager'}"></div>`).join('');
     const fgHtml      = P.images.map(s => `<div class="fg-slide"><img src="${s}"></div>`).join('');
     const dotsHtml    = multiImg ? P.images.map((_,i) => `<div class="g-dot${i?'':' on'}"></div>`).join('') : '';
-    const specsHtml   = Object.entries(P.specs).map(([k,v]) =>
-        `<div class="spec-tile"><div class="spec-tile-label">${k}</div><div class="spec-tile-val">${v}</div></div>`).join('');
     const colorHtml   = P.colors.map((c,i) =>
         `<div class="c-swatch" style="background:${c.hex}" title="${c.name}" data-idx="${i}" onclick="pickColor(this,${i})"></div>`).join('');
     const sizeHtml    = P.sizes.map(s =>
@@ -330,16 +336,11 @@ function buildPage() {
 
         <div class="p-body fu d1">
             <div class="price-line">
-                <div class="price">฿${P.price.toLocaleString()}</div>
-                <div class="price-currency">THB</div>
+                <div class="price">$${priceUSD}</div>
+                <div class="price-currency">USD</div>
             </div>
             <h1 class="p-name">${P.name}</h1>
             <div class="meta-line">
-                <span class="stars">${starsHtml}</span>
-                <span class="rating-val">${P.rating}</span>
-                <div class="meta-dot"></div>
-                <span class="meta-chip chip-gray">${P.reviews.toLocaleString()} reviews</span>
-                <div class="meta-dot"></div>
                 <span class="meta-chip ${stockCls}">${stockLabel}</span>
             </div>
         </div>
@@ -362,13 +363,12 @@ function buildPage() {
         <div class="desc-section fu d3">
             <p class="sec-title">Details</p>
             <p class="desc-text">${P.desc}</p>
-            <div class="specs">${specsHtml}</div>
         </div>
         <div style="height:14px"></div>`;
 
     /* Sheet */
     document.getElementById('sheetThumb').src = P.images[0];
-    document.getElementById('sheetPrice').innerText = `฿${P.price.toLocaleString()}`;
+    document.getElementById('sheetPrice').innerText = `$${priceUSD} USD`;
     document.getElementById('colorChips').innerHTML = P.colors.map((c,i) =>
         `<div class="sh-chip" data-idx="${i}" onclick="pickColorSheet(this,${i})">${c.name}</div>`).join('');
     document.getElementById('sizeChips').innerHTML = P.sizes.map(s =>
@@ -418,7 +418,7 @@ function pickSizeSheet(el, val) {
 
 /* ─── QTY ─── */
 function changeQty(d) {
-    qty = Math.max(1, Math.min(99, qty + d));
+    qty = Math.max(1, Math.min(30, qty + d));
     document.getElementById('qtyVal').innerText = qty;
 }
 
@@ -440,8 +440,8 @@ function hideSheet() {
 
 /* ─── CONFIRM ─── */
 function handleConfirm() {
-    if (!selColor) { showToast('⚠️', 'Please select a color'); return; }
-    if (!selSize)  { showToast('⚠️', 'Please select a size');  return; }
+    if (!selColor) { showToast('warn', 'Select a color', 'Choose one of the options above'); return; }
+    if (!selSize)  { showToast('warn', 'Select a size',  'Choose your preferred size');      return; }
 
     setConfirm('loading');
 
@@ -456,7 +456,7 @@ function handleConfirm() {
             setTimeout(() => {
                 hideSheet();
                 setTimeout(() => setConfirm('idle'), 400);
-                showToast('✅', `Added — ${P.name.split(' ').slice(0,2).join(' ')}  ·  Qty ${qty}`);
+                showToast('ok', 'Added to cart', `${P.name.split(' ').slice(0,3).join(' ')} · Qty ${qty}`);
             }, 850);
         }
     }, 350);
@@ -464,10 +464,19 @@ function handleConfirm() {
 
 function setConfirm(state) {
     const btn = document.getElementById('confirmBtn');
-    const map = { idle:'idle', loading:'loading', success:'success' };
-    const txt = { idle:'CONFIRM ORDER', loading:'ADDING  ...', success:'✓  ADDED TO CART' };
-    btn.className = `confirm-btn ${map[state]}`;
-    btn.innerText = txt[state];
+    btn.className = `confirm-btn ${state}`;
+    const SVG = {
+        idle: '',
+        loading: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`,
+        success: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+    };
+    const txt = { idle:'CONFIRM ORDER', loading:'ADDING', success:'ADDED TO CART' };
+    btn.innerHTML = `${SVG[state] || ''}<span>${txt[state]}</span>`;
+    if (state === 'loading') {
+        // spin the loader icon
+        const s = btn.querySelector('svg');
+        if (s) { s.style.animation = 'spin .8s linear infinite'; }
+    }
 }
 
 /* ─── CART STORAGE ─── */
@@ -524,10 +533,17 @@ function openFg(i) {
 function closeFg() { document.getElementById('fgView').style.display='none'; }
 
 /* ─── TOAST ─── */
+const SVG_CHECK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const SVG_WARN  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+
 let _tt;
-function showToast(icon, msg) {
-    document.getElementById('toastIcon').innerText = icon;
-    document.getElementById('toastMsg').innerText  = msg;
+function showToast(type, title, sub) {
+    const wrap = document.getElementById('toastIconWrap');
+    const isWarn = type === 'warn';
+    wrap.className = `toast-icon-wrap ${isWarn ? 'warn' : 'success'}`;
+    wrap.innerHTML = isWarn ? SVG_WARN : SVG_CHECK;
+    document.getElementById('toastTitle').innerText = title;
+    document.getElementById('toastSub').innerText   = sub || '';
     const t = document.getElementById('toast');
     t.classList.add('on');
     clearTimeout(_tt);
