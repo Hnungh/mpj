@@ -1,364 +1,289 @@
 <!doctype html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus Wear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --black:    #0A0A0A;
-            --white:    #FAFAFA;
-            --gray-50:  #F9F9F7;
-            --gray-100: #F2F2F0;
-            --gray-200: #E4E4E2;
-            --gray-300: #C8C8C6;
-            --gray-400: #8A8A88;
-            --gray-600: #4A4A48;
-            --red:      #C8001A;
-            --radius:    14px;
-            --radius-sm: 10px;
-            --nav-h:     60px;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-        html { scroll-behavior:smooth; }
-        body {
-            font-family:'Space Grotesk',sans-serif;
-            background:var(--white); color:var(--black);
-            overscroll-behavior:none; padding-bottom:32px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nexus Wear</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --black:#0A0A0A; --white:#FAFAFA;
+    --gray-100:#F2F2F0; --gray-200:#E4E4E2;
+    --gray-400:#8A8A88; --gray-600:#4A4A48;
+    --orange:#FF4F00; --red:#C8001A;
+    --radius:14px; --radius-sm:10px; --nav-h:60px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--black);overscroll-behavior:none;padding-bottom:40px;}
 
-        /* ══════════════════════════════════
-           NAV — identical to product.html
-        ══════════════════════════════════ */
-        .nav {
-            position:fixed; top:0; left:0; right:0; z-index:200;
-            height:var(--nav-h);
-            display:flex; align-items:center; justify-content:space-between;
-            padding:0 18px;
-            background:rgba(250,250,250,.9);
-            backdrop-filter:blur(18px) saturate(160%);
-            -webkit-backdrop-filter:blur(18px) saturate(160%);
-            border-bottom:1px solid var(--gray-200);
-        }
-        .nav-left  { display:flex; align-items:center; gap:12px; }
-        .nav-right { display:flex; align-items:center; gap:5px; }
-        .brand {
-            font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px;
-            color:var(--black); text-decoration:none;
-        }
-        .icon-btn {
-            width:36px; height:36px; border-radius:50%;
-            background:var(--gray-100); border:none;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:background .18s,transform .12s;
-            text-decoration:none; color:var(--black); position:relative;
-        }
-        .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
-        .icon-btn.search-active { background:var(--black); color:var(--white); }
-        .cart-wrap { position:relative; }
-        .cart-badge {
-            position:absolute; top:-2px; right:-2px;
-            background:var(--black); color:#fff;
-            font-size:8px; font-weight:700; font-family:'DM Mono',monospace;
-            min-width:15px; height:15px; border-radius:8px;
-            display:none; align-items:center; justify-content:center;
-            padding:0 3px; border:1.5px solid var(--white);
-        }
+/* NAV */
+.nav{
+    position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);
+    display:flex;align-items:center;justify-content:space-between;padding:0 18px;
+    background:rgba(250,250,250,.9);
+    backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    border-bottom:1px solid var(--gray-200);
+}
+.nav-left{display:flex;align-items:center;gap:12px;}
+.nav-right{display:flex;align-items:center;gap:5px;}
+.brand{font-family:'Bebas Neue';font-size:21px;letter-spacing:3px;color:var(--black);text-decoration:none;}
+.icon-btn{
+    width:36px;height:36px;border-radius:50%;
+    background:var(--gray-100);border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:background .18s,transform .12s;
+    text-decoration:none;color:var(--black);position:relative;
+}
+.icon-btn:active{background:var(--gray-200);transform:scale(.9);}
+.icon-btn.search-active{background:var(--black);color:var(--white);}
+.cart-wrap{position:relative;}
+/* ORANGE badge — same as product.html */
+.cart-badge{
+    position:absolute;top:-2px;right:-2px;
+    background:var(--orange);color:#fff;
+    font-size:8px;font-weight:700;font-family:'DM Mono',monospace;
+    min-width:15px;height:15px;border-radius:8px;
+    display:none;align-items:center;justify-content:center;
+    padding:0 3px;border:1.5px solid var(--white);
+}
 
-        /* ══════════════════════════════════
-           SEARCH OVERLAY (tap-outside closes)
-        ══════════════════════════════════ */
-        .search-overlay {
-            position:fixed; inset:0; z-index:150;
-            display:none; /* shown when open */
-        }
-        .search-panel {
-            position:absolute; top:var(--nav-h); left:0; right:0;
-            background:var(--white); border-bottom:1px solid var(--gray-200);
-            padding:11px 18px 13px;
-            transform:translateY(-110%);
-            transition:transform .34s cubic-bezier(.22,1,.36,1);
-        }
-        .search-overlay.open .search-panel { transform:translateY(0); }
-        .search-inner {
-            display:flex; align-items:center; gap:10px;
-            background:var(--gray-100); border:1.5px solid var(--gray-200);
-            border-radius:30px; padding:0 14px; height:42px;
-            transition:border-color .2s,background .2s;
-        }
-        .search-inner:focus-within { border-color:var(--black); background:var(--white); }
-        .search-inner svg { flex-shrink:0; color:var(--gray-400); }
-        .search-inner input {
-            flex:1; border:none; background:transparent;
-            font-family:'Space Grotesk',sans-serif; font-size:13px;
-            color:var(--black); outline:none;
-        }
-        .search-inner input::placeholder { color:var(--gray-400); }
-        /* Single clear button — only one, inside the search-inner */
-        .search-clear {
-            background:none; border:none; cursor:pointer;
-            color:var(--gray-400); padding:3px;
-            display:none; align-items:center; justify-content:center;
-            flex-shrink:0; border-radius:50%;
-            transition:background .15s,color .15s;
-        }
-        .search-clear:hover { background:var(--gray-200); color:var(--black); }
-        .search-clear.on { display:flex; }
-        .search-hint {
-            font-family:'DM Mono',monospace; font-size:10px;
-            color:var(--gray-400); margin-top:9px; letter-spacing:.5px; min-height:16px;
-        }
+/* SEARCH OVERLAY — full screen, tap outside to close */
+.search-overlay{position:fixed;inset:0;z-index:150;display:none;}
+.search-panel{
+    position:absolute;top:var(--nav-h);left:0;right:0;
+    background:var(--white);border-bottom:1px solid var(--gray-200);
+    padding:11px 18px 13px;
+    transform:translateY(-110%);
+    transition:transform .34s cubic-bezier(.22,1,.36,1);
+}
+.search-overlay.open .search-panel{transform:translateY(0);}
+/* search box — NO icon inside, only input + ONE clear btn */
+.search-box{
+    display:flex;align-items:center;gap:10px;
+    background:var(--gray-100);border:1.5px solid var(--gray-200);
+    border-radius:30px;padding:0 14px;height:42px;
+    transition:border-color .2s,background .2s;
+}
+.search-box:focus-within{border-color:var(--black);background:var(--white);}
+.search-box input{
+    flex:1;border:none;background:transparent;
+    font-family:'Space Grotesk',sans-serif;font-size:13px;
+    color:var(--black);outline:none;
+}
+.search-box input::placeholder{color:var(--gray-400);}
+.search-clear{
+    background:none;border:none;cursor:pointer;
+    color:var(--gray-400);padding:3px;
+    display:none;align-items:center;justify-content:center;
+    flex-shrink:0;border-radius:50%;transition:background .15s;
+}
+.search-clear.on{display:flex;}
+.search-clear:active{background:var(--gray-200);}
+.search-hint{
+    font-family:'DM Mono',monospace;font-size:10px;
+    color:var(--gray-400);margin-top:9px;letter-spacing:.5px;min-height:16px;
+}
 
-        /* ══════════════════════════════════
-           FILTER STRIP — sticky
-        ══════════════════════════════════ */
-        .filter-strip {
-            position:sticky; top:var(--nav-h); z-index:100;
-            background:rgba(250,250,250,.92);
-            backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-            border-bottom:1px solid var(--gray-200);
-            transition:top .34s cubic-bezier(.22,1,.36,1);
-        }
-        .filter-strip.shifted { top:calc(var(--nav-h) + 92px); }
+/* FILTER STRIP */
+.filter-strip{
+    position:sticky;top:var(--nav-h);z-index:100;
+    background:rgba(250,250,250,.92);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--gray-200);
+    transition:top .34s cubic-bezier(.22,1,.36,1);
+}
+.filter-strip.shifted{top:calc(var(--nav-h) + 92px);}
+.filter-row-main{
+    display:flex;gap:7px;padding:10px 18px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.filter-row-main::-webkit-scrollbar{display:none;}
+.filter-row-sub{
+    display:flex;gap:7px;padding:0 18px 10px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.filter-row-sub::-webkit-scrollbar{display:none;}
+.filter-row-sub:empty{padding-bottom:0;}
 
-        /* row 1: main categories */
-        .filter-row-main {
-            display:flex; gap:7px; padding:10px 18px 0;
-            overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-        }
-        .filter-row-main::-webkit-scrollbar { display:none; }
+/* CHIPS — simple, no bounce */
+.f-chip{
+    height:32px;padding:0 13px;
+    border:1.5px solid var(--gray-200);border-radius:30px;
+    font-size:11px;font-weight:600;cursor:pointer;
+    background:var(--white);color:var(--gray-600);
+    white-space:nowrap;flex-shrink:0;
+    display:flex;align-items:center;gap:5px;
+    font-family:'Space Grotesk',sans-serif;
+    transition:background .18s,border-color .18s,color .18s;
+    user-select:none;
+}
+.f-chip.on{background:var(--black);border-color:var(--black);color:#fff;}
+.f-chip:active{opacity:.7;}
+.f-count{
+    font-family:'DM Mono',monospace;font-size:9px;
+    background:rgba(0,0,0,.07);border-radius:8px;padding:1px 5px;
+}
+.f-chip.on .f-count{background:rgba(255,255,255,.18);}
 
-        /* row 2: sub categories (hidden when not needed) */
-        .filter-row-sub {
-            display:flex; gap:7px; padding:7px 18px 10px;
-            overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-            min-height:0; /* collapses when empty */
-        }
-        .filter-row-sub::-webkit-scrollbar { display:none; }
-        .filter-row-sub:empty { padding:0 18px; }
-        /* single row padding when no sub */
-        .filter-strip.no-sub .filter-row-main { padding-bottom:10px; }
+/* LAYOUT */
+.page-start{height:var(--nav-h);}
+.section{padding:0 18px;max-width:800px;margin:0 auto;}
+.divider{border:none;border-top:1px solid var(--gray-200);margin:24px 18px;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.sec-hd-title{font-family:'Bebas Neue';font-size:17px;letter-spacing:2.5px;}
+.see-all{
+    font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--gray-400);border:none;background:none;cursor:pointer;
+    font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:3px;
+    transition:color .18s;
+}
+.see-all:active{color:var(--black);}
 
-        .f-chip {
-            height:32px; padding:0 13px;
-            border:1.5px solid var(--gray-200); border-radius:30px;
-            font-size:11px; font-weight:600; cursor:pointer;
-            background:var(--white); color:var(--gray-600);
-            white-space:nowrap; flex-shrink:0;
-            display:flex; align-items:center; gap:5px;
-            font-family:'Space Grotesk',sans-serif;
-            /* bounce animation vars */
-            transition:background .18s,border-color .18s,color .18s,transform .18s,box-shadow .18s;
-            will-change:transform;
-            user-select:none;
-        }
-        .f-chip.on {
-            background:var(--black); border-color:var(--black); color:#fff;
-        }
-        /* Bounce on tap — same feel as BUY button in product.html */
-        .f-chip:active { transform:scale(.9); }
-        @keyframes chipBounce {
-            0%   { transform:scale(1); }
-            30%  { transform:scale(.88); }
-            60%  { transform:scale(1.06); }
-            80%  { transform:scale(.97); }
-            100% { transform:scale(1); }
-        }
-        .f-chip.bounce { animation:chipBounce .38s cubic-bezier(.22,1,.36,1) both; }
+/* SORT ROW */
+.sort-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 18px 6px;max-width:800px;margin:0 auto;
+}
+.sort-results{font-family:'DM Mono',monospace;font-size:10px;color:var(--gray-400);letter-spacing:.5px;}
+.sort-btn{
+    height:28px;padding:0 12px;
+    border:1.5px solid var(--gray-200);border-radius:20px;
+    font-size:11px;font-weight:600;cursor:pointer;
+    background:var(--white);color:var(--gray-600);
+    display:flex;align-items:center;gap:5px;
+    font-family:'Space Grotesk',sans-serif;
+    transition:background .18s,border-color .18s,color .18s;
+}
+.sort-btn:active{opacity:.7;}
+.sort-btn.active{background:var(--black);border-color:var(--black);color:#fff;}
 
-        .f-count {
-            font-family:'DM Mono',monospace; font-size:9px;
-            background:rgba(0,0,0,.07); border-radius:8px; padding:1px 5px;
-        }
-        .f-chip.on .f-count { background:rgba(255,255,255,.18); }
+/* PRODUCT GRID */
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.p-card{
+    background:var(--white);border-radius:var(--radius);
+    border:1px solid var(--gray-200);overflow:hidden;
+    cursor:pointer;display:flex;flex-direction:column;
+    text-decoration:none;color:inherit;position:relative;
+    transition:transform .22s,box-shadow .22s;
+}
+.p-card:active{transform:scale(.975);box-shadow:0 6px 24px rgba(0,0,0,.09);}
+.p-card.wide{grid-column:1/-1;}
+.p-card-img{aspect-ratio:1/1;overflow:hidden;background:var(--gray-100);position:relative;}
+.p-card.wide .p-card-img{aspect-ratio:2/1;}
+.p-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .38s ease;}
+.p-card:active .p-card-img img{transform:scale(1.04);}
+.p-tag{
+    position:absolute;top:9px;left:9px;z-index:2;
+    background:var(--black);color:#fff;
+    font-family:'DM Mono',monospace;font-size:8px;
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;
+}
+.p-tag.light{background:var(--white);color:var(--black);}
+.p-tag.low-stock{background:var(--gray-600);color:#fff;top:auto;bottom:9px;}
+.p-fav{
+    position:absolute;top:9px;right:9px;z-index:2;
+    width:29px;height:29px;border-radius:50%;
+    background:rgba(255,255,255,.88);border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:transform .18s,background .18s;
+}
+.p-fav:active{transform:scale(.82);}
+.p-fav.liked{background:var(--black);}
+.p-fav.liked svg{stroke:#fff;fill:#fff;}
+.p-card-body{padding:10px 11px 13px;flex:1;display:flex;flex-direction:column;gap:7px;}
+.p-name{font-size:12px;font-weight:600;line-height:1.35;letter-spacing:-.1px;}
+.p-card.wide .p-name{font-size:14px;}
+.p-meta{display:flex;align-items:center;justify-content:space-between;}
+/* RED price — same as product.html */
+.p-price{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--red);}
+.p-colors{display:flex;gap:4px;}
+.p-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 0 0 1px rgba(0,0,0,.12);}
 
-        /* ══════════════════════════════════
-           LAYOUT
-        ══════════════════════════════════ */
-        .page-start { height:var(--nav-h); }
-        .section { padding:0 18px; max-width:800px; margin:0 auto; }
-        .divider { border:none; border-top:1px solid var(--gray-200); margin:24px 18px; }
-        .sec-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:13px; }
-        .sec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; }
-        .see-all {
-            font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-            color:var(--gray-400); border:none; background:none; cursor:pointer;
-            font-family:'Space Grotesk',sans-serif; display:flex; align-items:center; gap:3px;
-            transition:color .18s;
-        }
-        .see-all:active { color:var(--black); }
+/* EMPTY */
+.empty{padding:60px 20px;text-align:center;display:none;}
+.empty.show{display:block;}
+.empty-icon{font-size:36px;margin-bottom:12px;}
+.empty-title{font-size:15px;font-weight:600;}
+.empty-sub{font-size:12px;color:var(--gray-400);margin-top:5px;line-height:1.65;}
 
-        /* ══════════════════════════════════
-           SORT ROW
-        ══════════════════════════════════ */
-        .sort-row {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:13px 18px 6px; max-width:800px; margin:0 auto;
-        }
-        .sort-results { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); letter-spacing:.5px; }
-        .sort-btn {
-            height:28px; padding:0 12px;
-            border:1.5px solid var(--gray-200); border-radius:20px;
-            font-size:11px; font-weight:600; cursor:pointer;
-            background:var(--white); color:var(--gray-600);
-            display:flex; align-items:center; gap:5px;
-            font-family:'Space Grotesk',sans-serif;
-            transition:background .18s,border-color .18s,color .18s,transform .15s;
-        }
-        .sort-btn:active { transform:scale(.93); }
-        .sort-btn.active { background:var(--black); border-color:var(--black); color:#fff; }
+/* NEW ARRIVALS horizontal */
+.h-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.h-scroll::-webkit-scrollbar{display:none;}
+.h-row{display:flex;gap:10px;padding:0 18px;width:max-content;}
+.h-card{
+    width:140px;flex-shrink:0;
+    background:var(--white);border-radius:var(--radius-sm);
+    border:1px solid var(--gray-200);overflow:hidden;
+    text-decoration:none;color:inherit;display:flex;flex-direction:column;
+    transition:transform .2s;
+}
+.h-card:active{transform:scale(.975);}
+.h-card-img{aspect-ratio:1/1;background:var(--gray-100);overflow:hidden;position:relative;}
+.h-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.h-card-body{padding:8px 10px 10px;}
+.h-card-name{font-size:11px;font-weight:600;line-height:1.3;}
+.h-card-price{font-family:'DM Mono',monospace;font-size:11px;color:var(--red);margin-top:4px;font-weight:500;}
+.h-new-badge{
+    position:absolute;top:7px;left:7px;
+    background:var(--black);color:#fff;
+    font-family:'DM Mono',monospace;font-size:7px;
+    letter-spacing:1px;padding:2px 7px;border-radius:10px;text-transform:uppercase;
+}
 
-        /* ══════════════════════════════════
-           PRODUCT GRID
-        ══════════════════════════════════ */
-        .p-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.cat-card{border-radius:var(--radius-sm);aspect-ratio:4/3;position:relative;overflow:hidden;cursor:pointer;}
+.cat-card img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(.75);transition:transform .4s ease,filter .3s;}
+.cat-card:active img{transform:scale(1.07);filter:brightness(.35) saturate(.6);}
+.cat-info{position:absolute;bottom:10px;left:12px;right:12px;display:flex;align-items:flex-end;justify-content:space-between;}
+.cat-name{font-family:'Bebas Neue';font-size:17px;letter-spacing:2px;color:#fff;}
+.cat-count{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.55);}
+.cat-arrow{position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;color:#fff;}
 
-        .p-card {
-            background:var(--white); border-radius:var(--radius);
-            border:1px solid var(--gray-200); overflow:hidden;
-            cursor:pointer; display:flex; flex-direction:column;
-            text-decoration:none; color:inherit; position:relative;
-            transition:transform .22s,box-shadow .22s;
-        }
-        .p-card:active { transform:scale(.975); box-shadow:0 6px 24px rgba(0,0,0,.09); }
-        .p-card.wide { grid-column:1/-1; }
-        .p-card-img { aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative; }
-        .p-card.wide .p-card-img { aspect-ratio:2/1; }
-        .p-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease; }
-        .p-card:active .p-card-img img { transform:scale(1.04); }
+/* TOAST */
+.toast{
+    position:fixed;bottom:32px;left:50%;
+    transform:translateX(-50%) translateY(6px);
+    background:var(--black);color:#fff;
+    padding:12px 18px 12px 14px;border-radius:14px;
+    z-index:9999;opacity:0;transition:opacity .28s,transform .28s;
+    white-space:nowrap;display:flex;align-items:center;gap:10px;
+    pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.28);min-width:220px;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.1);}
+.toast-text{display:flex;flex-direction:column;gap:1px;}
+.toast-title{font-size:12px;font-weight:700;letter-spacing:.3px;}
+.toast-sub{font-size:11px;color:rgba(255,255,255,.55);}
 
-        .p-tag {
-            position:absolute; top:9px; left:9px; z-index:2;
-            background:var(--black); color:#fff;
-            font-family:'DM Mono',monospace; font-size:8px;
-            letter-spacing:1.5px; text-transform:uppercase;
-            padding:3px 9px; border-radius:20px;
-        }
-        .p-tag.light { background:var(--white); color:var(--black); }
-        .p-tag.low-stock { background:var(--gray-600); color:#fff; top:auto; bottom:9px; }
-
-        .p-fav {
-            position:absolute; top:9px; right:9px; z-index:2;
-            width:29px; height:29px; border-radius:50%;
-            background:rgba(255,255,255,.88); border:none;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:transform .18s,background .18s;
-        }
-        .p-fav:active { transform:scale(.82); }
-        .p-fav.liked { background:var(--black); }
-        .p-fav.liked svg { stroke:#fff; fill:#fff; }
-
-        .p-card-body { padding:10px 11px 13px; flex:1; display:flex; flex-direction:column; gap:7px; }
-        .p-name { font-size:12px; font-weight:600; line-height:1.35; letter-spacing:-.1px; }
-        .p-card.wide .p-name { font-size:14px; }
-        .p-meta { display:flex; align-items:center; justify-content:space-between; }
-        /* price matches product.html: red, DM Mono */
-        .p-price { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); }
-        .p-colors { display:flex; gap:4px; }
-        .p-dot { width:10px; height:10px; border-radius:50%; border:1.5px solid rgba(255,255,255,.7); box-shadow:0 0 0 1px rgba(0,0,0,.12); }
-
-        /* ══════════════════════════════════
-           EMPTY STATE
-        ══════════════════════════════════ */
-        .empty { padding:60px 20px; text-align:center; display:none; }
-        .empty.show { display:block; }
-        .empty-icon { font-size:36px; margin-bottom:12px; }
-        .empty-title { font-size:15px; font-weight:600; }
-        .empty-sub { font-size:12px; color:var(--gray-400); margin-top:5px; line-height:1.65; }
-
-        /* ══════════════════════════════════
-           NEW ARRIVALS horizontal
-        ══════════════════════════════════ */
-        .h-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-        .h-scroll::-webkit-scrollbar { display:none; }
-        .h-row { display:flex; gap:10px; padding:0 18px; width:max-content; }
-        .h-card {
-            width:140px; flex-shrink:0;
-            background:var(--white); border-radius:var(--radius-sm);
-            border:1px solid var(--gray-200); overflow:hidden;
-            text-decoration:none; color:inherit; display:flex; flex-direction:column;
-            transition:transform .2s;
-        }
-        .h-card:active { transform:scale(.975); }
-        .h-card-img { aspect-ratio:1/1; background:var(--gray-100); overflow:hidden; position:relative; }
-        .h-card-img img { width:100%; height:100%; object-fit:cover; display:block; }
-        .h-card-body { padding:8px 10px 10px; }
-        .h-card-name { font-size:11px; font-weight:600; line-height:1.3; }
-        .h-card-price { font-family:'DM Mono',monospace; font-size:11px; color:var(--red); margin-top:4px; font-weight:500; }
-        .h-new-badge {
-            position:absolute; top:7px; left:7px;
-            background:var(--black); color:#fff;
-            font-family:'DM Mono',monospace; font-size:7px;
-            letter-spacing:1px; padding:2px 7px; border-radius:10px; text-transform:uppercase;
-        }
-
-        /* ══════════════════════════════════
-           CATEGORIES
-        ══════════════════════════════════ */
-        .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-        .cat-card { border-radius:var(--radius-sm); aspect-ratio:4/3; position:relative; overflow:hidden; cursor:pointer; }
-        .cat-card img {
-            width:100%; height:100%; object-fit:cover; display:block;
-            filter:brightness(.5) saturate(.75);
-            transition:transform .4s ease,filter .3s;
-        }
-        .cat-card:active img { transform:scale(1.07); filter:brightness(.35) saturate(.6); }
-        .cat-info { position:absolute; bottom:10px; left:12px; right:12px; display:flex; align-items:flex-end; justify-content:space-between; }
-        .cat-name { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2px; color:#fff; }
-        .cat-count { font-family:'DM Mono',monospace; font-size:8px; color:rgba(255,255,255,.55); }
-        .cat-arrow { position:absolute; top:9px; right:9px; width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center; color:#fff; }
-
-        /* ══════════════════════════════════
-           TOAST — same as product.html
-        ══════════════════════════════════ */
-        .toast {
-            position:fixed; bottom:32px; left:50%;
-            transform:translateX(-50%) translateY(6px);
-            background:var(--black); color:#fff;
-            padding:12px 18px 12px 14px; border-radius:14px;
-            font-size:13px; z-index:9999;
-            opacity:0; transition:opacity .28s,transform .28s;
-            white-space:nowrap; display:flex; align-items:center; gap:10px;
-            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px;
-        }
-        .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
-        .toast-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(255,255,255,.1); }
-        .toast-text { display:flex; flex-direction:column; gap:1px; }
-        .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
-        .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); }
-
-        /* ══════════════════════════════════
-           ANIMATIONS
-        ══════════════════════════════════ */
-        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-        .fu { animation:fadeUp .42s ease both; }
-        .d1{animation-delay:.06s;} .d2{animation-delay:.12s;} .d3{animation-delay:.18s;} .d4{animation-delay:.24s;}
-    </style>
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .42s ease both;}
+.d1{animation-delay:.06s;}.d2{animation-delay:.12s;}.d3{animation-delay:.18s;}.d4{animation-delay:.24s;}
+</style>
 </head>
 <body>
 
-<!-- ═══════════════════ NAV ═══════════════════ -->
+<!-- NAV -->
 <nav class="nav">
     <div class="nav-left">
         <a href="index.html" class="brand">NEXUS WEAR</a>
     </div>
     <div class="nav-right">
-        <!-- Search -->
         <button class="icon-btn" id="searchBtn" onclick="toggleSearch()" aria-label="Search">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="6.5" cy="6.5" r="5.5"/>
                 <line x1="11" y1="11" x2="14" y2="14"/>
             </svg>
         </button>
-        <!-- Account (future: account.html) -->
         <a href="account.html" class="icon-btn" aria-label="Account">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
             </svg>
         </a>
-        <!-- Cart -->
         <div class="cart-wrap">
             <a href="cart.html" class="icon-btn" aria-label="Cart">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -371,23 +296,16 @@
     </div>
 </nav>
 
-<!-- ═══════════════════ SEARCH OVERLAY ═══════════════════
-     Tap anywhere on the overlay (outside panel) to close
-════════════════════════════════════════════════════════ -->
-<div class="search-overlay" id="searchOverlay" onclick="handleOverlayTap(event)">
-    <div class="search-panel" id="searchPanel" onclick="event.stopPropagation()">
-        <div class="search-inner">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="6.5" cy="6.5" r="5.5"/><line x1="11" y1="11" x2="14" y2="14"/>
-            </svg>
+<!-- SEARCH OVERLAY: tap outside panel = close -->
+<div class="search-overlay" id="searchOverlay" onclick="toggleSearch()">
+    <div class="search-panel" onclick="event.stopPropagation()">
+        <div class="search-box">
             <input type="search" id="searchInput"
                    placeholder="ค้นหา เช่น tee, hoodie, cargo…"
                    oninput="onSearch(this.value)"
                    autocomplete="off" spellcheck="false">
-            <!-- ONE clear button only -->
-            <button class="search-clear" id="searchClearBtn"
-                    onclick="clearSearch()" aria-label="Clear">
-                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+            <button class="search-clear" id="searchClearBtn" onclick="clearSearch()" aria-label="Clear search">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
                     <line x1="1" y1="1" x2="11" y2="11"/>
                     <line x1="11" y1="1" x2="1" y2="11"/>
                 </svg>
@@ -397,24 +315,20 @@
     </div>
 </div>
 
-<!-- ═══════════════════ FILTER STRIP ═══════════════════ -->
-<div class="filter-strip no-sub" id="filterStrip">
-    <!-- Row 1: main categories -->
-    <div class="filter-row-main" id="filterRowMain">
-        <div class="f-chip on" data-filter="all"        onclick="setFilter(this,'all')">All <span class="f-count" id="cnt-all">4</span></div>
-        <div class="f-chip"   data-filter="tops"        onclick="setFilter(this,'tops')">Tops <span class="f-count" id="cnt-tops">0</span></div>
-        <div class="f-chip"   data-filter="pants"       onclick="setFilter(this,'pants')">Pants <span class="f-count" id="cnt-pants">0</span></div>
-        <div class="f-chip"   data-filter="accessories" onclick="setFilter(this,'accessories')">Accessories <span class="f-count" id="cnt-accessories">0</span></div>
-        <!-- 🔧 Add new main categories here -->
+<!-- FILTER STRIP -->
+<div class="filter-strip" id="filterStrip">
+    <div class="filter-row-main">
+        <div class="f-chip on" data-filter="all"         onclick="setFilter(this,'all')">All <span class="f-count" id="cnt-all">4</span></div>
+        <div class="f-chip"   data-filter="tops"         onclick="setFilter(this,'tops')">Tops <span class="f-count" id="cnt-tops">0</span></div>
+        <div class="f-chip"   data-filter="pants"        onclick="setFilter(this,'pants')">Pants <span class="f-count" id="cnt-pants">0</span></div>
+        <div class="f-chip"   data-filter="accessories"  onclick="setFilter(this,'accessories')">Accessories <span class="f-count" id="cnt-accessories">0</span></div>
     </div>
-    <!-- Row 2: sub-categories (rendered dynamically) -->
     <div class="filter-row-sub" id="filterRowSub"></div>
 </div>
 
-<!-- nav spacer -->
 <div class="page-start"></div>
 
-<!-- ═══════════════════ SORT ROW ═══════════════════ -->
+<!-- SORT ROW -->
 <div class="sort-row fu d1">
     <span class="sort-results" id="resultsLabel">4 Products</span>
     <button class="sort-btn" id="sortBtn" onclick="cycleSort()">
@@ -425,7 +339,7 @@
     </button>
 </div>
 
-<!-- ═══════════════════ FEATURED GRID ═══════════════════ -->
+<!-- FEATURED GRID -->
 <div class="section fu d2" style="margin-top:4px;" id="featuredSection">
     <div class="sec-hd">
         <span class="sec-hd-title">Featured</span>
@@ -440,7 +354,7 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ NEW ARRIVALS ═══════════════════ -->
+<!-- NEW ARRIVALS -->
 <div id="newSection" class="fu d3">
     <div class="section">
         <div class="sec-hd">
@@ -455,8 +369,8 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ CATEGORIES ═══════════════════ -->
-<div class="section fu d4" id="catSection">
+<!-- CATEGORIES -->
+<div class="section fu d4">
     <div class="sec-hd">
         <span class="sec-hd-title">Categories</span>
     </div>
@@ -465,7 +379,7 @@
 
 <div style="height:32px"></div>
 
-<!-- ═══════════════════ TOAST ═══════════════════ -->
+<!-- TOAST -->
 <div class="toast" id="toast">
     <div class="toast-icon" id="toastIcon"></div>
     <div class="toast-text">
@@ -474,110 +388,72 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════
-     PRODUCT DATABASE — single source of truth for the entire app
-     ▸ Image path: https://hnungh.github.io/mpj/img/<filename>.jpg
-     ▸ category: 'tops' | 'pants' | 'accessories'  (add freely)
-     ▸ sub:      'tshirt' | 'hoodie' | 'polo' | 'cargo' | 'jeans' | ...
-     ▸ stock:    'in-stock' | 'low-stock' | 'out-of-stock'
-══════════════════════════════════════════════════════════════════ -->
 <script>
+/* ══════════════════════════════════════════════════════
+   PRODUCT DATABASE
+   image path: https://hnungh.github.io/mpj/img/NAME.jpg
+══════════════════════════════════════════════════════ */
 const PRODUCTS = {
-    'oversized-tee-black': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',   sub: 'tshirt',
-        isNew:    false,    isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'cargo-pants-olive': {
-        name:     'Military Olive Cargo Pants',
-        price:    1590,
-        tag:      'NEW', tagLight: false,
-        category: 'pants', sub: 'cargo',
-        isNew:    true,    isSale: false,
-        stock:    'in-stock',
-        rating:   4.7, reviews: 91,
-        desc:     'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
-        images:   ['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors: [{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
-    },
-    'hoodie-grey': {
-        name:     'Stone Grey Pullover Hoodie',
-        price:    1290,
-        tag:      'POPULAR', tagLight: false,
-        category: 'tops',  sub: 'hoodie',
-        isNew:    true,    isSale: false,
-        stock:    'in-stock',
-        rating:   4.8, reviews: 175,
-        desc:     'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
-        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    },
-    'sunglasses-retro': {
-        name:     'Retro Square Sunglasses',
-        price:    890,
-        tag:      'LIMITED', tagLight: false,
-        category: 'accessories', sub: 'eyewear',
-        isNew:    true,    isSale: true,
-        stock:    'low-stock',
-        rating:   4.6, reviews: 58,
-        desc:     'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
-        images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors: [{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
-        sizes:  ['One Size'],
-        specs:  {Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
-    }
-    /*
-    ── HOW TO ADD A PRODUCT ──────────────────────────────────────────
-    'product-id': {
-        name:'...', price:0,
-        tag:'NEW', tagLight:false,
-        category:'tops',      ← tops | pants | accessories | (new id)
-        sub:'tshirt',         ← tshirt | hoodie | polo | cargo | jeans | eyewear | ...
-        isNew:true, isSale:false,
-        stock:'in-stock',
-        rating:0, reviews:0,
-        desc:'...',
-        images:['https://hnungh.github.io/mpj/img/FILENAME.jpg'],
-        colors:[{name:'...',hex:'#...'}],
+    'oversized-tee-black':{
+        name:'Classic Black Oversized Tee', price:790,
+        tag:'BESTSELLER', tagLight:false,
+        category:'tops', sub:'tshirt',
+        isNew:false, isSale:false, stock:'in-stock',
+        rating:4.9, reviews:248,
+        desc:'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส',
+        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
         sizes:['S','M','L','XL'],
-        specs:{Key:'Value'}
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
-    ─────────────────────────────────────────────────────────────── */
+    'cargo-pants-olive':{
+        name:'Military Olive Cargo Pants', price:1590,
+        tag:'NEW', tagLight:false,
+        category:'pants', sub:'cargo',
+        isNew:true, isSale:false, stock:'in-stock',
+        rating:4.7, reviews:91,
+        desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
+        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
+        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
+        sizes:['M','L','XL'],
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+    },
+    'hoodie-grey':{
+        name:'Stone Grey Pullover Hoodie', price:1290,
+        tag:'POPULAR', tagLight:false,
+        category:'tops', sub:'hoodie',
+        isNew:true, isSale:false, stock:'in-stock',
+        rating:4.8, reviews:175,
+        desc:'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
+        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+    },
+    'sunglasses-retro':{
+        name:'Retro Square Sunglasses', price:890,
+        tag:'LIMITED', tagLight:false,
+        category:'accessories', sub:'eyewear',
+        isNew:true, isSale:true, stock:'low-stock',
+        rating:4.6, reviews:58,
+        desc:'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
+        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
+        sizes:['One Size'],
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
+    }
 };
 
-/* ── SUB-CATEGORY DISPLAY CONFIG ───────────────────────────────────
-   key = category id  →  array of sub-chips to show when that category is active
-   label: display text | filter: sub value to match  */
 const SUB_MAP = {
-    tops:        [{label:'All Tops', filter:'tops-all'},{label:'T-Shirt', filter:'tshirt'},{label:'Hoodie', filter:'hoodie'},{label:'Polo', filter:'polo'}],
-    pants:       [{label:'All Pants',filter:'pants-all'},{label:'Cargo',  filter:'cargo'}, {label:'Jeans',  filter:'jeans'}],
-    accessories: [{label:'All Accessories',filter:'accessories-all'},{label:'Eyewear',filter:'eyewear'},{label:'Bags',filter:'bags'}],
+    tops:       [{label:'All Tops',   filter:'tops-all'},{label:'T-Shirt',filter:'tshirt'},{label:'Hoodie',filter:'hoodie'},{label:'Polo',filter:'polo'}],
+    pants:      [{label:'All Pants',  filter:'pants-all'},{label:'Cargo',  filter:'cargo'}, {label:'Jeans', filter:'jeans'}],
+    accessories:[{label:'All',        filter:'accessories-all'},{label:'Eyewear',filter:'eyewear'},{label:'Bags',filter:'bags'}],
 };
-
-/* ── CATEGORY DISPLAY CONFIG ───────────────────────────────────── */
 const CATEGORIES = [
     {id:'tops',        label:'Tops',        img:'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'},
     {id:'pants',       label:'Pants',       img:'https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'},
     {id:'accessories', label:'Accessories', img:'https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'},
 ];
-
-/* ── SORT OPTIONS ───────────────────────────────────────────────── */
 const SORT_OPTS = [
     {label:'Sort',    fn:null},
     {label:'Price ↑', fn:([,a],[,b])=>a.price-b.price},
@@ -585,245 +461,159 @@ const SORT_OPTS = [
     {label:'A → Z',   fn:([,a],[,b])=>a.name.localeCompare(b.name,'th')},
 ];
 
-/* ════════════════════════
-   STATE
-════════════════════════ */
-const S = {
-    filter:    'all',   // 'all' | category id | sub id | 'new' | 'sale'
-    filterType:'all',   // 'all' | 'category' | 'sub' | 'special'
-    query:     '',
-    sort:      0,
-    favs:      JSON.parse(localStorage.getItem('NW_FAVS') || '[]'),
-};
+const S = {filter:'all', query:'', sort:0, favs:JSON.parse(localStorage.getItem('NW_FAVS')||'[]')};
 
-/* ════════════════════════
-   BOOT
-════════════════════════ */
-document.addEventListener('DOMContentLoaded', ()=>{
-    updateCounts();
-    renderGrid();
-    renderNewArrivals();
-    renderCategories();
-    updateBadge();
+document.addEventListener('DOMContentLoaded',()=>{
+    updateCounts(); renderGrid(); renderNewArrivals(); renderCategories(); updateBadge();
 });
 
-/* ════════════════════════
-   SEARCH
-════════════════════════ */
-let _searchOpen = false;
-
-function toggleSearch() {
-    _searchOpen = !_searchOpen;
-    const overlay = document.getElementById('searchOverlay');
-    const btn     = document.getElementById('searchBtn');
-    const strip   = document.getElementById('filterStrip');
-    overlay.style.display = _searchOpen ? 'block' : 'none';
-    // small delay so display:block renders before class add
-    requestAnimationFrame(()=>{
-        overlay.classList.toggle('open', _searchOpen);
-        strip.classList.toggle('shifted', _searchOpen);
-        btn.classList.toggle('search-active', _searchOpen);
-    });
-    if (_searchOpen) setTimeout(()=>document.getElementById('searchInput').focus(), 340);
-    else clearSearch();
+/* ── SEARCH ── */
+let _sOpen = false;
+function toggleSearch(){
+    _sOpen = !_sOpen;
+    const ov  = document.getElementById('searchOverlay');
+    const btn = document.getElementById('searchBtn');
+    const str = document.getElementById('filterStrip');
+    if(_sOpen){
+        ov.style.display='block';
+        requestAnimationFrame(()=>ov.classList.add('open'));
+        str.classList.add('shifted');
+        btn.classList.add('search-active');
+        setTimeout(()=>document.getElementById('searchInput').focus(),340);
+    } else {
+        ov.classList.remove('open');
+        str.classList.remove('shifted');
+        btn.classList.remove('search-active');
+        setTimeout(()=>{ ov.style.display='none'; clearSearch(); },340);
+    }
 }
-
-/* Tap anywhere outside the panel closes search */
-function handleOverlayTap(e) {
-    if (_searchOpen) toggleSearch();
-}
-
-function onSearch(val) {
-    S.query = val.toLowerCase().trim();
-    document.getElementById('searchClearBtn').classList.toggle('on', val.length > 0);
+function onSearch(val){
+    S.query=val.toLowerCase().trim();
+    document.getElementById('searchClearBtn').classList.toggle('on',val.length>0);
     renderGrid();
 }
-function clearSearch() {
-    S.query = '';
-    const inp = document.getElementById('searchInput');
-    if (inp) inp.value = '';
+function clearSearch(){
+    S.query='';
+    const inp=document.getElementById('searchInput');
+    if(inp) inp.value='';
     document.getElementById('searchClearBtn').classList.remove('on');
-    document.getElementById('searchHint').innerText = '';
+    document.getElementById('searchHint').innerText='';
     renderGrid();
 }
 
-/* ════════════════════════
-   FILTER (main category)
-════════════════════════ */
-function setFilter(el, filter) {
-    S.filter = filter;
-    // highlight main chips
-    document.querySelectorAll('#filterRowMain .f-chip').forEach(c=>c.classList.remove('on'));
+/* ── FILTER ── */
+function setFilter(el, filter){
+    S.filter=filter;
+    document.querySelectorAll('.filter-row-main .f-chip').forEach(c=>c.classList.remove('on'));
     el.classList.add('on');
-    // bounce animation
-    triggerBounce(el);
-    // render sub-row
     renderSubRow(filter);
     renderGrid();
 }
-function setFilterAll() {
-    S.filter = 'all';
-    document.querySelectorAll('#filterRowMain .f-chip').forEach(c=>
-        c.classList.toggle('on', c.dataset.filter==='all'));
+function setFilterAll(){
+    S.filter='all';
+    document.querySelectorAll('.filter-row-main .f-chip').forEach(c=>c.classList.toggle('on',c.dataset.filter==='all'));
     renderSubRow('all');
     renderGrid();
     window.scrollTo({top:0,behavior:'smooth'});
 }
-/* called from category cards */
-function filterByCategory(id) {
-    const el = document.querySelector(`#filterRowMain .f-chip[data-filter="${id}"]`);
-    if (el) setFilter(el, id);
-    else { S.filter=id; renderSubRow(id); renderGrid(); }
+function filterByCategory(id){
+    const el=document.querySelector(`.filter-row-main .f-chip[data-filter="${id}"]`);
+    if(el) setFilter(el,id);
     document.getElementById('featuredSection').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-/* sub-category row */
-function renderSubRow(mainFilter) {
-    const row  = document.getElementById('filterRowSub');
-    const strip= document.getElementById('filterStrip');
-    const subs = SUB_MAP[mainFilter];
-    if (!subs) {
-        row.innerHTML='';
-        strip.classList.add('no-sub');
-        return;
-    }
-    strip.classList.remove('no-sub');
-    row.innerHTML = subs.map((s,i)=>`
-        <div class="f-chip${i===0?' on':''}" data-sub="${s.filter}"
-             onclick="setSubFilter(this,'${s.filter}')">${s.label}</div>
+function renderSubRow(main){
+    const row=document.getElementById('filterRowSub');
+    const subs=SUB_MAP[main];
+    if(!subs){ row.innerHTML=''; return; }
+    row.innerHTML=subs.map((s,i)=>`
+        <div class="f-chip${i===0?' on':''}" onclick="setSubFilter(this,'${s.filter}')">${s.label}</div>
     `).join('');
 }
-function setSubFilter(el, subFilter) {
+function setSubFilter(el,subFilter){
     document.querySelectorAll('#filterRowSub .f-chip').forEach(c=>c.classList.remove('on'));
     el.classList.add('on');
-    triggerBounce(el);
-    S.filter = subFilter;
+    S.filter=subFilter;
     renderGrid();
 }
 
-/* ════════════════════════
-   BOUNCE HELPER
-════════════════════════ */
-function triggerBounce(el) {
-    el.classList.remove('bounce');
-    void el.offsetWidth; // reflow
-    el.classList.add('bounce');
-    el.addEventListener('animationend', ()=>el.classList.remove('bounce'), {once:true});
-}
-
-/* ════════════════════════
-   SORT
-════════════════════════ */
-function cycleSort() {
-    S.sort = (S.sort+1) % SORT_OPTS.length;
-    document.getElementById('sortLabel').innerText = SORT_OPTS[S.sort].label;
-    document.getElementById('sortBtn').classList.toggle('active', S.sort>0);
+/* ── SORT ── */
+function cycleSort(){
+    S.sort=(S.sort+1)%SORT_OPTS.length;
+    document.getElementById('sortLabel').innerText=SORT_OPTS[S.sort].label;
+    document.getElementById('sortBtn').classList.toggle('active',S.sort>0);
     renderGrid();
 }
 
-/* ════════════════════════
-   COMPUTED FILTERED LIST
-════════════════════════ */
-function getItems() {
-    let items = Object.entries(PRODUCTS);
+/* ── FILTER ENGINE ── */
+function getItems(){
+    let items=Object.entries(PRODUCTS);
+    const f=S.filter;
+    if(f==='all'){}
+    else if(f==='new')  items=items.filter(([,p])=>p.isNew);
+    else if(f==='sale') items=items.filter(([,p])=>p.isSale);
+    else if(['tops','pants','accessories'].includes(f)) items=items.filter(([,p])=>p.category===f);
+    else if(f.endsWith('-all')){ const cat=f.replace('-all',''); items=items.filter(([,p])=>p.category===cat); }
+    else items=items.filter(([,p])=>p.sub===f);
 
-    const f = S.filter;
-
-    if (f === 'all') {
-        // no filter
-    } else if (f === 'new') {
-        items = items.filter(([,p])=>p.isNew);
-    } else if (f === 'sale') {
-        items = items.filter(([,p])=>p.isSale);
-    } else if (['tops','pants','accessories'].includes(f)) {
-        items = items.filter(([,p])=>p.category===f);
-    } else if (f.endsWith('-all')) {
-        // e.g. 'tops-all' → show all in that category
-        const cat = f.replace('-all','');
-        items = items.filter(([,p])=>p.category===cat);
-    } else {
-        // sub-category filter
-        items = items.filter(([,p])=>p.sub===f);
-    }
-
-    // search
-    if (S.query) {
-        items = items.filter(([id,p])=>
-            p.name.toLowerCase().includes(S.query)     ||
-            p.category.toLowerCase().includes(S.query) ||
-            (p.sub||'').toLowerCase().includes(S.query)||
-            p.tag.toLowerCase().includes(S.query)      ||
-            id.toLowerCase().includes(S.query)         ||
-            p.colors.some(c=>c.name.toLowerCase().includes(S.query))
-        );
-    }
-
-    // sort
-    const fn = SORT_OPTS[S.sort].fn;
-    if (fn) items = [...items].sort(fn);
+    if(S.query) items=items.filter(([id,p])=>
+        p.name.toLowerCase().includes(S.query)||
+        p.category.toLowerCase().includes(S.query)||
+        (p.sub||'').toLowerCase().includes(S.query)||
+        p.tag.toLowerCase().includes(S.query)||
+        id.toLowerCase().includes(S.query)||
+        p.colors.some(c=>c.name.toLowerCase().includes(S.query))
+    );
+    const fn=SORT_OPTS[S.sort].fn;
+    if(fn) items=[...items].sort(fn);
     return items;
 }
 
-/* ════════════════════════
-   RENDER: GRID
-════════════════════════ */
-function renderGrid() {
-    const items = getItems();
-    const grid  = document.getElementById('productGrid');
-    const empty = document.getElementById('emptyState');
-    const lbl   = document.getElementById('resultsLabel');
-    const hint  = document.getElementById('searchHint');
-
-    const n    = items.length;
-    const noun = n===1?'Product':'Products';
-    lbl.innerText = S.query ? `${n} result${n!==1?'s':''} — "${S.query}"` : `${n} ${noun}`;
-    hint.innerText = S.query ? (n>0?`พบ ${n} รายการ`:'ไม่พบสินค้า — ลองคำค้นอื่น') : '';
-
-    if (n===0){ grid.innerHTML=''; empty.classList.add('show'); return; }
+/* ── RENDER GRID ── */
+function renderGrid(){
+    const items=getItems();
+    const grid=document.getElementById('productGrid');
+    const empty=document.getElementById('emptyState');
+    const lbl=document.getElementById('resultsLabel');
+    const hint=document.getElementById('searchHint');
+    const n=items.length;
+    lbl.innerText=S.query?`${n} result${n!==1?'s':''} — "${S.query}"`:`${n} ${n===1?'Product':'Products'}`;
+    hint.innerText=S.query?(n>0?`พบ ${n} รายการ`:'ไม่พบสินค้า — ลองคำค้นอื่น'):'';
+    if(n===0){grid.innerHTML='';empty.classList.add('show');return;}
     empty.classList.remove('show');
-    grid.innerHTML = items.map(([id,p],i)=>cardHTML(id,p,i===0&&n>=2)).join('');
+    grid.innerHTML=items.map(([id,p],i)=>cardHTML(id,p,i===0&&n>=2)).join('');
 }
-
-function cardHTML(id, p, wide) {
-    const priceStr = `$${(p.price/33).toFixed(2)}`;
-    const tagCls   = p.tagLight ? 'light' : '';
-    const lowTag   = p.stock==='low-stock' ? `<div class="p-tag low-stock">LOW STOCK</div>` : '';
-    const isFav    = S.favs.includes(id);
-    const dots     = p.colors.map(c=>`<div class="p-dot" style="background:${c.hex}"></div>`).join('');
-    const hFill    = isFav?'currentColor':'none';
-    const hStroke  = isFav?'#fff':'var(--gray-600)';
+function cardHTML(id,p,wide){
+    const price=`$${(p.price/33).toFixed(2)}`;
+    const tagCls=p.tagLight?'light':'';
+    const lowTag=p.stock==='low-stock'?`<div class="p-tag low-stock">LOW STOCK</div>`:'';
+    const isFav=S.favs.includes(id);
+    const dots=p.colors.map(c=>`<div class="p-dot" style="background:${c.hex}"></div>`).join('');
     return `
 <a href="product.html?id=${id}" class="p-card${wide?' wide':''}">
     <div class="p-card-img">
         <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
         <div class="p-tag ${tagCls}">${p.tag}</div>
         ${lowTag}
-        <button class="p-fav ${isFav?'liked':''}"
-                onclick="toggleFav(event,'${id}',this)" aria-label="Wishlist">
-            <svg width="13" height="13" fill="${hFill}" stroke="${hStroke}"
-                 stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06
-                         a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23
-                         l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        <button class="p-fav ${isFav?'liked':''}" onclick="toggleFav(event,'${id}',this)" aria-label="Wishlist">
+            <svg width="13" height="13" fill="${isFav?'currentColor':'none'}" stroke="${isFav?'#fff':'var(--gray-600)'}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
         </button>
     </div>
     <div class="p-card-body">
         <div class="p-name">${p.name}</div>
         <div class="p-meta">
-            <div class="p-price">${priceStr}</div>
+            <div class="p-price">${price}</div>
             <div class="p-colors">${dots}</div>
         </div>
     </div>
 </a>`;
 }
 
-/* ════════════════════════
-   RENDER: NEW ARRIVALS
-════════════════════════ */
-function renderNewArrivals() {
-    const items = Object.entries(PRODUCTS).filter(([,p])=>p.isNew);
-    document.getElementById('newRow').innerHTML = items.map(([id,p])=>`
+/* ── NEW ARRIVALS ── */
+function renderNewArrivals(){
+    const items=Object.entries(PRODUCTS).filter(([,p])=>p.isNew);
+    document.getElementById('newRow').innerHTML=items.map(([id,p])=>`
 <a href="product.html?id=${id}" class="h-card">
     <div class="h-card-img">
         <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
@@ -834,16 +624,14 @@ function renderNewArrivals() {
         <div class="h-card-price">$${(p.price/33).toFixed(2)}</div>
     </div>
 </a>`).join('');
-    document.getElementById('newSection').style.display = items.length ? '' : 'none';
+    document.getElementById('newSection').style.display=items.length?'':'none';
 }
 
-/* ════════════════════════
-   RENDER: CATEGORIES
-════════════════════════ */
-function renderCategories() {
-    const countMap = {};
-    Object.values(PRODUCTS).forEach(p=>{ countMap[p.category]=(countMap[p.category]||0)+1; });
-    document.getElementById('catGrid').innerHTML = CATEGORIES.map(cat=>`
+/* ── CATEGORIES ── */
+function renderCategories(){
+    const cnt={};
+    Object.values(PRODUCTS).forEach(p=>{ cnt[p.category]=(cnt[p.category]||0)+1; });
+    document.getElementById('catGrid').innerHTML=CATEGORIES.map(cat=>`
 <div class="cat-card" onclick="filterByCategory('${cat.id}')">
     <img src="${cat.img}" alt="${cat.label}" loading="lazy">
     <div class="cat-arrow">
@@ -853,69 +641,57 @@ function renderCategories() {
     </div>
     <div class="cat-info">
         <span class="cat-name">${cat.label.toUpperCase()}</span>
-        <span class="cat-count">${countMap[cat.id]||0} items</span>
+        <span class="cat-count">${cnt[cat.id]||0} items</span>
     </div>
 </div>`).join('');
 }
 
-/* ════════════════════════
-   FILTER COUNTS
-════════════════════════ */
-function updateCounts() {
-    const all = Object.values(PRODUCTS);
-    document.getElementById('cnt-all').innerText         = all.length;
-    document.getElementById('cnt-tops').innerText        = all.filter(p=>p.category==='tops').length;
-    document.getElementById('cnt-pants').innerText       = all.filter(p=>p.category==='pants').length;
-    document.getElementById('cnt-accessories').innerText = all.filter(p=>p.category==='accessories').length;
+/* ── COUNTS ── */
+function updateCounts(){
+    const all=Object.values(PRODUCTS);
+    document.getElementById('cnt-all').innerText=all.length;
+    document.getElementById('cnt-tops').innerText=all.filter(p=>p.category==='tops').length;
+    document.getElementById('cnt-pants').innerText=all.filter(p=>p.category==='pants').length;
+    document.getElementById('cnt-accessories').innerText=all.filter(p=>p.category==='accessories').length;
 }
 
-/* ════════════════════════
-   WISHLIST
-════════════════════════ */
-function toggleFav(e, id, btn) {
-    e.preventDefault(); e.stopPropagation();
-    const idx = S.favs.indexOf(id);
-    const svg = btn.querySelector('svg');
-    if (idx > -1) {
-        S.favs.splice(idx,1);
-        btn.classList.remove('liked');
-        svg.setAttribute('fill','none');
-        svg.setAttribute('stroke','var(--gray-600)');
+/* ── WISHLIST ── */
+function toggleFav(e,id,btn){
+    e.preventDefault();e.stopPropagation();
+    const idx=S.favs.indexOf(id);
+    const svg=btn.querySelector('svg');
+    if(idx>-1){
+        S.favs.splice(idx,1);btn.classList.remove('liked');
+        svg.setAttribute('fill','none');svg.setAttribute('stroke','var(--gray-600)');
         showToast('Removed','นำออกจาก Wishlist แล้ว');
     } else {
-        S.favs.push(id);
-        btn.classList.add('liked');
-        svg.setAttribute('fill','currentColor');
-        svg.setAttribute('stroke','#fff');
+        S.favs.push(id);btn.classList.add('liked');
+        svg.setAttribute('fill','currentColor');svg.setAttribute('stroke','#fff');
         showToast('Saved!','เพิ่มใน Wishlist แล้ว ❤️');
     }
-    localStorage.setItem('NW_FAVS', JSON.stringify(S.favs));
+    localStorage.setItem('NW_FAVS',JSON.stringify(S.favs));
 }
 
-/* ════════════════════════
-   CART BADGE
-════════════════════════ */
-function updateBadge() {
-    const cart = JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
-    const n = cart.reduce((t,c)=>t+c.quantity,0);
-    const b = document.getElementById('cartBadge');
-    b.innerText = n>99?'99+':n;
-    b.style.display = n>0?'flex':'none';
+/* ── BADGE ── */
+function updateBadge(){
+    const cart=JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
+    const n=cart.reduce((t,c)=>t+c.quantity,0);
+    const b=document.getElementById('cartBadge');
+    b.innerText=n>99?'99+':n;
+    b.style.display=n>0?'flex':'none';
 }
 
-/* ════════════════════════
-   TOAST
-════════════════════════ */
-const ICON_OK = `<svg width="13" height="13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 3 5 10 2 7"/></svg>`;
+/* ── TOAST ── */
+const ICON_OK=`<svg width="13" height="13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 3 5 10 2 7"/></svg>`;
 let _tt;
-function showToast(title, sub) {
-    document.getElementById('toastIcon').innerHTML = ICON_OK;
-    document.getElementById('toastTitle').innerText = title;
-    document.getElementById('toastSub').innerText   = sub||'';
-    const t = document.getElementById('toast');
+function showToast(title,sub){
+    document.getElementById('toastIcon').innerHTML=ICON_OK;
+    document.getElementById('toastTitle').innerText=title;
+    document.getElementById('toastSub').innerText=sub||'';
+    const t=document.getElementById('toast');
     t.classList.add('on');
     clearTimeout(_tt);
-    _tt = setTimeout(()=>t.classList.remove('on'), 2700);
+    _tt=setTimeout(()=>t.classList.remove('on'),2700);
 }
 </script>
 </body>
