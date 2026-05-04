@@ -281,7 +281,7 @@
         .empty-title { font-size:15px; font-weight:600; }
         .empty-sub { font-size:12px; color:var(--gray-400); margin-top:5px; line-height:1.65; }
 
-        /* NEW ARRIVALS — horizontal scroll, การ์ดขนาดเท่ากันทุกใบ */
+        /* NEW ARRIVALS — horizontal scroll, การ์ดเหมือน Featured ทุกประการ */
         .na-scroll {
             overflow-x:auto;
             -webkit-overflow-scrolling:touch;
@@ -295,63 +295,13 @@
             gap:10px;
             width:max-content;
         }
-        .na-card {
-            width:150px;
-            height:220px;
+        /* กว้างเท่ากับการ์ดใน Featured grid พอดี: (100vw - 18px*2 - 10px gap) / 2 */
+        .na-row .p-card {
+            width:calc((100vw - 46px) / 2);
             flex-shrink:0;
-            background:var(--white);
-            border-radius:var(--radius-sm);
-            border:1px solid var(--gray-200);
-            overflow:hidden;
-            text-decoration:none;
-            color:inherit;
-            display:flex;
-            flex-direction:column;
-            transition:transform .2s;
         }
-        .na-card:active { transform:scale(.975); }
-        .na-img {
-            width:150px;
-            height:150px;
-            flex-shrink:0;
-            overflow:hidden;
-            background:var(--gray-100);
-            position:relative;
-        }
-        .na-img img {
-            width:150px;
-            height:150px;
-            object-fit:cover;
-            display:block;
-        }
-        .na-badge {
-            position:absolute; top:7px; left:7px;
-            background:var(--black); color:#fff;
-            font-family:'DM Mono',monospace; font-size:7px;
-            letter-spacing:1px; padding:2px 7px;
-            border-radius:10px; text-transform:uppercase;
-        }
-        .na-body {
-            width:150px;
-            height:70px;
-            flex-shrink:0;
-            padding:8px 10px;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-        }
-        .na-name {
-            font-size:11px; font-weight:600; line-height:1.35;
-            color:var(--black);
-            overflow:hidden;
-            display:-webkit-box;
-            -webkit-line-clamp:2;
-            -webkit-box-orient:vertical;
-        }
-        .na-price {
-            font-family:'DM Mono',monospace;
-            font-size:12px; font-weight:500;
-            color:var(--red); margin-top:4px;
+        .na-row .p-card .p-card-img {
+            aspect-ratio:1/1;
         }
 
         /* ────────────────────────────────────────
@@ -895,9 +845,9 @@ function cardHTML(id, p, wide) {
 
 /* ════════════════════════════════════════
    RENDER: NEW ARRIVALS
-   — horizontal scroll, การ์ด na-card ขนาดเท่ากันทุกใบ
-   — max 8 รายการ
-   — See all → new-arrival.html
+   — ใช้ cardHTML() เดียวกับ Featured ทุกประการ
+     (มี wishlist, สีดot, tag, ราคา ครบ)
+   — horizontal scroll, max 8 รายการ
 ════════════════════════════════════════ */
 function renderNewArrivals() {
     const all   = Object.entries(PRODUCTS).filter(([,p]) => p.isNew);
@@ -908,17 +858,9 @@ function renderNewArrivals() {
         return;
     }
 
-    document.getElementById('newRow').innerHTML = items.map(([id,p]) => `
-<a href="product.html?id=${id}" class="na-card">
-    <div class="na-img">
-        <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
-        <div class="na-badge">NEW</div>
-    </div>
-    <div class="na-body">
-        <div class="na-name">${p.name}</div>
-        <div class="na-price">$${(p.price/33).toFixed(2)}</div>
-    </div>
-</a>`).join('');
+    // cardHTML(id, p, wide=false) — เหมือน Featured แต่ไม่ wide
+    document.getElementById('newRow').innerHTML =
+        items.map(([id,p]) => cardHTML(id, p, false)).join('');
 
     document.getElementById('newSection').style.display = '';
 }
