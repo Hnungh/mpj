@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Product — Nexus Wear</title>
+    <title>Product — Bards</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -52,7 +52,6 @@
         .price-currency { font-size:12px; color:var(--gray-400); font-weight:500; letter-spacing:.5px; }
         .p-name { font-size:17px; font-weight:600; margin-top:7px; line-height:1.35; color:var(--black); letter-spacing:-.2px; }
         .meta-line { display:flex; align-items:center; gap:8px; margin-top:9px; flex-wrap:wrap; }
-        .meta-dot { width:3px; height:3px; border-radius:50%; background:var(--gray-300); }
         .meta-chip { font-size:10px; font-weight:600; padding:3px 8px; border-radius:6px; }
         .chip-green { background:#DCFCE7; color:var(--green); }
         .chip-amber { background:#FEF3C7; color:#B45309; }
@@ -132,7 +131,7 @@
         .fg-slide { min-width:100%; display:flex; align-items:center; justify-content:center; }
         .fg-slide img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:0; }
 
-        /* TOAST — minimal popup */
+        /* TOAST */
         .toast { position:fixed; bottom:96px; left:50%; transform:translateX(-50%) translateY(6px); background:var(--black); color:#fff; padding:12px 18px 12px 14px; border-radius:14px; font-size:13px; font-weight:500; z-index:9999; opacity:0; transition:opacity .28s,transform .28s; white-space:nowrap; display:flex; align-items:center; gap:10px; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px; }
         .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
         .toast-icon-wrap { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -166,11 +165,10 @@
     </div>
     <div class="cart-wrap">
         <a href="cart.html" class="icon-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
         </a>
         <span class="cart-badge" id="cartBadge"></span>
     </div>
@@ -184,11 +182,10 @@
         <span class="seller-nm">NEXUS</span>
     </div>
     <button class="btn-add" onclick="openSheet('cart')">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg> ADD
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg> ADD
     </button>
     <button class="btn-buy" onclick="openSheet('buy')">BUY NOW</button>
 </div>
@@ -199,7 +196,7 @@
     <div class="sheet-header">
         <img src="" id="sheetThumb" class="sheet-thumb">
         <div>
-            <div class="sheet-price" id="sheetPrice">฿0</div>
+            <div class="sheet-price" id="sheetPrice">$0</div>
             <div class="sheet-hint">Select Options</div>
         </div>
     </div>
@@ -236,168 +233,65 @@
 
 <script>
 /* ═══════════════════════════════════════════════
-   PRODUCT DATABASE
-   เพิ่ม/แก้ไขสินค้าตรงนี้ได้เลย — key = product id
+   PRODUCT DATABASE — same object as cart.html
 ═══════════════════════════════════════════════ */
 const PRODUCTS = {
     'oversized-tee-black': {
-        name: 'Classic Black Oversized Tee',
-        price: 790,
-        tag: 'BESTSELLER', tagOrange: true,
-        rating: 4.9, reviews: 248,
-        stock: 'in-stock',
-        desc: 'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน ผ่านการทดสอบการซัก 100+ ครั้ง',
-        images: [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{ name:'Noir Black', hex:'#111111' }, { name:'Stone White', hex:'#EDE9E1' }],
-        sizes: ['S','M','L','XL'],
-        specs: { Material:'Premium Cotton', Weight:'300 GSM', Fit:'Oversized', Care:'Machine Wash' }
+        name:'Classic Black Oversized Tee', price:790,
+        tag:'BESTSELLER', tagOrange:true, rating:4.9, reviews:248, stock:'in-stock',
+        desc:'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน ผ่านการทดสอบการซัก 100+ ครั้ง',
+        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-olive': {
-        name: 'Military Olive Cargo Pants',
-        price: 1590,
-        tag: 'NEW', tagOrange: false,
-        rating: 4.7, reviews: 91,
-        stock: 'in-stock',
-        desc: 'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น ทนทานทุกสภาพอากาศ',
-        images: ['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors: [{ name:'Olive Green', hex:'#6B7C4A' }, { name:'Tactical Black', hex:'#2A2A2A' }],
-        sizes: ['M','L','XL'],
-        specs: { Material:'Ripstop Nylon', Pockets:'8 Pockets', Fit:'Relaxed', Care:'Cold Wash' }
+        name:'Military Olive Cargo Pants', price:1590,
+        tag:'NEW', tagOrange:false, rating:4.7, reviews:91, stock:'in-stock',
+        desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
+        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
+        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
+        sizes:['M','L','XL'],
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-grey': {
-        name: 'Stone Grey Pullover Hoodie',
-        price: 1290,
-        tag: 'POPULAR', tagOrange: false,
-        rating: 4.8, reviews: 175,
-        stock: 'in-stock',
-        desc: 'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
-        images: ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{ name:'Stone Grey', hex:'#9A9A95' }, { name:'Midnight Navy', hex:'#1A2240' }],
-        sizes: ['S','M','L','XL'],
-        specs: { Material:'French Terry', Weight:'380 GSM', Fit:'Regular', Care:'Gentle Wash' }
+        name:'Stone Grey Pullover Hoodie', price:1290,
+        tag:'POPULAR', tagOrange:false, rating:4.8, reviews:175, stock:'in-stock',
+        desc:'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
+        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-retro': {
-        name: 'Retro Square Sunglasses',
-        price: 890,
-        tag: 'LIMITED', tagOrange: true,
-        rating: 4.6, reviews: 58,
-        stock: 'low-stock',
-        desc: 'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
-        images: ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg',
-                'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{ name:'Glossy Black', hex:'#111111' }, { name:'Tortoise', hex:'#8B5E3C' }],
-        sizes: ['One Size'],
-        specs: { Frame:'Acetate', Lens:'UV400', Style:'Square Retro', 'Lens Width':'52mm' }
-    },
-    'bp1': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'bp2': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'bp3': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'bp4': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'tshirt1': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg',
-            'https://hnungh.github.io/mpj/img/baggy.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+        name:'Retro Square Sunglasses', price:890,
+        tag:'LIMITED', tagOrange:true, rating:4.6, reviews:58, stock:'low-stock',
+        desc:'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
+        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
+        sizes:['One Size'],
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
     }
 };
 
 /* ─── STATE ─── */
 let P = null, imgIdx = 0, selColor = null, selSize = null, qty = 1, sheetMode = 'cart';
 
+/* ─── CURRENT PRODUCT ID ─── */
+const PRODUCT_ID = new URLSearchParams(window.location.search).get('id') || '';
+
 /* ─── INIT ─── */
 function init() {
-    const id = new URLSearchParams(window.location.search).get('id');
-    P = PRODUCTS[id];
-
+    P = PRODUCTS[PRODUCT_ID];
     if (!P) {
         document.getElementById('productWrap').innerHTML = `
             <div class="not-found">
                 <div class="not-found-icon">🔍</div>
                 <div class="not-found-title">Product not found</div>
-                <div class="not-found-msg">ID "${id}" does not exist in our catalog.</div>
+                <div class="not-found-msg">ID "${PRODUCT_ID}" does not exist in our catalog.</div>
             </div>`;
         return;
     }
-
     document.title = `${P.name} — Nexus Wear`;
     buildPage();
     updateBadge();
@@ -405,19 +299,17 @@ function init() {
 
 /* ─── BUILD PAGE ─── */
 function buildPage() {
-    const stockMap = { 'in-stock': ['chip-green','In Stock'], 'low-stock': ['chip-amber','Low Stock'], 'out-of-stock': ['chip-gray','Out of Stock'] };
+    const stockMap = { 'in-stock':['chip-green','In Stock'], 'low-stock':['chip-amber','Low Stock'], 'out-of-stock':['chip-gray','Out of Stock'] };
     const [stockCls, stockLabel] = stockMap[P.stock] || stockMap['in-stock'];
     const multiImg = P.images.length > 1;
+    const priceUSD = (P.price / 33).toFixed(2);
 
-    const priceUSD = (P.price / 33).toFixed(2); // THB → USD approx
-
-    const slidesHtml  = P.images.map((s,i) => `<div class="g-slide"><img src="${s}" onclick="openFg(${i})" loading="${i?'lazy':'eager'}"></div>`).join('');
-    const fgHtml      = P.images.map(s => `<div class="fg-slide"><img src="${s}"></div>`).join('');
-    const dotsHtml    = multiImg ? P.images.map((_,i) => `<div class="g-dot${i?'':' on'}"></div>`).join('') : '';
-    const colorHtml   = P.colors.map((c,i) =>
-        `<div class="c-swatch" style="background:${c.hex}" title="${c.name}" data-idx="${i}" onclick="pickColor(this,${i})"></div>`).join('');
-    const sizeHtml    = P.sizes.map(s =>
-        `<div class="s-pill" data-size="${s}" onclick="pickSize(this,'${s}')">${s}</div>`).join('');
+    const slidesHtml = P.images.map((s,i) => `<div class="g-slide"><img src="${s}" onclick="openFg(${i})" loading="${i?'lazy':'eager'}"></div>`).join('');
+    const fgHtml     = P.images.map(s => `<div class="fg-slide"><img src="${s}"></div>`).join('');
+    const dotsHtml   = multiImg ? P.images.map((_,i) => `<div class="g-dot${i?'':' on'}"></div>`).join('') : '';
+    const colorHtml  = P.colors.map((c,i) => `<div class="c-swatch" style="background:${c.hex}" title="${c.name}" data-idx="${i}" onclick="pickColor(this,${i})"></div>`).join('');
+    const sizeHtml   = P.sizes.map(s  => `<div class="s-pill" data-size="${s}" onclick="pickSize(this,'${s}')">${s}</div>`).join('');
+    const specsHtml  = P.specs ? Object.entries(P.specs).map(([k,v]) => `<div class="spec-tile"><div class="spec-tile-label">${k}</div><div class="spec-tile-val">${v}</div></div>`).join('') : '';
 
     document.getElementById('productWrap').innerHTML = `
         <div class="gallery-wrap fu">
@@ -427,7 +319,6 @@ function buildPage() {
                 ${multiImg ? `<div class="g-dots" id="gdots">${dotsHtml}</div><div class="g-counter" id="gctr">1 / ${P.images.length}</div>` : ''}
             </div>
         </div>
-
         <div class="p-body fu d1">
             <div class="price-line">
                 <div class="price">$${priceUSD}</div>
@@ -438,9 +329,7 @@ function buildPage() {
                 <span class="meta-chip ${stockCls}">${stockLabel}</span>
             </div>
         </div>
-
         <hr class="divider">
-
         <div class="opts fu d2">
             <div class="opt-row">
                 <div class="opt-label">Color <span class="opt-selected" id="colorLabel"></span></div>
@@ -451,12 +340,11 @@ function buildPage() {
                 <div class="size-row" id="sizePills">${sizeHtml}</div>
             </div>
         </div>
-
         <hr class="divider">
-
         <div class="desc-section fu d3">
             <p class="sec-title">Details</p>
             <p class="desc-text">${P.desc}</p>
+            ${specsHtml ? `<div class="specs">${specsHtml}</div>` : ''}
         </div>
         <div style="height:14px"></div>`;
 
@@ -465,61 +353,46 @@ function buildPage() {
     document.getElementById('sheetPrice').innerText = `$${priceUSD} USD`;
     document.getElementById('colorChips').innerHTML = P.colors.map((c,i) =>
         `<div class="sh-chip" data-idx="${i}" onclick="pickColorSheet(this,${i})">${c.name}</div>`).join('');
-    document.getElementById('sizeChips').innerHTML = P.sizes.map(s =>
+    document.getElementById('sizeChips').innerHTML  = P.sizes.map(s =>
         `<div class="sh-chip" data-size="${s}" onclick="pickSizeSheet(this,'${s}')">${s}</div>`).join('');
 
-    /* FG gallery */
     document.getElementById('fgTrack').innerHTML = fgHtml;
-
     document.getElementById('actionBar').style.display = 'flex';
-    setupSwipe();
-    updateSlider();
+    setupSwipe(); updateSlider();
 }
 
-/* ─── PICK COLOR / SIZE (page) ─── */
+/* ─── PICK COLOR / SIZE ─── */
 function pickColor(el, idx) {
     document.querySelectorAll('#colorSwatches .c-swatch').forEach(d => d.classList.remove('on'));
-    el.classList.add('on');
-    selColor = P.colors[idx].name;
+    el.classList.add('on'); selColor = P.colors[idx].name;
     document.getElementById('colorLabel').innerText = selColor;
     document.querySelectorAll('#colorChips .sh-chip').forEach((c,i) => c.classList.toggle('on', i===idx));
 }
 function pickSize(el, val) {
     document.querySelectorAll('#sizePills .s-pill').forEach(d => d.classList.remove('on'));
-    el.classList.add('on');
-    selSize = val;
+    el.classList.add('on'); selSize = val;
     document.getElementById('sizeLabel').innerText = val;
     document.querySelectorAll('#sizeChips .sh-chip').forEach(c => c.classList.toggle('on', c.dataset.size===val));
 }
-
-/* ─── PICK COLOR / SIZE (sheet) ─── */
 function pickColorSheet(el, idx) {
     document.querySelectorAll('#colorChips .sh-chip').forEach(c => c.classList.remove('on'));
-    el.classList.add('on');
-    selColor = P.colors[idx].name;
+    el.classList.add('on'); selColor = P.colors[idx].name;
     document.querySelectorAll('#colorSwatches .c-swatch').forEach((d,i) => d.classList.toggle('on', i===idx));
-    const lbl = document.getElementById('colorLabel');
-    if (lbl) lbl.innerText = selColor;
+    const lbl = document.getElementById('colorLabel'); if (lbl) lbl.innerText = selColor;
 }
 function pickSizeSheet(el, val) {
     document.querySelectorAll('#sizeChips .sh-chip').forEach(c => c.classList.remove('on'));
-    el.classList.add('on');
-    selSize = val;
+    el.classList.add('on'); selSize = val;
     document.querySelectorAll('#sizePills .s-pill').forEach(d => d.classList.toggle('on', d.dataset.size===val));
-    const lbl = document.getElementById('sizeLabel');
-    if (lbl) lbl.innerText = val;
+    const lbl = document.getElementById('sizeLabel'); if (lbl) lbl.innerText = val;
 }
 
 /* ─── QTY ─── */
-function changeQty(d) {
-    qty = Math.max(1, Math.min(30, qty + d));
-    document.getElementById('qtyVal').innerText = qty;
-}
+function changeQty(d) { qty = Math.max(1, Math.min(30, qty+d)); document.getElementById('qtyVal').innerText = qty; }
 
 /* ─── SHEET ─── */
 function openSheet(mode) {
-    sheetMode = mode;
-    setConfirm('idle');
+    sheetMode = mode; setConfirm('idle');
     document.getElementById('mask').style.display = 'block';
     requestAnimationFrame(() => {
         document.getElementById('mask').classList.add('on');
@@ -534,21 +407,27 @@ function hideSheet() {
 
 /* ─── CONFIRM ─── */
 function handleConfirm() {
-    if (!selColor) { showToast('warn', 'Select a color', 'Choose one of the options above'); return; }
-    if (!selSize)  { showToast('warn', 'Select a size',  'Choose your preferred size');      return; }
+    if (!selColor) { showToast('warn','Select a color','Choose one of the options above'); return; }
+    if (!selSize)  { showToast('warn','Select a size','Choose your preferred size'); return; }
 
     setConfirm('loading');
 
     setTimeout(() => {
-        saveCart({ id: new URLSearchParams(window.location.search).get('id') || 'unknown', name: P.name, price: P.price, image: P.images[0], color: selColor, size: selSize, quantity: qty });
+        /* save to cart */
+        saveCart({
+            id: PRODUCT_ID, name: P.name, price: P.price,
+            image: P.images[0], color: selColor, size: selSize, quantity: qty
+        });
         updateBadge();
 
         if (sheetMode === 'buy') {
+            /* ── KEY FIX: tell cart.html which item to pre-select ── */
+            sessionStorage.setItem('BUY_NOW_ID', PRODUCT_ID);
             window.location.href = 'cart.html';
         } else {
             hideSheet();
             setTimeout(() => setConfirm('idle'), 400);
-            showToast('ok', 'Added to cart', P.name.split(' ').slice(0,3).join(' ') + ' · Qty ' + qty);
+            showToast('ok','Added to cart', P.name.split(' ').slice(0,3).join(' ') + ' · Qty ' + qty);
         }
     }, 680);
 }
@@ -557,17 +436,13 @@ function setConfirm(state) {
     const btn = document.getElementById('confirmBtn');
     btn.className = `confirm-btn ${state}`;
     const SVG = {
-        idle: '',
-        loading: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`,
-        success: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+        idle:'',
+        loading:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`,
+        success:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
     };
     const txt = { idle:'CONFIRM ORDER', loading:'ADDING', success:'ADDED TO CART' };
-    btn.innerHTML = `${SVG[state] || ''}<span>${txt[state]}</span>`;
-    if (state === 'loading') {
-        // spin the loader icon
-        const s = btn.querySelector('svg');
-        if (s) { s.style.animation = 'spin .8s linear infinite'; }
-    }
+    btn.innerHTML = `${SVG[state]||''}<span>${txt[state]}</span>`;
+    if (state === 'loading') { const s = btn.querySelector('svg'); if (s) s.style.animation='spin .8s linear infinite'; }
 }
 
 /* ─── CART STORAGE ─── */
@@ -579,7 +454,7 @@ function saveCart(item) {
 }
 function updateBadge() {
     const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
-    const n = cart.reduce((t,c) => t + c.quantity, 0);
+    const n = cart.reduce((t,c) => t+c.quantity, 0);
     const b = document.getElementById('cartBadge');
     b.innerText = n > 99 ? '99+' : n;
     b.style.display = n > 0 ? 'flex' : 'none';
@@ -587,58 +462,50 @@ function updateBadge() {
 
 /* ─── SLIDER ─── */
 function updateSlider() {
-    const n = P.images.length;
     document.getElementById('gtrack').style.transform = `translateX(${-imgIdx*100}%)`;
-    const ctr = document.getElementById('gctr'); if (ctr) ctr.innerText = `${imgIdx+1} / ${n}`;
+    const ctr=document.getElementById('gctr'); if(ctr) ctr.innerText=`${imgIdx+1} / ${P.images.length}`;
     document.querySelectorAll('#gdots .g-dot').forEach((d,i) => d.classList.toggle('on', i===imgIdx));
-    const ft = document.getElementById('fgTrack'); if (ft) ft.style.transform = `translateX(${-imgIdx*100}%)`;
-    const fc = document.getElementById('fgCount'); if (fc) fc.innerText = `${imgIdx+1} / ${n}`;
+    const ft=document.getElementById('fgTrack'); if(ft) ft.style.transform=`translateX(${-imgIdx*100}%)`;
+    const fc=document.getElementById('fgCount'); if(fc) fc.innerText=`${imgIdx+1} / ${P.images.length}`;
 }
 function setupSwipe() {
-    let sx=0, sy=0;
-    const vp = document.getElementById('gvp');
-    if (!vp) return;
-    vp.addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
-    vp.addEventListener('touchend', e => {
-        const dx=sx-e.changedTouches[0].clientX, dy=sy-e.changedTouches[0].clientY;
-        if (Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>36) {
-            if (dx>0 && imgIdx<P.images.length-1) imgIdx++;
-            else if (dx<0 && imgIdx>0) imgIdx--;
+    let sx=0,sy=0;
+    const vp=document.getElementById('gvp'); if(!vp) return;
+    vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+    vp.addEventListener('touchend',e=>{
+        const dx=sx-e.changedTouches[0].clientX,dy=sy-e.changedTouches[0].clientY;
+        if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>36){
+            if(dx>0&&imgIdx<P.images.length-1)imgIdx++;
+            else if(dx<0&&imgIdx>0)imgIdx--;
             updateSlider();
         }
-    }, {passive:true});
+    },{passive:true});
 }
 
 /* ─── FULLSCREEN ─── */
 function openFg(i) {
-    imgIdx = i; updateSlider();
-    document.getElementById('fgView').style.display = 'flex';
-    let sx=0;
-    const ft = document.getElementById('fgTrack');
-    ft.ontouchstart = e => { sx=e.touches[0].clientX; };
-    ft.ontouchend   = e => {
+    imgIdx=i; updateSlider(); document.getElementById('fgView').style.display='flex';
+    let sx=0; const ft=document.getElementById('fgTrack');
+    ft.ontouchstart=e=>{sx=e.touches[0].clientX;};
+    ft.ontouchend=e=>{
         const dx=sx-e.changedTouches[0].clientX;
-        if (Math.abs(dx)>36) { if(dx>0&&imgIdx<P.images.length-1)imgIdx++; else if(dx<0&&imgIdx>0)imgIdx--; updateSlider(); }
+        if(Math.abs(dx)>36){if(dx>0&&imgIdx<P.images.length-1)imgIdx++;else if(dx<0&&imgIdx>0)imgIdx--;updateSlider();}
     };
 }
-function closeFg() { document.getElementById('fgView').style.display='none'; }
+function closeFg(){document.getElementById('fgView').style.display='none';}
 
 /* ─── TOAST ─── */
-const SVG_CHECK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-const SVG_WARN  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
-
+const SVG_CHECK=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const SVG_WARN=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
 let _tt;
-function showToast(type, title, sub) {
-    const wrap = document.getElementById('toastIconWrap');
-    const isWarn = type === 'warn';
-    wrap.className = `toast-icon-wrap ${isWarn ? 'warn' : 'success'}`;
-    wrap.innerHTML = isWarn ? SVG_WARN : SVG_CHECK;
-    document.getElementById('toastTitle').innerText = title;
-    document.getElementById('toastSub').innerText   = sub || '';
-    const t = document.getElementById('toast');
-    t.classList.add('on');
-    clearTimeout(_tt);
-    _tt = setTimeout(() => t.classList.remove('on'), 2800);
+function showToast(type,title,sub){
+    const wrap=document.getElementById('toastIconWrap');
+    wrap.className=`toast-icon-wrap ${type==='warn'?'warn':'success'}`;
+    wrap.innerHTML=type==='warn'?SVG_WARN:SVG_CHECK;
+    document.getElementById('toastTitle').innerText=title;
+    document.getElementById('toastSub').innerText=sub||'';
+    const t=document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('on'),2800);
 }
 
 window.onload = init;
