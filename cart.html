@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cart Bards</title>
+    <title>Cart — Bards</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,7 +21,7 @@
             --radius:    14px;
             --radius-sm: 10px;
             --nav-h:     60px;
-            --bar-h:     82px;   /* mobile bottom bar height */
+            --bar-h:     80px;
         }
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         html { scroll-behavior:smooth; }
@@ -31,11 +31,11 @@
             overscroll-behavior:none; min-height:100vh;
         }
 
-        /* ══════════════════════════════════════
-           NAV — same pattern as product.html
-           Left : ← back + NEXUS WEAR
-           Right: Edit (text btn, same min-width as ←)
-        ══════════════════════════════════════ */
+        /* ══════════════════════════
+           NAV  — same as product.html
+           Left : ← + NEXUS WEAR
+           Right: Edit  (same visual weight as ←)
+        ══════════════════════════ */
         .nav {
             position:fixed; top:0; left:0; right:0; z-index:300;
             height:var(--nav-h);
@@ -46,9 +46,9 @@
             -webkit-backdrop-filter:blur(18px) saturate(160%);
             border-bottom:1px solid var(--gray-200);
         }
-        .nav-left  { display:flex; align-items:center; gap:12px; min-width:0; flex:1; }
-        /* right side: same fixed width as the icon-btn so brand is optically centred */
-        .nav-right { display:flex; align-items:center; justify-content:flex-end; width:80px; flex-shrink:0; }
+        .nav-left  { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+        /* fixed width = icon-btn width so brand is optically centred */
+        .nav-right { width:36px; display:flex; justify-content:flex-end; flex-shrink:0; }
 
         .icon-btn {
             width:36px; height:36px; border-radius:50%;
@@ -58,252 +58,211 @@
             text-decoration:none; color:var(--black); flex-shrink:0;
         }
         .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
-
         .brand {
             font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px;
             color:var(--black); text-decoration:none; white-space:nowrap;
         }
-
-        /* Edit text btn */
         .edit-btn {
             font-size:13px; font-weight:600; color:var(--gray-600);
-            background:none; border:none; cursor:pointer; padding:6px 0;
-            transition:color .18s; white-space:nowrap;
+            background:none; border:none; cursor:pointer; padding:4px 0;
+            transition:color .18s; white-space:nowrap; line-height:1;
         }
-        .edit-btn:active   { opacity:.6; }
-        .edit-btn.in-edit  { color:var(--orange); }
+        .edit-btn:active  { opacity:.6; }
+        .edit-btn.in-edit { color:var(--orange); }
 
-        /* ══════════════════════════════════════
-           PAGE LAYOUT
-           Mobile  : single col + sticky bottom bar
-           Desktop : 2-col (items | sidebar)
-        ══════════════════════════════════════ */
+        /* ══════════════════════════
+           PAGE / GRID
+        ══════════════════════════ */
         .page {
             margin-top:var(--nav-h);
             max-width:1100px;
             margin-left:auto; margin-right:auto;
-            padding:0 16px;
+            padding:0 14px;
         }
         @media (min-width:900px) {
-            .page {
-                display:grid;
-                grid-template-columns:1fr 340px;
-                gap:24px;
-                padding:0 32px;
-                align-items:start;
-            }
+            .page { display:grid; grid-template-columns:1fr 340px; gap:24px; padding:0 32px; align-items:start; }
             .sidebar { position:sticky; top:calc(var(--nav-h)+20px); }
-            body      { background:var(--gray-100); }
         }
         @media (max-width:899px) {
             .sidebar { display:none; }
             body      { padding-bottom:var(--bar-h); }
         }
-
         .main-col { min-width:0; }
 
-        /* ── Cart heading ── */
-        .cart-header {
-            padding:18px 0 12px;
-            display:flex; align-items:baseline; gap:10px;
-        }
-        .cart-title { font-family:'Bebas Neue'; font-size:24px; letter-spacing:3px; }
-        .cart-count { font-family:'DM Mono',monospace; font-size:12px; color:var(--gray-400); font-weight:500; }
+        /* Cart heading */
+        .cart-header { padding:18px 0 12px; display:flex; align-items:baseline; gap:10px; }
+        .cart-title  { font-family:'Bebas Neue'; font-size:24px; letter-spacing:3px; }
+        .cart-count  { font-family:'DM Mono',monospace; font-size:12px; color:var(--gray-400); }
 
-        /* ══════════════════════════════════════
-           SELECT-ALL ROW  — always visible when cart has items
-        ══════════════════════════════════════ */
-        .sel-all-row {
-            display:none;   /* shown by JS when cart has items */
-            align-items:center; justify-content:space-between;
-            background:var(--white); border-radius:var(--radius);
-            padding:12px 14px; margin-bottom:8px;
-            border:1.5px solid var(--gray-200);
-        }
-        .sel-all-row.show { display:flex; }
-
-        .sel-left  { display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; }
-        .sel-label { font-size:13px; font-weight:600; }
-
-        /* ── Edit-mode action row (delete selected) — appears only in edit mode ── */
-        .edit-actions {
-            display:none;
-            align-items:center; gap:10px;
-        }
-        .edit-mode .edit-actions { display:flex; }
-
-        .del-btn {
-            font-size:12px; font-weight:600; color:var(--red);
-            background:none; border:none; cursor:pointer; padding:4px 0;
-            transition:opacity .18s; opacity:0; pointer-events:none;
-        }
-        .del-btn.show { opacity:1; pointer-events:auto; }
-        .del-btn:active { opacity:.5; }
-
-        /* ══════════════════════════════════════
-           CUSTOM CHECKBOX
-        ══════════════════════════════════════ */
+        /* ══════════════════════════
+           CHECKBOX  (20×20, smaller = less wasted space)
+        ══════════════════════════ */
         .cb {
-            width:22px; height:22px; border-radius:7px;
+            width:20px; height:20px; border-radius:6px;
             border:2px solid var(--gray-300); background:var(--white);
             display:flex; align-items:center; justify-content:center;
             flex-shrink:0; transition:all .15s; cursor:pointer;
+            /* prevent checkbox from being accidentally tapped on the image side */
+            position:relative; z-index:1;
         }
         .cb.on      { background:var(--black); border-color:var(--black); }
         .cb.partial { background:var(--gray-200); border-color:var(--gray-400); }
         .cb svg     { display:none; }
         .cb.on svg  { display:block; }
 
-        /* ══════════════════════════════════════
+        /* ══════════════════════════
            ITEM LIST
-        ══════════════════════════════════════ */
+        ══════════════════════════ */
         .item-list { display:flex; flex-direction:column; gap:10px; }
 
-        /* The card */
+        /* card wrapper — overflow:hidden clips image + cb col to the card's radius */
         .item-row {
             display:flex; align-items:stretch;
             background:var(--white);
             border:1.5px solid var(--gray-200);
             border-radius:var(--radius);
-            overflow:hidden;          /* clip children to rounded corners */
+            overflow:hidden;
             transition:border-color .18s, box-shadow .18s;
+            position:relative;
         }
         .item-row.selected {
             border-color:var(--black);
             box-shadow:0 0 0 1px var(--black);
         }
 
-        /* ── Checkbox column: always shown, fixed width ── */
+        /* ── checkbox column ──
+           Narrow: 40px total. Vertically centred.
+           No border-right separator — cleaner.           */
         .item-cb {
-            width:48px; flex-shrink:0;
+            width:40px; flex-shrink:0;
             display:flex; align-items:center; justify-content:center;
-            cursor:pointer;
-            /* subtle separator */
-            border-right:1px solid var(--gray-200);
+            cursor:pointer; background:var(--white);
         }
 
-        /* ── Product image ──
-             Must match the card's border-radius on the left side
-             (overflow:hidden on parent clips it cleanly)          */
+        /* ── image ──
+           Fixed square; parent overflow:hidden handles the corner clip  */
         .item-img {
-            width:100px; min-width:100px; height:112px;
-            flex-shrink:0; overflow:hidden;
-            background:var(--gray-100); cursor:pointer;
+            width:96px; min-width:96px;
+            /* height matches the card body's natural min-height */
+            align-self:stretch;
+            overflow:hidden; background:var(--gray-100); cursor:pointer;
+            flex-shrink:0;
         }
         .item-img img {
             width:100%; height:100%; object-fit:cover; display:block;
-            transition:transform .32s ease;
+            transition:transform .3s ease;
         }
-        .item-img:hover img { transform:scale(1.06); }
+        .item-img:hover img { transform:scale(1.05); }
 
-        /* ── Text body ── */
+        /* ── body ── */
         .item-body {
-            flex:1; padding:12px 14px;
+            flex:1; padding:11px 12px;
             display:flex; flex-direction:column; justify-content:space-between;
-            min-width:0;
+            min-width:0; /* critical: prevents flex overflow */
         }
-        .item-top  { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+
+        .item-top  { display:flex; align-items:flex-start; justify-content:space-between; gap:6px; }
         .item-name {
             font-size:13px; font-weight:600; line-height:1.35; letter-spacing:-.1px;
-            flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+            flex:1; min-width:0;
+            /* two-line clamp */
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+            overflow:hidden;
             text-decoration:none; color:var(--black);
         }
         .item-name:hover { text-decoration:underline; text-underline-offset:3px; }
 
-        /* Delete ✕ button — visible only in edit mode */
+        /* ✕ delete — only in edit mode */
         .item-del {
-            width:28px; height:28px; border-radius:8px;
+            width:26px; height:26px; border-radius:7px;
             background:none; border:none; cursor:pointer;
             display:none; align-items:center; justify-content:center;
             color:var(--gray-300); flex-shrink:0;
-            transition:color .18s, background .18s;
+            transition:color .15s, background .15s;
         }
         .edit-mode .item-del { display:flex; }
-        .item-del:active { color:var(--red); background:rgba(200,0,26,.08); }
+        .item-del:active { color:var(--red); background:rgba(200,0,26,.07); }
 
-        .item-meta { display:flex; gap:6px; margin-top:4px; flex-wrap:wrap; }
+        .item-meta { display:flex; gap:5px; margin-top:4px; flex-wrap:wrap; }
         .meta-tag  {
-            font-size:10px; font-weight:600; padding:2px 8px;
-            border-radius:6px; background:var(--gray-100); color:var(--gray-600);
+            font-size:10px; font-weight:600; padding:2px 7px;
+            border-radius:5px; background:var(--gray-100); color:var(--gray-600);
+            white-space:nowrap;
         }
 
-        .item-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
-        .item-price  { font-family:'DM Mono',monospace; font-size:15px; font-weight:500; color:var(--red); }
-        .item-unit   { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); margin-top:1px; }
+        /* price + qty row — key fix: price left, qty right, no overflow */
+        .item-bottom {
+            display:flex; align-items:center; justify-content:space-between;
+            margin-top:8px; gap:8px;
+        }
+        .item-price-wrap { display:flex; flex-direction:column; min-width:0; }
+        .item-price { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--red); line-height:1; }
+        .item-unit  { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); margin-top:2px; }
 
-        /* qty control */
+        /* qty control — slightly smaller so it never pushes price off */
         .qty-ctl {
             display:flex; align-items:center;
             background:var(--gray-100); border:1.5px solid var(--gray-200);
-            border-radius:9px; overflow:hidden; user-select:none;
+            border-radius:8px; overflow:hidden; user-select:none; flex-shrink:0;
         }
         .q-btn {
-            width:32px; height:30px; border:none; background:none; color:var(--black);
-            cursor:pointer; font-size:17px;
+            width:28px; height:28px; border:none; background:none; color:var(--black);
+            cursor:pointer; font-size:16px;
             display:flex; align-items:center; justify-content:center;
             transition:background .12s;
         }
         .q-btn:active { background:var(--gray-200); }
-        .q-val { width:32px; text-align:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; }
+        .q-val { width:28px; text-align:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; }
 
-        /* ══════════════════════════════════════
-           EMPTY STATE — compact, leaves room for related row
-        ══════════════════════════════════════ */
+        /* ══════════════════════════
+           EMPTY STATE
+        ══════════════════════════ */
         .empty-wrap {
             display:none; flex-direction:column; align-items:center;
-            padding:44px 0 32px; text-align:center;
+            padding:40px 0 28px; text-align:center;
         }
         .empty-wrap.show { display:flex; }
         .empty-icon  {
-            width:64px; height:64px; border-radius:50%; background:var(--gray-200);
-            display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+            width:60px; height:60px; border-radius:50%; background:var(--gray-200);
+            display:flex; align-items:center; justify-content:center; margin-bottom:14px;
         }
         .empty-title { font-size:15px; font-weight:600; }
         .empty-sub   { font-size:12px; color:var(--gray-400); margin-top:4px; line-height:1.55; }
         .empty-cta   {
-            margin-top:20px; height:44px; padding:0 26px;
+            margin-top:18px; height:42px; padding:0 24px;
             background:var(--black); color:#fff; border:none;
             border-radius:var(--radius-sm); font-family:'Bebas Neue';
-            font-size:15px; letter-spacing:2px; cursor:pointer;
+            font-size:15px; letter-spacing:2px;
             text-decoration:none; display:inline-flex; align-items:center; gap:8px;
-            transition:opacity .18s;
+            transition:opacity .18s; cursor:pointer;
         }
         .empty-cta:active { opacity:.78; }
 
-        /* ══════════════════════════════════════
-           LOADING SKELETON
-        ══════════════════════════════════════ */
-        .skel-card {
-            display:flex; background:var(--white); border-radius:var(--radius);
-            overflow:hidden; border:1.5px solid var(--gray-200); height:112px;
-        }
-        .skel-cb  { width:48px; border-right:1px solid var(--gray-200); }
-        .skel-img { width:100px; }
-        .skel-body { flex:1; padding:14px; display:flex; flex-direction:column; gap:10px; }
-        .skel-line { border-radius:6px; }
-        @keyframes shimmer {
-            0%   { background-position:-500px 0; }
-            100% { background-position: 500px 0; }
-        }
-        .skel-cb, .skel-img, .skel-line {
+        /* ══════════════════════════
+           SKELETON
+        ══════════════════════════ */
+        .skel-card { display:flex; background:var(--white); border-radius:var(--radius); overflow:hidden; border:1.5px solid var(--gray-200); height:108px; }
+        .skel-cb   { width:40px; }
+        .skel-img  { width:96px; }
+        .skel-body { flex:1; padding:12px; display:flex; flex-direction:column; gap:9px; }
+        .skel-line { border-radius:5px; }
+        @keyframes shimmer { 0%{background-position:-600px 0} 100%{background-position:600px 0} }
+        .skel-cb,.skel-img,.skel-line {
             background:linear-gradient(90deg,var(--gray-100) 25%,var(--gray-200) 50%,var(--gray-100) 75%);
-            background-size:1000px 100%;
-            animation:shimmer 1.4s infinite;
+            background-size:1200px 100%; animation:shimmer 1.4s infinite;
         }
 
-        /* ══════════════════════════════════════
-           RELATED (h-card — same as index.html)
-        ══════════════════════════════════════ */
-        .related-wrap { padding:24px 0 0; }
-        .sec-hd { display:flex; align-items:center; margin-bottom:13px; }
+        /* ══════════════════════════
+           RELATED  (= index.html h-card)
+        ══════════════════════════ */
+        .related-wrap { padding:22px 0 0; }
+        .sec-hd       { margin-bottom:12px; }
         .sec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; }
-
-        .h-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -16px; padding:0 16px; }
+        .h-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -14px; padding:0 14px; }
         .h-scroll::-webkit-scrollbar { display:none; }
-        .h-row    { display:flex; gap:10px; width:max-content; padding-bottom:4px; }
-
+        .h-row { display:flex; gap:10px; width:max-content; padding-bottom:4px; }
         .h-card {
-            width:140px; flex-shrink:0;
+            width:138px; flex-shrink:0;
             background:var(--white); border-radius:var(--radius-sm);
             border:1px solid var(--gray-200); overflow:hidden;
             text-decoration:none; color:inherit;
@@ -321,22 +280,18 @@
         .h-card-tag.orange { background:var(--orange); }
         .h-card-body  { padding:8px 10px 10px; }
         .h-card-name  { font-size:11px; font-weight:600; line-height:1.3; }
-        .h-card-price { font-family:'DM Mono',monospace; font-size:11px; color:var(--black); margin-top:4px; font-weight:500; }
+        .h-card-price { font-family:'DM Mono',monospace; font-size:11px; color:var(--black); margin-top:4px; }
 
-        /* ══════════════════════════════════════
+        /* ══════════════════════════
            SIDEBAR (desktop)
-        ══════════════════════════════════════ */
+        ══════════════════════════ */
         .sidebar { padding:18px 0; }
-        .sum-card {
-            background:var(--white); border:1.5px solid var(--gray-200);
-            border-radius:var(--radius); padding:20px;
-        }
+        .sum-card { background:var(--white); border:1.5px solid var(--gray-200); border-radius:var(--radius); padding:20px; }
         .sum-sec-title {
             font-family:'Bebas Neue'; font-size:15px; letter-spacing:2.5px;
             margin-bottom:13px; display:flex; align-items:center; gap:8px;
         }
         .sum-sec-title::after { content:''; flex:1; height:1px; background:var(--gray-200); }
-
         .ship-opts { display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
         .ship-opt  {
             display:flex; align-items:center; justify-content:space-between;
@@ -355,39 +310,32 @@
         .so-name  { font-size:12px; font-weight:600; transition:color .18s; }
         .so-time  { font-size:10px; color:var(--gray-400); margin-top:2px; transition:color .18s; }
         .so-price { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; transition:color .18s; }
-
-        .divider { border:none; border-top:1px solid var(--gray-200); margin:13px 0; }
-        .sum-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-        .sum-lbl { font-size:12px; color:var(--gray-400); font-weight:500; }
-        .sum-val { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--gray-600); }
+        .divider  { border:none; border-top:1px solid var(--gray-200); margin:12px 0; }
+        .sum-row  { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .sum-lbl  { font-size:12px; color:var(--gray-400); font-weight:500; }
+        .sum-val  { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--gray-600); }
         .sum-total-row { display:flex; justify-content:space-between; align-items:baseline; }
         .sum-total-lbl { font-size:14px; font-weight:700; }
         .sum-total-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--red); }
-
-        /* ── CTA button (reused in sidebar + mobile bar) ── */
         .ck-btn {
-            width:100%; height:52px;
+            width:100%; height:50px;
             background:var(--black); color:#fff; border:none;
             border-radius:var(--radius-sm); font-family:'Bebas Neue';
             font-size:17px; letter-spacing:3px; cursor:pointer;
             display:flex; align-items:center; justify-content:center; gap:8px;
-            transition:opacity .18s, transform .12s;
+            transition:opacity .18s, transform .12s; margin-top:16px;
         }
         .ck-btn:active   { opacity:.82; transform:scale(.98); }
-        .ck-btn:disabled {
-            background:var(--gray-200); color:var(--gray-400);
-            cursor:default; transform:none; opacity:1;
-        }
+        .ck-btn:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; opacity:1; }
         .ck-sub {
-            margin-top:10px; font-size:10px; color:var(--gray-400);
+            margin-top:9px; font-size:10px; color:var(--gray-400);
             display:flex; align-items:center; justify-content:center; gap:5px;
         }
 
-        /* ══════════════════════════════════════
-           MOBILE STICKY BOTTOM BAR
-           Layout mirrors Shopee:
-           [○ All  |  price+discount  |  CHECKOUT (n)]
-        ══════════════════════════════════════ */
+        /* ══════════════════════════
+           MOBILE BOTTOM BAR
+           Layout: [cb All] [price block] [CHECKOUT(n)]
+        ══════════════════════════ */
         .bottom-bar {
             display:none;
             position:fixed; bottom:0; left:0; right:0; z-index:200;
@@ -395,140 +343,101 @@
             backdrop-filter:blur(20px) saturate(160%);
             -webkit-backdrop-filter:blur(20px) saturate(160%);
             border-top:1px solid var(--gray-200);
-            padding:12px 16px 28px;
+            height:var(--bar-h);
+            padding:0 16px;
             align-items:center; gap:12px;
         }
         .bottom-bar.show { display:flex; }
-
-        /* Select-all checkbox in bottom bar */
-        .bar-sel-wrap { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; flex-shrink:0; }
-        .bar-sel-label { font-size:9px; font-weight:600; color:var(--gray-400); letter-spacing:.5px; text-transform:uppercase; }
-
-        /* Price summary */
-        .bar-summary { flex:1; min-width:0; }
-        .bar-total   { font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--red); line-height:1; }
-        .bar-items   { font-size:10px; color:var(--gray-400); margin-top:3px; font-weight:500; }
-
-        /* Checkout button */
-        .bar-ck-btn {
-            height:48px; padding:0 22px; flex-shrink:0;
-            background:var(--black); color:#fff; border:none;
-            border-radius:var(--radius-sm); font-family:'Bebas Neue';
-            font-size:15px; letter-spacing:2px; cursor:pointer;
-            white-space:nowrap;
-            transition:opacity .18s, transform .12s;
-        }
-        .bar-ck-btn:active   { opacity:.82; transform:scale(.97); }
-        .bar-ck-btn:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; }
-
         @media (min-width:900px) { .bottom-bar { display:none !important; } }
 
-        /* ══════════════════════════════════════
+        /* All checkbox + label */
+        .bar-all-wrap { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; flex-shrink:0; }
+        .bar-all-lbl  { font-size:9px; font-weight:700; color:var(--gray-400); letter-spacing:.5px; text-transform:uppercase; line-height:1; }
+
+        /* price */
+        .bar-price-wrap { flex:1; min-width:0; }
+        .bar-total { font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--red); line-height:1; }
+        .bar-items { font-size:10px; color:var(--gray-400); margin-top:2px; }
+
+        /* checkout btn */
+        .bar-ck {
+            flex-shrink:0; height:46px; padding:0 18px;
+            background:var(--black); color:#fff; border:none;
+            border-radius:var(--radius-sm); font-family:'Bebas Neue';
+            font-size:14px; letter-spacing:2px; cursor:pointer; white-space:nowrap;
+            transition:opacity .18s, transform .1s;
+        }
+        .bar-ck:active   { opacity:.82; transform:scale(.97); }
+        .bar-ck:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; }
+
+        /* ══════════════════════════
            TOAST
-        ══════════════════════════════════════ */
+        ══════════════════════════ */
         .toast {
-            position:fixed; bottom:110px; left:50%;
+            position:fixed; bottom:calc(var(--bar-h) + 10px); left:50%;
             transform:translateX(-50%) translateY(6px);
             background:var(--black); color:#fff;
-            padding:11px 18px 11px 13px; border-radius:14px;
-            z-index:9999; opacity:0; transition:opacity .28s,transform .28s;
-            display:flex; align-items:center; gap:10px;
-            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28);
-            min-width:200px; white-space:nowrap;
+            padding:11px 16px 11px 12px; border-radius:13px;
+            z-index:9999; opacity:0; transition:opacity .26s,transform .26s;
+            display:flex; align-items:center; gap:9px;
+            pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.25);
+            min-width:190px; white-space:nowrap;
         }
         .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
-        .toast-icon { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .toast-icon { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
         .toast-icon.ok   { background:rgba(22,163,74,.25); }
         .toast-icon.warn { background:rgba(234,179,8,.2); }
-        .toast-text { display:flex; flex-direction:column; gap:1px; }
-        .toast-ttl  { font-size:12px; font-weight:700; letter-spacing:.3px; }
+        .toast-ttl  { font-size:12px; font-weight:700; }
         .toast-sub  { font-size:11px; color:rgba(255,255,255,.5); }
+        .toast-text { display:flex; flex-direction:column; gap:1px; }
 
         /* animations */
         @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        .fu  { animation:fadeUp .36s ease both; }
-        .d1  { animation-delay:.05s; }
-        .d2  { animation-delay:.10s; }
+        .fu { animation:fadeUp .36s ease both; }
+        .d1 { animation-delay:.05s; } .d2 { animation-delay:.10s; }
     </style>
 </head>
 <body>
 
-<!-- ══════════ NAV ══════════ -->
+<!-- NAV -->
 <nav class="nav">
     <div class="nav-left">
         <button class="icon-btn" onclick="history.back()" aria-label="Back">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
                  stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
         </button>
-        <a href="index.html" class="brand">NEXUS WEAR</a>
+        <a href="index.html" class="brand">Bards</a>
     </div>
     <div class="nav-right">
-        <!-- Edit mirrors ← width so brand is visually centred -->
-        <button class="edit-btn" id="editBtn" onclick="toggleEdit()">Edit</button>
+        <button class="edit-btn" id="editBtn" onclick="toggleEdit()" style="visibility:hidden">Edit</button>
     </div>
 </nav>
 
-<!-- ══════════ PAGE ══════════ -->
-<div class="page" id="page">
+<!-- PAGE -->
+<div class="page">
 
-    <!-- ── MAIN COLUMN ── -->
+    <!-- MAIN -->
     <div class="main-col">
 
-        <!-- Heading -->
         <div class="cart-header fu">
             <span class="cart-title">MY CART</span>
             <span class="cart-count" id="cartCount">—</span>
         </div>
 
-        <!-- Select-all row (visible when cart has items) -->
-        <div class="sel-all-row" id="selAllRow">
-            <div class="sel-left" onclick="toggleSelectAll()">
-                <div class="cb" id="selAllCb">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                         stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                </div>
-                <span class="sel-label" id="selAllLabel">Select All</span>
-            </div>
-            <!-- Edit-mode actions (hidden until edit mode) -->
-            <div class="edit-actions" id="editActions">
-                <button class="del-btn" id="delBtn" onclick="deleteSelected()">
-                    Delete (<span id="selCount">0</span>)
-                </button>
-            </div>
+        <!-- Skeleton (shown for ~280ms) -->
+        <div class="item-list" id="skelList">
+            <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:65%"></div><div class="skel-line" style="height:10px;width:40%"></div><div class="skel-line" style="height:10px;width:55%"></div></div></div>
+            <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:55%"></div><div class="skel-line" style="height:10px;width:35%"></div><div class="skel-line" style="height:10px;width:50%"></div></div></div>
         </div>
 
-        <!-- Skeleton (shown during 300ms load) -->
-        <div class="item-list" id="skeletonList">
-            <div class="skel-card">
-                <div class="skel-cb"></div>
-                <div class="skel-img"></div>
-                <div class="skel-body">
-                    <div class="skel-line" style="height:13px;width:68%"></div>
-                    <div class="skel-line" style="height:11px;width:42%"></div>
-                    <div class="skel-line" style="height:11px;width:30%"></div>
-                </div>
-            </div>
-            <div class="skel-card">
-                <div class="skel-cb"></div>
-                <div class="skel-img"></div>
-                <div class="skel-body">
-                    <div class="skel-line" style="height:13px;width:55%"></div>
-                    <div class="skel-line" style="height:11px;width:38%"></div>
-                    <div class="skel-line" style="height:11px;width:28%"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Real item list -->
+        <!-- Real items -->
         <div class="item-list" id="itemList" style="display:none;"></div>
 
         <!-- Empty state -->
         <div class="empty-wrap" id="emptyWrap">
             <div class="empty-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-                     stroke="#A0A0A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                     stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
@@ -544,47 +453,35 @@
             </a>
         </div>
 
-        <!-- Related products -->
-        <div class="related-wrap fu d2" id="relatedWrap">
-            <div class="sec-hd">
-                <span class="sec-hd-title">You May Also Like</span>
-            </div>
-            <div class="h-scroll">
-                <div class="h-row" id="relatedRow"></div>
-            </div>
+        <!-- Related -->
+        <div class="related-wrap fu d2" id="relatedWrap" style="padding-bottom:20px;">
+            <div class="sec-hd"><span class="sec-hd-title">You May Also Like</span></div>
+            <div class="h-scroll"><div class="h-row" id="relatedRow"></div></div>
         </div>
 
     </div><!-- /main-col -->
 
-    <!-- ── SIDEBAR (desktop) ── -->
+    <!-- SIDEBAR -->
     <aside class="sidebar fu d1">
         <div class="sum-card">
-
             <p class="sum-sec-title">Shipping</p>
             <div class="ship-opts">
                 <div class="ship-opt on" data-price="0" onclick="pickShip(this,0)">
-                    <div class="so-left">
-                        <div class="so-radio"><div class="so-dot"></div></div>
-                        <div><div class="so-name">Standard</div><div class="so-time">3–5 business days</div></div>
-                    </div>
+                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
+                    <div><div class="so-name">Standard</div><div class="so-time">3–5 business days</div></div></div>
                     <div class="so-price">FREE</div>
                 </div>
                 <div class="ship-opt" data-price="89" onclick="pickShip(this,89)">
-                    <div class="so-left">
-                        <div class="so-radio"><div class="so-dot"></div></div>
-                        <div><div class="so-name">Express</div><div class="so-time">1–2 business days</div></div>
-                    </div>
+                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
+                    <div><div class="so-name">Express</div><div class="so-time">1–2 business days</div></div></div>
                     <div class="so-price">+$2.70</div>
                 </div>
                 <div class="ship-opt" data-price="179" onclick="pickShip(this,179)">
-                    <div class="so-left">
-                        <div class="so-radio"><div class="so-dot"></div></div>
-                        <div><div class="so-name">Same Day</div><div class="so-time">Today by 8 PM (BKK)</div></div>
-                    </div>
+                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
+                    <div><div class="so-name">Same Day</div><div class="so-time">Today by 8 PM (BKK)</div></div></div>
                     <div class="so-price">+$5.42</div>
                 </div>
             </div>
-
             <hr class="divider">
             <div class="sum-row"><span class="sum-lbl">Subtotal</span><span class="sum-val" id="sumSubD">$0.00</span></div>
             <div class="sum-row"><span class="sum-lbl">Shipping</span><span class="sum-val" id="sumShipD">FREE</span></div>
@@ -593,8 +490,7 @@
                 <span class="sum-total-lbl">Total</span>
                 <span class="sum-total-val" id="sumTotalD">$0.00</span>
             </div>
-
-            <button class="ck-btn" id="ckBtnD" style="margin-top:16px;" onclick="goCheckout()" disabled>
+            <button class="ck-btn" id="ckBtnD" onclick="goCheckout()" disabled>
                 CHECKOUT
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -602,41 +498,35 @@
                 </svg>
             </button>
             <div class="ck-sub">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Secure checkout
             </div>
         </div>
     </aside>
 
-</div><!-- /page -->
+</div>
 
-<!-- ══════════ MOBILE BOTTOM BAR ══════════ -->
+<!-- MOBILE BOTTOM BAR -->
 <div class="bottom-bar" id="bottomBar">
-    <!-- Select-all -->
-    <div class="bar-sel-wrap" onclick="toggleSelectAll()">
-        <div class="cb" id="barSelCb">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+    <div class="bar-all-wrap" onclick="toggleSelectAll()">
+        <div class="cb" id="barAllCb">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
             </svg>
         </div>
-        <span class="bar-sel-label">All</span>
+        <span class="bar-all-lbl">All</span>
     </div>
-    <!-- Price -->
-    <div class="bar-summary">
+    <div class="bar-price-wrap">
         <div class="bar-total" id="barTotal">$0.00</div>
         <div class="bar-items" id="barItems">0 items selected</div>
     </div>
-    <!-- Checkout -->
-    <button class="bar-ck-btn" id="barCkBtn" onclick="goCheckout()" disabled>
-        CHECKOUT (<span id="barSelCount">0</span>)
+    <button class="bar-ck" id="barCk" onclick="goCheckout()" disabled>
+        CHECKOUT&thinsp;(<span id="barSelCount">0</span>)
     </button>
 </div>
 
-<!-- ══════════ TOAST ══════════ -->
+<!-- TOAST -->
 <div class="toast" id="toast">
     <div class="toast-icon" id="toastIcon"></div>
     <div class="toast-text">
@@ -646,46 +536,14 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   PRODUCT CATALOG  — single source of truth
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   PRODUCT CATALOG — single source of truth
+═══════════════════════════════════════════ */
 const PRODUCTS = {
-    'oversized-tee-black': {
-        name:'Classic Black Oversized Tee', price:790,
-        tag:'BESTSELLER', tagOrange:true, category:'tops', isNew:false, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:['S','M','L','XL'],
-        desc:'Crafted from 300GSM premium heavy-weight cotton.',
-        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'cargo-pants-olive': {
-        name:'Military Olive Cargo Pants', price:1590,
-        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
-        sizes:['M','L','XL'],
-        desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง',
-        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
-    },
-    'hoodie-grey': {
-        name:'Stone Grey Pullover Hoodie', price:1290,
-        tag:'POPULAR', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
-        sizes:['S','M','L','XL'],
-        desc:'เสื้อฮู้ดดี้สีเทาหิน ผ้า French Terry 380GSM',
-        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    },
-    'sunglasses-retro': {
-        name:'Retro Square Sunglasses', price:890,
-        tag:'LIMITED', tagOrange:true, category:'accessories', isNew:true, stock:'low-stock',
-        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
-        sizes:['One Size'],
-        desc:'แว่นตากันแดดทรงสี่เหลี่ยม เฟรม Acetate เลนส์ UV400',
-        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
-    }
+    'oversized-tee-black':{ name:'Classic Black Oversized Tee', price:790, tag:'BESTSELLER', tagOrange:true,  category:'tops',        isNew:false, stock:'in-stock',  images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'], colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}], sizes:['S','M','L','XL'], desc:'Crafted from 300GSM premium heavy-weight cotton.', specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'} },
+    'cargo-pants-olive':  { name:'Military Olive Cargo Pants',  price:1590,tag:'NEW',        tagOrange:false, category:'pants',       isNew:true,  stock:'in-stock',  images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],  colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}], sizes:['M','L','XL'],   desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง', specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'} },
+    'hoodie-grey':        { name:'Stone Grey Pullover Hoodie',  price:1290,tag:'POPULAR',    tagOrange:false, category:'tops',        isNew:true,  stock:'in-stock',  images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],         colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}], sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีเทาหิน ผ้า French Terry 380GSM', specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'} },
+    'sunglasses-retro':   { name:'Retro Square Sunglasses',     price:890, tag:'LIMITED',    tagOrange:true,  category:'accessories', isNew:true,  stock:'low-stock', images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],    colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}], sizes:['One Size'], desc:'แว่นตากันแดดทรงสี่เหลี่ยม เฟรม Acetate เลนส์ UV400', specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'} }
 };
 
 const CART_KEY = 'BARDS_CART';
@@ -694,20 +552,16 @@ const CART_KEY = 'BARDS_CART';
 let cart     = [];
 let shipFee  = 0;
 let editMode = false;
-let selected = new Set();   /* cart indices currently ticked */
+let selected = new Set();
 
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════
    BOOT
-   1. Show skeleton for ~300ms (feels snappy)
-   2. Read cart from localStorage
-   3. Pre-select item if coming from "Buy Now"
-      (product.html sets sessionStorage BUY_NOW_IDX)
-══════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 window.onload = function () {
     setTimeout(() => {
         cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
-        /* Pre-select: product.html stores the cart index or item id via sessionStorage */
+        /* Pre-select if coming from "Buy Now" in product.html */
         const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
         if (buyNowId) {
             const idx = cart.findIndex(c => c.id === buyNowId);
@@ -715,29 +569,26 @@ window.onload = function () {
             sessionStorage.removeItem('BUY_NOW_ID');
         }
 
-        document.getElementById('skeletonList').style.display = 'none';
-        document.getElementById('itemList').style.display     = '';
+        document.getElementById('skelList').style.display  = 'none';
+        document.getElementById('itemList').style.display  = '';
         render();
         buildRelated();
-    }, 300);
+    }, 280);
 };
 
-/* ══════════════════════════════════════════════
-   RENDER
-   Surgical diff — only patches changed values
-   so qty +/− never causes a full repaint flash
-══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   RENDER — surgical diff, no full repaints
+══════════════════════════════════════════ */
 function render() {
     const hasItems   = cart.length > 0;
     const totalItems = cart.reduce((s,c) => s + c.quantity, 0);
 
-    document.getElementById('cartCount').innerText = `${totalItems} item${totalItems!==1?'s':''}`;
+    document.getElementById('cartCount').textContent  = `${totalItems} item${totalItems!==1?'s':''}`;
     document.getElementById('emptyWrap').classList.toggle('show', !hasItems);
-    document.getElementById('selAllRow').classList.toggle('show', hasItems);
     document.getElementById('bottomBar').classList.toggle('show', hasItems);
     document.getElementById('editBtn').style.visibility = hasItems ? 'visible' : 'hidden';
 
-    /* keep selected set in bounds after cart changes */
+    /* keep selected in bounds */
     selected = new Set([...selected].filter(i => i < cart.length));
 
     const list = document.getElementById('itemList');
@@ -747,70 +598,56 @@ function render() {
         list.querySelectorAll('.item-row').forEach(el => {
             if (+el.dataset.idx >= cart.length) el.remove();
         });
-
-        /* add / patch rows */
+        /* add / patch */
         cart.forEach((item, idx) => {
-            const existing = list.querySelector(`.item-row[data-idx="${idx}"]`);
-            if (existing) {
-                patchRow(existing, item, idx);
-            } else {
-                const tmp = document.createElement('div');
-                tmp.innerHTML = buildItemHTML(item, idx);
-                list.appendChild(tmp.firstElementChild);
-            }
+            const ex = list.querySelector(`.item-row[data-idx="${idx}"]`);
+            if (ex) { patchRow(ex, item, idx); }
+            else    { const d = document.createElement('div'); d.innerHTML = rowHTML(item, idx); list.appendChild(d.firstElementChild); }
         });
-
         list.classList.toggle('edit-mode', editMode);
     } else {
         list.innerHTML = '';
         list.classList.remove('edit-mode');
     }
 
-    updateSelectUI();
+    syncSelectUI();
     updateSummary();
 }
 
-/* patch only the dynamic parts of a row — no DOM re-creation */
+/* patch only the live parts of a row — ZERO flicker */
 function patchRow(row, item, idx) {
     const isSel = selected.has(idx);
     row.classList.toggle('selected', isSel);
-    row.querySelector('.item-cb .cb')?.classList.toggle('on', isSel);
-
-    const totalUsd = ((item.price * item.quantity) / 33).toFixed(2);
-    const unitUsd  = (item.price / 33).toFixed(2);
-    const priceEl  = row.querySelector('.item-price');
-    const unitEl   = row.querySelector('.item-unit');
-    const qVal     = row.querySelector('.q-val');
-    if (priceEl) priceEl.textContent = `$${totalUsd}`;
-    if (unitEl)  unitEl.textContent  = item.quantity > 1 ? `$${unitUsd} each` : '';
-    if (qVal)    qVal.textContent    = item.quantity;
+    const cb = row.querySelector('.cb'); if (cb) cb.classList.toggle('on', isSel);
+    const totalUsd = fmtUSD(item.price * item.quantity);
+    const unitUsd  = fmtUSD(item.price);
+    const prEl = row.querySelector('.item-price'); if (prEl) prEl.textContent = totalUsd;
+    const unEl = row.querySelector('.item-unit');  if (unEl) unEl.textContent = item.quantity > 1 ? `${unitUsd} each` : '';
+    const qv   = row.querySelector('.q-val');      if (qv)   qv.textContent  = item.quantity;
 }
 
-function buildItemHTML(item, idx) {
-    const totalUsd = ((item.price * item.quantity) / 33).toFixed(2);
-    const unitUsd  = (item.price / 33).toFixed(2);
+function rowHTML(item, idx) {
     const isSel    = selected.has(idx);
+    const totalUsd = fmtUSD(item.price * item.quantity);
+    const unitUsd  = fmtUSD(item.price);
     return `
 <div class="item-row fu${isSel?' selected':''}" data-idx="${idx}" style="animation-delay:${idx*.05}s">
-    <!-- checkbox column -->
     <div class="item-cb" onclick="toggleItem(${idx})">
         <div class="cb${isSel?' on':''}">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
             </svg>
         </div>
     </div>
-    <!-- image -->
     <div class="item-img" onclick="location.href='product.html?id=${item.id}'">
         <img src="${item.image}" loading="lazy" alt="${item.name}">
     </div>
-    <!-- body -->
     <div class="item-body">
         <div class="item-top">
             <a class="item-name" href="product.html?id=${item.id}">${item.name}</a>
             <button class="item-del" onclick="removeItem(${idx})" title="Remove">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
@@ -821,9 +658,9 @@ function buildItemHTML(item, idx) {
             <span class="meta-tag">${item.size}</span>
         </div>
         <div class="item-bottom">
-            <div>
-                <div class="item-price">$${totalUsd}</div>
-                <div class="item-unit">${item.quantity > 1 ? `$${unitUsd} each` : ''}</div>
+            <div class="item-price-wrap">
+                <div class="item-price">${totalUsd}</div>
+                <div class="item-unit">${item.quantity > 1 ? `${unitUsd} each` : ''}</div>
             </div>
             <div class="qty-ctl">
                 <button class="q-btn" onclick="changeQty(${idx},-1)">−</button>
@@ -835,22 +672,14 @@ function buildItemHTML(item, idx) {
 </div>`;
 }
 
-/* ══════════════════════════════════════════════
-   SELECTION  — Shopee-style
-   • checkboxes always visible
-   • ticking items updates bottom bar price live
-   • CHECKOUT button shows count of selected
-══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   SELECTION
+══════════════════════════════════════════ */
 function toggleItem(idx) {
     selected.has(idx) ? selected.delete(idx) : selected.add(idx);
-    /* patch just this row's checkbox + border */
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
-    if (row) {
-        row.classList.toggle('selected', selected.has(idx));
-        row.querySelector('.cb')?.classList.toggle('on', selected.has(idx));
-    }
-    updateSelectUI();
-    updateSummary();
+    if (row) patchRow(row, cart[idx], idx);
+    syncSelectUI(); updateSummary();
 }
 
 function toggleSelectAll() {
@@ -859,196 +688,130 @@ function toggleSelectAll() {
     render();
 }
 
-function updateSelectUI() {
+function syncSelectUI() {
     const total = cart.length, sel = selected.size;
-
-    /* top select-all checkbox */
-    const allCb = document.getElementById('selAllCb');
-    if (allCb) {
-        allCb.classList.remove('on','partial');
-        if (sel > 0 && sel < total)  allCb.classList.add('partial');
-        if (sel === total && total > 0) allCb.classList.add('on');
-    }
-    document.getElementById('selAllLabel').textContent = sel > 0 ? `${sel} selected` : 'Select All';
-
-    /* bottom bar mirror */
-    const barCb = document.getElementById('barSelCb');
+    const barCb = document.getElementById('barAllCb');
     if (barCb) {
         barCb.classList.remove('on','partial');
-        if (sel > 0 && sel < total)  barCb.classList.add('partial');
+        if (sel > 0 && sel < total) barCb.classList.add('partial');
         if (sel === total && total > 0) barCb.classList.add('on');
     }
-
-    /* edit-mode delete button */
-    const delBtn = document.getElementById('delBtn');
-    if (delBtn) {
-        delBtn.classList.toggle('show', sel > 0);
-        document.getElementById('selCount').textContent = sel;
-    }
-
-    /* checkout button count */
     document.getElementById('barSelCount').textContent = sel;
     const canCk = sel > 0;
-    document.getElementById('barCkBtn').disabled  = !canCk;
-    const ckD = document.getElementById('ckBtnD');
-    if (ckD) ckD.disabled = !canCk;
+    document.getElementById('barCk').disabled   = !canCk;
+    const ckD = document.getElementById('ckBtnD'); if (ckD) ckD.disabled = !canCk;
 }
 
-/* ══════════════════════════════════════════════
-   EDIT MODE  — only enables the ✕ delete buttons
-   and the "Delete (n)" action in the select-all row.
-   Checkboxes stay, select-all stays — always.
-══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   EDIT MODE  — only reveals ✕ per-row buttons
+══════════════════════════════════════════ */
 function toggleEdit() {
     editMode = !editMode;
-    const btn  = document.getElementById('editBtn');
-    const list = document.getElementById('itemList');
-    const acts = document.getElementById('editActions');
+    const btn = document.getElementById('editBtn');
     btn.textContent = editMode ? 'Done' : 'Edit';
     btn.classList.toggle('in-edit', editMode);
-    list.classList.toggle('edit-mode', editMode);
-    /* show/hide the delete-selected action in select-all row */
-    if (acts) acts.style.display = editMode ? 'flex' : '';
+    document.getElementById('itemList').classList.toggle('edit-mode', editMode);
 }
 
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════
    CART ACTIONS
-══════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function changeQty(idx, delta) {
     cart[idx].quantity = Math.max(1, Math.min(30, cart[idx].quantity + delta));
     saveCart();
-    /* patch only this row — zero flicker */
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
     if (row) patchRow(row, cart[idx], idx);
+    /* update cart count in header */
+    const total = cart.reduce((s,c) => s + c.quantity, 0);
+    document.getElementById('cartCount').textContent = `${total} item${total!==1?'s':''}`;
     updateSummary();
 }
 
 function removeItem(idx) {
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
     const doRemove = () => {
-        /* shift selected indices */
-        const next = new Set();
-        selected.forEach(i => { if(i < idx) next.add(i); else if(i > idx) next.add(i-1); });
+        const next = new Set(); selected.forEach(i => { if(i<idx) next.add(i); else if(i>idx) next.add(i-1); });
         selected.clear(); next.forEach(i => selected.add(i));
-        cart.splice(idx, 1);
-        saveCart();
-        if (!cart.length && editMode) { editMode = false; document.getElementById('editBtn').textContent = 'Edit'; }
+        cart.splice(idx, 1); saveCart();
+        if (!cart.length && editMode) { editMode=false; document.getElementById('editBtn').textContent='Edit'; document.getElementById('editBtn').classList.remove('in-edit'); }
         render(); buildRelated();
     };
     if (row) {
-        row.style.transition = 'opacity .2s,transform .2s';
-        row.style.opacity    = '0';
-        row.style.transform  = 'translateX(-6px)';
+        row.style.transition='opacity .18s,transform .18s';
+        row.style.opacity='0'; row.style.transform='translateX(-5px)';
         setTimeout(doRemove, 200);
-    } else { doRemove(); }
+    } else doRemove();
 }
 
-function deleteSelected() {
-    if (!selected.size) return;
-    const n = selected.size;
-    [...selected].sort((a,b) => b-a).forEach(i => cart.splice(i,1));
-    selected.clear();
-    saveCart();
-    if (!cart.length) { editMode = false; document.getElementById('editBtn').textContent = 'Edit'; }
-    render(); buildRelated();
-    showToast('ok', `${n} item${n>1?'s':''} removed`, 'Cart updated');
-}
-
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════
    SHIPPING
-══════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function pickShip(el, fee) {
     document.querySelectorAll('.ship-opt').forEach(s => s.classList.remove('on'));
-    el.classList.add('on');
-    shipFee = fee;
-    updateSummary();
+    el.classList.add('on'); shipFee = fee; updateSummary();
 }
 
-/* ══════════════════════════════════════════════
-   SUMMARY  — only counts selected items
-══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   SUMMARY (selected items only)
+══════════════════════════════════════════ */
 function updateSummary() {
-    const activeItems = selected.size > 0
-        ? [...selected].map(i => cart[i])
-        : [];
+    const items       = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
+    const subtotalTHB = items.reduce((s,c) => s + c.price * c.quantity, 0);
+    const selQty      = items.reduce((s,c) => s + c.quantity, 0);
+    const totalTHB    = subtotalTHB + (items.length > 0 ? shipFee : 0);
 
-    const subtotalTHB = activeItems.reduce((s,c) => s + c.price * c.quantity, 0);
-    const totalQty    = activeItems.reduce((s,c) => s + c.quantity, 0);
-    const totalTHB    = subtotalTHB + (activeItems.length > 0 ? shipFee : 0);
-    const fmt = thb => `$${(thb/33).toFixed(2)}`;
-
-    /* sidebar */
-    document.getElementById('sumSubD').textContent   = fmt(subtotalTHB);
-    document.getElementById('sumShipD').textContent  = shipFee === 0 ? 'FREE' : fmt(shipFee);
-    document.getElementById('sumTotalD').textContent = fmt(totalTHB);
-
-    /* bottom bar */
-    document.getElementById('barTotal').textContent = fmt(totalTHB);
-    document.getElementById('barItems').textContent = `${totalQty} item${totalQty!==1?'s':''} selected`;
+    document.getElementById('sumSubD').textContent   = fmtUSD(subtotalTHB);
+    document.getElementById('sumShipD').textContent  = shipFee === 0 ? 'FREE' : fmtUSD(shipFee);
+    document.getElementById('sumTotalD').textContent = fmtUSD(totalTHB);
+    document.getElementById('barTotal').textContent  = fmtUSD(totalTHB);
+    document.getElementById('barItems').textContent  = `${selQty} item${selQty!==1?'s':''} selected`;
 }
 
-/* ══════════════════════════════════════════════
-   GO TO CHECKOUT
-   Passes selected items + ship fee via sessionStorage
-   checkout.html reads CHECKOUT_ITEMS / CHECKOUT_SHIPFEE
-══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   CHECKOUT → checkout.html
+   Passes selected items + shipFee via sessionStorage
+══════════════════════════════════════════ */
 function goCheckout() {
     if (!selected.size) return;
-    const items = [...selected].map(i => cart[i]);
-    sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify(items));
+    sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify([...selected].map(i => cart[i])));
     sessionStorage.setItem('CHECKOUT_SHIPFEE', String(shipFee));
     location.href = 'checkout.html';
 }
 
-/* ══════════════════════════════════════════════
-   RELATED  — same h-card as index.html
-══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   RELATED
+══════════════════════════════════════════ */
 function buildRelated() {
     const inCart = new Set(cart.map(c => c.id));
     const ids    = Object.keys(PRODUCTS).filter(id => !inCart.has(id));
-    const row    = document.getElementById('relatedRow');
-    if (!row) return;
-    if (!ids.length) {
-        row.innerHTML = `<p style="font-size:12px;color:var(--gray-400);padding:4px 0 8px;">All products are in your cart 🎉</p>`;
-        return;
-    }
+    const row    = document.getElementById('relatedRow'); if (!row) return;
+    if (!ids.length) { row.innerHTML='<p style="font-size:12px;color:var(--gray-400);">All products are in your cart 🎉</p>'; return; }
     row.innerHTML = ids.map(id => {
         const p = PRODUCTS[id];
-        return `
-<a href="product.html?id=${id}" class="h-card">
-    <div class="h-card-img">
-        <img src="${p.images[0]}" loading="lazy" alt="${p.name}">
-        <div class="h-card-tag${p.tagOrange?' orange':''}">${p.tag}</div>
-    </div>
-    <div class="h-card-body">
-        <div class="h-card-name">${p.name}</div>
-        <div class="h-card-price">$${(p.price/33).toFixed(2)}</div>
-    </div>
-</a>`;
+        return `<a href="product.html?id=${id}" class="h-card"><div class="h-card-img"><img src="${p.images[0]}" loading="lazy" alt="${p.name}"><div class="h-card-tag${p.tagOrange?' orange':''}">${p.tag}</div></div><div class="h-card-body"><div class="h-card-name">${p.name}</div><div class="h-card-price">$${(p.price/33).toFixed(2)}</div></div></a>`;
     }).join('');
 }
 
-/* ══════════════════════════════════════════════
-   STORAGE
-══════════════════════════════════════════════ */
-function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function fmtUSD(thb) { return `$${(thb/33).toFixed(2)}`; }
+function saveCart()  { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════
    TOAST
-══════════════════════════════════════════════ */
-const IC_OK   = `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-const IC_WARN = `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+══════════════════════════════════════════ */
+const IC_OK   = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const IC_WARN = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
 let _tt;
 function showToast(type, title, sub) {
-    const icon = document.getElementById('toastIcon');
-    icon.className = `toast-icon ${type==='warn'?'warn':'ok'}`;
-    icon.innerHTML = type==='warn' ? IC_WARN : IC_OK;
+    const ic = document.getElementById('toastIcon');
+    ic.className = `toast-icon ${type==='warn'?'warn':'ok'}`;
+    ic.innerHTML = type==='warn' ? IC_WARN : IC_OK;
     document.getElementById('toastTtl').textContent = title;
     document.getElementById('toastSub').textContent = sub || '';
-    const t = document.getElementById('toast');
-    t.classList.add('on');
-    clearTimeout(_tt);
-    _tt = setTimeout(() => t.classList.remove('on'), 2600);
+    const t = document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2600);
 }
 </script>
 </body>
