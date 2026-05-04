@@ -237,7 +237,7 @@
 ═══════════════════════════════════════════════ */
 const PRODUCTS = {
     'oversized-tee-black': {
-        name:'Classic Black Oversized Tee', price:790,
+        name:'Classic Black Oversized Tee', price:12,
         tag:'BESTSELLER', tagOrange:true, rating:4.9, reviews:248, stock:'in-stock',
         desc:'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน ผ่านการทดสอบการซัก 100+ ครั้ง',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
@@ -246,7 +246,7 @@ const PRODUCTS = {
         specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-olive': {
-        name:'Military Olive Cargo Pants', price:1590,
+        name:'Military Olive Cargo Pants', price:15,
         tag:'NEW', tagOrange:false, rating:4.7, reviews:91, stock:'in-stock',
         desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
@@ -255,7 +255,7 @@ const PRODUCTS = {
         specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-grey': {
-        name:'Stone Grey Pullover Hoodie', price:1290,
+        name:'Stone Grey Pullover Hoodie', price:129,
         tag:'POPULAR', tagOrange:false, rating:4.8, reviews:175, stock:'in-stock',
         desc:'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
@@ -264,13 +264,117 @@ const PRODUCTS = {
         specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-retro': {
-        name:'Retro Square Sunglasses', price:890,
+        name:'Retro Square Sunglasses', price:89,
         tag:'LIMITED', tagOrange:true, rating:4.6, reviews:58, stock:'low-stock',
         desc:'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
         sizes:['One Size'],
         specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
+    },
+    'bp1': {
+        name:     'Classic Black Oversized Tee',
+        price:    79,
+        tag:      'BESTSELLER', tagLight: false,
+        category: 'tops',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        rating:   4.9, reviews: 248,
+        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
+        images:   [
+            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
+            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
+        ],
+        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
+        sizes:  ['S','M','L','XL'],
+        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+    },
+    'bp2': {
+        name:     'Military Olive Cargo Pants',
+        price:    90,
+        tag:      'NEW', tagLight: false,
+        category: 'pants',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        rating:   4.7, reviews: 91,
+        desc:     'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
+        images:   [
+            'https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg',
+            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
+        ],
+        colors: [{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
+        sizes:  ['M','L','XL'],
+        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+    },
+    'bp3': {
+        name:     'Stone Grey Pullover Hoodie',
+        price:    10,
+        tag:      'POPULAR', tagLight: false,
+        category: 'tops',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        rating:   4.8, reviews: 175,
+        desc:     'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
+        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors: [{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
+        sizes:  ['S','M','L','XL'],
+        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+    },
+    'bp4': {
+        name:     'Retro Square Sunglasses',
+        price:    89,
+        tag:      'LIMITED', tagLight: false,
+        category: 'accessories',
+        isNew:    true, isSale: true,
+        stock:    'low-stock',
+        rating:   4.6, reviews: 58,
+        desc:     'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
+        images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors: [{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
+        sizes:  ['One Size'],
+        specs:  {Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
+    },
+    'bp5': {
+        name:     'Stone White Oversized Tee',
+        price:    70,
+        tag:      'NEW', tagLight: false,
+        category: 'tops',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        rating:   4.8, reviews: 112,
+        desc:     'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton เนื้อนุ่ม ทรงหลวมสบาย',
+        images:   ['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
+        colors: [{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
+        sizes:  ['S','M','L','XL'],
+        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+    },
+    'bp6': {
+        name:     'Tactical Black Cargo Pants',
+        price:    159,
+        tag:      'NEW', tagLight: false,
+        category: 'pants',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        rating:   4.7, reviews: 44,
+        desc:     'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon',
+        images:   ['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
+        colors: [{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
+        sizes:  ['M','L','XL'],
+        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+    },
+    'bp7': {
+        name:     'Midnight Navy Pullover Hoodie',
+        price:    12,
+        tag:      'NEW', tagLight: false,
+        category: 'tops',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        rating:   4.7, reviews: 63,
+        desc:     'เสื้อฮู้ดดี้สีกรมท่า ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ',
+        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors: [{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
+        sizes:  ['S','M','L','XL'],
+        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     }
 };
 
