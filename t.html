@@ -460,7 +460,8 @@
 ═══════════════════════════════════════════════ -->
 <div class="section fu d2" style="margin-top:4px;" id="featuredSection">
     <div class="sec-hd">
-        <span class="sec-hd-title">Featured</span>
+        <span class="sec-hd-title" id="featuredTitle">Featured</span>
+        <a class="see-all" id="featuredSeeAll" href="categories/tops.html" style="display:none">See all →</a>
     </div>
     <div class="p-grid" id="productGrid"></div>
     <div class="empty" id="emptyState">
@@ -520,13 +521,15 @@
    ▸ stock:    'in-stock' | 'low-stock' | 'out-of-stock'
 ═══════════════════════════════════════════════════════════════ */
 const PRODUCTS = {
+    /* ── สินค้าหลัก (Featured) ──────────────────────────────────── */
     'oversized-tee-black': {
         name:     'Classic Black Oversized Tee',
         price:    790,
         tag:      'BESTSELLER', tagLight: false,
         category: 'tops',
-        isNew:    true, isSale: false,
+        isNew:    false, isSale: false,
         stock:    'in-stock',
+        dateAdded: '2024-10-01',
         rating:   4.9, reviews: 248,
         desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
         images:   [
@@ -542,8 +545,9 @@ const PRODUCTS = {
         price:    1590,
         tag:      'NEW', tagLight: false,
         category: 'pants',
-        isNew:    true, isSale: false,
+        isNew:    false, isSale: false,
         stock:    'in-stock',
+        dateAdded: '2024-11-01',
         rating:   4.7, reviews: 91,
         desc:     'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
         images:   [
@@ -559,8 +563,9 @@ const PRODUCTS = {
         price:    1290,
         tag:      'POPULAR', tagLight: false,
         category: 'tops',
-        isNew:    true, isSale: false,
+        isNew:    false, isSale: false,
         stock:    'in-stock',
+        dateAdded: '2024-10-15',
         rating:   4.8, reviews: 175,
         desc:     'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
         images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
@@ -573,8 +578,9 @@ const PRODUCTS = {
         price:    890,
         tag:      'LIMITED', tagLight: false,
         category: 'accessories',
-        isNew:    true, isSale: true,
+        isNew:    false, isSale: true,
         stock:    'low-stock',
+        dateAdded: '2024-10-20',
         rating:   4.6, reviews: 58,
         desc:     'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
         images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
@@ -582,6 +588,8 @@ const PRODUCTS = {
         sizes:  ['One Size'],
         specs:  {Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
     },
+
+    /* ── New Arrivals — สินค้าที่เพิ่งเพิ่มเข้ามาใหม่ ──────────── */
     'oversized-tee-white': {
         name:     'Stone White Oversized Tee',
         price:    790,
@@ -589,6 +597,7 @@ const PRODUCTS = {
         category: 'tops',
         isNew:    true, isSale: false,
         stock:    'in-stock',
+        dateAdded: '2025-01-10',
         rating:   4.8, reviews: 112,
         desc:     'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton เนื้อนุ่ม ทรงหลวมสบาย',
         images:   ['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
@@ -603,6 +612,7 @@ const PRODUCTS = {
         category: 'pants',
         isNew:    true, isSale: false,
         stock:    'in-stock',
+        dateAdded: '2025-01-12',
         rating:   4.7, reviews: 44,
         desc:     'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon',
         images:   ['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
@@ -617,21 +627,39 @@ const PRODUCTS = {
         category: 'tops',
         isNew:    true, isSale: false,
         stock:    'in-stock',
+        dateAdded: '2025-01-15',
         rating:   4.7, reviews: 63,
         desc:     'เสื้อฮู้ดดี้สีกรมท่า ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ',
         images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors: [{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
         sizes:  ['S','M','L','XL'],
         specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+    },
+    'sunglasses-black': {
+        name:     'Classic Black Sunglasses',
+        price:    890,
+        tag:      'NEW', tagLight: false,
+        category: 'accessories',
+        isNew:    true, isSale: false,
+        stock:    'in-stock',
+        dateAdded: '2025-01-18',
+        rating:   4.5, reviews: 21,
+        desc:     'แว่นตากันแดดคลาสสิกสีดำ เฟรม Acetate น้ำหนักเบา เลนส์ UV400',
+        images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors: [{name:'Glossy Black',hex:'#111111'}],
+        sizes:  ['One Size'],
+        specs:  {Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'}
     }
     /*
     ── HOW TO ADD A PRODUCT ─────────────────────────────────────────
     'product-id': {
         name:'...', price:0,
         tag:'NEW', tagLight:false,
-        category:'tops',      ← tops | pants | accessories | (new)
-        isNew:true, isSale:false,
+        category:'tops',
+        isNew:true,   ← true = ขึ้น New Arrivals, false = แค่ Featured
+        isSale:false,
         stock:'in-stock',
+        dateAdded:'2025-01-01',  ← วันที่เพิ่มสินค้า ใช้เรียง New Arrivals ใหม่สุดก่อน
         rating:0, reviews:0, desc:'...',
         images:['https://hnungh.github.io/mpj/img/FILENAME.jpg'],
         colors:[{name:'...',hex:'#...'}],
@@ -641,11 +669,16 @@ const PRODUCTS = {
     ───────────────────────────────────────────────────────────────── */
 };
 
-/* ── CATEGORY DISPLAY CONFIG ─────────────────────────────────── */
+/* ── CATEGORY DISPLAY CONFIG ─────────────────────────────────────
+   url: หน้าที่จะสร้างในอนาคต เช่น categories/tops.html
+   ดึงสินค้าด้วย PRODUCTS filter category === id เหมือนกันทุกหน้า
+──────────────────────────────────────────────────────────────── */
 const CATEGORIES = [
-    { id:'tops',        label:'Tops',        img: PRODUCTS['oversized-tee-black'].images[0] },
-    { id:'pants',       label:'Pants',       img: PRODUCTS['cargo-pants-olive'].images[0]   },
-    { id:'accessories', label:'Accessories', img: PRODUCTS['sunglasses-retro'].images[0]    },
+    { id:'tops',        label:'Tops',        url:'categories/tops.html',        img: PRODUCTS['oversized-tee-black'].images[0] },
+    { id:'pants',       label:'Pants',       url:'categories/pants.html',       img: PRODUCTS['cargo-pants-olive'].images[0]   },
+    { id:'accessories', label:'Accessories', url:'categories/accessories.html', img: PRODUCTS['sunglasses-retro'].images[0]    },
+    /* เพิ่ม category ใหม่:
+    { id:'footwear', label:'Footwear', url:'categories/footwear.html', img:'...' }, */
 ];
 
 /* ── SORT OPTIONS ─────────────────────────────────────────────── */
@@ -657,7 +690,7 @@ const SORT_OPTS = [
 ];
 
 /* ── NEW ARRIVALS CONFIG ──────────────────────────────────────── */
-const NEW_ARRIVALS_MAX = 8;   // แสดงสูงสุด 8 รายการ (2 rows × 4 cols)
+const NEW_ARRIVALS_MAX = 16;  // แสดงสูงสุด 16 รายการ (2 แถว × 8 คอล)
 
 /* ════════════════════════════════════════
    STATE
@@ -778,15 +811,22 @@ function getItems() {
 
 /* ════════════════════════════════════════
    RENDER: PRODUCT GRID
+   — จำกัด 16 รายการ
+   — See all → category page อัตโนมัติ
 ════════════════════════════════════════ */
-function renderGrid() {
-    const items = getItems();
-    const grid  = document.getElementById('productGrid');
-    const empty = document.getElementById('emptyState');
-    const lbl   = document.getElementById('resultsLabel');
-    const hint  = document.getElementById('searchHint');
+const FEATURED_MAX = 16;
 
-    const n    = items.length;
+function renderGrid() {
+    const allItems = getItems();
+    const items    = allItems.slice(0, FEATURED_MAX);
+    const grid     = document.getElementById('productGrid');
+    const empty    = document.getElementById('emptyState');
+    const lbl      = document.getElementById('resultsLabel');
+    const hint     = document.getElementById('searchHint');
+    const seeAll   = document.getElementById('featuredSeeAll');
+    const title    = document.getElementById('featuredTitle');
+
+    const n    = allItems.length;
     const noun = n === 1 ? 'Product' : 'Products';
     lbl.innerText = S.query
         ? `${n} result${n!==1?'s':''} — "${S.query}"`
@@ -795,14 +835,24 @@ function renderGrid() {
     if (S.query) hint.innerText = n > 0 ? `พบ ${n} รายการ` : 'ไม่พบสินค้า — ลองคำค้นอื่น';
     else         hint.innerText = '';
 
+    // ชื่อ section + see all ตาม filter
+    const catInfo = CATEGORIES.find(c => c.id === S.filter);
+    if (catInfo) {
+        title.innerText      = catInfo.label;
+        seeAll.href          = catInfo.url;
+        seeAll.style.display = 'flex';
+    } else {
+        title.innerText      = 'Featured';
+        seeAll.style.display = 'none';
+    }
+
     if (n === 0) {
         grid.innerHTML = '';
         empty.classList.add('show');
         return;
     }
     empty.classList.remove('show');
-
-    grid.innerHTML = items.map(([id,p],i) => cardHTML(id, p, i===0 && n >= 2)).join('');
+    grid.innerHTML = items.map(([id,p],i) => cardHTML(id, p, i===0 && items.length >= 2)).join('');
 }
 
 function cardHTML(id, p, wide) {
@@ -843,31 +893,24 @@ function cardHTML(id, p, wide) {
 </a>`;
 }
 
-/* ════════════════════════════════════════
-   RENDER: NEW ARRIVALS
-   — ใช้ cardHTML() เดียวกับ Featured ทุกประการ
-     (มี wishlist, สีดot, tag, ราคา ครบ)
-   — horizontal scroll, max 8 รายการ
-════════════════════════════════════════ */
 function renderNewArrivals() {
-    const all   = Object.entries(PRODUCTS).filter(([,p]) => p.isNew);
-    const items = all.slice(0, NEW_ARRIVALS_MAX);
+    const all = Object.entries(PRODUCTS)
+        .filter(([,p]) => p.isNew)
+        .sort(([,a],[,b]) => new Date(b.dateAdded) - new Date(a.dateAdded))
+        .slice(0, NEW_ARRIVALS_MAX);
 
-    if (!items.length) {
+    if (!all.length) {
         document.getElementById('newSection').style.display = 'none';
         return;
     }
-
-    // cardHTML(id, p, wide=false) — เหมือน Featured แต่ไม่ wide
     document.getElementById('newRow').innerHTML =
-        items.map(([id,p]) => cardHTML(id, p, false)).join('');
-
+        all.map(([id,p]) => cardHTML(id, p, false)).join('');
     document.getElementById('newSection').style.display = '';
 }
-
-/* ── helper สำหรับ new-arrival.html ── */
 function getNewArrivals(limit) {
-    const all = Object.entries(PRODUCTS).filter(([,p]) => p.isNew);
+    const all = Object.entries(PRODUCTS)
+        .filter(([,p]) => p.isNew)
+        .sort(([,a],[,b]) => new Date(b.dateAdded) - new Date(a.dateAdded));
     return limit ? all.slice(0, limit) : all;
 }
 
@@ -880,7 +923,7 @@ function renderCategories() {
         countMap[p.category] = (countMap[p.category] || 0) + 1;
     });
     document.getElementById('catGrid').innerHTML = CATEGORIES.map(cat => `
-<div class="cat-card" onclick="filterByCategory('${cat.id}')">
+<div class="cat-card" onclick="gotoCategory('${cat.id}','${cat.url}')">
     <img src="${cat.img}" alt="${cat.label}" loading="lazy">
     <div class="cat-arrow">
         <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -893,6 +936,16 @@ function renderCategories() {
         <span class="cat-count">${countMap[cat.id]||0} items</span>
     </div>
 </div>`).join('');
+}
+
+/* ── Category routing ────────────────────────────────────────────
+   ตอนนี้: filter สินค้าใน index นี้เลย
+   อนาคต: สร้างไฟล์ categories/tops.html ฯลฯ แล้วเอา
+           const CAT_ID = new URLSearchParams(location.search).get('cat')
+           หรือ parse จาก pathname มา filter PRODUCTS ได้เลย
+──────────────────────────────────────────────────────────────── */
+function gotoCategory(id, url) {
+    window.location.href = url;
 }
 
 /* ════════════════════════════════════════
