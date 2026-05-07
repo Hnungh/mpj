@@ -31,11 +31,7 @@
             overscroll-behavior:none; min-height:100vh;
         }
 
-        /* ══════════════════════════
-           NAV  — same as product.html
-           Left : ← + NEXUS WEAR
-           Right: Edit  (same visual weight as ←)
-        ══════════════════════════ */
+        /* NAV */
         .nav {
             position:fixed; top:0; left:0; right:0; z-index:300;
             height:var(--nav-h);
@@ -47,9 +43,7 @@
             border-bottom:1px solid var(--gray-200);
         }
         .nav-left  { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
-        /* fixed width = icon-btn width so brand is optically centred */
         .nav-right { width:36px; display:flex; justify-content:flex-end; flex-shrink:0; }
-
         .icon-btn {
             width:36px; height:36px; border-radius:50%;
             background:var(--gray-100); border:none;
@@ -70,9 +64,7 @@
         .edit-btn:active  { opacity:.6; }
         .edit-btn.in-edit { color:var(--orange); }
 
-        /* ══════════════════════════
-           PAGE / GRID
-        ══════════════════════════ */
+        /* PAGE */
         .page {
             margin-top:var(--nav-h);
             max-width:1100px;
@@ -94,15 +86,12 @@
         .cart-title  { font-family:'Bebas Neue'; font-size:24px; letter-spacing:3px; }
         .cart-count  { font-family:'DM Mono',monospace; font-size:12px; color:var(--gray-400); }
 
-        /* ══════════════════════════
-           CHECKBOX  (20×20, smaller = less wasted space)
-        ══════════════════════════ */
+        /* CHECKBOX */
         .cb {
             width:20px; height:20px; border-radius:6px;
             border:2px solid var(--gray-300); background:var(--white);
             display:flex; align-items:center; justify-content:center;
             flex-shrink:0; transition:all .15s; cursor:pointer;
-            /* prevent checkbox from being accidentally tapped on the image side */
             position:relative; z-index:1;
         }
         .cb.on      { background:var(--black); border-color:var(--black); }
@@ -110,96 +99,56 @@
         .cb svg     { display:none; }
         .cb.on svg  { display:block; }
 
-        /* ══════════════════════════
-           ITEM LIST
-        ══════════════════════════ */
+        /* ITEM LIST */
         .item-list { display:flex; flex-direction:column; gap:10px; }
-
-        /* card wrapper — overflow:hidden clips image + cb col to the card's radius */
         .item-row {
             display:flex; align-items:stretch;
             background:var(--white);
             border:1.5px solid var(--gray-200);
-            border-radius:var(--radius);
-            overflow:hidden;
-            transition:border-color .18s, box-shadow .18s;
-            position:relative;
+            border-radius:var(--radius); overflow:hidden;
+            transition:border-color .18s, box-shadow .18s; position:relative;
         }
-        .item-row.selected {
-            border-color:var(--black);
-            box-shadow:0 0 0 1px var(--black);
-        }
-
-        /* ── checkbox column ──
-           Narrow: 40px total. Vertically centred.
-           No border-right separator — cleaner.           */
+        .item-row.selected { border-color:var(--black); box-shadow:0 0 0 1px var(--black); }
         .item-cb {
             width:40px; flex-shrink:0;
             display:flex; align-items:center; justify-content:center;
             cursor:pointer; background:var(--white);
         }
-
-        /* ── image ──
-           Fixed square; parent overflow:hidden handles the corner clip  */
         .item-img {
-            width:96px; min-width:96px;
-            /* height matches the card body's natural min-height */
-            align-self:stretch;
-            overflow:hidden; background:var(--gray-100); cursor:pointer;
-            flex-shrink:0;
+            width:96px; min-width:96px; align-self:stretch;
+            overflow:hidden; background:var(--gray-100); cursor:pointer; flex-shrink:0;
         }
-        .item-img img {
-            width:100%; height:100%; object-fit:cover; display:block;
-            transition:transform .3s ease;
-        }
+        .item-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
         .item-img:hover img { transform:scale(1.05); }
-
-        /* ── body ── */
         .item-body {
             flex:1; padding:11px 12px;
-            display:flex; flex-direction:column; justify-content:space-between;
-            min-width:0; /* critical: prevents flex overflow */
+            display:flex; flex-direction:column; justify-content:space-between; min-width:0;
         }
-
         .item-top  { display:flex; align-items:flex-start; justify-content:space-between; gap:6px; }
         .item-name {
             font-size:13px; font-weight:600; line-height:1.35; letter-spacing:-.1px;
             flex:1; min-width:0;
-            /* two-line clamp */
             display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-            overflow:hidden;
-            text-decoration:none; color:var(--black);
+            overflow:hidden; text-decoration:none; color:var(--black);
         }
         .item-name:hover { text-decoration:underline; text-underline-offset:3px; }
-
-        /* ✕ delete — only in edit mode */
         .item-del {
             width:26px; height:26px; border-radius:7px;
             background:none; border:none; cursor:pointer;
             display:none; align-items:center; justify-content:center;
-            color:var(--gray-300); flex-shrink:0;
-            transition:color .15s, background .15s;
+            color:var(--gray-300); flex-shrink:0; transition:color .15s, background .15s;
         }
         .edit-mode .item-del { display:flex; }
         .item-del:active { color:var(--red); background:rgba(200,0,26,.07); }
-
         .item-meta { display:flex; gap:5px; margin-top:4px; flex-wrap:wrap; }
         .meta-tag  {
             font-size:10px; font-weight:600; padding:2px 7px;
-            border-radius:5px; background:var(--gray-100); color:var(--gray-600);
-            white-space:nowrap;
+            border-radius:5px; background:var(--gray-100); color:var(--gray-600); white-space:nowrap;
         }
-
-        /* price + qty row — key fix: price left, qty right, no overflow */
-        .item-bottom {
-            display:flex; align-items:center; justify-content:space-between;
-            margin-top:8px; gap:8px;
-        }
+        .item-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:8px; }
         .item-price-wrap { display:flex; flex-direction:column; min-width:0; }
         .item-price { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--red); line-height:1; }
         .item-unit  { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); margin-top:2px; }
-
-        /* qty control — slightly smaller so it never pushes price off */
         .qty-ctl {
             display:flex; align-items:center;
             background:var(--gray-100); border:1.5px solid var(--gray-200);
@@ -208,15 +157,12 @@
         .q-btn {
             width:28px; height:28px; border:none; background:none; color:var(--black);
             cursor:pointer; font-size:16px;
-            display:flex; align-items:center; justify-content:center;
-            transition:background .12s;
+            display:flex; align-items:center; justify-content:center; transition:background .12s;
         }
         .q-btn:active { background:var(--gray-200); }
         .q-val { width:28px; text-align:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; }
 
-        /* ══════════════════════════
-           EMPTY STATE
-        ══════════════════════════ */
+        /* EMPTY STATE */
         .empty-wrap {
             display:none; flex-direction:column; align-items:center;
             padding:40px 0 28px; text-align:center;
@@ -238,9 +184,7 @@
         }
         .empty-cta:active { opacity:.78; }
 
-        /* ══════════════════════════
-           SKELETON
-        ══════════════════════════ */
+        /* SKELETON */
         .skel-card { display:flex; background:var(--white); border-radius:var(--radius); overflow:hidden; border:1.5px solid var(--gray-200); height:108px; }
         .skel-cb   { width:40px; }
         .skel-img  { width:96px; }
@@ -252,39 +196,68 @@
             background-size:1200px 100%; animation:shimmer 1.4s infinite;
         }
 
-        /* ══════════════════════════
-           RELATED  (= index.html h-card)
-        ══════════════════════════ */
-        .related-wrap { padding:22px 0 0; }
-        .sec-hd       { margin-bottom:12px; }
-        .sec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; }
-        .h-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -14px; padding:0 14px; }
-        .h-scroll::-webkit-scrollbar { display:none; }
-        .h-row { display:flex; gap:10px; width:max-content; padding-bottom:4px; }
-        .h-card {
-            width:138px; flex-shrink:0;
-            background:var(--white); border-radius:var(--radius-sm);
-            border:1px solid var(--gray-200); overflow:hidden;
-            text-decoration:none; color:inherit;
-            display:flex; flex-direction:column; transition:transform .2s;
+        /* ══════════════════════════════════════════════
+           YOU MAY ALSO LIKE
+           — 2-col grid เหมือน .p-grid ใน index.html
+           — card markup เหมือน cardHTML() ใน index.html
+        ══════════════════════════════════════════════ */
+        .rec-wrap {
+            padding:24px 0 28px;
         }
-        .h-card:active { transform:scale(.975); }
-        .h-card-img { aspect-ratio:1/1; background:var(--gray-100); overflow:hidden; position:relative; }
-        .h-card-img img { width:100%; height:100%; object-fit:cover; display:block; }
-        .h-card-tag {
-            position:absolute; top:7px; left:7px;
-            background:var(--black); color:#fff;
-            font-family:'DM Mono',monospace; font-size:7px;
-            letter-spacing:1px; padding:2px 7px; border-radius:10px; text-transform:uppercase;
+        .rec-hd {
+            display:flex; align-items:center; justify-content:space-between;
+            margin-bottom:13px;
         }
-        .h-card-tag.orange { background:var(--orange); }
-        .h-card-body  { padding:8px 10px 10px; }
-        .h-card-name  { font-size:11px; font-weight:600; line-height:1.3; }
-        .h-card-price { font-family:'DM Mono',monospace; font-size:11px; color:var(--black); margin-top:4px; }
+        .rec-hd-title {
+            font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black);
+        }
+        .rec-see-all {
+            font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+            color:var(--gray-400); background:none; border:none; cursor:pointer;
+            display:flex; align-items:center; gap:3px;
+            font-family:'Space Grotesk',sans-serif; transition:color .18s;
+            text-decoration:none;
+        }
+        .rec-see-all:active { color:var(--black); }
 
-        /* ══════════════════════════
-           SIDEBAR (desktop)
-        ══════════════════════════ */
+        /* same as .p-grid */
+        .rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+        /* same as .p-card */
+        .p-card {
+            background:var(--white); border-radius:var(--radius);
+            border:1px solid var(--gray-200); overflow:hidden;
+            cursor:pointer; display:flex; flex-direction:column;
+            text-decoration:none; color:inherit; position:relative;
+            transition:transform .22s, box-shadow .22s;
+        }
+        .p-card:active { transform:scale(.975); box-shadow:0 6px 24px rgba(0,0,0,.09); }
+        .p-card-img {
+            aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative;
+        }
+        .p-card-img img {
+            width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease;
+        }
+        .p-card:active .p-card-img img { transform:scale(1.04); }
+        /* same as .p-tag */
+        .p-tag {
+            position:absolute; top:9px; left:9px; z-index:2;
+            background:var(--black); color:#fff;
+            font-family:'DM Mono',monospace; font-size:8px;
+            letter-spacing:1.5px; text-transform:uppercase;
+            padding:3px 9px; border-radius:20px;
+        }
+        .p-tag.orange { background:var(--orange); }
+        .p-tag.low    { background:var(--gray-600); top:auto; bottom:9px; }
+        /* same as .p-card-body */
+        .p-card-body  { padding:10px 11px 13px; flex:1; display:flex; flex-direction:column; gap:7px; }
+        .p-name       { font-size:12px; font-weight:600; line-height:1.35; letter-spacing:-.1px; }
+        .p-meta       { display:flex; align-items:center; justify-content:space-between; }
+        .p-price      { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); }
+        .p-colors     { display:flex; gap:4px; }
+        .p-dot        { width:10px; height:10px; border-radius:50%; border:1.5px solid rgba(255,255,255,.7); box-shadow:0 0 0 1px rgba(0,0,0,.12); }
+
+        /* SIDEBAR */
         .sidebar { padding:18px 0; }
         .sum-card { background:var(--white); border:1.5px solid var(--gray-200); border-radius:var(--radius); padding:20px; }
         .sum-sec-title {
@@ -318,8 +291,7 @@
         .sum-total-lbl { font-size:14px; font-weight:700; }
         .sum-total-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--red); }
         .ck-btn {
-            width:100%; height:50px;
-            background:var(--black); color:#fff; border:none;
+            width:100%; height:50px; background:var(--black); color:#fff; border:none;
             border-radius:var(--radius-sm); font-family:'Bebas Neue';
             font-size:17px; letter-spacing:3px; cursor:pointer;
             display:flex; align-items:center; justify-content:center; gap:8px;
@@ -332,34 +304,21 @@
             display:flex; align-items:center; justify-content:center; gap:5px;
         }
 
-        /* ══════════════════════════
-           MOBILE BOTTOM BAR
-           Layout: [cb All] [price block] [CHECKOUT(n)]
-        ══════════════════════════ */
+        /* MOBILE BOTTOM BAR */
         .bottom-bar {
-            display:none;
-            position:fixed; bottom:0; left:0; right:0; z-index:200;
+            display:none; position:fixed; bottom:0; left:0; right:0; z-index:200;
             background:rgba(250,250,250,.97);
-            backdrop-filter:blur(20px) saturate(160%);
-            -webkit-backdrop-filter:blur(20px) saturate(160%);
+            backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
             border-top:1px solid var(--gray-200);
-            height:var(--bar-h);
-            padding:0 16px;
-            align-items:center; gap:12px;
+            height:var(--bar-h); padding:0 16px; align-items:center; gap:12px;
         }
         .bottom-bar.show { display:flex; }
         @media (min-width:900px) { .bottom-bar { display:none !important; } }
-
-        /* All checkbox + label */
         .bar-all-wrap { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; flex-shrink:0; }
         .bar-all-lbl  { font-size:9px; font-weight:700; color:var(--gray-400); letter-spacing:.5px; text-transform:uppercase; line-height:1; }
-
-        /* price */
         .bar-price-wrap { flex:1; min-width:0; }
         .bar-total { font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--red); line-height:1; }
         .bar-items { font-size:10px; color:var(--gray-400); margin-top:2px; }
-
-        /* checkout btn */
         .bar-ck {
             flex-shrink:0; height:46px; padding:0 18px;
             background:var(--black); color:#fff; border:none;
@@ -370,9 +329,7 @@
         .bar-ck:active   { opacity:.82; transform:scale(.97); }
         .bar-ck:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; }
 
-        /* ══════════════════════════
-           TOAST
-        ══════════════════════════ */
+        /* TOAST */
         .toast {
             position:fixed; bottom:calc(var(--bar-h) + 10px); left:50%;
             transform:translateX(-50%) translateY(6px);
@@ -391,10 +348,10 @@
         .toast-sub  { font-size:11px; color:rgba(255,255,255,.5); }
         .toast-text { display:flex; flex-direction:column; gap:1px; }
 
-        /* animations */
         @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        .fu { animation:fadeUp .36s ease both; }
-        .d1 { animation-delay:.05s; } .d2 { animation-delay:.10s; }
+        .fu  { animation:fadeUp .36s ease both; }
+        .d1  { animation-delay:.05s; }
+        .d2  { animation-delay:.10s; }
     </style>
 </head>
 <body>
@@ -406,7 +363,7 @@
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
                  stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
         </button>
-        <a href="index.html" class="brand">Bards</a>
+        <a href="index.html" class="brand">BARDS</a>
     </div>
     <div class="nav-right">
         <button class="edit-btn" id="editBtn" onclick="toggleEdit()" style="visibility:hidden">Edit</button>
@@ -416,7 +373,7 @@
 <!-- PAGE -->
 <div class="page">
 
-    <!-- MAIN -->
+    <!-- MAIN COL -->
     <div class="main-col">
 
         <div class="cart-header fu">
@@ -424,7 +381,7 @@
             <span class="cart-count" id="cartCount">—</span>
         </div>
 
-        <!-- Skeleton (shown for ~280ms) -->
+        <!-- Skeleton -->
         <div class="item-list" id="skelList">
             <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:65%"></div><div class="skel-line" style="height:10px;width:40%"></div><div class="skel-line" style="height:10px;width:55%"></div></div></div>
             <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:55%"></div><div class="skel-line" style="height:10px;width:35%"></div><div class="skel-line" style="height:10px;width:50%"></div></div></div>
@@ -453,10 +410,13 @@
             </a>
         </div>
 
-        <!-- Related -->
-        <div class="related-wrap fu d2" id="relatedWrap" style="padding-bottom:20px;">
-            <div class="sec-hd"><span class="sec-hd-title">You May Also Like</span></div>
-            <div class="h-scroll"><div class="h-row" id="relatedRow"></div></div>
+        <!-- YOU MAY ALSO LIKE — 2-col grid -->
+        <div class="rec-wrap fu d2" id="recWrap">
+            <div class="rec-hd">
+                <span class="rec-hd-title">You May Also Like</span>
+                <a href="index.html" class="rec-see-all">See all →</a>
+            </div>
+            <div class="rec-grid" id="recGrid"></div>
         </div>
 
     </div><!-- /main-col -->
@@ -504,7 +464,7 @@
         </div>
     </aside>
 
-</div>
+</div><!-- /page -->
 
 <!-- MOBILE BOTTOM BAR -->
 <div class="bottom-bar" id="bottomBar">
@@ -538,17 +498,78 @@
 <script>
 /* ═══════════════════════════════════════════
    PRODUCT CATALOG — single source of truth
+   (same as index.html + product.html)
 ═══════════════════════════════════════════ */
 const PRODUCTS = {
-    'oversized-tee-black':{ name:'Classic Black Oversized Tee', price:790, tag:'BESTSELLER', tagOrange:true,  category:'tops',        isNew:false, stock:'in-stock',  images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'], colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}], sizes:['S','M','L','XL'], desc:'Crafted from 300GSM premium heavy-weight cotton.', specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'} },
-    'cargo-pants-olive':  { name:'Military Olive Cargo Pants',  price:1590,tag:'NEW',        tagOrange:false, category:'pants',       isNew:true,  stock:'in-stock',  images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],  colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}], sizes:['M','L','XL'],   desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง', specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'} },
-    'hoodie-grey':        { name:'Stone Grey Pullover Hoodie',  price:1290,tag:'POPULAR',    tagOrange:false, category:'tops',        isNew:true,  stock:'in-stock',  images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],         colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}], sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีเทาหิน ผ้า French Terry 380GSM', specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'} },
-    'sunglasses-retro':   { name:'Retro Square Sunglasses',     price:890, tag:'LIMITED',    tagOrange:true,  category:'accessories', isNew:true,  stock:'low-stock', images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],    colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}], sizes:['One Size'], desc:'แว่นตากันแดดทรงสี่เหลี่ยม เฟรม Acetate เลนส์ UV400', specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'} }
+    'oversized-tee-black': {
+        name:'Classic Black Oversized Tee', price:790,
+        tag:'BESTSELLER', tagOrange:true, category:'tops', isNew:false, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
+        sizes:['S','M','L','XL'], desc:'Crafted from 300GSM premium heavy-weight cotton.',
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+    },
+    'cargo-pants-olive': {
+        name:'Military Olive Cargo Pants', price:1590,
+        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
+        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
+        sizes:['M','L','XL'], desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง',
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+    },
+    'hoodie-grey': {
+        name:'Stone Grey Pullover Hoodie', price:1290,
+        tag:'POPULAR', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
+        sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีเทาหิน ผ้า French Terry 380GSM',
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+    },
+    'sunglasses-retro': {
+        name:'Retro Square Sunglasses', price:890,
+        tag:'LIMITED', tagOrange:true, category:'accessories', isNew:true, stock:'low-stock',
+        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
+        sizes:['One Size'], desc:'แว่นตากันแดดทรงสี่เหลี่ยม เฟรม Acetate เลนส์ UV400',
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
+    },
+    'oversized-tee-white': {
+        name:'Stone White Oversized Tee', price:790,
+        tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
+        colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
+        sizes:['S','M','L','XL'], desc:'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton',
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+    },
+    'cargo-pants-black': {
+        name:'Tactical Black Cargo Pants', price:1590,
+        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
+        colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
+        sizes:['M','L','XL'], desc:'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง',
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+    },
+    'hoodie-navy': {
+        name:'Midnight Navy Pullover Hoodie', price:1290,
+        tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
+        sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีกรมท่า ผ้า French Terry 380GSM',
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+    },
+    'sunglasses-black': {
+        name:'Classic Black Sunglasses', price:890,
+        tag:'NEW', tagOrange:false, category:'accessories', isNew:true, stock:'in-stock',
+        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors:[{name:'Glossy Black',hex:'#111111'}],
+        sizes:['One Size'], desc:'แว่นตากันแดดคลาสสิกสีดำ เฟรม Acetate เลนส์ UV400',
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'}
+    }
 };
 
 const CART_KEY = 'BARDS_CART';
 
-/* ── STATE ── */
+/* STATE */
 let cart     = [];
 let shipFee  = 0;
 let editMode = false;
@@ -561,7 +582,6 @@ window.onload = function () {
     setTimeout(() => {
         cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
-        /* Pre-select if coming from "Buy Now" in product.html */
         const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
         if (buyNowId) {
             const idx = cart.findIndex(c => c.id === buyNowId);
@@ -569,40 +589,36 @@ window.onload = function () {
             sessionStorage.removeItem('BUY_NOW_ID');
         }
 
-        document.getElementById('skelList').style.display  = 'none';
-        document.getElementById('itemList').style.display  = '';
+        document.getElementById('skelList').style.display = 'none';
+        document.getElementById('itemList').style.display = '';
         render();
-        buildRelated();
+        buildRec();
     }, 280);
 };
 
 /* ══════════════════════════════════════════
-   RENDER — surgical diff, no full repaints
+   RENDER
 ══════════════════════════════════════════ */
 function render() {
     const hasItems   = cart.length > 0;
     const totalItems = cart.reduce((s,c) => s + c.quantity, 0);
 
-    document.getElementById('cartCount').textContent  = `${totalItems} item${totalItems!==1?'s':''}`;
+    document.getElementById('cartCount').textContent = `${totalItems} item${totalItems!==1?'s':''}`;
     document.getElementById('emptyWrap').classList.toggle('show', !hasItems);
     document.getElementById('bottomBar').classList.toggle('show', hasItems);
     document.getElementById('editBtn').style.visibility = hasItems ? 'visible' : 'hidden';
 
-    /* keep selected in bounds */
     selected = new Set([...selected].filter(i => i < cart.length));
 
     const list = document.getElementById('itemList');
-
     if (hasItems) {
-        /* remove stale rows */
         list.querySelectorAll('.item-row').forEach(el => {
             if (+el.dataset.idx >= cart.length) el.remove();
         });
-        /* add / patch */
         cart.forEach((item, idx) => {
             const ex = list.querySelector(`.item-row[data-idx="${idx}"]`);
-            if (ex) { patchRow(ex, item, idx); }
-            else    { const d = document.createElement('div'); d.innerHTML = rowHTML(item, idx); list.appendChild(d.firstElementChild); }
+            if (ex) patchRow(ex, item, idx);
+            else { const d = document.createElement('div'); d.innerHTML = rowHTML(item, idx); list.appendChild(d.firstElementChild); }
         });
         list.classList.toggle('edit-mode', editMode);
     } else {
@@ -614,22 +630,17 @@ function render() {
     updateSummary();
 }
 
-/* patch only the live parts of a row — ZERO flicker */
 function patchRow(row, item, idx) {
     const isSel = selected.has(idx);
     row.classList.toggle('selected', isSel);
-    const cb = row.querySelector('.cb'); if (cb) cb.classList.toggle('on', isSel);
-    const totalUsd = fmtUSD(item.price * item.quantity);
-    const unitUsd  = fmtUSD(item.price);
-    const prEl = row.querySelector('.item-price'); if (prEl) prEl.textContent = totalUsd;
-    const unEl = row.querySelector('.item-unit');  if (unEl) unEl.textContent = item.quantity > 1 ? `${unitUsd} each` : '';
+    row.querySelector('.cb')?.classList.toggle('on', isSel);
+    const prEl = row.querySelector('.item-price'); if (prEl) prEl.textContent = fmtUSD(item.price * item.quantity);
+    const unEl = row.querySelector('.item-unit');  if (unEl) unEl.textContent = item.quantity > 1 ? `${fmtUSD(item.price)} each` : '';
     const qv   = row.querySelector('.q-val');      if (qv)   qv.textContent  = item.quantity;
 }
 
 function rowHTML(item, idx) {
-    const isSel    = selected.has(idx);
-    const totalUsd = fmtUSD(item.price * item.quantity);
-    const unitUsd  = fmtUSD(item.price);
+    const isSel = selected.has(idx);
     return `
 <div class="item-row fu${isSel?' selected':''}" data-idx="${idx}" style="animation-delay:${idx*.05}s">
     <div class="item-cb" onclick="toggleItem(${idx})">
@@ -659,8 +670,8 @@ function rowHTML(item, idx) {
         </div>
         <div class="item-bottom">
             <div class="item-price-wrap">
-                <div class="item-price">${totalUsd}</div>
-                <div class="item-unit">${item.quantity > 1 ? `${unitUsd} each` : ''}</div>
+                <div class="item-price">${fmtUSD(item.price * item.quantity)}</div>
+                <div class="item-unit">${item.quantity > 1 ? `${fmtUSD(item.price)} each` : ''}</div>
             </div>
             <div class="qty-ctl">
                 <button class="q-btn" onclick="changeQty(${idx},-1)">−</button>
@@ -681,13 +692,11 @@ function toggleItem(idx) {
     if (row) patchRow(row, cart[idx], idx);
     syncSelectUI(); updateSummary();
 }
-
 function toggleSelectAll() {
     if (selected.size === cart.length) selected.clear();
     else cart.forEach((_,i) => selected.add(i));
     render();
 }
-
 function syncSelectUI() {
     const total = cart.length, sel = selected.size;
     const barCb = document.getElementById('barAllCb');
@@ -698,12 +707,12 @@ function syncSelectUI() {
     }
     document.getElementById('barSelCount').textContent = sel;
     const canCk = sel > 0;
-    document.getElementById('barCk').disabled   = !canCk;
+    document.getElementById('barCk').disabled = !canCk;
     const ckD = document.getElementById('ckBtnD'); if (ckD) ckD.disabled = !canCk;
 }
 
 /* ══════════════════════════════════════════
-   EDIT MODE  — only reveals ✕ per-row buttons
+   EDIT MODE
 ══════════════════════════════════════════ */
 function toggleEdit() {
     editMode = !editMode;
@@ -721,24 +730,27 @@ function changeQty(idx, delta) {
     saveCart();
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
     if (row) patchRow(row, cart[idx], idx);
-    /* update cart count in header */
     const total = cart.reduce((s,c) => s + c.quantity, 0);
     document.getElementById('cartCount').textContent = `${total} item${total!==1?'s':''}`;
     updateSummary();
 }
-
 function removeItem(idx) {
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
     const doRemove = () => {
-        const next = new Set(); selected.forEach(i => { if(i<idx) next.add(i); else if(i>idx) next.add(i-1); });
+        const next = new Set();
+        selected.forEach(i => { if(i<idx) next.add(i); else if(i>idx) next.add(i-1); });
         selected.clear(); next.forEach(i => selected.add(i));
         cart.splice(idx, 1); saveCart();
-        if (!cart.length && editMode) { editMode=false; document.getElementById('editBtn').textContent='Edit'; document.getElementById('editBtn').classList.remove('in-edit'); }
-        render(); buildRelated();
+        if (!cart.length && editMode) {
+            editMode = false;
+            document.getElementById('editBtn').textContent = 'Edit';
+            document.getElementById('editBtn').classList.remove('in-edit');
+        }
+        render(); buildRec();
     };
     if (row) {
-        row.style.transition='opacity .18s,transform .18s';
-        row.style.opacity='0'; row.style.transform='translateX(-5px)';
+        row.style.transition = 'opacity .18s,transform .18s';
+        row.style.opacity = '0'; row.style.transform = 'translateX(-5px)';
         setTimeout(doRemove, 200);
     } else doRemove();
 }
@@ -752,14 +764,13 @@ function pickShip(el, fee) {
 }
 
 /* ══════════════════════════════════════════
-   SUMMARY (selected items only)
+   SUMMARY
 ══════════════════════════════════════════ */
 function updateSummary() {
     const items       = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
     const subtotalTHB = items.reduce((s,c) => s + c.price * c.quantity, 0);
     const selQty      = items.reduce((s,c) => s + c.quantity, 0);
     const totalTHB    = subtotalTHB + (items.length > 0 ? shipFee : 0);
-
     document.getElementById('sumSubD').textContent   = fmtUSD(subtotalTHB);
     document.getElementById('sumShipD').textContent  = shipFee === 0 ? 'FREE' : fmtUSD(shipFee);
     document.getElementById('sumTotalD').textContent = fmtUSD(totalTHB);
@@ -768,8 +779,7 @@ function updateSummary() {
 }
 
 /* ══════════════════════════════════════════
-   CHECKOUT → checkout.html
-   Passes selected items + shipFee via sessionStorage
+   CHECKOUT
 ══════════════════════════════════════════ */
 function goCheckout() {
     if (!selected.size) return;
@@ -779,16 +789,41 @@ function goCheckout() {
 }
 
 /* ══════════════════════════════════════════
-   RELATED
+   YOU MAY ALSO LIKE
+   แสดงสินค้าที่ไม่ได้อยู่ใน cart
+   2-col grid — card markup เหมือน cardHTML() ใน index.html
 ══════════════════════════════════════════ */
-function buildRelated() {
-    const inCart = new Set(cart.map(c => c.id));
-    const ids    = Object.keys(PRODUCTS).filter(id => !inCart.has(id));
-    const row    = document.getElementById('relatedRow'); if (!row) return;
-    if (!ids.length) { row.innerHTML='<p style="font-size:12px;color:var(--gray-400);">All products are in your cart 🎉</p>'; return; }
-    row.innerHTML = ids.map(id => {
-        const p = PRODUCTS[id];
-        return `<a href="product.html?id=${id}" class="h-card"><div class="h-card-img"><img src="${p.images[0]}" loading="lazy" alt="${p.name}"><div class="h-card-tag${p.tagOrange?' orange':''}">${p.tag}</div></div><div class="h-card-body"><div class="h-card-name">${p.name}</div><div class="h-card-price">$${(p.price/33).toFixed(2)}</div></div></a>`;
+function buildRec() {
+    const inCart     = new Set(cart.map(c => c.id));
+    const candidates = Object.entries(PRODUCTS).filter(([id]) => !inCart.has(id));
+    const wrap       = document.getElementById('recWrap');
+    const grid       = document.getElementById('recGrid');
+    if (!wrap || !grid) return;
+
+    if (!candidates.length) {
+        wrap.style.display = 'none';
+        return;
+    }
+    wrap.style.display = '';
+
+    grid.innerHTML = candidates.map(([id, p]) => {
+        const dots     = p.colors.map(c => `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
+        const lowStock = p.stock === 'low-stock' ? `<div class="p-tag low">LOW STOCK</div>` : '';
+        return `
+<a href="product.html?id=${id}" class="p-card">
+    <div class="p-card-img">
+        <img src="${p.images[0]}" loading="lazy" alt="${p.name}">
+        <div class="p-tag${p.tagOrange?' orange':''}">${p.tag}</div>
+        ${lowStock}
+    </div>
+    <div class="p-card-body">
+        <div class="p-name">${p.name}</div>
+        <div class="p-meta">
+            <div class="p-price">$${(p.price/33).toFixed(2)}</div>
+            <div class="p-colors">${dots}</div>
+        </div>
+    </div>
+</a>`;
     }).join('');
 }
 
