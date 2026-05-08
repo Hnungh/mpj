@@ -844,8 +844,7 @@ function renderGrid() {
         title.innerText = 'Featured';
         seeAll.href     = 'all-products.html';
     }
-    // แสดง see all เมื่อสินค้ามีเกิน limit หรือ filter ถูกเลือก
-    seeAll.style.display = (allItems.length > FEATURED_MAX || S.filter !== 'all') ? 'flex' : 'none';
+    seeAll.style.display = 'flex';
 
     if (n === 0) {
         grid.innerHTML = '';
