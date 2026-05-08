@@ -461,7 +461,7 @@
 <div class="section fu d2" style="margin-top:4px;" id="featuredSection">
     <div class="sec-hd">
         <span class="sec-hd-title" id="featuredTitle">Featured</span>
-        <a class="see-all" id="featuredSeeAll" href="categories/tops.html" style="display:none">See all →</a>
+        <a class="see-all" id="featuredSeeAll" href="all-products.html" style="display:none">See all →</a>
     </div>
     <div class="p-grid" id="productGrid"></div>
     <div class="empty" id="emptyState">
@@ -835,16 +835,17 @@ function renderGrid() {
     if (S.query) hint.innerText = n > 0 ? `พบ ${n} รายการ` : 'ไม่พบสินค้า — ลองคำค้นอื่น';
     else         hint.innerText = '';
 
-    // ชื่อ section + see all ตาม filter
+    // ชื่อ section + see all
     const catInfo = CATEGORIES.find(c => c.id === S.filter);
     if (catInfo) {
-        title.innerText      = catInfo.label;
-        seeAll.href          = catInfo.url;
-        seeAll.style.display = 'flex';
+        title.innerText = catInfo.label;
+        seeAll.href     = catInfo.url;
     } else {
-        title.innerText      = 'Featured';
-        seeAll.style.display = 'none';
+        title.innerText = 'Featured';
+        seeAll.href     = 'all-products.html';
     }
+    // แสดง see all เมื่อสินค้ามีเกิน limit หรือ filter ถูกเลือก
+    seeAll.style.display = (allItems.length > FEATURED_MAX || S.filter !== 'all') ? 'flex' : 'none';
 
     if (n === 0) {
         grid.innerHTML = '';
