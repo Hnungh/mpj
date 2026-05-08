@@ -115,8 +115,14 @@
             cursor:pointer; background:var(--white);
         }
         .item-img {
-            width:96px; min-width:96px; align-self:stretch;
-            overflow:hidden; background:var(--gray-100); cursor:pointer; flex-shrink:0;
+            /* fixed square — identical size on every card, no stretching */
+            width:96px; min-width:96px; height:96px;
+            flex-shrink:0; overflow:hidden;
+            background:var(--gray-100); cursor:pointer;
+            /* squircle inner corners — clip to the card's own border-radius
+               minus the card border width so the image sits flush            */
+            border-radius:calc(var(--radius) - 1.5px) 0 0 calc(var(--radius) - 1.5px);
+            align-self:center;   /* vertically centre the square block in the row */
         }
         .item-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
         .item-img:hover img { transform:scale(1.05); }
@@ -349,6 +355,7 @@
         .toast-text { display:flex; flex-direction:column; gap:1px; }
 
         @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes spin    { from{transform:rotate(0deg)}               to{transform:rotate(360deg)} }
         .fu  { animation:fadeUp .36s ease both; }
         .d1  { animation-delay:.05s; }
         .d2  { animation-delay:.10s; }
@@ -401,7 +408,7 @@
             </div>
             <div class="empty-title">Your cart is empty</div>
             <div class="empty-sub">Looks like you haven't added anything yet.</div>
-            <a href="index.html" class="empty-cta">
+            <a href="all-products.html" class="empty-cta">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -414,7 +421,6 @@
         <div class="rec-wrap fu d2" id="recWrap">
             <div class="rec-hd">
                 <span class="rec-hd-title">You May Also Like</span>
-                <a href="index.html" class="rec-see-all">See all →</a>
             </div>
             <div class="rec-grid" id="recGrid"></div>
         </div>
@@ -779,13 +785,39 @@ function updateSummary() {
 }
 
 /* ══════════════════════════════════════════
-   CHECKOUT
+   CHECKOUT — with loading state (prevents double-tap)
 ══════════════════════════════════════════ */
+let _ckLock = false;
+
 function goCheckout() {
-    if (!selected.size) return;
+    if (!selected.size || _ckLock) return;
+    _ckLock = true;
+
+    /* save data */
     sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify([...selected].map(i => cart[i])));
     sessionStorage.setItem('CHECKOUT_SHIPFEE', String(shipFee));
-    location.href = 'checkout.html';
+
+    /* loading state on both buttons */
+    const SPIN_SVG = `<svg style="animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+
+    const barBtn = document.getElementById('barCk');
+    const dskBtn = document.getElementById('ckBtnD');
+
+    if (barBtn) {
+        barBtn.disabled = true;
+        barBtn.innerHTML = `${SPIN_SVG} Processing…`;
+        barBtn.style.opacity = '.7';
+        barBtn.style.letterSpacing = '0';
+    }
+    if (dskBtn) {
+        dskBtn.disabled = true;
+        dskBtn.innerHTML = `${SPIN_SVG} Processing…`;
+        dskBtn.style.opacity = '.7';
+        dskBtn.style.letterSpacing = '0';
+    }
+
+    /* short delay so the spinner renders before navigation */
+    setTimeout(() => { location.href = 'checkout.html'; }, 380);
 }
 
 /* ══════════════════════════════════════════
