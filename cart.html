@@ -10,7 +10,6 @@
             --black:    #0A0A0A;
             --white:    #FAFAFA;
             --orange:   #FF4F00;
-            --green:    #16A34A;
             --red:      #C8001A;
             --gray-50:  #F9F9F7;
             --gray-100: #F2F2F0;
@@ -29,6 +28,7 @@
             font-family:'Space Grotesk',sans-serif;
             background:var(--gray-100); color:var(--black);
             overscroll-behavior:none; min-height:100vh;
+            padding-bottom:var(--bar-h);
         }
 
         /* NAV */
@@ -64,24 +64,15 @@
         .edit-btn:active  { opacity:.6; }
         .edit-btn.in-edit { color:var(--orange); }
 
-        /* PAGE */
+        /* PAGE — single centred column */
         .page {
             margin-top:var(--nav-h);
-            max-width:1100px;
+            max-width:720px;
             margin-left:auto; margin-right:auto;
             padding:0 14px;
         }
-        @media (min-width:900px) {
-            .page { display:grid; grid-template-columns:1fr 340px; gap:24px; padding:0 32px; align-items:start; }
-            .sidebar { position:sticky; top:calc(var(--nav-h)+20px); }
-        }
-        @media (max-width:899px) {
-            .sidebar { display:none; }
-            body      { padding-bottom:var(--bar-h); }
-        }
-        .main-col { min-width:0; }
+        @media (min-width:900px) { .page { padding:0 32px; } }
 
-        /* Cart heading */
         .cart-header { padding:18px 0 12px; display:flex; align-items:baseline; gap:10px; }
         .cart-title  { font-family:'Bebas Neue'; font-size:24px; letter-spacing:3px; }
         .cart-count  { font-family:'DM Mono',monospace; font-size:12px; color:var(--gray-400); }
@@ -92,7 +83,6 @@
             border:2px solid var(--gray-300); background:var(--white);
             display:flex; align-items:center; justify-content:center;
             flex-shrink:0; transition:all .15s; cursor:pointer;
-            position:relative; z-index:1;
         }
         .cb.on      { background:var(--black); border-color:var(--black); }
         .cb.partial { background:var(--gray-200); border-color:var(--gray-400); }
@@ -103,28 +93,22 @@
         .item-list { display:flex; flex-direction:column; gap:10px; }
         .item-row {
             display:flex; align-items:stretch;
-            background:var(--white);
-            border:1.5px solid var(--gray-200);
+            background:var(--white); border:1.5px solid var(--gray-200);
             border-radius:var(--radius); overflow:hidden;
-            transition:border-color .18s, box-shadow .18s; position:relative;
+            transition:border-color .18s, box-shadow .18s;
         }
         .item-row.selected { border-color:var(--black); box-shadow:0 0 0 1px var(--black); }
         .item-cb {
             width:40px; flex-shrink:0;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; background:var(--white);
+            display:flex; align-items:center; justify-content:center; cursor:pointer;
         }
         .item-img {
-            /* fixed square — identical size on every card, no stretching */
-            width:96px; min-width:96px; height:96px;
-            flex-shrink:0; overflow:hidden;
-            background:var(--gray-100); cursor:pointer;
-            /* squircle inner corners — clip to the card's own border-radius
-               minus the card border width so the image sits flush            */
+            width:96px; min-width:96px; height:96px; flex-shrink:0;
+            overflow:hidden; background:var(--gray-100); cursor:pointer;
             border-radius:calc(var(--radius) - 1.5px) 0 0 calc(var(--radius) - 1.5px);
-            align-self:center;   /* vertically centre the square block in the row */
+            align-self:center;
         }
-        .item-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
+        .item-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
         .item-img:hover img { transform:scale(1.05); }
         .item-body {
             flex:1; padding:11px 12px;
@@ -132,7 +116,7 @@
         }
         .item-top  { display:flex; align-items:flex-start; justify-content:space-between; gap:6px; }
         .item-name {
-            font-size:13px; font-weight:600; line-height:1.35; letter-spacing:-.1px;
+            font-size:13px; font-weight:600; line-height:1.35;
             flex:1; min-width:0;
             display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
             overflow:hidden; text-decoration:none; color:var(--black);
@@ -142,7 +126,7 @@
             width:26px; height:26px; border-radius:7px;
             background:none; border:none; cursor:pointer;
             display:none; align-items:center; justify-content:center;
-            color:var(--gray-300); flex-shrink:0; transition:color .15s, background .15s;
+            color:var(--gray-300); flex-shrink:0; transition:color .15s,background .15s;
         }
         .edit-mode .item-del { display:flex; }
         .item-del:active { color:var(--red); background:rgba(200,0,26,.07); }
@@ -152,9 +136,8 @@
             border-radius:5px; background:var(--gray-100); color:var(--gray-600); white-space:nowrap;
         }
         .item-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:8px; }
-        .item-price-wrap { display:flex; flex-direction:column; min-width:0; }
-        .item-price { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--red); line-height:1; }
-        .item-unit  { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); margin-top:2px; }
+        .item-price  { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--red); }
+        .item-unit   { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); margin-top:2px; }
         .qty-ctl {
             display:flex; align-items:center;
             background:var(--gray-100); border:1.5px solid var(--gray-200);
@@ -168,16 +151,10 @@
         .q-btn:active { background:var(--gray-200); }
         .q-val { width:28px; text-align:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:500; }
 
-        /* EMPTY STATE */
-        .empty-wrap {
-            display:none; flex-direction:column; align-items:center;
-            padding:40px 0 28px; text-align:center;
-        }
+        /* EMPTY */
+        .empty-wrap { display:none; flex-direction:column; align-items:center; padding:40px 0 28px; text-align:center; }
         .empty-wrap.show { display:flex; }
-        .empty-icon  {
-            width:60px; height:60px; border-radius:50%; background:var(--gray-200);
-            display:flex; align-items:center; justify-content:center; margin-bottom:14px;
-        }
+        .empty-icon  { width:60px; height:60px; border-radius:50%; background:var(--gray-200); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
         .empty-title { font-size:15px; font-weight:600; }
         .empty-sub   { font-size:12px; color:var(--gray-400); margin-top:4px; line-height:1.55; }
         .empty-cta   {
@@ -185,10 +162,8 @@
             background:var(--black); color:#fff; border:none;
             border-radius:var(--radius-sm); font-family:'Bebas Neue';
             font-size:15px; letter-spacing:2px;
-            text-decoration:none; display:inline-flex; align-items:center; gap:8px;
-            transition:opacity .18s; cursor:pointer;
+            text-decoration:none; display:inline-flex; align-items:center; gap:8px; cursor:pointer;
         }
-        .empty-cta:active { opacity:.78; }
 
         /* SKELETON */
         .skel-card { display:flex; background:var(--white); border-radius:var(--radius); overflow:hidden; border:1.5px solid var(--gray-200); height:108px; }
@@ -202,50 +177,23 @@
             background-size:1200px 100%; animation:shimmer 1.4s infinite;
         }
 
-        /* ══════════════════════════════════════════════
-           YOU MAY ALSO LIKE
-           — 2-col grid เหมือน .p-grid ใน index.html
-           — card markup เหมือน cardHTML() ใน index.html
-        ══════════════════════════════════════════════ */
-        .rec-wrap {
-            padding:24px 0 28px;
-        }
-        .rec-hd {
-            display:flex; align-items:center; justify-content:space-between;
-            margin-bottom:13px;
-        }
-        .rec-hd-title {
-            font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black);
-        }
-        .rec-see-all {
-            font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-            color:var(--gray-400); background:none; border:none; cursor:pointer;
-            display:flex; align-items:center; gap:3px;
-            font-family:'Space Grotesk',sans-serif; transition:color .18s;
-            text-decoration:none;
-        }
-        .rec-see-all:active { color:var(--black); }
+        /* REC */
+        .rec-wrap   { padding:24px 0 28px; }
+        .rec-hd     { display:flex; align-items:center; margin-bottom:13px; }
+        .rec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; }
+        .rec-grid   { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        @media (min-width:900px) { .rec-grid { grid-template-columns:repeat(4,1fr); } }
 
-        /* same as .p-grid */
-        .rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-
-        /* same as .p-card */
         .p-card {
             background:var(--white); border-radius:var(--radius);
             border:1px solid var(--gray-200); overflow:hidden;
-            cursor:pointer; display:flex; flex-direction:column;
+            display:flex; flex-direction:column;
             text-decoration:none; color:inherit; position:relative;
-            transition:transform .22s, box-shadow .22s;
+            transition:transform .22s,box-shadow .22s;
         }
         .p-card:active { transform:scale(.975); box-shadow:0 6px 24px rgba(0,0,0,.09); }
-        .p-card-img {
-            aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative;
-        }
-        .p-card-img img {
-            width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease;
-        }
-        .p-card:active .p-card-img img { transform:scale(1.04); }
-        /* same as .p-tag */
+        .p-card-img { aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative; }
+        .p-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s; }
         .p-tag {
             position:absolute; top:9px; left:9px; z-index:2;
             background:var(--black); color:#fff;
@@ -255,82 +203,40 @@
         }
         .p-tag.orange { background:var(--orange); }
         .p-tag.low    { background:var(--gray-600); top:auto; bottom:9px; }
-        /* same as .p-card-body */
         .p-card-body  { padding:10px 11px 13px; flex:1; display:flex; flex-direction:column; gap:7px; }
-        .p-name       { font-size:12px; font-weight:600; line-height:1.35; letter-spacing:-.1px; }
+        .p-name       { font-size:12px; font-weight:600; line-height:1.35; }
         .p-meta       { display:flex; align-items:center; justify-content:space-between; }
         .p-price      { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); }
         .p-colors     { display:flex; gap:4px; }
         .p-dot        { width:10px; height:10px; border-radius:50%; border:1.5px solid rgba(255,255,255,.7); box-shadow:0 0 0 1px rgba(0,0,0,.12); }
 
-        /* SIDEBAR */
-        .sidebar { padding:18px 0; }
-        .sum-card { background:var(--white); border:1.5px solid var(--gray-200); border-radius:var(--radius); padding:20px; }
-        .sum-sec-title {
-            font-family:'Bebas Neue'; font-size:15px; letter-spacing:2.5px;
-            margin-bottom:13px; display:flex; align-items:center; gap:8px;
-        }
-        .sum-sec-title::after { content:''; flex:1; height:1px; background:var(--gray-200); }
-        .ship-opts { display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
-        .ship-opt  {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:10px 12px; background:var(--gray-50);
-            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
-            cursor:pointer; transition:all .18s;
-        }
-        .ship-opt.on { border-color:var(--black); background:var(--black); }
-        .ship-opt.on .so-name,.ship-opt.on .so-price { color:#fff; }
-        .ship-opt.on .so-time { color:rgba(255,255,255,.5); }
-        .so-left  { display:flex; align-items:center; gap:10px; }
-        .so-radio { width:16px; height:16px; border-radius:50%; border:2px solid var(--gray-300); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .ship-opt.on .so-radio { border-color:#fff; background:#fff; }
-        .so-dot   { width:6px; height:6px; border-radius:50%; background:var(--black); display:none; }
-        .ship-opt.on .so-dot { display:block; }
-        .so-name  { font-size:12px; font-weight:600; transition:color .18s; }
-        .so-time  { font-size:10px; color:var(--gray-400); margin-top:2px; transition:color .18s; }
-        .so-price { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; transition:color .18s; }
-        .divider  { border:none; border-top:1px solid var(--gray-200); margin:12px 0; }
-        .sum-row  { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-        .sum-lbl  { font-size:12px; color:var(--gray-400); font-weight:500; }
-        .sum-val  { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--gray-600); }
-        .sum-total-row { display:flex; justify-content:space-between; align-items:baseline; }
-        .sum-total-lbl { font-size:14px; font-weight:700; }
-        .sum-total-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--red); }
-        .ck-btn {
-            width:100%; height:50px; background:var(--black); color:#fff; border:none;
-            border-radius:var(--radius-sm); font-family:'Bebas Neue';
-            font-size:17px; letter-spacing:3px; cursor:pointer;
-            display:flex; align-items:center; justify-content:center; gap:8px;
-            transition:opacity .18s, transform .12s; margin-top:16px;
-        }
-        .ck-btn:active   { opacity:.82; transform:scale(.98); }
-        .ck-btn:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; opacity:1; }
-        .ck-sub {
-            margin-top:9px; font-size:10px; color:var(--gray-400);
-            display:flex; align-items:center; justify-content:center; gap:5px;
-        }
-
-        /* MOBILE BOTTOM BAR */
+        /* BOTTOM BAR — identical on mobile & desktop, aligned to page */
         .bottom-bar {
             display:none; position:fixed; bottom:0; left:0; right:0; z-index:200;
             background:rgba(250,250,250,.97);
-            backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
+            backdrop-filter:blur(20px) saturate(160%);
+            -webkit-backdrop-filter:blur(20px) saturate(160%);
             border-top:1px solid var(--gray-200);
-            height:var(--bar-h); padding:0 16px; align-items:center; gap:12px;
+            height:var(--bar-h); align-items:center; justify-content:center;
         }
         .bottom-bar.show { display:flex; }
-        @media (min-width:900px) { .bottom-bar { display:none !important; } }
+        .bar-inner {
+            width:100%; max-width:720px; padding:0 14px;
+            display:flex; align-items:center; gap:12px;
+        }
+        @media (min-width:900px) { .bar-inner { padding:0 32px; } }
+
         .bar-all-wrap { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; flex-shrink:0; }
         .bar-all-lbl  { font-size:9px; font-weight:700; color:var(--gray-400); letter-spacing:.5px; text-transform:uppercase; line-height:1; }
         .bar-price-wrap { flex:1; min-width:0; }
         .bar-total { font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--red); line-height:1; }
         .bar-items { font-size:10px; color:var(--gray-400); margin-top:2px; }
         .bar-ck {
-            flex-shrink:0; height:46px; padding:0 18px;
+            flex-shrink:0; height:46px; padding:0 22px;
             background:var(--black); color:#fff; border:none;
             border-radius:var(--radius-sm); font-family:'Bebas Neue';
             font-size:14px; letter-spacing:2px; cursor:pointer; white-space:nowrap;
-            transition:opacity .18s, transform .1s;
+            transition:opacity .18s,transform .1s;
         }
         .bar-ck:active   { opacity:.82; transform:scale(.97); }
         .bar-ck:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; }
@@ -355,20 +261,18 @@
         .toast-text { display:flex; flex-direction:column; gap:1px; }
 
         @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes spin    { from{transform:rotate(0deg)}               to{transform:rotate(360deg)} }
-        .fu  { animation:fadeUp .36s ease both; }
-        .d1  { animation-delay:.05s; }
-        .d2  { animation-delay:.10s; }
+        @keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .fu { animation:fadeUp .36s ease both; }
+        .d1 { animation-delay:.05s; }
+        .d2 { animation-delay:.10s; }
     </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
     <div class="nav-left">
         <button class="icon-btn" onclick="history.back()" aria-label="Back">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
         </button>
         <a href="index.html" class="brand">BARDS</a>
     </div>
@@ -377,122 +281,60 @@
     </div>
 </nav>
 
-<!-- PAGE -->
 <div class="page">
 
-    <!-- MAIN COL -->
-    <div class="main-col">
+    <div class="cart-header fu">
+        <span class="cart-title">MY CART</span>
+        <span class="cart-count" id="cartCount">—</span>
+    </div>
 
-        <div class="cart-header fu">
-            <span class="cart-title">MY CART</span>
-            <span class="cart-count" id="cartCount">—</span>
-        </div>
+    <div class="item-list" id="skelList">
+        <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:65%"></div><div class="skel-line" style="height:10px;width:40%"></div><div class="skel-line" style="height:10px;width:55%"></div></div></div>
+        <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:55%"></div><div class="skel-line" style="height:10px;width:35%"></div><div class="skel-line" style="height:10px;width:50%"></div></div></div>
+    </div>
 
-        <!-- Skeleton -->
-        <div class="item-list" id="skelList">
-            <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:65%"></div><div class="skel-line" style="height:10px;width:40%"></div><div class="skel-line" style="height:10px;width:55%"></div></div></div>
-            <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:55%"></div><div class="skel-line" style="height:10px;width:35%"></div><div class="skel-line" style="height:10px;width:50%"></div></div></div>
-        </div>
+    <div class="item-list" id="itemList" style="display:none;"></div>
 
-        <!-- Real items -->
-        <div class="item-list" id="itemList" style="display:none;"></div>
-
-        <!-- Empty state -->
-        <div class="empty-wrap" id="emptyWrap">
-            <div class="empty-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-                     stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-            </div>
-            <div class="empty-title">Your cart is empty</div>
-            <div class="empty-sub">Looks like you haven't added anything yet.</div>
-            <a href="all-products.html" class="empty-cta">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-                SHOP NOW
-            </a>
-        </div>
-
-        <!-- YOU MAY ALSO LIKE — 2-col grid -->
-        <div class="rec-wrap fu d2" id="recWrap">
-            <div class="rec-hd">
-                <span class="rec-hd-title">You May Also Like</span>
-            </div>
-            <div class="rec-grid" id="recGrid"></div>
-        </div>
-
-    </div><!-- /main-col -->
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar fu d1">
-        <div class="sum-card">
-            <p class="sum-sec-title">Shipping</p>
-            <div class="ship-opts">
-                <div class="ship-opt on" data-price="0" onclick="pickShip(this,0)">
-                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
-                    <div><div class="so-name">Standard</div><div class="so-time">3–5 business days</div></div></div>
-                    <div class="so-price">FREE</div>
-                </div>
-                <div class="ship-opt" data-price="89" onclick="pickShip(this,89)">
-                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
-                    <div><div class="so-name">Express</div><div class="so-time">1–2 business days</div></div></div>
-                    <div class="so-price">+$2.70</div>
-                </div>
-                <div class="ship-opt" data-price="179" onclick="pickShip(this,179)">
-                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
-                    <div><div class="so-name">Same Day</div><div class="so-time">Today by 8 PM (BKK)</div></div></div>
-                    <div class="so-price">+$5.42</div>
-                </div>
-            </div>
-            <hr class="divider">
-            <div class="sum-row"><span class="sum-lbl">Subtotal</span><span class="sum-val" id="sumSubD">$0.00</span></div>
-            <div class="sum-row"><span class="sum-lbl">Shipping</span><span class="sum-val" id="sumShipD">FREE</span></div>
-            <hr class="divider" style="margin:10px 0 14px;">
-            <div class="sum-total-row">
-                <span class="sum-total-lbl">Total</span>
-                <span class="sum-total-val" id="sumTotalD">$0.00</span>
-            </div>
-            <button class="ck-btn" id="ckBtnD" onclick="goCheckout()" disabled>
-                CHECKOUT
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </button>
-            <div class="ck-sub">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Secure checkout
-            </div>
-        </div>
-    </aside>
-
-</div><!-- /page -->
-
-<!-- MOBILE BOTTOM BAR -->
-<div class="bottom-bar" id="bottomBar">
-    <div class="bar-all-wrap" onclick="toggleSelectAll()">
-        <div class="cb" id="barAllCb">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                 stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
+    <div class="empty-wrap" id="emptyWrap">
+        <div class="empty-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
             </svg>
         </div>
-        <span class="bar-all-lbl">All</span>
+        <div class="empty-title">Your cart is empty</div>
+        <div class="empty-sub">Looks like you haven't added anything yet.</div>
+        <a href="all-products.html" class="empty-cta">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            SHOP NOW
+        </a>
     </div>
-    <div class="bar-price-wrap">
-        <div class="bar-total" id="barTotal">$0.00</div>
-        <div class="bar-items" id="barItems">0 items selected</div>
+
+    <div class="rec-wrap fu d2" id="recWrap">
+        <div class="rec-hd"><span class="rec-hd-title">You May Also Like</span></div>
+        <div class="rec-grid" id="recGrid"></div>
     </div>
-    <button class="bar-ck" id="barCk" onclick="goCheckout()" disabled>
-        CHECKOUT&thinsp;(<span id="barSelCount">0</span>)
-    </button>
+
 </div>
 
-<!-- TOAST -->
+<div class="bottom-bar" id="bottomBar">
+    <div class="bar-inner">
+        <div class="bar-all-wrap" onclick="toggleSelectAll()">
+            <div class="cb" id="barAllCb">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="bar-all-lbl">All</span>
+        </div>
+        <div class="bar-price-wrap">
+            <div class="bar-total" id="barTotal">$0.00</div>
+            <div class="bar-items" id="barItems">0 items selected</div>
+        </div>
+        <button class="bar-ck" id="barCk" onclick="goCheckout()" disabled>
+            CHECKOUT&thinsp;(<span id="barSelCount">0</span>)
+        </button>
+    </div>
+</div>
+
 <div class="toast" id="toast">
     <div class="toast-icon" id="toastIcon"></div>
     <div class="toast-text">
@@ -502,383 +344,154 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════
-   PRODUCT CATALOG — single source of truth
-   (same as index.html + product.html)
-═══════════════════════════════════════════ */
-const PRODUCTS = {
-    'oversized-tee-black': {
-        name:'Classic Black Oversized Tee', price:790,
-        tag:'BESTSELLER', tagOrange:true, category:'tops', isNew:false, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:['S','M','L','XL'], desc:'Crafted from 300GSM premium heavy-weight cotton.',
-        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'cargo-pants-olive': {
-        name:'Military Olive Cargo Pants', price:1590,
-        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
-        sizes:['M','L','XL'], desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง',
-        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
-    },
-    'hoodie-grey': {
-        name:'Stone Grey Pullover Hoodie', price:1290,
-        tag:'POPULAR', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
-        sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีเทาหิน ผ้า French Terry 380GSM',
-        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    },
-    'sunglasses-retro': {
-        name:'Retro Square Sunglasses', price:890,
-        tag:'LIMITED', tagOrange:true, category:'accessories', isNew:true, stock:'low-stock',
-        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
-        sizes:['One Size'], desc:'แว่นตากันแดดทรงสี่เหลี่ยม เฟรม Acetate เลนส์ UV400',
-        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
-    },
-    'oversized-tee-white': {
-        name:'Stone White Oversized Tee', price:790,
-        tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
-        colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
-        sizes:['S','M','L','XL'], desc:'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton',
-        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'cargo-pants-black': {
-        name:'Tactical Black Cargo Pants', price:1590,
-        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
-        sizes:['M','L','XL'], desc:'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง',
-        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
-    },
-    'hoodie-navy': {
-        name:'Midnight Navy Pullover Hoodie', price:1290,
-        tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
-        sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีกรมท่า ผ้า French Terry 380GSM',
-        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    },
-    'sunglasses-black': {
-        name:'Classic Black Sunglasses', price:890,
-        tag:'NEW', tagOrange:false, category:'accessories', isNew:true, stock:'in-stock',
-        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors:[{name:'Glossy Black',hex:'#111111'}],
-        sizes:['One Size'], desc:'แว่นตากันแดดคลาสสิกสีดำ เฟรม Acetate เลนส์ UV400',
-        specs:{Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'}
-    }
+const PRODUCTS={
+'oversized-tee-black':{name:'Classic Black Oversized Tee',price:790,tag:'BESTSELLER',tagOrange:true,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}]},
+'cargo-pants-olive':{name:'Military Olive Cargo Pants',price:1590,tag:'NEW',tagOrange:false,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}]},
+'hoodie-grey':{name:'Stone Grey Pullover Hoodie',price:1290,tag:'POPULAR',tagOrange:false,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}]},
+'sunglasses-retro':{name:'Retro Square Sunglasses',price:890,tag:'LIMITED',tagOrange:true,stock:'low-stock',images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}]},
+'oversized-tee-white':{name:'Stone White Oversized Tee',price:790,tag:'NEW',tagOrange:false,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}]},
+'cargo-pants-black':{name:'Tactical Black Cargo Pants',price:1590,tag:'NEW',tagOrange:false,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}]},
+'hoodie-navy':{name:'Midnight Navy Pullover Hoodie',price:1290,tag:'NEW',tagOrange:false,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}]},
+'sunglasses-black':{name:'Classic Black Sunglasses',price:890,tag:'NEW',tagOrange:false,stock:'in-stock',images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],colors:[{name:'Glossy Black',hex:'#111111'}]}
 };
 
-const CART_KEY = 'BARDS_CART';
+const CART_KEY='BARDS_CART';
+let cart=[],editMode=false,selected=new Set();
 
-/* STATE */
-let cart     = [];
-let shipFee  = 0;
-let editMode = false;
-let selected = new Set();
-
-/* ══════════════════════════════════════════
-   BOOT
-══════════════════════════════════════════ */
-window.onload = function () {
-    setTimeout(() => {
-        cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-
-        const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
-        if (buyNowId) {
-            const idx = cart.findIndex(c => c.id === buyNowId);
-            if (idx !== -1) selected.add(idx);
-            sessionStorage.removeItem('BUY_NOW_ID');
-        }
-
-        document.getElementById('skelList').style.display = 'none';
-        document.getElementById('itemList').style.display = '';
-        render();
-        buildRec();
-    }, 280);
+window.onload=function(){
+    setTimeout(()=>{
+        cart=JSON.parse(localStorage.getItem(CART_KEY)||'[]');
+        const b=sessionStorage.getItem('BUY_NOW_ID');
+        if(b){const i=cart.findIndex(c=>c.id===b);if(i!==-1)selected.add(i);sessionStorage.removeItem('BUY_NOW_ID');}
+        document.getElementById('skelList').style.display='none';
+        document.getElementById('itemList').style.display='';
+        render();buildRec();
+    },280);
 };
 
-/* ══════════════════════════════════════════
-   RENDER
-══════════════════════════════════════════ */
-function render() {
-    const hasItems   = cart.length > 0;
-    const totalItems = cart.reduce((s,c) => s + c.quantity, 0);
-
-    document.getElementById('cartCount').textContent = `${totalItems} item${totalItems!==1?'s':''}`;
-    document.getElementById('emptyWrap').classList.toggle('show', !hasItems);
-    document.getElementById('bottomBar').classList.toggle('show', hasItems);
-    document.getElementById('editBtn').style.visibility = hasItems ? 'visible' : 'hidden';
-
-    selected = new Set([...selected].filter(i => i < cart.length));
-
-    const list = document.getElementById('itemList');
-    if (hasItems) {
-        list.querySelectorAll('.item-row').forEach(el => {
-            if (+el.dataset.idx >= cart.length) el.remove();
+function render(){
+    const has=cart.length>0;
+    const tot=cart.reduce((s,c)=>s+c.quantity,0);
+    document.getElementById('cartCount').textContent=`${tot} item${tot!==1?'s':''}`;
+    document.getElementById('emptyWrap').classList.toggle('show',!has);
+    document.getElementById('bottomBar').classList.toggle('show',has);
+    document.getElementById('editBtn').style.visibility=has?'visible':'hidden';
+    selected=new Set([...selected].filter(i=>i<cart.length));
+    const list=document.getElementById('itemList');
+    if(has){
+        list.querySelectorAll('.item-row').forEach(el=>{if(+el.dataset.idx>=cart.length)el.remove();});
+        cart.forEach((item,idx)=>{
+            const ex=list.querySelector(`.item-row[data-idx="${idx}"]`);
+            if(ex)patchRow(ex,item,idx);
+            else{const d=document.createElement('div');d.innerHTML=rowHTML(item,idx);list.appendChild(d.firstElementChild);}
         });
-        cart.forEach((item, idx) => {
-            const ex = list.querySelector(`.item-row[data-idx="${idx}"]`);
-            if (ex) patchRow(ex, item, idx);
-            else { const d = document.createElement('div'); d.innerHTML = rowHTML(item, idx); list.appendChild(d.firstElementChild); }
-        });
-        list.classList.toggle('edit-mode', editMode);
-    } else {
-        list.innerHTML = '';
-        list.classList.remove('edit-mode');
-    }
-
-    syncSelectUI();
-    updateSummary();
+        list.classList.toggle('edit-mode',editMode);
+    }else{list.innerHTML='';list.classList.remove('edit-mode');}
+    syncSelectUI();updateSummary();
 }
 
-function patchRow(row, item, idx) {
-    const isSel = selected.has(idx);
-    row.classList.toggle('selected', isSel);
-    row.querySelector('.cb')?.classList.toggle('on', isSel);
-    const prEl = row.querySelector('.item-price'); if (prEl) prEl.textContent = fmtUSD(item.price * item.quantity);
-    const unEl = row.querySelector('.item-unit');  if (unEl) unEl.textContent = item.quantity > 1 ? `${fmtUSD(item.price)} each` : '';
-    const qv   = row.querySelector('.q-val');      if (qv)   qv.textContent  = item.quantity;
+function patchRow(row,item,idx){
+    const s=selected.has(idx);
+    row.classList.toggle('selected',s);
+    row.querySelector('.cb')?.classList.toggle('on',s);
+    const p=row.querySelector('.item-price');if(p)p.textContent=fmtUSD(item.price*item.quantity);
+    const u=row.querySelector('.item-unit');if(u)u.textContent=item.quantity>1?`${fmtUSD(item.price)} each`:'';
+    const q=row.querySelector('.q-val');if(q)q.textContent=item.quantity;
 }
 
-function rowHTML(item, idx) {
-    const isSel = selected.has(idx);
-    return `
-<div class="item-row fu${isSel?' selected':''}" data-idx="${idx}" style="animation-delay:${idx*.05}s">
-    <div class="item-cb" onclick="toggleItem(${idx})">
-        <div class="cb${isSel?' on':''}">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                 stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-            </svg>
-        </div>
-    </div>
-    <div class="item-img" onclick="location.href='product.html?id=${item.id}'">
-        <img src="${item.image}" loading="lazy" alt="${item.name}">
-    </div>
+function rowHTML(item,idx){
+    const s=selected.has(idx);
+    return `<div class="item-row fu${s?' selected':''}" data-idx="${idx}" style="animation-delay:${idx*.05}s">
+    <div class="item-cb" onclick="toggleItem(${idx})"><div class="cb${s?' on':''}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+    <div class="item-img" onclick="location.href='product.html?id=${item.id}'"><img src="${item.image}" loading="lazy" alt="${item.name}"></div>
     <div class="item-body">
         <div class="item-top">
             <a class="item-name" href="product.html?id=${item.id}">${item.name}</a>
-            <button class="item-del" onclick="removeItem(${idx})" title="Remove">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
+            <button class="item-del" onclick="removeItem(${idx})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <div class="item-meta">
-            <span class="meta-tag">${item.color}</span>
-            <span class="meta-tag">${item.size}</span>
-        </div>
+        <div class="item-meta"><span class="meta-tag">${item.color}</span><span class="meta-tag">${item.size}</span></div>
         <div class="item-bottom">
-            <div class="item-price-wrap">
-                <div class="item-price">${fmtUSD(item.price * item.quantity)}</div>
-                <div class="item-unit">${item.quantity > 1 ? `${fmtUSD(item.price)} each` : ''}</div>
-            </div>
-            <div class="qty-ctl">
-                <button class="q-btn" onclick="changeQty(${idx},-1)">−</button>
-                <div class="q-val">${item.quantity}</div>
-                <button class="q-btn" onclick="changeQty(${idx},1)">+</button>
-            </div>
+            <div><div class="item-price">${fmtUSD(item.price*item.quantity)}</div><div class="item-unit">${item.quantity>1?`${fmtUSD(item.price)} each`:''}</div></div>
+            <div class="qty-ctl"><button class="q-btn" onclick="changeQty(${idx},-1)">−</button><div class="q-val">${item.quantity}</div><button class="q-btn" onclick="changeQty(${idx},1)">+</button></div>
         </div>
     </div>
 </div>`;
 }
 
-/* ══════════════════════════════════════════
-   SELECTION
-══════════════════════════════════════════ */
-function toggleItem(idx) {
-    selected.has(idx) ? selected.delete(idx) : selected.add(idx);
-    const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
-    if (row) patchRow(row, cart[idx], idx);
-    syncSelectUI(); updateSummary();
+function toggleItem(idx){selected.has(idx)?selected.delete(idx):selected.add(idx);const r=document.querySelector(`.item-row[data-idx="${idx}"]`);if(r)patchRow(r,cart[idx],idx);syncSelectUI();updateSummary();}
+function toggleSelectAll(){if(selected.size===cart.length)selected.clear();else cart.forEach((_,i)=>selected.add(i));render();}
+function syncSelectUI(){
+    const t=cart.length,s=selected.size;
+    const cb=document.getElementById('barAllCb');
+    if(cb){cb.classList.remove('on','partial');if(s>0&&s<t)cb.classList.add('partial');if(s===t&&t>0)cb.classList.add('on');}
+    document.getElementById('barSelCount').textContent=s;
+    document.getElementById('barCk').disabled=s===0;
 }
-function toggleSelectAll() {
-    if (selected.size === cart.length) selected.clear();
-    else cart.forEach((_,i) => selected.add(i));
-    render();
+function toggleEdit(){
+    editMode=!editMode;
+    const btn=document.getElementById('editBtn');
+    btn.textContent=editMode?'Done':'Edit';
+    btn.classList.toggle('in-edit',editMode);
+    document.getElementById('itemList').classList.toggle('edit-mode',editMode);
 }
-function syncSelectUI() {
-    const total = cart.length, sel = selected.size;
-    const barCb = document.getElementById('barAllCb');
-    if (barCb) {
-        barCb.classList.remove('on','partial');
-        if (sel > 0 && sel < total) barCb.classList.add('partial');
-        if (sel === total && total > 0) barCb.classList.add('on');
-    }
-    document.getElementById('barSelCount').textContent = sel;
-    const canCk = sel > 0;
-    document.getElementById('barCk').disabled = !canCk;
-    const ckD = document.getElementById('ckBtnD'); if (ckD) ckD.disabled = !canCk;
-}
-
-/* ══════════════════════════════════════════
-   EDIT MODE
-══════════════════════════════════════════ */
-function toggleEdit() {
-    editMode = !editMode;
-    const btn = document.getElementById('editBtn');
-    btn.textContent = editMode ? 'Done' : 'Edit';
-    btn.classList.toggle('in-edit', editMode);
-    document.getElementById('itemList').classList.toggle('edit-mode', editMode);
-}
-
-/* ══════════════════════════════════════════
-   CART ACTIONS
-══════════════════════════════════════════ */
-function changeQty(idx, delta) {
-    cart[idx].quantity = Math.max(1, Math.min(30, cart[idx].quantity + delta));
+function changeQty(idx,delta){
+    cart[idx].quantity=Math.max(1,Math.min(30,cart[idx].quantity+delta));
     saveCart();
-    const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
-    if (row) patchRow(row, cart[idx], idx);
-    const total = cart.reduce((s,c) => s + c.quantity, 0);
-    document.getElementById('cartCount').textContent = `${total} item${total!==1?'s':''}`;
+    const r=document.querySelector(`.item-row[data-idx="${idx}"]`);if(r)patchRow(r,cart[idx],idx);
+    const t=cart.reduce((s,c)=>s+c.quantity,0);
+    document.getElementById('cartCount').textContent=`${t} item${t!==1?'s':''}`;
     updateSummary();
 }
-function removeItem(idx) {
-    const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
-    const doRemove = () => {
-        const next = new Set();
-        selected.forEach(i => { if(i<idx) next.add(i); else if(i>idx) next.add(i-1); });
-        selected.clear(); next.forEach(i => selected.add(i));
-        cart.splice(idx, 1); saveCart();
-        if (!cart.length && editMode) {
-            editMode = false;
-            document.getElementById('editBtn').textContent = 'Edit';
-            document.getElementById('editBtn').classList.remove('in-edit');
-        }
-        render(); buildRec();
+function removeItem(idx){
+    const row=document.querySelector(`.item-row[data-idx="${idx}"]`);
+    const go=()=>{
+        const n=new Set();selected.forEach(i=>{if(i<idx)n.add(i);else if(i>idx)n.add(i-1);});
+        selected.clear();n.forEach(i=>selected.add(i));
+        cart.splice(idx,1);saveCart();
+        if(!cart.length&&editMode){editMode=false;document.getElementById('editBtn').textContent='Edit';document.getElementById('editBtn').classList.remove('in-edit');}
+        render();buildRec();
     };
-    if (row) {
-        row.style.transition = 'opacity .18s,transform .18s';
-        row.style.opacity = '0'; row.style.transform = 'translateX(-5px)';
-        setTimeout(doRemove, 200);
-    } else doRemove();
+    if(row){row.style.transition='opacity .18s,transform .18s';row.style.opacity='0';row.style.transform='translateX(-5px)';setTimeout(go,200);}else go();
 }
-
-/* ══════════════════════════════════════════
-   SHIPPING
-══════════════════════════════════════════ */
-function pickShip(el, fee) {
-    document.querySelectorAll('.ship-opt').forEach(s => s.classList.remove('on'));
-    el.classList.add('on'); shipFee = fee; updateSummary();
+function updateSummary(){
+    const items=selected.size>0?[...selected].map(i=>cart[i]):[];
+    const sub=items.reduce((s,c)=>s+c.price*c.quantity,0);
+    const qty=items.reduce((s,c)=>s+c.quantity,0);
+    document.getElementById('barTotal').textContent=fmtUSD(sub);
+    document.getElementById('barItems').textContent=`${qty} item${qty!==1?'s':''} selected`;
 }
-
-/* ══════════════════════════════════════════
-   SUMMARY
-══════════════════════════════════════════ */
-function updateSummary() {
-    const items       = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
-    const subtotalTHB = items.reduce((s,c) => s + c.price * c.quantity, 0);
-    const selQty      = items.reduce((s,c) => s + c.quantity, 0);
-    const totalTHB    = subtotalTHB + (items.length > 0 ? shipFee : 0);
-    document.getElementById('sumSubD').textContent   = fmtUSD(subtotalTHB);
-    document.getElementById('sumShipD').textContent  = shipFee === 0 ? 'FREE' : fmtUSD(shipFee);
-    document.getElementById('sumTotalD').textContent = fmtUSD(totalTHB);
-    document.getElementById('barTotal').textContent  = fmtUSD(totalTHB);
-    document.getElementById('barItems').textContent  = `${selQty} item${selQty!==1?'s':''} selected`;
+let _ck=false;
+function goCheckout(){
+    if(!selected.size||_ck)return;_ck=true;
+    sessionStorage.setItem('CHECKOUT_ITEMS',JSON.stringify([...selected].map(i=>cart[i])));
+    sessionStorage.setItem('CHECKOUT_SHIPFEE','0');
+    const S=`<svg style="animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+    const b=document.getElementById('barCk');if(b){b.disabled=true;b.innerHTML=`${S} Processing…`;b.style.opacity='.7';b.style.letterSpacing='0';}
+    setTimeout(()=>{location.href='checkout.html';},380);
 }
-
-/* ══════════════════════════════════════════
-   CHECKOUT — with loading state (prevents double-tap)
-══════════════════════════════════════════ */
-let _ckLock = false;
-
-function goCheckout() {
-    if (!selected.size || _ckLock) return;
-    _ckLock = true;
-
-    /* save data */
-    sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify([...selected].map(i => cart[i])));
-    sessionStorage.setItem('CHECKOUT_SHIPFEE', String(shipFee));
-
-    /* loading state on both buttons */
-    const SPIN_SVG = `<svg style="animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
-
-    const barBtn = document.getElementById('barCk');
-    const dskBtn = document.getElementById('ckBtnD');
-
-    if (barBtn) {
-        barBtn.disabled = true;
-        barBtn.innerHTML = `${SPIN_SVG} Processing…`;
-        barBtn.style.opacity = '.7';
-        barBtn.style.letterSpacing = '0';
-    }
-    if (dskBtn) {
-        dskBtn.disabled = true;
-        dskBtn.innerHTML = `${SPIN_SVG} Processing…`;
-        dskBtn.style.opacity = '.7';
-        dskBtn.style.letterSpacing = '0';
-    }
-
-    /* short delay so the spinner renders before navigation */
-    setTimeout(() => { location.href = 'checkout.html'; }, 380);
-}
-
-/* ══════════════════════════════════════════
-   YOU MAY ALSO LIKE
-   แสดงสินค้าที่ไม่ได้อยู่ใน cart
-   2-col grid — card markup เหมือน cardHTML() ใน index.html
-══════════════════════════════════════════ */
-function buildRec() {
-    const inCart     = new Set(cart.map(c => c.id));
-    const candidates = Object.entries(PRODUCTS).filter(([id]) => !inCart.has(id));
-    const wrap       = document.getElementById('recWrap');
-    const grid       = document.getElementById('recGrid');
-    if (!wrap || !grid) return;
-
-    if (!candidates.length) {
-        wrap.style.display = 'none';
-        return;
-    }
-    wrap.style.display = '';
-
-    grid.innerHTML = candidates.map(([id, p]) => {
-        const dots     = p.colors.map(c => `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
-        const lowStock = p.stock === 'low-stock' ? `<div class="p-tag low">LOW STOCK</div>` : '';
-        return `
-<a href="product.html?id=${id}" class="p-card">
-    <div class="p-card-img">
-        <img src="${p.images[0]}" loading="lazy" alt="${p.name}">
-        <div class="p-tag${p.tagOrange?' orange':''}">${p.tag}</div>
-        ${lowStock}
-    </div>
-    <div class="p-card-body">
-        <div class="p-name">${p.name}</div>
-        <div class="p-meta">
-            <div class="p-price">$${(p.price/33).toFixed(2)}</div>
-            <div class="p-colors">${dots}</div>
-        </div>
-    </div>
-</a>`;
+function buildRec(){
+    const inCart=new Set(cart.map(c=>c.id));
+    const cands=Object.entries(PRODUCTS).filter(([id])=>!inCart.has(id));
+    const wrap=document.getElementById('recWrap'),grid=document.getElementById('recGrid');
+    if(!wrap||!grid)return;
+    if(!cands.length){wrap.style.display='none';return;}
+    wrap.style.display='';
+    grid.innerHTML=cands.map(([id,p])=>{
+        const dots=p.colors.map(c=>`<div class="p-dot" style="background:${c.hex}"></div>`).join('');
+        const low=p.stock==='low-stock'?`<div class="p-tag low">LOW STOCK</div>`:'';
+        return `<a href="product.html?id=${id}" class="p-card"><div class="p-card-img"><img src="${p.images[0]}" loading="lazy" alt="${p.name}"><div class="p-tag${p.tagOrange?' orange':''}">${p.tag}</div>${low}</div><div class="p-card-body"><div class="p-name">${p.name}</div><div class="p-meta"><div class="p-price">$${(p.price/33).toFixed(2)}</div><div class="p-colors">${dots}</div></div></div></a>`;
     }).join('');
 }
-
-/* ══════════════════════════════════════════
-   UTILS
-══════════════════════════════════════════ */
-function fmtUSD(thb) { return `$${(thb/33).toFixed(2)}`; }
-function saveCart()  { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
-
-/* ══════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════ */
-const IC_OK   = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-const IC_WARN = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+function fmtUSD(thb){return`$${(thb/33).toFixed(2)}`;}
+function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart));}
 let _tt;
-function showToast(type, title, sub) {
-    const ic = document.getElementById('toastIcon');
-    ic.className = `toast-icon ${type==='warn'?'warn':'ok'}`;
-    ic.innerHTML = type==='warn' ? IC_WARN : IC_OK;
-    document.getElementById('toastTtl').textContent = title;
-    document.getElementById('toastSub').textContent = sub || '';
-    const t = document.getElementById('toast'); t.classList.add('on');
-    clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2600);
+function showToast(type,title,sub){
+    const ic=document.getElementById('toastIcon');
+    ic.className=`toast-icon ${type==='warn'?'warn':'ok'}`;
+    document.getElementById('toastTtl').textContent=title;
+    document.getElementById('toastSub').textContent=sub||'';
+    const t=document.getElementById('toast');t.classList.add('on');
+    clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('on'),2600);
 }
 </script>
 </body>
