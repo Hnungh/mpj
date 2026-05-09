@@ -241,7 +241,7 @@
     </div>
 </div>
 
-<script src="js/api.js"></script>
+    <script src="js/api.js"></script>
 <script>
 
 const CATEGORIES = [
@@ -268,7 +268,6 @@ const S = {
     favs:   JSON.parse(localStorage.getItem('NW_FAVS') || '[]'),
 };
 
-/* ── BOOT ── */
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         PRODUCTS = await fetchProducts();
@@ -276,8 +275,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('โหลดสินค้าไม่ได้:', e);
         document.getElementById('resultsLabel').innerText = 'โหลดไม่ได้ ลองรีเฟรช';
     }
-    document.getElementById('skelGrid').style.display = 'none';
-    document.getElementById('productGrid').style.display = '';
     updateCounts();
     renderGrid();
     renderNewArrivals();
@@ -285,7 +282,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateBadge();
 });
 
-/* ── SEARCH ── */
 let _searchOpen = false;
 function toggleSearch() {
     _searchOpen = !_searchOpen;
@@ -296,11 +292,13 @@ function toggleSearch() {
     if (_searchOpen) setTimeout(() => document.getElementById('searchInput').focus(), 340);
     else clearSearch();
 }
+
 function onSearch(val) {
     S.query = val.toLowerCase().trim();
     document.getElementById('searchClearBtn').classList.toggle('on', val.length > 0);
     renderGrid();
 }
+
 function clearSearch() {
     S.query = '';
     const inp = document.getElementById('searchInput');
@@ -310,20 +308,29 @@ function clearSearch() {
     renderGrid();
 }
 
-/* ── FILTER ── */
 function setFilter(el, filter) {
     S.filter = filter;
-    document.querySelectorAll('.f-chip').forEach(c => c.classList.toggle('on', c.dataset.filter === filter));
+    document.querySelectorAll('.f-chip').forEach(c =>
+        c.classList.toggle('on', c.dataset.filter === filter));
     renderGrid();
 }
+
+function setFilterAll() {
+    S.filter = 'all';
+    document.querySelectorAll('.f-chip').forEach(c =>
+        c.classList.toggle('on', c.dataset.filter === 'all'));
+    renderGrid();
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
 function filterByCategory(id) {
     S.filter = id;
-    document.querySelectorAll('.f-chip').forEach(c => c.classList.toggle('on', c.dataset.filter === id));
+    document.querySelectorAll('.f-chip').forEach(c =>
+        c.classList.toggle('on', c.dataset.filter === id));
     renderGrid();
     document.getElementById('featuredSection').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-/* ── SORT ── */
 function cycleSort() {
     S.sort = (S.sort + 1) % SORT_OPTS.length;
     document.getElementById('sortLabel').innerText = SORT_OPTS[S.sort].label;
@@ -331,7 +338,6 @@ function cycleSort() {
     renderGrid();
 }
 
-/* ── FILTERED LIST ── */
 function getItems() {
     let items = [...PRODUCTS];
     if (S.filter !== 'all') items = items.filter(p => p.category === S.filter);
@@ -349,7 +355,6 @@ function getItems() {
     return items;
 }
 
-/* ── RENDER GRID ── */
 function renderGrid() {
     const allItems = getItems();
     const items    = allItems.slice(0, FEATURED_MAX);
@@ -364,17 +369,17 @@ function renderGrid() {
     if (S.query) hint.innerText = n > 0 ? `พบ ${n} รายการ` : 'ไม่พบสินค้า — ลองคำค้นอื่น';
     else hint.innerText = '';
     const catInfo = CATEGORIES.find(c => c.id === S.filter);
-    title.innerText = catInfo ? catInfo.label : 'Featured';
-    seeAll.href = catInfo ? catInfo.url : 'all-products.html';
+    if (catInfo) { title.innerText = catInfo.label; seeAll.href = catInfo.url; }
+    else { title.innerText = 'Featured'; seeAll.href = 'all-products.html'; }
     seeAll.style.display = 'flex';
     if (n === 0) { grid.innerHTML = ''; empty.classList.add('show'); return; }
     empty.classList.remove('show');
     grid.innerHTML = items.map((p,i) => cardHTML(p, i===0 && items.length >= 2)).join('');
 }
 
-/* ── CARD HTML ── */
 function cardHTML(p, wide) {
     const priceStr    = `$${(p.price/33).toFixed(2)}`;
+    const tagCls      = p.tagLight ? 'light' : '';
     const lowTag      = p.stock === 'low-stock' ? `<div class="p-tag low-stock">LOW STOCK</div>` : '';
     const isFav       = S.favs.includes(p.id);
     const dots        = (p.colors||[]).map(c => `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
@@ -384,7 +389,7 @@ function cardHTML(p, wide) {
 <a href="product.html?id=${p.id}" class="p-card${wide?' wide':''}">
     <div class="p-card-img">
         <img src="${(p.images||[])[0]}" alt="${p.name}" loading="lazy">
-        <div class="p-tag">${p.tag||''}</div>
+        <div class="p-tag ${tagCls}">${p.tag||''}</div>
         ${lowTag}
         <button class="p-fav ${isFav?'liked':''}" onclick="toggleFav(event,'${p.id}',this)" aria-label="Wishlist">
             <svg width="13" height="13" fill="${heartFill}" stroke="${heartStroke}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -402,19 +407,16 @@ function cardHTML(p, wide) {
 </a>`;
 }
 
-/* ── NEW ARRIVALS ── */
 function renderNewArrivals() {
     const all = PRODUCTS
         .filter(p => p.isNew)
         .sort((a,b) => new Date(b.dateAdded) - new Date(a.dateAdded))
         .slice(0, NEW_ARRIVALS_MAX);
-    const sec = document.getElementById('newSection');
-    if (!all.length) { sec.style.display = 'none'; return; }
+    if (!all.length) { document.getElementById('newSection').style.display = 'none'; return; }
     document.getElementById('newRow').innerHTML = all.map(p => cardHTML(p, false)).join('');
-    sec.style.display = '';
+    document.getElementById('newSection').style.display = '';
 }
 
-/* ── CATEGORIES ── */
 function renderCategories() {
     const countMap = {};
     const catImgs  = {};
@@ -423,10 +425,12 @@ function renderCategories() {
         if (!catImgs[p.category]) catImgs[p.category] = (p.images||[])[0];
     });
     document.getElementById('catGrid').innerHTML = CATEGORIES.map(cat => `
-<div class="cat-card" onclick="location.href='${cat.url}'">
+<div class="cat-card" onclick="gotoCategory('${cat.id}','${cat.url}')">
     <img src="${catImgs[cat.id]||''}" alt="${cat.label}" loading="lazy">
     <div class="cat-arrow">
-        <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4.5h7M5 1.5l3 3-3 3"/></svg>
+        <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 4.5h7M5 1.5l3 3-3 3"/>
+        </svg>
     </div>
     <div class="cat-info">
         <span class="cat-name">${cat.label.toUpperCase()}</span>
@@ -435,7 +439,8 @@ function renderCategories() {
 </div>`).join('');
 }
 
-/* ── COUNTS ── */
+function gotoCategory(id, url) { window.location.href = url; }
+
 function updateCounts() {
     document.getElementById('cnt-all').innerText         = PRODUCTS.length;
     document.getElementById('cnt-tops').innerText        = PRODUCTS.filter(p=>p.category==='tops').length;
@@ -443,41 +448,38 @@ function updateCounts() {
     document.getElementById('cnt-accessories').innerText = PRODUCTS.filter(p=>p.category==='accessories').length;
 }
 
-/* ── WISHLIST ── */
 function toggleFav(e, id, btn) {
     e.preventDefault(); e.stopPropagation();
     const idx = S.favs.indexOf(id);
     const svg = btn.querySelector('svg');
     if (idx > -1) {
-        S.favs.splice(idx,1); btn.classList.remove('liked');
-        svg.setAttribute('fill','none'); svg.setAttribute('stroke','var(--gray-600)');
-        showToast('Removed','นำออกจาก Wishlist แล้ว');
+        S.favs.splice(idx, 1); btn.classList.remove('liked');
+        svg.setAttribute('fill', 'none'); svg.setAttribute('stroke', 'var(--gray-600)');
+        showToast('Removed', 'นำออกจาก Wishlist แล้ว');
     } else {
         S.favs.push(id); btn.classList.add('liked');
-        svg.setAttribute('fill','currentColor'); svg.setAttribute('stroke','#fff');
-        showToast('Saved!','เพิ่มใน Wishlist แล้ว ❤️');
+        svg.setAttribute('fill', 'currentColor'); svg.setAttribute('stroke', '#fff');
+        showToast('Saved!', 'เพิ่มใน Wishlist แล้ว ❤️');
     }
     localStorage.setItem('NW_FAVS', JSON.stringify(S.favs));
 }
 
-/* ── CART BADGE ── */
 function updateBadge() {
-    const cart = JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
-    const n = cart.reduce((t,c)=>t+c.quantity,0);
+    const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
+    const n = cart.reduce((t,c) => t+c.quantity, 0);
     const b = document.getElementById('cartBadge');
     b.innerText = n > 99 ? '99+' : n;
     b.style.display = n > 0 ? 'flex' : 'none';
 }
 
-/* ── TOAST ── */
 const ICON_OK = `<svg width="13" height="13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 3 5 10 2 7"/></svg>`;
 let _tt;
 function showToast(title, sub) {
     document.getElementById('toastIcon').innerHTML = ICON_OK;
     document.getElementById('toastTitle').innerText = title;
-    document.getElementById('toastSub').innerText = sub||'';
+    document.getElementById('toastSub').innerText = sub || '';
     const t = document.getElementById('toast'); t.classList.add('on');
-    clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'),2700);
+    clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('on'), 2700);
 }
 </script>
 </body>
