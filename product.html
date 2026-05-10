@@ -196,7 +196,7 @@
     <div class="sheet-header">
         <img src="" id="sheetThumb" class="sheet-thumb">
         <div>
-            <div class="sheet-price" id="sheetPrice">$0</div>
+            <div class="sheet-price" id="sheetPrice">$0.00</div>
             <div class="sheet-hint">Select Options</div>
         </div>
     </div>
@@ -233,121 +233,98 @@
 
 <script>
 /* ═══════════════════════════════════════════════
-   PRODUCT DATABASE — same object as cart.html
+   PRODUCT DATABASE — price เป็น USD ตรงๆ ไม่หาร 33
 ═══════════════════════════════════════════════ */
 const PRODUCTS = {
-'oversized-tee-black': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+    'oversized-tee-black': {
+        name:'Classic Black Oversized Tee', price:23.94,
+        tag:'BESTSELLER', tagOrange:true,
+        stock:'in-stock', rating:4.9, reviews:248,
+        desc:'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
+        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-olive': {
-        name:     'Military Olive Cargo Pants',
-        price:    1590,
-        tag:      'NEW', tagLight: false,
-        category: 'pants',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        rating:   4.7, reviews: 91,
-        desc:     'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
-        images:   [
-            'https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+        name:'Military Olive Cargo Pants', price:48.18,
+        tag:'NEW', tagOrange:false,
+        stock:'in-stock', rating:4.7, reviews:91,
+        desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
+        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
+        sizes:['M','L','XL'],
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-grey': {
-        name:     'Stone Grey Pullover Hoodie',
-        price:    1290,
-        tag:      'POPULAR', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        rating:   4.8, reviews: 175,
-        desc:     'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
-        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+        name:'Stone Grey Pullover Hoodie', price:39.09,
+        tag:'POPULAR', tagOrange:false,
+        stock:'in-stock', rating:4.8, reviews:175,
+        desc:'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
+        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-retro': {
-        name:     'Retro Square Sunglasses',
-        price:    890,
-        tag:      'LIMITED', tagLight: false,
-        category: 'accessories',
-        isNew:    true, isSale: true,
-        stock:    'low-stock',
-        rating:   4.6, reviews: 58,
-        desc:     'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
-        images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors: [{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
-        sizes:  ['One Size'],
-        specs:  {Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
+        name:'Retro Square Sunglasses', price:26.97,
+        tag:'LIMITED', tagOrange:true,
+        stock:'low-stock', rating:4.6, reviews:58,
+        desc:'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
+        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
+        sizes:['One Size'],
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
     },
     'oversized-tee-white': {
-        name:     'Stone White Oversized Tee',
-        price:    790,
-        tag:      'NEW', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        rating:   4.8, reviews: 112,
-        desc:     'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton เนื้อนุ่ม ทรงหลวมสบาย',
-        images:   ['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
-        colors: [{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
+        name:'Stone White Oversized Tee', price:23.94,
+        tag:'NEW', tagOrange:false,
+        stock:'in-stock', rating:4.8, reviews:112,
+        desc:'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton เนื้อนุ่ม ทรงหลวมสบาย',
+        images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
+        colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-black': {
-        name:     'Tactical Black Cargo Pants',
-        price:    1590,
-        tag:      'NEW', tagLight: false,
-        category: 'pants',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        rating:   4.7, reviews: 44,
-        desc:     'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon',
-        images:   ['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors: [{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
+        name:'Tactical Black Cargo Pants', price:48.18,
+        tag:'NEW', tagOrange:false,
+        stock:'in-stock', rating:4.7, reviews:44,
+        desc:'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon',
+        images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
+        colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
+        sizes:['M','L','XL'],
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-navy': {
-        name:     'Midnight Navy Pullover Hoodie',
-        price:    1290,
-        tag:      'NEW', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        rating:   4.7, reviews: 63,
-        desc:     'เสื้อฮู้ดดี้สีกรมท่า ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ',
-        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    }    
-
+        name:'Midnight Navy Pullover Hoodie', price:39.09,
+        tag:'NEW', tagOrange:false,
+        stock:'in-stock', rating:4.7, reviews:63,
+        desc:'เสื้อฮู้ดดี้สีกรมท่า ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ',
+        images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
+        colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
+        sizes:['S','M','L','XL'],
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
+    },
+    'sunglasses-black': {
+        name:'Classic Black Sunglasses', price:26.97,
+        tag:'NEW', tagOrange:false,
+        stock:'in-stock', rating:4.5, reviews:29,
+        desc:'แว่นตากันแดดคลาสสิกสีดำ เฟรม Acetate เลนส์ UV400',
+        images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
+        colors:[{name:'Glossy Black',hex:'#111111'}],
+        sizes:['One Size'],
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'}
+    }
 };
 
 /* ─── STATE ─── */
 let P = null, imgIdx = 0, selColor = null, selSize = null, qty = 1, sheetMode = 'cart';
 
-/* ─── CURRENT PRODUCT ID ─── */
 const PRODUCT_ID = new URLSearchParams(window.location.search).get('id') || '';
+
+/* ─── UTIL: format USD without comma ─── */
+function fmtUSD(num) { return '$' + Number(num).toFixed(2); }
 
 /* ─── INIT ─── */
 function init() {
@@ -361,7 +338,7 @@ function init() {
             </div>`;
         return;
     }
-    document.title = `${P.name} — Nexus Wear`;
+    document.title = `${P.name} — Bards`;
     buildPage();
     updateBadge();
 }
@@ -371,7 +348,9 @@ function buildPage() {
     const stockMap = { 'in-stock':['chip-green','In Stock'], 'low-stock':['chip-amber','Low Stock'], 'out-of-stock':['chip-gray','Out of Stock'] };
     const [stockCls, stockLabel] = stockMap[P.stock] || stockMap['in-stock'];
     const multiImg = P.images.length > 1;
-    const priceUSD = (P.price / 33).toFixed(2);
+
+    /* price เป็น USD ตรงๆ แล้ว — ไม่หาร 33 */
+    const priceDisplay = fmtUSD(P.price);
 
     const slidesHtml = P.images.map((s,i) => `<div class="g-slide"><img src="${s}" onclick="openFg(${i})" loading="${i?'lazy':'eager'}"></div>`).join('');
     const fgHtml     = P.images.map(s => `<div class="fg-slide"><img src="${s}"></div>`).join('');
@@ -390,7 +369,7 @@ function buildPage() {
         </div>
         <div class="p-body fu d1">
             <div class="price-line">
-                <div class="price">$${priceUSD}</div>
+                <div class="price">${priceDisplay}</div>
                 <div class="price-currency">USD</div>
             </div>
             <h1 class="p-name">${P.name}</h1>
@@ -417,9 +396,9 @@ function buildPage() {
         </div>
         <div style="height:14px"></div>`;
 
-    /* Sheet */
+    /* Sheet — price ตรงๆ ไม่หาร */
     document.getElementById('sheetThumb').src = P.images[0];
-    document.getElementById('sheetPrice').innerText = `$${priceUSD} USD`;
+    document.getElementById('sheetPrice').innerText = `${fmtUSD(P.price)} USD`;
     document.getElementById('colorChips').innerHTML = P.colors.map((c,i) =>
         `<div class="sh-chip" data-idx="${i}" onclick="pickColorSheet(this,${i})">${c.name}</div>`).join('');
     document.getElementById('sizeChips').innerHTML  = P.sizes.map(s =>
@@ -478,19 +457,12 @@ function hideSheet() {
 function handleConfirm() {
     if (!selColor) { showToast('warn','Select a color','Choose one of the options above'); return; }
     if (!selSize)  { showToast('warn','Select a size','Choose your preferred size'); return; }
-
     setConfirm('loading');
-
     setTimeout(() => {
-        /* save to cart */
-        saveCart({
-            id: PRODUCT_ID, name: P.name, price: P.price,
-            image: P.images[0], color: selColor, size: selSize, quantity: qty
-        });
+        /* price เป็น USD แล้ว — เก็บตรงๆ */
+        saveCart({ id:PRODUCT_ID, name:P.name, price:P.price, image:P.images[0], color:selColor, size:selSize, quantity:qty });
         updateBadge();
-
         if (sheetMode === 'buy') {
-            /* ── KEY FIX: tell cart.html which item to pre-select ── */
             sessionStorage.setItem('BUY_NOW_ID', PRODUCT_ID);
             window.location.href = 'cart.html';
         } else {
