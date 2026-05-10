@@ -1,1481 +1,1187 @@
 <!doctype html>
-<html lang="th" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Nexus Wear</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
-  
-  <style>
-    body {
-      box-sizing: border-box;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #F5F5F5;
-      color: #000000;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .page-wrapper {
-      width: 100%;
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Header */
-    .checkout-header {
-      background: #000000;
-      color: #FFFFFF;
-      padding: 24px 60px;
-      border-bottom: 3px solid #FF0000;
-    }
-
-    .header-content {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand-logo {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 32px;
-      letter-spacing: 3px;
-      color: #FFFFFF;
-    }
-
-    .secure-badge {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #FFFFFF;
-    }
-
-    .secure-badge svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    /* Main Content */
-    .checkout-main {
-      flex: 1;
-      padding: 60px 24px;
-    }
-
-    .checkout-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .page-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 56px;
-      letter-spacing: 4px;
-      text-align: center;
-      margin-bottom: 12px;
-      color: #000000;
-    }
-
-    .page-subtitle {
-      text-align: center;
-      font-size: 15px;
-      color: #666666;
-      letter-spacing: 1px;
-      margin-bottom: 48px;
-    }
-
-    /* Order Summary */
-    .order-summary {
-      background: #FFFFFF;
-      border: 2px solid #000000;
-      padding: 32px;
-      margin-bottom: 32px;
-      border-radius: 2px;
-    }
-
-    .summary-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 28px;
-      letter-spacing: 2px;
-      margin-bottom: 24px;
-      color: #000000;
-    }
-
-    .cart-items {
-      margin-bottom: 24px;
-    }
-
-    .cart-item {
-      display: flex;
-      gap: 16px;
-      padding: 20px 0;
-      border-bottom: 1px solid #E0E0E0;
-    }
-
-    .cart-item:first-child {
-      padding-top: 0;
-    }
-
-    .cart-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .item-image {
-      width: 60px;
-      height: 60px;
-      background: #F5F5F5;
-      border: 1px solid #E0E0E0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      border-radius: 2px;
-    }
-
-    .item-image svg {
-      width: 50%;
-      height: 50%;
-    }
-
-    .item-details {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .item-info {
-      flex: 1;
-    }
-
-    .item-name {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #000000;
-    }
-
-    .item-meta {
-      font-size: 12px;
-      color: #666666;
-    }
-
-    .item-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .item-price {
-      font-size: 15px;
-      font-weight: 700;
-      color: #000000;
-    }
-
-    .quantity-control {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .qty-btn {
-      width: 28px;
-      height: 28px;
-      border: 1px solid #CCCCCC;
-      background: #FFFFFF;
-      color: #000000;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .qty-btn:hover {
-      background: #000000;
-      color: #FFFFFF;
-      border-color: #000000;
-    }
-
-    .qty-btn:active {
-      transform: scale(0.9);
-    }
-
-    .qty-input {
-      width: 50px;
-      height: 32px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 600;
-      border: 1px solid #E0E0E0;
-      background: #FFFFFF;
-      color: #000000;
-      border-radius: 4px;
-      padding: 0;
-    }
-
-    .qty-input:focus {
-      outline: none;
-      border-color: #000000;
-    }
-
-    .summary-divider {
-      height: 1px;
-      background: #E0E0E0;
-      margin: 20px 0;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
-
-    .summary-label {
-      color: #666666;
-      font-weight: 500;
-    }
-
-    .summary-value {
-      font-weight: 700;
-      color: #000000;
-    }
-
-    .summary-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      background: #000000;
-      color: #FFFFFF;
-      margin: 20px -32px -32px;
-      border-radius: 0 0 2px 2px;
-    }
-
-    .total-label {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 20px;
-      letter-spacing: 2px;
-    }
-
-    .total-value {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 32px;
-      letter-spacing: 2px;
-    }
-
-    /* Form Section */
-    .form-section {
-      margin-bottom: 32px;
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 28px;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-      color: #000000;
-    }
-
-    .form-group {
-      margin-bottom: 24px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #000000;
-    }
-
-    .form-label .required {
-      color: #FF0000;
-      margin-left: 2px;
-    }
-
-    .form-input,
-    .form-select,
-    .form-textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid #E0E0E0;
-      background: #FFFFFF;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: #000000;
-      transition: all 0.2s ease;
-      border-radius: 2px;
-    }
-
-    .form-input:hover,
-    .form-select:hover,
-    .form-textarea:hover {
-      border-color: #CCCCCC;
-    }
-
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      outline: none;
-      border-color: #000000;
-      background: #FAFAFA;
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    /* Custom Select */
-    .custom-select-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
-    .custom-select-trigger {
-      width: 100%;
-      padding: 14px 16px;
-      padding-right: 44px;
-      border: 2px solid #E0E0E0;
-      background: #FFFFFF;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: #000000;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border-radius: 2px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      user-select: none;
-    }
-
-    .custom-select-trigger:hover {
-      border-color: #CCCCCC;
-    }
-
-    .custom-select-trigger.active {
-      border-color: #000000;
-      background: #FAFAFA;
-    }
-
-    .custom-select-trigger.has-value {
-      color: #000000;
-    }
-
-    .custom-select-trigger.placeholder {
-      color: #999999;
-    }
-
-    .select-icon {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      color: #666666;
-    }
-
-    .select-text {
-      flex: 1;
-    }
-
-    .select-arrow {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 12px;
-      pointer-events: none;
-      color: #666666;
-      transition: transform 0.2s ease;
-    }
-
-    .custom-select-trigger.active .select-arrow {
-      transform: translateY(-50%) rotate(180deg);
-      color: #000000;
-    }
-
-    .custom-dropdown {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      max-height: 280px;
-      overflow-y: auto;
-      background: #FFFFFF;
-      border: 2px solid #000000;
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s;
-    }
-
-    /* Default: Opens downward */
-    .custom-dropdown:not(.open-upward) {
-      top: calc(100% + 8px);
-      transform-origin: top center;
-      transform: scaleY(0.95) translateY(-10px);
-      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-                  visibility 0.25s, 
-                  transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .custom-dropdown:not(.open-upward).active {
-      opacity: 1;
-      visibility: visible;
-      transform: scaleY(1) translateY(0);
-    }
-
-    /* Opens upward when near bottom */
-    .custom-dropdown.open-upward {
-      bottom: calc(100% + 8px);
-      transform-origin: bottom center;
-      transform: scaleY(0.95) translateY(10px);
-      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
-                  visibility 0.25s, 
-                  transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .custom-dropdown.open-upward.active {
-      opacity: 1;
-      visibility: visible;
-      transform: scaleY(1) translateY(0);
-    }
-
-    .dropdown-option {
-      padding: 12px 16px;
-      font-size: 14px;
-      color: #000000;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid #F5F5F5;
-    }
-
-    .dropdown-option:last-child {
-      border-bottom: none;
-    }
-
-    .dropdown-option:hover {
-      background: #F5F5F5;
-    }
-
-    .dropdown-option.selected {
-      background: #E8F4FF;
-      font-weight: 600;
-      color: #000000;
-    }
-
-    .dropdown-option.selected::before {
-      content: '✓ ';
-      margin-right: 8px;
-      font-weight: 700;
-    }
-
-    /* Scrollbar Styling */
-    .custom-dropdown {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-    }
-
-    .custom-dropdown::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .custom-dropdown::-webkit-scrollbar-track {
-      background: transparent;
-      margin: 8px 0;
-    }
-
-    .custom-dropdown::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.15);
-      border-radius: 10px;
-      border: 2px solid #FFFFFF;
-    }
-
-    .custom-dropdown::-webkit-scrollbar-thumb:hover {
-      background: rgba(0, 0, 0, 0.3);
-    }
-
-    /* Email Toggle */
-    .email-toggle-section {
-      margin-top: 20px;
-      margin-bottom: 24px;
-    }
-
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .toggle-switch {
-      position: relative;
-      width: 44px;
-      height: 24px;
-      flex-shrink: 0;
-    }
-
-    .toggle-switch input[type="checkbox"] {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #CCCCCC;
-      transition: 0.3s;
-      border-radius: 24px;
-    }
-
-    .toggle-slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: 0.3s;
-      border-radius: 50%;
-    }
-
-    .toggle-switch input:checked + .toggle-slider {
-      background-color: #000000;
-    }
-
-    .toggle-switch input:checked + .toggle-slider:before {
-      transform: translateX(20px);
-    }
-
-    .toggle-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #000000;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .toggle-icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    .email-input-container {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-
-    .email-input-container.active {
-      max-height: 100px;
-      opacity: 1;
-    }
-
-    /* Payment Method */
-    .payment-section {
-      margin-bottom: 32px;
-    }
-
-    .payment-options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .payment-option {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px 18px;
-      border: 1.5px solid #E0E0E0;
-      background: #FFFFFF;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .payment-option.selected {
-      border-color: #000000;
-      background: #FAFAFA;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    }
-
-    .payment-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex: 1;
-    }
-
-    .payment-logo {
-      width: 44px;
-      height: 26px;
-      flex-shrink: 0;
-    }
-
-    .payment-info {
-      flex: 1;
-    }
-
-    .payment-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #000000;
-      margin-bottom: 2px;
-    }
-
-    .payment-desc {
-      font-size: 11px;
-      color: #888888;
-    }
-
-    .payment-radio {
-      width: 18px;
-      height: 18px;
-      border: 2px solid #CCCCCC;
-      border-radius: 50%;
-      position: relative;
-      flex-shrink: 0;
-      transition: all 0.2s ease;
-    }
-
-    .payment-option.selected .payment-radio {
-      border-color: #000000;
-    }
-
-    .payment-option.selected .payment-radio::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 8px;
-      height: 8px;
-      background: #000000;
-      border-radius: 50%;
-    }
-
-    /* Submit Button */
-    .submit-section {
-      margin-bottom: 32px;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 24px;
-      background: #FF0000;
-      color: #FFFFFF;
-      border: none;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 24px;
-      letter-spacing: 3px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .submit-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .submit-btn:hover::before {
-      left: 100%;
-    }
-
-    .submit-btn:hover {
-      background: #CC0000;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
-    }
-
-    .submit-btn:active {
-      transform: translateY(-1px);
-    }
-
-    .submit-btn:disabled {
-      background: #CCCCCC;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .submit-btn:disabled:hover {
-      box-shadow: none;
-    }
-
-    .btn-icon {
-      display: inline-block;
-      margin-left: 12px;
-      transition: transform 0.3s ease;
-    }
-
-    .submit-btn:hover .btn-icon {
-      transform: translateX(8px);
-    }
-
-    /* Success Modal */
-    .success-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      padding: 20px;
-    }
-
-    .success-modal.active {
-      display: flex;
-      opacity: 1;
-    }
-
-    .success-content {
-      background: #FFFFFF;
-      border: 3px solid #000000;
-      padding: 48px;
-      max-width: 500px;
-      width: 100%;
-      text-align: center;
-      transform: scale(0.8);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      border-radius: 2px;
-    }
-
-    .success-modal.active .success-content {
-      transform: scale(1);
-    }
-
-    .success-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 24px;
-      background: #000000;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .success-icon svg {
-      width: 48px;
-      height: 48px;
-    }
-
-    .success-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 42px;
-      letter-spacing: 3px;
-      color: #000000;
-      margin-bottom: 16px;
-    }
-
-    .success-message {
-      font-size: 14px;
-      color: #666666;
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
-
-    .order-number {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #F5F5F5;
-      border: 2px solid #000000;
-      font-family: 'Courier New', monospace;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 24px;
-      border-radius: 2px;
-    }
-
-    .success-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    .success-btn {
-      padding: 14px 32px;
-      border: 2px solid #000000;
-      background: #000000;
-      color: #FFFFFF;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-      border-radius: 2px;
-    }
-
-    .success-btn.secondary {
-      background: #FFFFFF;
-      color: #000000;
-    }
-
-    .success-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Footer */
-    .checkout-footer {
-      background: #000000;
-      color: #FFFFFF;
-      padding: 24px 40px;
-      text-align: center;
-    }
-
-    .footer-text {
-      font-size: 13px;
-      color: #CCCCCC;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .trust-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: #CCCCCC;
-    }
-
-    .trust-badge svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    /* Loading State */
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    .loading-overlay.active {
-      display: flex;
-    }
-
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-top-color: #FFFFFF;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #000000;
-      color: #FFFFFF;
-      padding: 16px 24px;
-      border: 2px solid #FFFFFF;
-      font-size: 13px;
-      font-weight: 600;
-      z-index: 10000;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 2px;
-      max-width: 320px;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .toast.error {
-      background: #FF0000;
-      border-color: #FFFFFF;
-    }
-
-    .toast.success {
-      background: #00CC00;
-      border-color: #FFFFFF;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .checkout-header {
-        padding: 20px 24px;
-      }
-
-      .header-content {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .brand-logo {
-        font-size: 24px;
-      }
-
-      .checkout-main {
-        padding: 40px 20px;
-      }
-
-      .page-title {
-        font-size: 36px;
-      }
-
-      .order-summary {
-        padding: 24px;
-      }
-
-      .form-section,
-      .payment-section {
-        margin-bottom: 24px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      .success-content {
-        padding: 32px 24px;
-      }
-
-      .success-title {
-        font-size: 32px;
-      }
-
-      .success-actions {
-        flex-direction: column;
-      }
-
-      .success-btn {
-        width: 100%;
-      }
-
-      .trust-badges {
-        flex-direction: column;
-        gap: 8px;
-      }
-    }
-  </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
- </head>
- <body class="h-full">
-  <div class="page-wrapper"><!-- Header -->
-   <header class="checkout-header">
-    <div class="header-content">
-     <div class="brand-logo" id="brandName">
-      NEXUS WEAR
-     </div>
-     <div class="secure-badge">
-      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /> <path d="M9 12l2 2 4-4" />
-      </svg> Secure Checkout
-     </div>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Checkout — Bards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:    #0A0A0A;
+            --white:    #FAFAFA;
+            --orange:   #FF4F00;
+            --green:    #16A34A;
+            --red:      #C8001A;
+            --blue:     #0057FF;
+            --gray-50:  #F9F9F7;
+            --gray-100: #F2F2F0;
+            --gray-200: #E4E4E2;
+            --gray-300: #C8C8C6;
+            --gray-400: #8A8A88;
+            --gray-600: #4A4A48;
+            --radius:    14px;
+            --radius-sm: 10px;
+            --nav-h:     60px;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        html { scroll-behavior:smooth; }
+        body {
+            font-family:'Space Grotesk',sans-serif;
+            background:var(--gray-100); color:var(--black);
+            overscroll-behavior:none; min-height:100vh;
+            padding-bottom:40px;
+        }
+
+        /* ── NAV ── */
+        .nav {
+            position:fixed; top:0; left:0; right:0; z-index:300;
+            height:var(--nav-h);
+            display:flex; align-items:center; justify-content:space-between;
+            padding:0 18px;
+            background:rgba(250,250,250,.95);
+            backdrop-filter:blur(18px) saturate(160%);
+            -webkit-backdrop-filter:blur(18px) saturate(160%);
+            border-bottom:1px solid var(--gray-200);
+        }
+        .nav-left  { display:flex; align-items:center; gap:12px; flex:1; }
+        .brand { font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px; color:var(--black); text-decoration:none; }
+        .icon-btn {
+            width:36px; height:36px; border-radius:50%;
+            background:var(--gray-100); border:none;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:background .18s,transform .12s;
+            text-decoration:none; color:var(--black); flex-shrink:0;
+        }
+        .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
+
+        /* ── STEP INDICATOR ── */
+        .step-bar {
+            position:fixed; top:var(--nav-h); left:0; right:0; z-index:200;
+            background:var(--white); border-bottom:1px solid var(--gray-200);
+            padding:12px 18px; display:flex; align-items:center; gap:0;
+        }
+        .step-item {
+            display:flex; align-items:center; gap:6px; flex:1;
+        }
+        .step-circle {
+            width:22px; height:22px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-family:'DM Mono',monospace; font-size:9px; font-weight:700;
+            flex-shrink:0; transition:all .3s;
+        }
+        .step-circle.done    { background:var(--black); color:#fff; }
+        .step-circle.active  { background:var(--orange); color:#fff; }
+        .step-circle.pending { background:var(--gray-200); color:var(--gray-400); }
+        .step-label {
+            font-size:10px; font-weight:600; letter-spacing:.5px;
+            transition:color .3s; white-space:nowrap;
+        }
+        .step-label.done   { color:var(--gray-600); }
+        .step-label.active { color:var(--black); }
+        .step-label.pending { color:var(--gray-300); }
+        .step-line { flex:1; height:1.5px; background:var(--gray-200); margin:0 6px; }
+        .step-line.done { background:var(--black); }
+
+        /* ── PAGE ── */
+        .page {
+            margin-top:calc(var(--nav-h) + 58px);
+            padding:0 14px;
+            max-width:520px; margin-left:auto; margin-right:auto;
+        }
+        @media (min-width:900px) {
+            .page {
+                display:grid; grid-template-columns:1fr 340px;
+                gap:24px; max-width:900px;
+                padding:0 24px;
+            }
+        }
+        .main-col { min-width:0; }
+
+        /* ── SECTION CARDS ── */
+        .ck-card {
+            background:var(--white); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); margin-bottom:12px;
+            overflow:hidden; transition:border-color .2s;
+        }
+        .ck-card.active-card { border-color:var(--black); }
+        .ck-card-hd {
+            padding:15px 16px 14px;
+            display:flex; align-items:center; gap:10px;
+            border-bottom:1px solid var(--gray-100);
+        }
+        .ck-card-num {
+            width:24px; height:24px; border-radius:50%;
+            background:var(--black); color:#fff;
+            font-family:'DM Mono',monospace; font-size:10px; font-weight:700;
+            display:flex; align-items:center; justify-content:center;
+            flex-shrink:0;
+        }
+        .ck-card-num.done-num { background:var(--green); }
+        .ck-card-title {
+            font-family:'Bebas Neue'; font-size:16px; letter-spacing:2px; flex:1;
+        }
+        .ck-card-edit {
+            font-size:11px; font-weight:700; color:var(--gray-400);
+            background:none; border:none; cursor:pointer;
+            letter-spacing:.5px; padding:4px 8px;
+            transition:color .18s;
+        }
+        .ck-card-edit:active { color:var(--black); }
+        .ck-card-body { padding:16px; }
+
+        /* ── FORM ── */
+        .form-row { margin-bottom:13px; }
+        .form-row.two-col { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .f-label {
+            font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+            color:var(--gray-400); margin-bottom:6px; display:block;
+        }
+        .f-input {
+            width:100%; height:44px;
+            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
+            background:var(--white); font-family:'Space Grotesk',sans-serif;
+            font-size:13px; font-weight:500; color:var(--black);
+            padding:0 13px; outline:none;
+            transition:border-color .18s, background .18s;
+            -webkit-appearance:none;
+        }
+        .f-input:focus { border-color:var(--black); background:var(--white); }
+        .f-input.err    { border-color:var(--red); }
+        .f-input::placeholder { color:var(--gray-300); font-weight:400; }
+        .f-select {
+            width:100%; height:44px;
+            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
+            background:var(--white); font-family:'Space Grotesk',sans-serif;
+            font-size:13px; font-weight:500; color:var(--black);
+            padding:0 13px; outline:none; cursor:pointer;
+            -webkit-appearance:none; appearance:none;
+            background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238A8A88' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:right 14px center;
+            transition:border-color .18s;
+        }
+        .f-select:focus { border-color:var(--black); }
+        .f-err { font-size:10px; color:var(--red); margin-top:4px; display:none; }
+        .f-err.show { display:block; }
+
+        /* ── ORDER SUMMARY COMPACT ── */
+        .order-item {
+            display:flex; gap:11px; align-items:center;
+            padding:10px 0; border-bottom:1px solid var(--gray-100);
+        }
+        .order-item:last-child { border-bottom:none; }
+        .oi-img {
+            width:52px; height:52px; border-radius:8px;
+            overflow:hidden; background:var(--gray-100); flex-shrink:0;
+        }
+        .oi-img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .oi-info { flex:1; min-width:0; }
+        .oi-name { font-size:12px; font-weight:600; line-height:1.3; }
+        .oi-meta { font-size:10px; color:var(--gray-400); margin-top:3px; }
+        .oi-qty  {
+            font-family:'DM Mono',monospace; font-size:10px;
+            background:var(--gray-100); border-radius:5px;
+            padding:2px 7px; margin-top:4px; display:inline-block;
+        }
+        .oi-price { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); flex-shrink:0; }
+
+        /* ── SUMMARY TOTALS ── */
+        .sum-totals { padding:14px 0 0; }
+        .sum-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .sum-lbl { font-size:12px; color:var(--gray-400); font-weight:500; }
+        .sum-val { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--gray-600); }
+        .sum-val.free { color:var(--green); font-weight:700; }
+        .sum-divider { border:none; border-top:1px solid var(--gray-200); margin:10px 0; }
+        .sum-total-row { display:flex; justify-content:space-between; align-items:baseline; }
+        .sum-total-lbl { font-size:14px; font-weight:700; }
+        .sum-total-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--red); }
+
+        /* ── PAYMENT METHOD ── */
+        .pay-method {
+            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
+            padding:14px 16px; cursor:pointer; display:flex;
+            align-items:center; gap:12px; margin-bottom:10px;
+            transition:border-color .18s, background .18s;
+        }
+        .pay-method.on { border-color:var(--black); background:var(--gray-50); }
+        .pay-radio {
+            width:18px; height:18px; border-radius:50%;
+            border:2px solid var(--gray-300); flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+            transition:all .18s;
+        }
+        .pay-method.on .pay-radio { border-color:var(--black); }
+        .pay-radio-dot {
+            width:8px; height:8px; border-radius:50%;
+            background:var(--black); display:none;
+        }
+        .pay-method.on .pay-radio-dot { display:block; }
+        .pay-logo { width:44px; height:28px; object-fit:contain; flex-shrink:0; }
+        .pay-info { flex:1; min-width:0; }
+        .pay-name { font-size:13px; font-weight:700; }
+        .pay-sub  { font-size:10px; color:var(--gray-400); margin-top:2px; }
+
+        /* KHQR specific badge */
+        .khqr-badge {
+            display:inline-flex; align-items:center; gap:4px;
+            background:#003087; color:#FFD700;
+            font-family:'DM Mono',monospace; font-size:9px; font-weight:700;
+            letter-spacing:1px; padding:3px 8px; border-radius:5px;
+        }
+
+        /* ── PLACE ORDER BTN ── */
+        .place-btn {
+            width:100%; height:54px; border:none; border-radius:var(--radius-sm);
+            font-family:'Bebas Neue'; font-size:18px; letter-spacing:3px;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+            margin-top:4px;
+            transition:opacity .18s, transform .12s, background .25s;
+        }
+        .place-btn.idle    { background:var(--black); color:#fff; }
+        .place-btn.idle:active { opacity:.82; transform:scale(.98); }
+        .place-btn.loading { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
+        .place-btn[disabled] { background:var(--gray-200); color:var(--gray-400); cursor:default; }
+        .place-sub {
+            margin-top:9px; font-size:10px; color:var(--gray-400);
+            display:flex; align-items:center; justify-content:center; gap:5px;
+            line-height:1.5; text-align:center;
+        }
+
+        /* ── KHQR PAYMENT MODAL ── */
+        .modal-mask {
+            position:fixed; inset:0; z-index:400;
+            background:rgba(10,10,10,.65);
+            backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+            display:none; opacity:0; transition:opacity .3s;
+            align-items:flex-end; justify-content:center;
+        }
+        .modal-mask.open { display:flex; opacity:1; }
+        .modal-sheet {
+            width:100%; max-width:480px;
+            background:var(--white); border-radius:24px 24px 0 0;
+            padding:8px 22px 44px;
+            transform:translateY(100%);
+            transition:transform .42s cubic-bezier(.22,1,.36,1);
+            max-height:92vh; overflow-y:auto;
+        }
+        .modal-mask.open .modal-sheet { transform:translateY(0); }
+        .modal-handle { width:38px; height:4px; background:var(--gray-200); border-radius:2px; margin:10px auto 20px; }
+        .modal-title { font-family:'Bebas Neue'; font-size:22px; letter-spacing:3px; margin-bottom:4px; text-align:center; }
+        .modal-sub { font-size:11px; color:var(--gray-400); text-align:center; margin-bottom:20px; }
+
+        /* QR Container */
+        .qr-wrap {
+            display:flex; flex-direction:column; align-items:center;
+            background:var(--gray-50); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); padding:22px 22px 18px; margin-bottom:18px;
+        }
+        .qr-header {
+            width:100%; display:flex; align-items:center; justify-content:space-between;
+            margin-bottom:16px;
+        }
+        .qr-brand {
+            display:flex; align-items:center; gap:8px;
+        }
+        .qr-logo-box {
+            width:38px; height:38px; border-radius:8px;
+            background:#003087; display:flex; align-items:center; justify-content:center;
+        }
+        .qr-merchant-name { font-size:13px; font-weight:700; }
+        .qr-merchant-sub  { font-size:10px; color:var(--gray-400); }
+        .qr-amount-box {
+            text-align:right;
+        }
+        .qr-amount-lbl { font-size:9px; color:var(--gray-400); font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+        .qr-amount { font-family:'DM Mono',monospace; font-size:22px; font-weight:500; color:var(--red); line-height:1.1; }
+        .qr-currency { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray-400); }
+
+        /* The QR Code itself */
+        .qr-img-wrap {
+            position:relative; width:200px; height:200px;
+            border-radius:12px; overflow:hidden;
+            border:3px solid var(--white);
+            box-shadow:0 4px 20px rgba(0,0,0,.12);
+        }
+        #qrCanvas {
+            width:200px; height:200px; display:block;
+            image-rendering:pixelated;
+        }
+        .qr-logo-overlay {
+            position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            width:38px; height:38px; border-radius:8px;
+            background:#003087; border:3px solid var(--white);
+            display:flex; align-items:center; justify-content:center;
+        }
+
+        .qr-footer {
+            width:100%; display:flex; align-items:center; justify-content:space-between;
+            margin-top:14px;
+        }
+        .qr-expire { font-size:10px; color:var(--gray-400); display:flex; align-items:center; gap:5px; }
+        .qr-expire-timer { font-family:'DM Mono',monospace; color:var(--black); font-weight:700; }
+        .qr-expire-timer.warn { color:var(--red); }
+        .qr-copy-btn {
+            height:30px; padding:0 12px;
+            background:var(--gray-100); border:1.5px solid var(--gray-200);
+            border-radius:8px; font-size:10px; font-weight:700;
+            cursor:pointer; display:flex; align-items:center; gap:5px;
+            transition:all .18s; color:var(--gray-600);
+        }
+        .qr-copy-btn:active { background:var(--gray-200); }
+
+        /* Steps inside modal */
+        .pay-steps { margin-bottom:18px; }
+        .pay-step {
+            display:flex; gap:11px; align-items:flex-start;
+            padding:9px 0; border-bottom:1px solid var(--gray-100);
+        }
+        .pay-step:last-child { border-bottom:none; }
+        .pay-step-num {
+            width:22px; height:22px; border-radius:50%;
+            background:var(--gray-100); flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+            font-family:'DM Mono',monospace; font-size:9px; font-weight:700; color:var(--gray-600);
+        }
+        .pay-step-txt { font-size:12px; line-height:1.5; color:var(--gray-600); }
+        .pay-step-txt strong { color:var(--black); }
+
+        /* Verify button */
+        .verify-btn {
+            width:100%; height:52px; border:none; border-radius:var(--radius-sm);
+            font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+            transition:all .25s;
+        }
+        .verify-btn.idle    { background:var(--black); color:#fff; }
+        .verify-btn.idle:active { opacity:.82; transform:scale(.98); }
+        .verify-btn.checking { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
+        .verify-btn.success  { background:var(--green); color:#fff; pointer-events:none; }
+
+        /* ── SUCCESS PAGE ── */
+        .success-page {
+            display:none; text-align:center;
+            padding:40px 20px 28px;
+        }
+        .success-page.show { display:block; }
+        .success-circle {
+            width:72px; height:72px; border-radius:50%;
+            background:#DCFCE7; display:flex; align-items:center; justify-content:center;
+            margin:0 auto 18px;
+        }
+        .success-title {
+            font-family:'Bebas Neue'; font-size:28px; letter-spacing:3px; margin-bottom:6px;
+        }
+        .success-sub { font-size:13px; color:var(--gray-400); line-height:1.65; margin-bottom:24px; }
+        .order-id-box {
+            background:var(--gray-100); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius-sm); padding:12px 16px;
+            display:inline-block; margin-bottom:24px;
+        }
+        .order-id-lbl { font-size:9px; font-weight:700; letter-spacing:1.5px; color:var(--gray-400); text-transform:uppercase; margin-bottom:4px; }
+        .order-id-val { font-family:'DM Mono',monospace; font-size:16px; font-weight:500; }
+        .success-actions { display:flex; flex-direction:column; gap:10px; max-width:280px; margin:0 auto; }
+        .s-btn-primary {
+            height:48px; background:var(--black); color:#fff; border:none;
+            border-radius:var(--radius-sm); font-family:'Bebas Neue'; font-size:16px;
+            letter-spacing:2px; cursor:pointer; text-decoration:none;
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            transition:opacity .18s;
+        }
+        .s-btn-primary:active { opacity:.8; }
+        .s-btn-secondary {
+            height:44px; background:var(--white); color:var(--gray-600);
+            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
+            font-size:12px; font-weight:700; cursor:pointer; text-decoration:none;
+            display:flex; align-items:center; justify-content:center;
+            transition:all .18s;
+        }
+        .s-btn-secondary:active { background:var(--gray-100); }
+
+        /* ── TOAST ── */
+        .toast {
+            position:fixed; bottom:24px; left:50%;
+            transform:translateX(-50%) translateY(6px);
+            background:var(--black); color:#fff;
+            padding:12px 18px 12px 14px; border-radius:14px;
+            font-size:13px; font-weight:500; z-index:9999;
+            opacity:0; transition:opacity .28s,transform .28s;
+            white-space:nowrap; display:flex; align-items:center; gap:10px;
+            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:200px;
+        }
+        .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .toast-icon.success { background:rgba(22,163,74,.25); }
+        .toast-icon.warn    { background:rgba(234,179,8,.2); }
+        .toast-text { display:flex; flex-direction:column; gap:1px; }
+        .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
+        .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); }
+
+        /* ── ANIM ── */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:.4} }
+        .fu  { animation:fadeUp .38s ease both; }
+        .d1  { animation-delay:.06s; }
+        .d2  { animation-delay:.12s; }
+        .d3  { animation-delay:.18s; }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <div class="nav-left">
+        <button class="icon-btn" onclick="history.back()" aria-label="Back">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
+        </button>
+        <a href="index.html" class="brand">BARDS</a>
     </div>
-   </header><!-- Loading Overlay -->
-   <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-spinner"></div>
-   </div><!-- Success Modal -->
-   <div class="success-modal" id="successModal">
-    <div class="success-content">
-     <div class="success-icon">
-      <svg viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-     </div>
-     <h2 class="success-title" id="successTitle">ORDER CONFIRMED!</h2>
-     <p class="success-message">ขอบคุณสำหรับคำสั่งซื้อของคุณ เราได้รับออเดอร์แล้วและกำลังเตรียมจัดส่ง</p>
-     <div class="order-number" id="orderNumber">
-      ORDER #NW-00000
-     </div>
-     <div class="success-actions"><button class="success-btn" onclick="closeSuccessModal()">VIEW ORDER</button> <a href="#" class="success-btn secondary" target="_blank" rel="noopener noreferrer">BACK TO SHOP</a>
-     </div>
+</nav>
+
+<!-- STEP BAR -->
+<div class="step-bar" id="stepBar">
+    <div class="step-item">
+        <div class="step-circle active" id="sc1">1</div>
+        <span class="step-label active" id="sl1">SHIPPING</span>
     </div>
-   </div><!-- Toast -->
-   <div class="toast" id="toast"></div><!-- Main Content -->
-   <main class="checkout-main">
-    <div class="checkout-container">
-     <h1 class="page-title" id="pageTitle">SECURE CHECKOUT</h1>
-     <p class="page-subtitle">Complete Your Order</p><!-- Order Summary -->
-     <section class="order-summary">
-      <h2 class="summary-title">Order Summary</h2>
-      <div class="cart-items">
-       <div class="cart-item" data-item-id="1">
-        <div class="item-image">
-         <svg viewbox="0 0 100 100"><rect width="100" height="100" fill="#404040" /> <text x="50" y="60" text-anchor="middle" font-family="Bebas Neue" font-size="40" fill="#FFFFFF">
-           NW
-          </text>
-         </svg>
-        </div>
-        <div class="item-details">
-         <div class="item-info">
-          <div class="item-name">
-           OVERSIZED TECH HOODIE
-          </div>
-          <div class="item-meta">
-           Size: M | Color: Black
-          </div>
-         </div>
-         <div class="item-bottom">
-          <div class="item-price">
-           $18.90
-          </div>
-          <div class="quantity-control"><button type="button" class="qty-btn" onclick="updateQuantity(1, -1)">−</button> <input type="number" class="qty-input" value="1" min="1" max="99" data-unit-price="18.90" onchange="updateQuantityInput(1)"> <button type="button" class="qty-btn" onclick="updateQuantity(1, 1)">+</button>
-          </div>
-         </div>
-        </div>
-       </div>
-       <div class="cart-item" data-item-id="2">
-        <div class="item-image">
-         <svg viewbox="0 0 100 100"><rect width="100" height="100" fill="#404040" /> <circle cx="50" cy="50" r="30" fill="#FFFFFF" />
-         </svg>
-        </div>
-        <div class="item-details">
-         <div class="item-info">
-          <div class="item-name">
-           CARGO UTILITY PANTS
-          </div>
-          <div class="item-meta">
-           Size: L | Color: Olive
-          </div>
-         </div>
-         <div class="item-bottom">
-          <div class="item-price">
-           $22.90
-          </div>
-          <div class="quantity-control"><button type="button" class="qty-btn" onclick="updateQuantity(2, -1)">−</button> <input type="number" class="qty-input" value="1" min="1" max="99" data-unit-price="22.90" onchange="updateQuantityInput(2)"> <button type="button" class="qty-btn" onclick="updateQuantity(2, 1)">+</button>
-          </div>
-         </div>
-        </div>
-       </div>
-      </div>
-      <div class="summary-divider"></div>
-      <div class="summary-row"><span class="summary-label">Subtotal</span> <span class="summary-value" id="subtotal">$41.80</span>
-      </div>
-      <div class="summary-row"><span class="summary-label">Shipping</span> <span class="summary-value">FREE</span>
-      </div>
-      <div class="summary-row"><span class="summary-label">Tax</span> <span class="summary-value" id="tax">$2.92</span>
-      </div>
-      <div class="summary-total"><span class="total-label">TOTAL</span> <span class="total-value" id="totalAmount">$44.72</span>
-      </div>
-     </section><!-- Checkout Form -->
-     <form id="checkoutForm"><!-- Customer Information -->
-      <section class="form-section">
-       <h2 class="section-title">Customer Information</h2>
-       <div class="form-group"><label for="customerName" class="form-label">Full Name <span class="required">*</span></label> <input type="text" id="customerName" class="form-input" required placeholder="Enter your full name">
-       </div>
-       <div class="form-group"><label for="customerPhone" class="form-label">Phone Number <span class="required">*</span></label> <input type="tel" id="customerPhone" class="form-input" required placeholder="012-345-6789">
-       </div>
-      </section><!-- Shipping Address -->
-      <section class="form-section">
-       <h2 class="section-title">Shipping Address</h2>
-       <div class="form-group"><label for="shippingAddress" class="form-label">Address <span class="required">*</span></label> <textarea id="shippingAddress" class="form-textarea" required placeholder="House number, street name, village"></textarea>
-       </div>
-       <div class="form-row">
-        <div class="form-group"><label for="shippingProvince" class="form-label">Province <span class="required">*</span></label>
-         <div class="custom-select-wrapper">
-          <div class="custom-select-trigger placeholder" id="provinceSelector" data-required="true">
-           <svg class="select-icon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /> <circle cx="12" cy="10" r="3" />
-           </svg><span class="select-text">Select a province</span>
-           <svg class="select-arrow" viewbox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-           </svg>
-          </div>
-          <div class="custom-dropdown" id="provinceDropdown">
-           <div class="dropdown-option" data-value="Phnom Penh">
-            Phnom Penh
-           </div>
-           <div class="dropdown-option" data-value="Kandal">
-            Kandal
-           </div>
-           <div class="dropdown-option" data-value="Siem Reap">
-            Siem Reap
-           </div>
-           <div class="dropdown-option" data-value="Battambang">
-            Battambang
-           </div>
-           <div class="dropdown-option" data-value="Kampong Cham">
-            Kampong Cham
-           </div>
-           <div class="dropdown-option" data-value="Kampong Speu">
-            Kampong Speu
-           </div>
-           <div class="dropdown-option" data-value="Kampong Thom">
-            Kampong Thom
-           </div>
-           <div class="dropdown-option" data-value="Kampot">
-            Kampot
-           </div>
-           <div class="dropdown-option" data-value="Kep">
-            Kep
-           </div>
-           <div class="dropdown-option" data-value="Koh Kong">
-            Koh Kong
-           </div>
-           <div class="dropdown-option" data-value="Kratie">
-            Kratie
-           </div>
-           <div class="dropdown-option" data-value="Mondulkiri">
-            Mondulkiri
-           </div>
-           <div class="dropdown-option" data-value="Oddar Meanchey">
-            Oddar Meanchey
-           </div>
-           <div class="dropdown-option" data-value="Pailin">
-            Pailin
-           </div>
-           <div class="dropdown-option" data-value="Preah Vihear">
-            Preah Vihear
-           </div>
-           <div class="dropdown-option" data-value="Prey Veng">
-            Prey Veng
-           </div>
-           <div class="dropdown-option" data-value="Pursat">
-            Pursat
-           </div>
-           <div class="dropdown-option" data-value="Ratanakiri">
-            Ratanakiri
-           </div>
-           <div class="dropdown-option" data-value="Sihanoukville">
-            Sihanoukville
-           </div>
-           <div class="dropdown-option" data-value="Stung Treng">
-            Stung Treng
-           </div>
-           <div class="dropdown-option" data-value="Svay Rieng">
-            Svay Rieng
-           </div>
-           <div class="dropdown-option" data-value="Takeo">
-            Takeo
-           </div>
-           <div class="dropdown-option" data-value="Banteay Meanchey">
-            Banteay Meanchey
-           </div>
-           <div class="dropdown-option" data-value="Kampong Chhnang">
-            Kampong Chhnang
-           </div>
-           <div class="dropdown-option" data-value="Preah Sihanouk">
-            Preah Sihanouk
-           </div>
-          </div><input type="hidden" id="shippingProvince" required>
-         </div>
-        </div>
-        <div class="form-group"><label for="shippingPostal" class="form-label">Postal Code</label> <input type="text" id="shippingPostal" class="form-input" placeholder="12000">
-        </div>
-       </div>
-       <div class="form-group"><label for="deliveryNote" class="form-label">Delivery Note</label> <input type="text" id="deliveryNote" class="form-input" placeholder="Special instructions (optional)">
-       </div><!-- Email Toggle -->
-       <div class="email-toggle-section">
-        <div class="toggle-container">
-         <div class="toggle-switch"><input type="checkbox" id="emailToggle"> <label for="emailToggle" class="toggle-slider"></label>
-         </div><label for="emailToggle" class="toggle-label">
-          <svg class="toggle-icon" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /> <polyline points="22,6 12,13 2,6"></polyline>
-          </svg> Contact via email </label>
-        </div>
-        <div class="email-input-container" id="emailInputContainer"><label for="customerEmail" class="form-label">Email Address <span class="required">*</span></label> <input type="email" id="customerEmail" class="form-input" placeholder="your@email.com">
-        </div>
-       </div>
-      </section><!-- Payment Method -->
-      <section class="payment-section">
-       <h2 class="section-title">Payment Method</h2>
-       <div class="payment-options">
-        <div class="payment-option selected" onclick="selectPayment(this)" data-method="khqr">
-         <div class="payment-left">
-          <svg class="payment-logo" fill="none" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 34 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M31.8969 20H2.10315C0.946422 20 0 19.0596 0 17.9103V2.08968C0 0.940362 0.946422 0 2.10315 0H31.8969C33.0536 0 34 0.940362 34 2.08968V17.9103C34 19.0596 33.0536 20 31.8969 20Z" fill="#E1232E" /> <path d="M20.2524 9.22561V11.1126H18.3882C18.197 11.1126 18.0536 10.9554 18.0536 10.7739V9.23772C18.0536 9.04418 18.2089 8.89902 18.3882 8.89902H19.9059C20.109 8.88692 20.2524 9.03207 20.2524 9.22561Z" fill="white" /> <path d="M28.9881 9.98776H28.056C28.056 8.86281 27.1478 7.9435 26.0364 7.9435C25.1521 7.9435 24.3753 8.52412 24.1124 9.37086C24.0526 9.57649 24.0168 9.78213 24.0168 9.98776V12.9876H23.9929C23.491 12.9876 23.0847 12.5763 23.0847 12.0683V9.98776H23.0966C23.0966 9.16522 23.4312 8.37896 24.0287 7.81044C24.5784 7.2903 25.2955 7 26.0483 7C27.6736 7 28.9881 8.34267 28.9881 9.98776Z" fill="white" /> <path d="M29 12.9879L27.6855 13L27.3628 12.6734L26.6458 11.9476L25.6539 10.9436H26.9685L29 12.9879Z" fill="white" /> <path d="M20.5632 12.0441H17.7549C17.4083 12.0441 17.1335 11.7659 17.1335 11.4151V8.57251C17.1335 8.22172 17.4083 7.9435 17.7549 7.9435H20.5632C20.9098 7.9435 21.1846 8.22172 21.1846 8.57251V11.4151L22.1167 12.3586V7.91931C22.1167 7.41127 21.7104 7 21.2085 7H17.1096C16.6077 7 16.2014 7.41127 16.2014 7.91931V12.0683C16.2014 12.5763 16.6077 12.9876 17.1096 12.9876H21.4953L20.5632 12.0441Z" fill="white" /> <path d="M9.15058 12.9997H7.83605L5.08748 10.2055V12.9997H4V7H5.08748V9.67326L7.72849 7H9.01912L6.15105 9.87889L9.15058 12.9997Z" fill="white" /> <path d="M14.0623 7H15.1259V12.9997H14.0623V10.399H11.027V12.9997H9.96338V7H11.027V9.50391H14.0623V7Z" fill="white" />
-          </svg>
-          <div class="payment-info">
-           <div class="payment-name">
-            KHQR Payment
-           </div>
-           <div class="payment-desc">
-            Scan to pay instantly
-           </div>
-          </div>
-         </div>
-         <div class="payment-radio"></div>
-        </div>
-        <div class="payment-option" onclick="selectPayment(this)" data-method="card">
-         <div class="payment-left">
-          <svg class="payment-logo" viewbox="0 0 50 30" fill="none"><rect width="50" height="30" rx="3" fill="#1A1F71" /> <rect x="5" y="8" width="40" height="4" fill="#FFF" /> <rect x="5" y="18" width="15" height="3" rx="1.5" fill="#FFB800" /> <rect x="22" y="18" width="15" height="3" rx="1.5" fill="#FFB800" />
-          </svg>
-          <div class="payment-info">
-           <div class="payment-name">
-            Credit Card
-           </div>
-           <div class="payment-desc">
-            Visa, Mastercard, Amex
-           </div>
-          </div>
-         </div>
-         <div class="payment-radio"></div>
-        </div>
-       </div>
-      </section><!-- Submit Button -->
-      <div class="submit-section"><button type="submit" class="submit-btn" id="submitBtn"> PLACE ORDER <span class="btn-icon">→</span> </button>
-      </div>
-     </form>
+    <div class="step-line" id="line12"></div>
+    <div class="step-item">
+        <div class="step-circle pending" id="sc2">2</div>
+        <span class="step-label pending" id="sl2">PAYMENT</span>
     </div>
-   </main><!-- Footer -->
-   <footer class="checkout-footer">
-    <p class="footer-text" id="footerText">© 2024 NEXUS WEAR. Secure Checkout.</p>
-    <div class="trust-badges">
-     <div class="trust-badge">
-      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-      </svg> SSL Secure
-     </div>
-     <div class="trust-badge">
-      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg> Buyer Protection
-     </div>
-     <div class="trust-badge">
-      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline> <polyline points="1 20 1 14 7 14"></polyline> <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-      </svg> 30-Day Returns
-     </div>
+    <div class="step-line" id="line23"></div>
+    <div class="step-item">
+        <div class="step-circle pending" id="sc3">3</div>
+        <span class="step-label pending" id="sl3">CONFIRM</span>
     </div>
-   </footer>
-  </div>
-  <script>
-   const CART_KEY = 'BARDS_CART';
-let cartItems = [];
+</div>
 
-async function initializeOrderSystem() {
-    const stored = localStorage.getItem(CART_KEY);
-    cartItems = stored ? JSON.parse(stored) : [];
+<!-- PAGE -->
+<div class="page" id="mainPage">
 
-    if (cartItems.length === 0) {
-        alert("Your cart is empty. Please select items first.");
-        window.location.href = "index.html";
-        return;
-    }
+    <!-- MAIN COL -->
+    <div class="main-col">
 
-    renderOrderSummary();
-    calculateFinalTotal();
-
-    if (window.dataSdk) {
-        await window.dataSdk.init({ 
-            onDataChanged: (data) => console.log('Sync') 
-        });
-    }
-}
-
-function renderOrderSummary() {
-    const container = document.getElementById('cartItemsList') || document.querySelector('.cart-items');
-    if (!container) return;
-
-    container.innerHTML = cartItems.map((item, index) => `
-        <div class="cart-item">
-            <div class="item-image">
-                <img src="${item.image}" onerror="this.src='https://via.placeholder.com/60?text=NW'" style="width:100%; height:100%; object-fit:cover;">
+        <!-- STEP 1: SHIPPING INFO -->
+        <div class="ck-card active-card fu d1" id="shippingCard">
+            <div class="ck-card-hd">
+                <div class="ck-card-num" id="shipNum">1</div>
+                <span class="ck-card-title">Shipping Info</span>
+                <button class="ck-card-edit" id="shipEditBtn" style="display:none" onclick="editShipping()">Edit</button>
             </div>
-            <div class="item-details">
-                <div class="item-info">
-                    <div class="item-name">${item.name.toUpperCase()}</div>
-                    <div class="item-meta">Size: ${item.size || '-'} | Color: ${item.color || '-'}</div>
+            <div class="ck-card-body" id="shippingForm">
+                <div class="form-row two-col">
+                    <div>
+                        <label class="f-label">First Name</label>
+                        <input class="f-input" id="fname" type="text" placeholder="John" autocomplete="given-name">
+                        <div class="f-err" id="fname-err">Required</div>
+                    </div>
+                    <div>
+                        <label class="f-label">Last Name</label>
+                        <input class="f-input" id="lname" type="text" placeholder="Doe" autocomplete="family-name">
+                        <div class="f-err" id="lname-err">Required</div>
+                    </div>
                 </div>
-                <div class="item-bottom">
-                    <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
-                    <div class="quantity-control">
-                        <button type="button" class="qty-btn" onclick="changeQuantity(${index}, -1)">−</button>
-                        <input type="number" class="qty-input" value="${item.quantity}" readonly>
-                        <button type="button" class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                <div class="form-row">
+                    <label class="f-label">Phone Number</label>
+                    <input class="f-input" id="phone" type="tel" placeholder="+855 12 345 678" autocomplete="tel">
+                    <div class="f-err" id="phone-err">Required</div>
+                </div>
+                <div class="form-row">
+                    <label class="f-label">Address Line 1</label>
+                    <input class="f-input" id="addr1" type="text" placeholder="Street / House No." autocomplete="address-line1">
+                    <div class="f-err" id="addr1-err">Required</div>
+                </div>
+                <div class="form-row">
+                    <label class="f-label">Address Line 2 <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <input class="f-input" id="addr2" type="text" placeholder="Apt, building, floor…" autocomplete="address-line2">
+                </div>
+                <div class="form-row two-col">
+                    <div>
+                        <label class="f-label">City / Province</label>
+                        <input class="f-input" id="city" type="text" placeholder="Phnom Penh" autocomplete="address-level2">
+                        <div class="f-err" id="city-err">Required</div>
+                    </div>
+                    <div>
+                        <label class="f-label">Country</label>
+                        <select class="f-select" id="country">
+                            <option value="KH">🇰🇭 Cambodia</option>
+                            <option value="TH">🇹🇭 Thailand</option>
+                            <option value="VN">🇻🇳 Vietnam</option>
+                            <option value="SG">🇸🇬 Singapore</option>
+                            <option value="US">🇺🇸 United States</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="f-label">Order Note <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <input class="f-input" id="note" type="text" placeholder="Special instructions for your order…">
+                </div>
+                <button class="place-btn idle" onclick="submitShipping()" style="margin-top:4px">
+                    CONTINUE TO PAYMENT
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 2: PAYMENT -->
+        <div class="ck-card fu d2" id="paymentCard" style="opacity:.5;pointer-events:none">
+            <div class="ck-card-hd">
+                <div class="ck-card-num" id="payNum">2</div>
+                <span class="ck-card-title">Payment Method</span>
+                <button class="ck-card-edit" id="payEditBtn" style="display:none" onclick="editPayment()">Edit</button>
+            </div>
+            <div class="ck-card-body" id="paymentForm">
+                <div class="pay-method on" id="pm-khqr" onclick="selectPayment('khqr')">
+                    <div class="pay-radio"><div class="pay-radio-dot"></div></div>
+                    <div style="width:44px;height:28px;border-radius:6px;background:#003087;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        <svg width="24" height="16" viewBox="0 0 48 32" fill="none">
+                            <text x="4" y="22" font-family="Arial" font-weight="900" font-size="16" fill="#FFD700">KH</text>
+                            <text x="26" y="22" font-family="Arial" font-weight="900" font-size="16" fill="#fff">QR</text>
+                        </svg>
+                    </div>
+                    <div class="pay-info">
+                        <div class="pay-name">KHQR</div>
+                        <div class="pay-sub">Bakong · ABA · Wing · ACLEDA and all KHQR-supported apps</div>
+                    </div>
+                </div>
+                <button class="place-btn idle" onclick="submitPayment()" id="continuePayBtn">
+                    PLACE ORDER
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <div class="place-sub">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    By placing your order you agree to our Terms of Service
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ORDER SUMMARY (sidebar on desktop, card on mobile) -->
+    <div class="fu d3" id="summaryCol">
+        <div class="ck-card" style="margin-bottom:0">
+            <div class="ck-card-hd">
+                <div class="ck-card-num" style="background:var(--gray-400)">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                </div>
+                <span class="ck-card-title">Order Summary</span>
+            </div>
+            <div class="ck-card-body">
+                <div id="orderItemsList"></div>
+                <div class="sum-totals">
+                    <div class="sum-row">
+                        <span class="sum-lbl">Subtotal</span>
+                        <span class="sum-val" id="sumSub">$0.00</span>
+                    </div>
+                    <div class="sum-row">
+                        <span class="sum-lbl">Shipping</span>
+                        <span class="sum-val free">FREE</span>
+                    </div>
+                    <hr class="sum-divider">
+                    <div class="sum-total-row">
+                        <span class="sum-total-lbl">Total</span>
+                        <span class="sum-total-val" id="sumTotal">$0.00</span>
                     </div>
                 </div>
             </div>
         </div>
-    `).join('');
-}
+    </div>
 
-function calculateFinalTotal() {
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.07;
-    const total = subtotal + tax;
+</div>
 
-    const subtotalEl = document.getElementById('subtotal');
-    const taxEl = document.getElementById('tax');
-    const totalEl = document.getElementById('totalAmount');
+<!-- SUCCESS PAGE -->
+<div class="success-page" id="successPage">
+    <div class="ck-card" style="max-width:480px;margin:0 auto;text-align:left">
+        <div class="ck-card-body">
+            <div style="text-align:center;padding:20px 0 10px">
+                <div class="success-circle">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--green)"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <div class="success-title">ORDER PLACED!</div>
+                <div class="success-sub">Payment confirmed. We'll process your order shortly<br>and send tracking info to your phone.</div>
+                <div class="order-id-box">
+                    <div class="order-id-lbl">Order Reference</div>
+                    <div class="order-id-val" id="orderIdDisplay">—</div>
+                </div>
+            </div>
 
-    if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-    if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
-    if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
-}
+            <!-- Order recap -->
+            <div id="successItemsList" style="margin-bottom:16px;border-top:1px solid var(--gray-200);padding-top:14px"></div>
 
-window.changeQuantity = function(index, delta) {
-    const newQty = cartItems[index].quantity + delta;
-    if (newQty >= 1 && newQty <= 99) {
-        cartItems[index].quantity = newQty;
-        localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
-        renderOrderSummary();
-        calculateFinalTotal();
-    }
+            <div class="success-actions">
+                <a href="index.html" class="s-btn-primary">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    CONTINUE SHOPPING
+                </a>
+                <a href="#" class="s-btn-secondary" onclick="window.print()">Print / Save Receipt</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KHQR PAYMENT MODAL -->
+<div class="modal-mask" id="khqrModal">
+    <div class="modal-sheet" id="khqrSheet">
+        <div class="modal-handle"></div>
+        <div class="modal-title">SCAN TO PAY</div>
+        <div class="modal-sub">Open your banking app and scan the QR code below</div>
+
+        <div class="qr-wrap">
+            <div class="qr-header">
+                <div class="qr-brand">
+                    <div class="qr-logo-box">
+                        <svg width="22" height="16" viewBox="0 0 48 32" fill="none">
+                            <text x="2" y="22" font-family="Arial" font-weight="900" font-size="16" fill="#FFD700">KH</text>
+                            <text x="24" y="22" font-family="Arial" font-weight="900" font-size="16" fill="#fff">QR</text>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="qr-merchant-name">BARDS Store</div>
+                        <div class="qr-merchant-sub">Merchant ID: 855001BARDS</div>
+                    </div>
+                </div>
+                <div class="qr-amount-box">
+                    <div class="qr-amount-lbl">Amount Due</div>
+                    <div class="qr-amount" id="qrAmountDisplay">$0.00</div>
+                    <div class="qr-currency">USD</div>
+                </div>
+            </div>
+
+            <div class="qr-img-wrap">
+                <canvas id="qrCanvas" width="200" height="200"></canvas>
+                <div class="qr-logo-overlay">
+                    <svg width="20" height="14" viewBox="0 0 48 32" fill="none">
+                        <text x="0" y="20" font-family="Arial" font-weight="900" font-size="14" fill="#FFD700">KH</text>
+                        <text x="22" y="20" font-family="Arial" font-weight="900" font-size="14" fill="#fff">QR</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="qr-footer">
+                <div class="qr-expire">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    Expires in <span class="qr-expire-timer" id="qrTimer">10:00</span>
+                </div>
+                <button class="qr-copy-btn" onclick="copyQrString()">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                    </svg>
+                    Copy QR
+                </button>
+            </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="pay-steps">
+            <div class="pay-step">
+                <div class="pay-step-num">1</div>
+                <div class="pay-step-txt">Open your banking app: <strong>Bakong, ABA, Wing, ACLEDA,</strong> or any KHQR-supported app.</div>
+            </div>
+            <div class="pay-step">
+                <div class="pay-step-num">2</div>
+                <div class="pay-step-txt">Tap <strong>Scan QR</strong> and point your camera at the code above.</div>
+            </div>
+            <div class="pay-step">
+                <div class="pay-step-num">3</div>
+                <div class="pay-step-txt">Verify the amount — <strong id="stepAmount">$0.00 USD</strong> — and confirm the payment.</div>
+            </div>
+            <div class="pay-step">
+                <div class="pay-step-num">4</div>
+                <div class="pay-step-txt">Tap <strong>I've Paid</strong> below once the transfer is complete.</div>
+            </div>
+        </div>
+
+        <button class="verify-btn idle" id="verifyBtn" onclick="verifyPayment()">
+            I'VE PAID — CONFIRM
+        </button>
+        <div style="margin-top:10px;text-align:center;font-size:10px;color:var(--gray-400)">
+            Having trouble? <span style="color:var(--black);font-weight:700;cursor:pointer" onclick="contactSupport()">Contact Support</span>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <div class="toast-icon" id="toastIcon"></div>
+    <div class="toast-text">
+        <div class="toast-title" id="toastTitle"></div>
+        <div class="toast-sub"   id="toastSub"></div>
+    </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   BARDS CHECKOUT — checkout.html
+   Flow: Shipping Info → Payment (KHQR) → Confirm
+═══════════════════════════════════════════════════ */
+
+/* ── STATE ──────────────────────────────────────── */
+let ITEMS        = [];   // items from checkout session
+let ORDER_INFO   = {};   // shipping info
+let CURRENT_STEP = 1;
+let SELECTED_PAY = 'khqr';
+let QR_TIMER_ID  = null;
+let QR_SECS      = 600; // 10 min
+let ORDER_ID     = '';
+
+/* ── BOOT ─────────────────────────────────────── */
+window.onload = function () {
+    loadItems();
+    renderOrderSummary();
 };
 
-const provinceSelector = document.getElementById('provinceSelector');
-const provinceDropdown = document.getElementById('provinceDropdown');
-const provinceHiddenInput = document.getElementById('shippingProvince');
+function loadItems() {
+    // Try CHECKOUT_ITEMS first (from cart.html), fall back to full cart
+    const raw = sessionStorage.getItem('CHECKOUT_ITEMS') || localStorage.getItem('BARDS_CART') || '[]';
+    ITEMS = JSON.parse(raw);
+    if (!ITEMS.length) {
+        showToast('warn', 'No items', 'Redirecting to shop…');
+        setTimeout(() => { location.href = 'index.html'; }, 1800);
+    }
+}
 
-if (provinceSelector) {
-    provinceSelector.addEventListener('click', (e) => {
-        e.stopPropagation();
-        provinceDropdown.classList.toggle('active');
-        provinceSelector.classList.toggle('active');
+/* ── RENDER ORDER SUMMARY ───────────────────────── */
+function renderOrderSummary() {
+    const list = document.getElementById('orderItemsList');
+    if (!list) return;
+    const subtotal = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
+    list.innerHTML = ITEMS.map(item => `
+<div class="order-item">
+    <div class="oi-img"><img src="${item.image}" loading="lazy" alt="${item.name}"></div>
+    <div class="oi-info">
+        <div class="oi-name">${item.name}</div>
+        <div class="oi-meta">${item.color} · ${item.size}</div>
+        <div class="oi-qty">Qty: ${item.quantity}</div>
+    </div>
+    <div class="oi-price">${fmtUSD(item.price * item.quantity)}</div>
+</div>`).join('');
+    document.getElementById('sumSub').textContent   = fmtUSD(subtotal);
+    document.getElementById('sumTotal').textContent = fmtUSD(subtotal);
+}
+
+/* ── STEP 1: SHIPPING ───────────────────────────── */
+function submitShipping() {
+    const fields = ['fname','lname','phone','addr1','city'];
+    let valid = true;
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        const err = document.getElementById(id + '-err');
+        if (!el.value.trim()) {
+            el.classList.add('err'); err.classList.add('show'); valid = false;
+        } else {
+            el.classList.remove('err'); err.classList.remove('show');
+        }
+    });
+    if (!valid) { showToast('warn', 'Fill in all required fields', ''); return; }
+
+    ORDER_INFO = {
+        name:    document.getElementById('fname').value.trim() + ' ' + document.getElementById('lname').value.trim(),
+        phone:   document.getElementById('phone').value.trim(),
+        addr1:   document.getElementById('addr1').value.trim(),
+        addr2:   document.getElementById('addr2').value.trim(),
+        city:    document.getElementById('city').value.trim(),
+        country: document.getElementById('country').value,
+        note:    document.getElementById('note').value.trim(),
+    };
+
+    // Lock shipping card
+    document.getElementById('shippingForm').innerHTML = `
+        <div style="font-size:13px;line-height:1.75;color:var(--gray-600)">
+            <div style="font-weight:700;color:var(--black);margin-bottom:4px">${ORDER_INFO.name}</div>
+            <div>${ORDER_INFO.phone}</div>
+            <div>${ORDER_INFO.addr1}${ORDER_INFO.addr2 ? ', ' + ORDER_INFO.addr2 : ''}</div>
+            <div>${ORDER_INFO.city} · ${ORDER_INFO.country}</div>
+            ${ORDER_INFO.note ? `<div style="margin-top:6px;font-size:11px;color:var(--gray-400)">Note: ${ORDER_INFO.note}</div>` : ''}
+        </div>`;
+    document.getElementById('shipEditBtn').style.display = 'block';
+
+    goToStep(2);
+}
+
+function editShipping() {
+    goToStep(1, true);
+}
+
+/* ── STEP 2: PAYMENT ─────────────────────────────── */
+function selectPayment(id) {
+    SELECTED_PAY = id;
+    document.querySelectorAll('.pay-method').forEach(el => {
+        el.classList.toggle('on', el.id === 'pm-' + id);
     });
 }
 
-document.querySelectorAll('.dropdown-option').forEach(option => {
-    option.addEventListener('click', function() {
-        const val = this.dataset.value;
-        const text = this.textContent.trim();
-        if (provinceSelector) {
-            provinceSelector.querySelector('.select-text').textContent = text;
-            provinceSelector.classList.remove('placeholder');
-            provinceSelector.classList.add('has-value');
+function submitPayment() {
+    // Generate order ID
+    ORDER_ID = 'BD-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,5).toUpperCase();
+    openKHQRModal();
+}
+
+function editPayment() {
+    goToStep(2, true);
+}
+
+/* ── STEP NAVIGATION ────────────────────────────── */
+function goToStep(step, editing) {
+    CURRENT_STEP = step;
+
+    const shipCard = document.getElementById('shippingCard');
+    const payCard  = document.getElementById('paymentCard');
+
+    if (step === 1) {
+        shipCard.classList.add('active-card');
+        shipCard.style.opacity = ''; shipCard.style.pointerEvents = '';
+        payCard.classList.remove('active-card');
+        payCard.style.opacity = '0.5'; payCard.style.pointerEvents = 'none';
+        setStep(1,'active'); setStep(2,'pending'); setStep(3,'pending');
+        setLine(1, false); setLine(2, false);
+    } else if (step === 2) {
+        shipCard.classList.remove('active-card');
+        payCard.classList.add('active-card');
+        payCard.style.opacity = ''; payCard.style.pointerEvents = '';
+        if (!editing) {
+            setStep(1,'done'); setStep(2,'active'); setStep(3,'pending');
+            setLine(1, true); setLine(2, false);
         }
-        if (provinceHiddenInput) provinceHiddenInput.value = val;
-        provinceDropdown.classList.remove('active');
+        payCard.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+}
+
+function setStep(n, state) {
+    const c = document.getElementById('sc' + n);
+    const l = document.getElementById('sl' + n);
+    c.className = 'step-circle ' + state;
+    l.className = 'step-label ' + state;
+    if (state === 'done') {
+        c.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    } else {
+        c.textContent = n;
+    }
+}
+
+function setLine(n, done) {
+    const id = n === 1 ? 'line12' : 'line23';
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('done', done);
+}
+
+/* ── KHQR MODAL ─────────────────────────────────── */
+const MERCHANT_ACCOUNT = '855001BARDS0000001'; // placeholder KHQR merchant ID
+
+function openKHQRModal() {
+    const total = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
+    document.getElementById('qrAmountDisplay').textContent = fmtUSD(total);
+    document.getElementById('stepAmount').textContent = fmtUSD(total) + ' USD';
+
+    // Build QR string (EMV QRCPS / KHQR spec — simplified for demo)
+    const qrString = buildKHQRString(total, ORDER_ID);
+    drawQR(qrString);
+
+    // Open modal
+    const modal = document.getElementById('khqrModal');
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+        modal.classList.add('open');
+        document.getElementById('khqrSheet').style.transform = 'translateY(0)';
     });
+
+    // Start timer
+    QR_SECS = 600;
+    if (QR_TIMER_ID) clearInterval(QR_TIMER_ID);
+    updateTimer();
+    QR_TIMER_ID = setInterval(() => {
+        QR_SECS--;
+        if (QR_SECS <= 0) { clearInterval(QR_TIMER_ID); onQrExpired(); }
+        else updateTimer();
+    }, 1000);
+
+    // Store QR string for copy
+    window._qrString = qrString;
+}
+
+function closeKHQRModal() {
+    document.getElementById('khqrModal').classList.remove('open');
+    if (QR_TIMER_ID) clearInterval(QR_TIMER_ID);
+}
+
+/* ─ KHQR string builder (EMVCo QR / KHQR simplified) ─
+   In production, this should come from your backend
+   (BAKONG API or NBC-certified payment gateway).         */
+function buildKHQRString(amount, refId) {
+    const amtStr = amount.toFixed(2);
+    // EMVCo Merchant Presented Mode (simplified)
+    const payload = [
+        '000201',
+        '010211',
+        '2658' + '0010' + 'dev.khqr.bakong.io' + '01' + MERCHANT_ACCOUNT.padEnd(20,' ').slice(0,20),
+        '5204' + '5999',
+        '5303' + '840',
+        '54' + String(amtStr.length).padStart(2,'0') + amtStr,
+        '5802' + 'KH',
+        '5913' + 'BARDS Store',
+        '6304'
+    ].join('');
+    // CRC16-CCITT (stub — real apps must compute)
+    const crc = computeCRC16(payload).toString(16).toUpperCase().padStart(4,'0');
+    return payload + crc;
+}
+
+function computeCRC16(str) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+        crc ^= str.charCodeAt(i) << 8;
+        for (let j = 0; j < 8; j++) crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
+    }
+    return crc & 0xFFFF;
+}
+
+/* ─ Draw QR on canvas (simple matrix without external lib) ─ */
+function drawQR(data) {
+    const canvas = document.getElementById('qrCanvas');
+    const ctx    = canvas.getContext('2d');
+    const size   = 200;
+    canvas.width = canvas.height = size;
+
+    // Use native QR generation via URL if available, else draw pattern
+    const qrSize = 25;
+    const cellSz = Math.floor(size / qrSize);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, size, size);
+
+    // Deterministic pseudo-QR pattern seeded by data hash for demo
+    const seed = hashStr(data);
+    const rng  = mulberry32(seed);
+
+    ctx.fillStyle = '#000';
+    // Finder patterns (top-left, top-right, bottom-left)
+    drawFinder(ctx, 0, 0, cellSz);
+    drawFinder(ctx, (qrSize - 7) * cellSz, 0, cellSz);
+    drawFinder(ctx, 0, (qrSize - 7) * cellSz, cellSz);
+
+    // Data region (random but consistent)
+    for (let r = 0; r < qrSize; r++) {
+        for (let c = 0; c < qrSize; c++) {
+            if (isFinderZone(r, c, qrSize)) continue;
+            if (rng() > 0.52) {
+                ctx.fillRect(c * cellSz, r * cellSz, cellSz, cellSz);
+            }
+        }
+    }
+
+    // Quiet zone border
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 4;
+    ctx.strokeRect(2, 2, size-4, size-4);
+}
+
+function drawFinder(ctx, x, y, cs) {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x, y, cs*7, cs*7);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x+cs, y+cs, cs*5, cs*5);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x+cs*2, y+cs*2, cs*3, cs*3);
+}
+
+function isFinderZone(r, c, sz) {
+    const inTL = r < 8 && c < 8;
+    const inTR = r < 8 && c >= sz-8;
+    const inBL = r >= sz-8 && c < 8;
+    return inTL || inTR || inBL;
+}
+
+function hashStr(s) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193);
+    return h >>> 0;
+}
+
+function mulberry32(a) {
+    return function() {
+        a |= 0; a = a + 0x6D2B79F5 | 0;
+        let t = Math.imul(a ^ a >>> 15, 1 | a);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+}
+
+function updateTimer() {
+    const m = Math.floor(QR_SECS / 60);
+    const s = QR_SECS % 60;
+    const el = document.getElementById('qrTimer');
+    el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.classList.toggle('warn', QR_SECS <= 60);
+}
+
+function onQrExpired() {
+    document.getElementById('qrTimer').textContent = 'EXPIRED';
+    document.getElementById('qrTimer').classList.add('warn');
+    document.getElementById('verifyBtn').textContent = 'QR Expired — Regenerate';
+    document.getElementById('verifyBtn').onclick = regenerateQR;
+    showToast('warn', 'QR code expired', 'Tap to generate a new one');
+}
+
+function regenerateQR() {
+    QR_SECS = 600;
+    document.getElementById('verifyBtn').textContent = "I'VE PAID — CONFIRM";
+    document.getElementById('verifyBtn').onclick = verifyPayment;
+    document.getElementById('verifyBtn').className = 'verify-btn idle';
+    const total = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
+    const qrStr = buildKHQRString(total, ORDER_ID);
+    drawQR(qrStr);
+    window._qrString = qrStr;
+    if (QR_TIMER_ID) clearInterval(QR_TIMER_ID);
+    updateTimer();
+    QR_TIMER_ID = setInterval(() => {
+        QR_SECS--;
+        if (QR_SECS <= 0) { clearInterval(QR_TIMER_ID); onQrExpired(); }
+        else updateTimer();
+    }, 1000);
+}
+
+function copyQrString() {
+    if (!window._qrString) return;
+    navigator.clipboard?.writeText(window._qrString).then(() => {
+        showToast('ok', 'QR string copied', 'Paste in your banking app if needed');
+    }).catch(() => {
+        showToast('warn', 'Copy failed', 'Try a different browser');
+    });
+}
+
+/* ── VERIFY PAYMENT ──────────────────────────────── */
+let _verifying = false;
+function verifyPayment() {
+    if (_verifying) return;
+    _verifying = true;
+    const btn = document.getElementById('verifyBtn');
+    btn.className = 'verify-btn checking';
+    btn.innerHTML = `
+        <svg style="animation:spin .8s linear infinite" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+        Verifying…`;
+
+    /* ── In production: call your backend to check BAKONG webhook ──
+       POST /api/orders/verify { orderId: ORDER_ID }
+       → { status: 'paid' | 'pending' | 'failed' }
+       Here we simulate success after 1.8s. */
+    setTimeout(() => {
+        btn.className = 'verify-btn success';
+        btn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            PAYMENT CONFIRMED`;
+        clearInterval(QR_TIMER_ID);
+        setTimeout(() => { closeKHQRModal(); onOrderSuccess(); }, 700);
+    }, 1800);
+}
+
+/* ── ORDER SUCCESS ──────────────────────────────── */
+function onOrderSuccess() {
+    // Clear cart items that were checked out
+    const checkoutIds = ITEMS.map(i => i.id + '|' + i.color + '|' + i.size);
+    let cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
+    cart = cart.filter(c => !checkoutIds.includes(c.id + '|' + c.color + '|' + c.size));
+    localStorage.setItem('BARDS_CART', JSON.stringify(cart));
+    sessionStorage.removeItem('CHECKOUT_ITEMS');
+
+    // Save order to localStorage (optional history)
+    const orders = JSON.parse(localStorage.getItem('BARDS_ORDERS') || '[]');
+    orders.unshift({
+        id: ORDER_ID, date: new Date().toISOString(),
+        items: ITEMS, shipping: ORDER_INFO,
+        total: ITEMS.reduce((s, c) => s + c.price * c.quantity, 0),
+        status: 'paid', method: 'KHQR'
+    });
+    localStorage.setItem('BARDS_ORDERS', JSON.stringify(orders));
+
+    // Show success
+    document.getElementById('mainPage').style.display = 'none';
+    document.getElementById('stepBar').style.display  = 'none';
+
+    const suc = document.getElementById('successPage');
+    suc.classList.add('show');
+    suc.style.paddingTop = 'calc(var(--nav-h) + 20px)';
+    document.getElementById('orderIdDisplay').textContent = ORDER_ID;
+
+    // Recap items
+    document.getElementById('successItemsList').innerHTML = ITEMS.map(i => `
+<div class="order-item">
+    <div class="oi-img"><img src="${i.image}" alt="${i.name}"></div>
+    <div class="oi-info">
+        <div class="oi-name">${i.name}</div>
+        <div class="oi-meta">${i.color} · ${i.size} · Qty ${i.quantity}</div>
+    </div>
+    <div class="oi-price">${fmtUSD(i.price * i.quantity)}</div>
+</div>`).join('');
+
+    setStep(1,'done'); setStep(2,'done'); setStep(3,'done');
+    setLine(1, true); setLine(2, true);
+
+    window.scrollTo({ top:0, behavior:'smooth' });
+    showToast('ok', 'Order confirmed!', ORDER_ID);
+}
+
+/* ── SUPPORT ─────────────────────────────────────── */
+function contactSupport() {
+    // Replace with your actual support line / Telegram / WhatsApp
+    showToast('ok', 'Support: +855 12 000 000', 'Telegram / WhatsApp');
+}
+
+/* ── UTILS ───────────────────────────────────────── */
+function fmtUSD(num) { return '$' + Number(num).toFixed(2); }
+
+/* ── TOAST ─────────────────────────────────────── */
+const SVG_CHECK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const SVG_WARN  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+let _tt;
+function showToast(type, title, sub) {
+    const icon = document.getElementById('toastIcon');
+    icon.className = 'toast-icon ' + (type === 'warn' ? 'warn' : 'success');
+    icon.innerHTML = type === 'warn' ? SVG_WARN : SVG_CHECK;
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastSub').textContent   = sub || '';
+    const t = document.getElementById('toast');
+    t.classList.add('on');
+    clearTimeout(_tt);
+    _tt = setTimeout(() => t.classList.remove('on'), 2800);
+}
+
+/* Close modal if tapping the mask */
+document.getElementById('khqrModal').addEventListener('click', function(e) {
+    if (e.target === this) closeKHQRModal();
 });
-
-const emailToggle = document.getElementById('emailToggle');
-if (emailToggle) {
-    emailToggle.addEventListener('change', function() {
-        const container = document.getElementById('emailInputContainer');
-        const input = document.getElementById('customerEmail');
-        if (container) container.classList.toggle('active', this.checked);
-        if (input) input.required = this.checked;
-    });
-}
-
-const checkoutForm = document.getElementById('checkoutForm');
-if (checkoutForm) {
-    checkoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (provinceHiddenInput && !provinceHiddenInput.value) {
-            alert("Please select a province.");
-            return;
-        }
-
-        const submitBtn = document.getElementById('submitBtn');
-        const loading = document.getElementById('loadingOverlay');
-
-        if (submitBtn) submitBtn.disabled = true;
-        if (loading) loading.classList.add('active');
-
-        const orderId = `NW-${Date.now().toString().slice(-6)}`;
-        const orderData = {
-            order_id: orderId,
-            customer: {
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                email: document.getElementById('customerEmail')?.value || 'N/A',
-                address: document.getElementById('shippingAddress').value,
-                province: provinceHiddenInput?.value,
-                postal: document.getElementById('shippingPostal')?.value || ''
-            },
-            items: cartItems,
-            total_price: document.getElementById('totalAmount').textContent,
-            payment_method: 'KHQR',
-            status: 'pending_payment',
-            created_at: new Date().toISOString()
-        };
-
-        sessionStorage.setItem('PENDING_ORDER', JSON.stringify(orderData));
-
-        if (window.dataSdk) {
-            await window.dataSdk.create(orderData);
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        localStorage.removeItem(CART_KEY);
-        window.location.href = 'payment.html';
-    });
-}
-
-document.addEventListener('DOMContentLoaded', initializeOrderSystem);
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ad3253131834ba6',t:'MTc2NTYwNDYyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
- </html>
+</script>
+</body>
+</html>
