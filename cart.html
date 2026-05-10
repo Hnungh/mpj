@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cart — Bards</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Bebas+Neue&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
         :root {
             --black:    #0A0A0A;
@@ -378,7 +378,7 @@
     <div class="item-list" id="itemList" style="display:none;"></div><!-- Empty state -->
     <div class="empty-wrap" id="emptyWrap">
      <div class="empty-icon">
-      <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
        <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /> <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
       </svg>
      </div>
@@ -388,7 +388,7 @@
      <div class="empty-sub">
       Looks like you haven't added anything yet.
      </div><a href="all-products.html" class="empty-cta">
-      <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
        <path d="M5 12h14M12 5l7 7-7 7" />
       </svg> SHOP NOW </a>
     </div><!-- YOU MAY ALSO LIKE — 2-col grid -->
@@ -408,11 +408,11 @@
      <div class="sum-total-row">
       <span class="sum-total-lbl">Total</span> <span class="sum-total-val" id="sumTotalD">$0.00</span>
      </div><button class="ck-btn" id="ckBtnD" onclick="goCheckout()" disabled> CHECKOUT 
-      <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
        <path d="M5 12h14M12 5l7 7-7 7" />
       </svg></button>
      <div class="ck-sub">
-      <svg width="11" height="11" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
       </svg> Secure checkout
      </div>
     </div>
@@ -421,7 +421,7 @@
   <div class="bottom-bar" id="bottomBar">
    <div class="bar-all-wrap" onclick="toggleSelectAll()">
     <div class="cb" id="barAllCb">
-     <svg width="10" height="10" viewbox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="20 6 9 17 4 12" />
      </svg>
     </div><span class="bar-all-lbl">All</span>
@@ -433,7 +433,7 @@
     <div class="bar-items" id="barItems">
      0 items selected
     </div>
-   </div><button class="bar-ck" id="barCk" onclick="goCheckout()" disabled> CHECKOUT (<span id="barSelCount">0</span>) </button>
+   </div><button class="bar-ck" id="barCk" onclick="goCheckout()" disabled> CHECKOUT (<span id="barSelCount">0</span>) </button>
   </div><!-- TOAST -->
   <div class="toast" id="toast">
    <div class="toast-icon" id="toastIcon"></div>
@@ -445,10 +445,11 @@
   <script>
 /* ═══════════════════════════════════════════
    PRODUCT CATALOG
+   RULE 3: price values are stored as Numbers (not Strings)
 ═══════════════════════════════════════════ */
 const PRODUCTS = {
     'oversized-tee-black': {
-        name:'Classic Black Oversized Tee', price:790,
+        name:'Classic Black Oversized Tee', price: 7.90,
         tag:'BESTSELLER', tagOrange:true, category:'tops', isNew:false, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
@@ -456,7 +457,7 @@ const PRODUCTS = {
         specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-olive': {
-        name:'Military Olive Cargo Pants', price:1590,
+        name:'Military Olive Cargo Pants', price: 15.90,
         tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
         colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
@@ -464,7 +465,7 @@ const PRODUCTS = {
         specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-grey': {
-        name:'Stone Grey Pullover Hoodie', price:1290,
+        name:'Stone Grey Pullover Hoodie', price: 12.90,
         tag:'POPULAR', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
@@ -472,7 +473,7 @@ const PRODUCTS = {
         specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-retro': {
-        name:'Retro Square Sunglasses', price:890,
+        name:'Retro Square Sunglasses', price: 8.90,
         tag:'LIMITED', tagOrange:true, category:'accessories', isNew:true, stock:'low-stock',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
         colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
@@ -480,7 +481,7 @@ const PRODUCTS = {
         specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
     },
     'oversized-tee-white': {
-        name:'Stone White Oversized Tee', price:790,
+        name:'Stone White Oversized Tee', price: 7.90,
         tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
         colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
@@ -488,7 +489,7 @@ const PRODUCTS = {
         specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-black': {
-        name:'Tactical Black Cargo Pants', price:1590,
+        name:'Tactical Black Cargo Pants', price: 15.90,
         tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
         colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
@@ -496,7 +497,7 @@ const PRODUCTS = {
         specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-navy': {
-        name:'Midnight Navy Pullover Hoodie', price:1290,
+        name:'Midnight Navy Pullover Hoodie', price: 12.90,
         tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
@@ -504,7 +505,7 @@ const PRODUCTS = {
         specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-black': {
-        name:'Classic Black Sunglasses', price:890,
+        name:'Classic Black Sunglasses', price: 8.90,
         tag:'NEW', tagOrange:false, category:'accessories', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
         colors:[{name:'Glossy Black',hex:'#111111'}],
@@ -524,8 +525,13 @@ let selected = new Set();
    BOOT
 ══════════════════════════════════════════ */
 window.onload = function () {
-    // Keep skeleton visible initially
     cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+    // RULE 3: Ensure all cart item prices are Numbers (not Strings)
+    cart = cart.map(item => ({
+        ...item,
+        price: Number(item.price)
+    }));
 
     const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
     if (buyNowId) {
@@ -534,13 +540,23 @@ window.onload = function () {
         sessionStorage.removeItem('BUY_NOW_ID');
     }
 
-    // Simulate brief loading (280ms) then show real content
-    setTimeout(() => {
+    if (cart.length > 0) {
+        // มี items จริง → แสดง skeleton ระหว่างรอ (เผื่อ API จริงในอนาคต)
+        document.getElementById('skelList').style.display = '';
+        document.getElementById('itemList').style.display = 'none';
+        setTimeout(() => {
+            document.getElementById('skelList').style.display = 'none';
+            document.getElementById('itemList').style.display = '';
+            render();
+            buildRec();
+        }, 280);
+    } else {
+        // ไม่มี items → ข้าม skeleton ไปเลย แสดง empty state ทันที
         document.getElementById('skelList').style.display = 'none';
         document.getElementById('itemList').style.display = '';
         render();
         buildRec();
-    }, 280);
+    }
 };
 
 /* ══════════════════════════════════════════
@@ -584,6 +600,9 @@ function patchRow(row, item, idx) {
     const prEl = row.querySelector('.item-price'); if (prEl) prEl.textContent = fmtUSD(item.price * item.quantity);
     const unEl = row.querySelector('.item-unit');  if (unEl) unEl.textContent = item.quantity > 1 ? `${fmtUSD(item.price)} each` : '';
     const qv   = row.querySelector('.q-val');      if (qv)   qv.textContent  = item.quantity;
+    // dim ปุ่ม − เมื่อ qty = 1
+    const minusBtn = row.querySelector('.q-btn');
+    if (minusBtn) minusBtn.style.opacity = item.quantity === 1 ? '0.3' : '1';
 }
 
 function rowHTML(item, idx) {
@@ -673,16 +692,24 @@ function toggleEdit() {
    CART ACTIONS
 ══════════════════════════════════════════ */
 function changeQty(idx, delta) {
-    cart[idx].quantity = Math.max(1, Math.min(30, cart[idx].quantity + delta));
+    const prev = cart[idx].quantity;
+    cart[idx].quantity = Math.max(1, Math.min(30, prev + delta));
+    if (delta > 0 && prev === 30) { showToast('warn', 'Max quantity', 'Limit is 30 per item'); return; }
     saveCart();
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
-    if (row) patchRow(row, cart[idx], idx);
+    if (row) {
+        patchRow(row, cart[idx], idx);
+        // dim ปุ่ม − เมื่อ qty = 1
+        const minusBtn = row.querySelector('.q-btn');
+        if (minusBtn) minusBtn.style.opacity = cart[idx].quantity === 1 ? '0.3' : '1';
+    }
     const total = cart.reduce((s,c) => s + c.quantity, 0);
     document.getElementById('cartCount').textContent = `${total} item${total!==1?'s':''}`;
     updateSummary();
 }
 function removeItem(idx) {
-    const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
+    const name = cart[idx]?.name || 'Item';
+    const row  = document.querySelector(`.item-row[data-idx="${idx}"]`);
     const doRemove = () => {
         const next = new Set();
         selected.forEach(i => { if(i<idx) next.add(i); else if(i>idx) next.add(i-1); });
@@ -694,6 +721,7 @@ function removeItem(idx) {
             document.getElementById('editBtn').classList.remove('in-edit');
         }
         render(); buildRec();
+        showToast('ok', 'Removed', name);
     };
     if (row) {
         row.style.transition = 'opacity .18s,transform .18s';
@@ -704,15 +732,18 @@ function removeItem(idx) {
 
 /* ══════════════════════════════════════════
    SUMMARY
+   RULE 2: renamed subtotalTHB → subtotal, totalTHB → total
+   RULE 4: use fmtUSD for all display
 ══════════════════════════════════════════ */
 function updateSummary() {
-    const items       = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
-    const subtotalTHB = items.reduce((s,c) => s + c.price * c.quantity, 0);
-    const selQty      = items.reduce((s,c) => s + c.quantity, 0);
-    const totalTHB    = subtotalTHB;
-    document.getElementById('sumSubD').textContent   = fmtUSD(subtotalTHB);
-    document.getElementById('sumTotalD').textContent = fmtUSD(totalTHB);
-    document.getElementById('barTotal').textContent  = fmtUSD(totalTHB);
+    const items    = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
+    const subtotal = items.reduce((s,c) => s + Number(c.price) * c.quantity, 0);
+    const selQty   = items.reduce((s,c) => s + c.quantity, 0);
+    const total    = subtotal;
+
+    document.getElementById('sumSubD').textContent   = fmtUSD(subtotal);
+    document.getElementById('sumTotalD').textContent = fmtUSD(total);
+    document.getElementById('barTotal').textContent  = fmtUSD(total);
     document.getElementById('barItems').textContent  = `${selQty} item${selQty!==1?'s':''} selected`;
 }
 
@@ -720,6 +751,9 @@ function updateSummary() {
    CHECKOUT
 ══════════════════════════════════════════ */
 let _ckLock = false;
+
+// reset lock เมื่อ user กด Back กลับมาจาก checkout
+window.addEventListener('pageshow', () => { _ckLock = false; });
 
 function goCheckout() {
     if (!selected.size || _ckLock) return;
@@ -754,7 +788,7 @@ function goCheckout() {
 ══════════════════════════════════════════ */
 function buildRec() {
     const inCart     = new Set(cart.map(c => c.id));
-    const candidates = Object.entries(PRODUCTS).filter(([id]) => !inCart.has(id));
+    const candidates = Object.entries(PRODUCTS).filter(([id]) => !inCart.has(id)).slice(0, 4);
     const wrap       = document.getElementById('recWrap');
     const grid       = document.getElementById('recGrid');
     if (!wrap || !grid) return;
@@ -765,6 +799,7 @@ function buildRec() {
     }
     wrap.style.display = '';
 
+    // RULE 4: use fmtUSD for rec card price display
     grid.innerHTML = candidates.map(([id, p]) => {
         const dots     = p.colors.map(c => `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
         const lowStock = p.stock === 'low-stock' ? `<div class="p-tag low">LOW STOCK</div>` : '';
@@ -778,7 +813,7 @@ function buildRec() {
     <div class="p-card-body">
         <div class="p-name">${p.name}</div>
         <div class="p-meta">
-            <div class="p-price">$${(p.price/100).toFixed(2)}</div>
+            <div class="p-price">${fmtUSD(p.price)}</div>
             <div class="p-colors">${dots}</div>
         </div>
     </div>
@@ -788,9 +823,12 @@ function buildRec() {
 
 /* ══════════════════════════════════════════
    UTILS
+   RULE 1: fmtUSD — ใช้ toLocaleString แทน manual toFixed
 ══════════════════════════════════════════ */
-function fmtUSD(usd) { return `$${usd.toFixed(2)}`; }
-function saveCart()  { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+function fmtUSD(num) {
+    return '$' + Number(num).toFixed(2);
+}
+function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 
 /* ══════════════════════════════════════════
    TOAST
@@ -808,5 +846,5 @@ function showToast(type, title, sub) {
     clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2600);
 }
 </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f94d2dee55ff82a',t:'MTc3ODM3MjkwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ </body>
 </html>
