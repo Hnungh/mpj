@@ -115,14 +115,11 @@
             cursor:pointer; background:var(--white);
         }
         .item-img {
-            /* fixed square — identical size on every card, no stretching */
             width:96px; min-width:96px; height:96px;
             flex-shrink:0; overflow:hidden;
             background:var(--gray-100); cursor:pointer;
-            /* squircle inner corners — clip to the card's own border-radius
-               minus the card border width so the image sits flush            */
             border-radius:calc(var(--radius) - 1.5px) 0 0 calc(var(--radius) - 1.5px);
-            align-self:center;   /* vertically centre the square block in the row */
+            align-self:center;
         }
         .item-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
         .item-img:hover img { transform:scale(1.05); }
@@ -202,14 +199,8 @@
             background-size:1200px 100%; animation:shimmer 1.4s infinite;
         }
 
-        /* ══════════════════════════════════════════════
-           YOU MAY ALSO LIKE
-           — 2-col grid เหมือน .p-grid ใน index.html
-           — card markup เหมือน cardHTML() ใน index.html
-        ══════════════════════════════════════════════ */
-        .rec-wrap {
-            padding:24px 0 28px;
-        }
+        /* YOU MAY ALSO LIKE */
+        .rec-wrap { padding:24px 0 28px; }
         .rec-hd {
             display:flex; align-items:center; justify-content:space-between;
             margin-bottom:13px;
@@ -225,11 +216,7 @@
             text-decoration:none;
         }
         .rec-see-all:active { color:var(--black); }
-
-        /* same as .p-grid */
         .rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-
-        /* same as .p-card */
         .p-card {
             background:var(--white); border-radius:var(--radius);
             border:1px solid var(--gray-200); overflow:hidden;
@@ -245,7 +232,6 @@
             width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease;
         }
         .p-card:active .p-card-img img { transform:scale(1.04); }
-        /* same as .p-tag */
         .p-tag {
             position:absolute; top:9px; left:9px; z-index:2;
             background:var(--black); color:#fff;
@@ -255,7 +241,6 @@
         }
         .p-tag.orange { background:var(--orange); }
         .p-tag.low    { background:var(--gray-600); top:auto; bottom:9px; }
-        /* same as .p-card-body */
         .p-card-body  { padding:10px 11px 13px; flex:1; display:flex; flex-direction:column; gap:7px; }
         .p-name       { font-size:12px; font-weight:600; line-height:1.35; letter-spacing:-.1px; }
         .p-meta       { display:flex; align-items:center; justify-content:space-between; }
@@ -417,7 +402,7 @@
             </a>
         </div>
 
-        <!-- YOU MAY ALSO LIKE — 2-col grid -->
+        <!-- YOU MAY ALSO LIKE -->
         <div class="rec-wrap fu d2" id="recWrap">
             <div class="rec-hd">
                 <span class="rec-hd-title">You May Also Like</span>
@@ -432,17 +417,18 @@
         <div class="sum-card">
             <p class="sum-sec-title">Shipping</p>
             <div class="ship-opts">
+                <!-- ─── shipFee เป็น USD จริงๆ แล้ว ─── -->
                 <div class="ship-opt on" data-price="0" onclick="pickShip(this,0)">
                     <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
                     <div><div class="so-name">Standard</div><div class="so-time">3–5 business days</div></div></div>
                     <div class="so-price">FREE</div>
                 </div>
-                <div class="ship-opt" data-price="89" onclick="pickShip(this,89)">
+                <div class="ship-opt" data-price="2.70" onclick="pickShip(this,2.70)">
                     <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
                     <div><div class="so-name">Express</div><div class="so-time">1–2 business days</div></div></div>
                     <div class="so-price">+$2.70</div>
                 </div>
-                <div class="ship-opt" data-price="179" onclick="pickShip(this,179)">
+                <div class="ship-opt" data-price="5.42" onclick="pickShip(this,5.42)">
                     <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
                     <div><div class="so-name">Same Day</div><div class="so-time">Today by 8 PM (BKK)</div></div></div>
                     <div class="so-price">+$5.42</div>
@@ -503,12 +489,13 @@
 
 <script>
 /* ═══════════════════════════════════════════
-   PRODUCT CATALOG — single source of truth
-   (same as index.html + product.html)
+   PRODUCT CATALOG
+   price เปลี่ยนเป็น USD จริงๆ แล้ว (หาร 33 แล้ว + round 2 ทศนิยม)
+   ไม่ต้องหารอีกทุกที่ในโค้ด
 ═══════════════════════════════════════════ */
 const PRODUCTS = {
     'oversized-tee-black': {
-        name:'Classic Black Oversized Tee', price:790,
+        name:'Classic Black Oversized Tee', price:23.94,
         tag:'BESTSELLER', tagOrange:true, category:'tops', isNew:false, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
@@ -516,7 +503,7 @@ const PRODUCTS = {
         specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-olive': {
-        name:'Military Olive Cargo Pants', price:1590,
+        name:'Military Olive Cargo Pants', price:48.18,
         tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
         colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
@@ -524,7 +511,7 @@ const PRODUCTS = {
         specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-grey': {
-        name:'Stone Grey Pullover Hoodie', price:1290,
+        name:'Stone Grey Pullover Hoodie', price:39.09,
         tag:'POPULAR', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
@@ -532,7 +519,7 @@ const PRODUCTS = {
         specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-retro': {
-        name:'Retro Square Sunglasses', price:890,
+        name:'Retro Square Sunglasses', price:26.97,
         tag:'LIMITED', tagOrange:true, category:'accessories', isNew:true, stock:'low-stock',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
         colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
@@ -540,7 +527,7 @@ const PRODUCTS = {
         specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
     },
     'oversized-tee-white': {
-        name:'Stone White Oversized Tee', price:790,
+        name:'Stone White Oversized Tee', price:23.94,
         tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
         colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
@@ -548,7 +535,7 @@ const PRODUCTS = {
         specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-black': {
-        name:'Tactical Black Cargo Pants', price:1590,
+        name:'Tactical Black Cargo Pants', price:48.18,
         tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
         colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
@@ -556,7 +543,7 @@ const PRODUCTS = {
         specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-navy': {
-        name:'Midnight Navy Pullover Hoodie', price:1290,
+        name:'Midnight Navy Pullover Hoodie', price:39.09,
         tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
         colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
@@ -564,7 +551,7 @@ const PRODUCTS = {
         specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-black': {
-        name:'Classic Black Sunglasses', price:890,
+        name:'Classic Black Sunglasses', price:26.97,
         tag:'NEW', tagOrange:false, category:'accessories', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
         colors:[{name:'Glossy Black',hex:'#111111'}],
@@ -577,7 +564,7 @@ const CART_KEY = 'BARDS_CART';
 
 /* STATE */
 let cart     = [];
-let shipFee  = 0;
+let shipFee  = 0;       // USD จริงๆ แล้ว (0 / 2.70 / 5.42)
 let editMode = false;
 let selected = new Set();
 
@@ -771,21 +758,23 @@ function pickShip(el, fee) {
 
 /* ══════════════════════════════════════════
    SUMMARY
+   ตัวแปรทุกตัวเป็น USD แล้ว ไม่มี THB เหลือ
 ══════════════════════════════════════════ */
 function updateSummary() {
-    const items       = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
-    const subtotalTHB = items.reduce((s,c) => s + c.price * c.quantity, 0);
-    const selQty      = items.reduce((s,c) => s + c.quantity, 0);
-    const totalTHB    = subtotalTHB + (items.length > 0 ? shipFee : 0);
-    document.getElementById('sumSubD').textContent   = fmtUSD(subtotalTHB);
+    const items    = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
+    const subtotal = items.reduce((s,c) => s + c.price * c.quantity, 0);
+    const selQty   = items.reduce((s,c) => s + c.quantity, 0);
+    const total    = subtotal + (items.length > 0 ? shipFee : 0);
+
+    document.getElementById('sumSubD').textContent   = fmtUSD(subtotal);
     document.getElementById('sumShipD').textContent  = shipFee === 0 ? 'FREE' : fmtUSD(shipFee);
-    document.getElementById('sumTotalD').textContent = fmtUSD(totalTHB);
-    document.getElementById('barTotal').textContent  = fmtUSD(totalTHB);
+    document.getElementById('sumTotalD').textContent = fmtUSD(total);
+    document.getElementById('barTotal').textContent  = fmtUSD(total);
     document.getElementById('barItems').textContent  = `${selQty} item${selQty!==1?'s':''} selected`;
 }
 
 /* ══════════════════════════════════════════
-   CHECKOUT — with loading state (prevents double-tap)
+   CHECKOUT
 ══════════════════════════════════════════ */
 let _ckLock = false;
 
@@ -793,37 +782,23 @@ function goCheckout() {
     if (!selected.size || _ckLock) return;
     _ckLock = true;
 
-    /* save data */
     sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify([...selected].map(i => cart[i])));
     sessionStorage.setItem('CHECKOUT_SHIPFEE', String(shipFee));
 
-    /* loading state on both buttons */
     const SPIN_SVG = `<svg style="animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
 
     const barBtn = document.getElementById('barCk');
     const dskBtn = document.getElementById('ckBtnD');
 
-    if (barBtn) {
-        barBtn.disabled = true;
-        barBtn.innerHTML = `${SPIN_SVG} Processing…`;
-        barBtn.style.opacity = '.7';
-        barBtn.style.letterSpacing = '0';
-    }
-    if (dskBtn) {
-        dskBtn.disabled = true;
-        dskBtn.innerHTML = `${SPIN_SVG} Processing…`;
-        dskBtn.style.opacity = '.7';
-        dskBtn.style.letterSpacing = '0';
-    }
+    if (barBtn) { barBtn.disabled=true; barBtn.innerHTML=`${SPIN_SVG} Processing…`; barBtn.style.opacity='.7'; barBtn.style.letterSpacing='0'; }
+    if (dskBtn) { dskBtn.disabled=true; dskBtn.innerHTML=`${SPIN_SVG} Processing…`; dskBtn.style.opacity='.7'; dskBtn.style.letterSpacing='0'; }
 
-    /* short delay so the spinner renders before navigation */
     setTimeout(() => { location.href = 'checkout.html'; }, 380);
 }
 
 /* ══════════════════════════════════════════
    YOU MAY ALSO LIKE
-   แสดงสินค้าที่ไม่ได้อยู่ใน cart
-   2-col grid — card markup เหมือน cardHTML() ใน index.html
+   ใช้ fmtUSD() โดยตรง — price เป็น USD แล้ว ไม่ต้องหาร 33
 ══════════════════════════════════════════ */
 function buildRec() {
     const inCart     = new Set(cart.map(c => c.id));
@@ -832,10 +807,7 @@ function buildRec() {
     const grid       = document.getElementById('recGrid');
     if (!wrap || !grid) return;
 
-    if (!candidates.length) {
-        wrap.style.display = 'none';
-        return;
-    }
+    if (!candidates.length) { wrap.style.display = 'none'; return; }
     wrap.style.display = '';
 
     grid.innerHTML = candidates.map(([id, p]) => {
@@ -851,7 +823,7 @@ function buildRec() {
     <div class="p-card-body">
         <div class="p-name">${p.name}</div>
         <div class="p-meta">
-            <div class="p-price">$${(p.price/33).toFixed(2)}</div>
+            <div class="p-price">${fmtUSD(p.price)}</div>
             <div class="p-colors">${dots}</div>
         </div>
     </div>
@@ -862,8 +834,10 @@ function buildRec() {
 /* ══════════════════════════════════════════
    UTILS
 ══════════════════════════════════════════ */
-function fmtUSD(thb) { return `$${(thb/33).toFixed(2)}`; }
-function saveCart()  { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+function fmtUSD(num) {
+    return '$' + Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 
 /* ══════════════════════════════════════════
    TOAST
