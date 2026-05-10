@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cart — Bards</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cart — Bards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Bebas+Neue&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <style>
         :root {
             --black:    #0A0A0A;
             --white:    #FAFAFA;
@@ -115,14 +115,11 @@
             cursor:pointer; background:var(--white);
         }
         .item-img {
-            /* fixed square — identical size on every card, no stretching */
             width:96px; min-width:96px; height:96px;
             flex-shrink:0; overflow:hidden;
             background:var(--gray-100); cursor:pointer;
-            /* squircle inner corners — clip to the card's own border-radius
-               minus the card border width so the image sits flush            */
             border-radius:calc(var(--radius) - 1.5px) 0 0 calc(var(--radius) - 1.5px);
-            align-self:center;   /* vertically centre the square block in the row */
+            align-self:center;
         }
         .item-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
         .item-img:hover img { transform:scale(1.05); }
@@ -202,11 +199,7 @@
             background-size:1200px 100%; animation:shimmer 1.4s infinite;
         }
 
-        /* ══════════════════════════════════════════════
-           YOU MAY ALSO LIKE
-           — 2-col grid เหมือน .p-grid ใน index.html
-           — card markup เหมือน cardHTML() ใน index.html
-        ══════════════════════════════════════════════ */
+        /* YOU MAY ALSO LIKE */
         .rec-wrap {
             padding:24px 0 28px;
         }
@@ -226,10 +219,8 @@
         }
         .rec-see-all:active { color:var(--black); }
 
-        /* same as .p-grid */
         .rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
-        /* same as .p-card */
         .p-card {
             background:var(--white); border-radius:var(--radius);
             border:1px solid var(--gray-200); overflow:hidden;
@@ -245,7 +236,6 @@
             width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease;
         }
         .p-card:active .p-card-img img { transform:scale(1.04); }
-        /* same as .p-tag */
         .p-tag {
             position:absolute; top:9px; left:9px; z-index:2;
             background:var(--black); color:#fff;
@@ -255,7 +245,6 @@
         }
         .p-tag.orange { background:var(--orange); }
         .p-tag.low    { background:var(--gray-600); top:auto; bottom:9px; }
-        /* same as .p-card-body */
         .p-card-body  { padding:10px 11px 13px; flex:1; display:flex; flex-direction:column; gap:7px; }
         .p-name       { font-size:12px; font-weight:600; line-height:1.35; letter-spacing:-.1px; }
         .p-meta       { display:flex; align-items:center; justify-content:space-between; }
@@ -271,24 +260,6 @@
             margin-bottom:13px; display:flex; align-items:center; gap:8px;
         }
         .sum-sec-title::after { content:''; flex:1; height:1px; background:var(--gray-200); }
-        .ship-opts { display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
-        .ship-opt  {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:10px 12px; background:var(--gray-50);
-            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
-            cursor:pointer; transition:all .18s;
-        }
-        .ship-opt.on { border-color:var(--black); background:var(--black); }
-        .ship-opt.on .so-name,.ship-opt.on .so-price { color:#fff; }
-        .ship-opt.on .so-time { color:rgba(255,255,255,.5); }
-        .so-left  { display:flex; align-items:center; gap:10px; }
-        .so-radio { width:16px; height:16px; border-radius:50%; border:2px solid var(--gray-300); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .ship-opt.on .so-radio { border-color:#fff; background:#fff; }
-        .so-dot   { width:6px; height:6px; border-radius:50%; background:var(--black); display:none; }
-        .ship-opt.on .so-dot { display:block; }
-        .so-name  { font-size:12px; font-weight:600; transition:color .18s; }
-        .so-time  { font-size:10px; color:var(--gray-400); margin-top:2px; transition:color .18s; }
-        .so-price { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; transition:color .18s; }
         .divider  { border:none; border-top:1px solid var(--gray-200); margin:12px 0; }
         .sum-row  { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
         .sum-lbl  { font-size:12px; color:var(--gray-400); font-weight:500; }
@@ -360,151 +331,120 @@
         .d1  { animation-delay:.05s; }
         .d2  { animation-delay:.10s; }
     </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="nav">
-    <div class="nav-left">
-        <button class="icon-btn" onclick="history.back()" aria-label="Back">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
-        </button>
-        <a href="index.html" class="brand">BARDS</a>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <!-- NAV -->
+  <nav class="nav">
+   <div class="nav-left">
+    <button class="icon-btn" onclick="history.back()" aria-label="Back">
+     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5" />
+     </svg></button> <a href="index.html" class="brand">BARDS</a>
+   </div>
+   <div class="nav-right">
+    <button class="edit-btn" id="editBtn" onclick="toggleEdit()" style="visibility:hidden">Edit</button>
+   </div>
+  </nav><!-- PAGE -->
+  <div class="page">
+   <!-- MAIN COL -->
+   <div class="main-col">
+    <div class="cart-header fu">
+     <span class="cart-title">MY CART</span> <span class="cart-count" id="cartCount">—</span>
+    </div><!-- Skeleton -->
+    <div class="item-list" id="skelList">
+     <div class="skel-card">
+      <div class="skel-cb"></div>
+      <div class="skel-img"></div>
+      <div class="skel-body">
+       <div class="skel-line" style="height:12px;width:65%"></div>
+       <div class="skel-line" style="height:10px;width:40%"></div>
+       <div class="skel-line" style="height:10px;width:55%"></div>
+      </div>
+     </div>
+     <div class="skel-card">
+      <div class="skel-cb"></div>
+      <div class="skel-img"></div>
+      <div class="skel-body">
+       <div class="skel-line" style="height:12px;width:55%"></div>
+       <div class="skel-line" style="height:10px;width:35%"></div>
+       <div class="skel-line" style="height:10px;width:50%"></div>
+      </div>
+     </div>
+    </div><!-- Real items -->
+    <div class="item-list" id="itemList" style="display:none;"></div><!-- Empty state -->
+    <div class="empty-wrap" id="emptyWrap">
+     <div class="empty-icon">
+      <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /> <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+     </div>
+     <div class="empty-title">
+      Your cart is empty
+     </div>
+     <div class="empty-sub">
+      Looks like you haven't added anything yet.
+     </div><a href="all-products.html" class="empty-cta">
+      <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg> SHOP NOW </a>
+    </div><!-- YOU MAY ALSO LIKE — 2-col grid -->
+    <div class="rec-wrap fu d2" id="recWrap">
+     <div class="rec-hd">
+      <span class="rec-hd-title">You May Also Like</span>
+     </div>
+     <div class="rec-grid" id="recGrid"></div>
     </div>
-    <div class="nav-right">
-        <button class="edit-btn" id="editBtn" onclick="toggleEdit()" style="visibility:hidden">Edit</button>
+   </div><!-- /main-col --> <!-- SIDEBAR -->
+   <aside class="sidebar fu d1">
+    <div class="sum-card">
+     <p class="sum-sec-title">ORDER SUMMARY</p>
+     <div class="sum-row"><span class="sum-lbl">Subtotal</span><span class="sum-val" id="sumSubD">$0.00</span>
+     </div>
+     <hr class="divider" style="margin:10px 0 14px;">
+     <div class="sum-total-row">
+      <span class="sum-total-lbl">Total</span> <span class="sum-total-val" id="sumTotalD">$0.00</span>
+     </div><button class="ck-btn" id="ckBtnD" onclick="goCheckout()" disabled> CHECKOUT 
+      <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg></button>
+     <div class="ck-sub">
+      <svg width="11" height="11" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg> Secure checkout
+     </div>
     </div>
-</nav>
-
-<!-- PAGE -->
-<div class="page">
-
-    <!-- MAIN COL -->
-    <div class="main-col">
-
-        <div class="cart-header fu">
-            <span class="cart-title">MY CART</span>
-            <span class="cart-count" id="cartCount">—</span>
-        </div>
-
-        <!-- Skeleton -->
-        <div class="item-list" id="skelList">
-            <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:65%"></div><div class="skel-line" style="height:10px;width:40%"></div><div class="skel-line" style="height:10px;width:55%"></div></div></div>
-            <div class="skel-card"><div class="skel-cb"></div><div class="skel-img"></div><div class="skel-body"><div class="skel-line" style="height:12px;width:55%"></div><div class="skel-line" style="height:10px;width:35%"></div><div class="skel-line" style="height:10px;width:50%"></div></div></div>
-        </div>
-
-        <!-- Real items -->
-        <div class="item-list" id="itemList" style="display:none;"></div>
-
-        <!-- Empty state -->
-        <div class="empty-wrap" id="emptyWrap">
-            <div class="empty-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-                     stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-            </div>
-            <div class="empty-title">Your cart is empty</div>
-            <div class="empty-sub">Looks like you haven't added anything yet.</div>
-            <a href="all-products.html" class="empty-cta">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-                SHOP NOW
-            </a>
-        </div>
-
-        <!-- YOU MAY ALSO LIKE — 2-col grid -->
-        <div class="rec-wrap fu d2" id="recWrap">
-            <div class="rec-hd">
-                <span class="rec-hd-title">You May Also Like</span>
-            </div>
-            <div class="rec-grid" id="recGrid"></div>
-        </div>
-
-    </div><!-- /main-col -->
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar fu d1">
-        <div class="sum-card">
-            <p class="sum-sec-title">Shipping</p>
-            <div class="ship-opts">
-                <div class="ship-opt on" data-price="0" onclick="pickShip(this,0)">
-                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
-                    <div><div class="so-name">Standard</div><div class="so-time">3–5 business days</div></div></div>
-                    <div class="so-price">FREE</div>
-                </div>
-                <div class="ship-opt" data-price="89" onclick="pickShip(this,89)">
-                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
-                    <div><div class="so-name">Express</div><div class="so-time">1–2 business days</div></div></div>
-                    <div class="so-price">+$2.70</div>
-                </div>
-                <div class="ship-opt" data-price="179" onclick="pickShip(this,179)">
-                    <div class="so-left"><div class="so-radio"><div class="so-dot"></div></div>
-                    <div><div class="so-name">Same Day</div><div class="so-time">Today by 8 PM (BKK)</div></div></div>
-                    <div class="so-price">+$5.42</div>
-                </div>
-            </div>
-            <hr class="divider">
-            <div class="sum-row"><span class="sum-lbl">Subtotal</span><span class="sum-val" id="sumSubD">$0.00</span></div>
-            <div class="sum-row"><span class="sum-lbl">Shipping</span><span class="sum-val" id="sumShipD">FREE</span></div>
-            <hr class="divider" style="margin:10px 0 14px;">
-            <div class="sum-total-row">
-                <span class="sum-total-lbl">Total</span>
-                <span class="sum-total-val" id="sumTotalD">$0.00</span>
-            </div>
-            <button class="ck-btn" id="ckBtnD" onclick="goCheckout()" disabled>
-                CHECKOUT
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </button>
-            <div class="ck-sub">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Secure checkout
-            </div>
-        </div>
-    </aside>
-
-</div><!-- /page -->
-
-<!-- MOBILE BOTTOM BAR -->
-<div class="bottom-bar" id="bottomBar">
-    <div class="bar-all-wrap" onclick="toggleSelectAll()">
-        <div class="cb" id="barAllCb">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                 stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-            </svg>
-        </div>
-        <span class="bar-all-lbl">All</span>
+   </aside>
+  </div><!-- /page --> <!-- MOBILE BOTTOM BAR -->
+  <div class="bottom-bar" id="bottomBar">
+   <div class="bar-all-wrap" onclick="toggleSelectAll()">
+    <div class="cb" id="barAllCb">
+     <svg width="10" height="10" viewbox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+     </svg>
+    </div><span class="bar-all-lbl">All</span>
+   </div>
+   <div class="bar-price-wrap">
+    <div class="bar-total" id="barTotal">
+     $0.00
     </div>
-    <div class="bar-price-wrap">
-        <div class="bar-total" id="barTotal">$0.00</div>
-        <div class="bar-items" id="barItems">0 items selected</div>
+    <div class="bar-items" id="barItems">
+     0 items selected
     </div>
-    <button class="bar-ck" id="barCk" onclick="goCheckout()" disabled>
-        CHECKOUT&thinsp;(<span id="barSelCount">0</span>)
-    </button>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-    <div class="toast-icon" id="toastIcon"></div>
-    <div class="toast-text">
-        <div class="toast-ttl" id="toastTtl"></div>
-        <div class="toast-sub" id="toastSub"></div>
-    </div>
-</div>
-
-<script>
+   </div><button class="bar-ck" id="barCk" onclick="goCheckout()" disabled> CHECKOUT (<span id="barSelCount">0</span>) </button>
+  </div><!-- TOAST -->
+  <div class="toast" id="toast">
+   <div class="toast-icon" id="toastIcon"></div>
+   <div class="toast-text">
+    <div class="toast-ttl" id="toastTtl"></div>
+    <div class="toast-sub" id="toastSub"></div>
+   </div>
+  </div>
+  <script>
 /* ═══════════════════════════════════════════
-   PRODUCT CATALOG — single source of truth
-   (same as index.html + product.html)
+   PRODUCT CATALOG
 ═══════════════════════════════════════════ */
 const PRODUCTS = {
     'oversized-tee-black': {
@@ -577,7 +517,6 @@ const CART_KEY = 'BARDS_CART';
 
 /* STATE */
 let cart     = [];
-let shipFee  = 0;
 let editMode = false;
 let selected = new Set();
 
@@ -585,16 +524,18 @@ let selected = new Set();
    BOOT
 ══════════════════════════════════════════ */
 window.onload = function () {
+    // Keep skeleton visible initially
+    cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+    const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
+    if (buyNowId) {
+        const idx = cart.findIndex(c => c.id === buyNowId);
+        if (idx !== -1) selected.add(idx);
+        sessionStorage.removeItem('BUY_NOW_ID');
+    }
+
+    // Simulate brief loading (280ms) then show real content
     setTimeout(() => {
-        cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-
-        const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
-        if (buyNowId) {
-            const idx = cart.findIndex(c => c.id === buyNowId);
-            if (idx !== -1) selected.add(idx);
-            sessionStorage.removeItem('BUY_NOW_ID');
-        }
-
         document.getElementById('skelList').style.display = 'none';
         document.getElementById('itemList').style.display = '';
         render();
@@ -762,30 +703,21 @@ function removeItem(idx) {
 }
 
 /* ══════════════════════════════════════════
-   SHIPPING
-══════════════════════════════════════════ */
-function pickShip(el, fee) {
-    document.querySelectorAll('.ship-opt').forEach(s => s.classList.remove('on'));
-    el.classList.add('on'); shipFee = fee; updateSummary();
-}
-
-/* ══════════════════════════════════════════
    SUMMARY
 ══════════════════════════════════════════ */
 function updateSummary() {
     const items       = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
     const subtotalTHB = items.reduce((s,c) => s + c.price * c.quantity, 0);
     const selQty      = items.reduce((s,c) => s + c.quantity, 0);
-    const totalTHB    = subtotalTHB + (items.length > 0 ? shipFee : 0);
+    const totalTHB    = subtotalTHB;
     document.getElementById('sumSubD').textContent   = fmtUSD(subtotalTHB);
-    document.getElementById('sumShipD').textContent  = shipFee === 0 ? 'FREE' : fmtUSD(shipFee);
     document.getElementById('sumTotalD').textContent = fmtUSD(totalTHB);
     document.getElementById('barTotal').textContent  = fmtUSD(totalTHB);
     document.getElementById('barItems').textContent  = `${selQty} item${selQty!==1?'s':''} selected`;
 }
 
 /* ══════════════════════════════════════════
-   CHECKOUT — with loading state (prevents double-tap)
+   CHECKOUT
 ══════════════════════════════════════════ */
 let _ckLock = false;
 
@@ -793,11 +725,9 @@ function goCheckout() {
     if (!selected.size || _ckLock) return;
     _ckLock = true;
 
-    /* save data */
     sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify([...selected].map(i => cart[i])));
-    sessionStorage.setItem('CHECKOUT_SHIPFEE', String(shipFee));
+    sessionStorage.setItem('CHECKOUT_SHIPFEE', '0');
 
-    /* loading state on both buttons */
     const SPIN_SVG = `<svg style="animation:spin .8s linear infinite" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
 
     const barBtn = document.getElementById('barCk');
@@ -816,14 +746,11 @@ function goCheckout() {
         dskBtn.style.letterSpacing = '0';
     }
 
-    /* short delay so the spinner renders before navigation */
     setTimeout(() => { location.href = 'checkout.html'; }, 380);
 }
 
 /* ══════════════════════════════════════════
    YOU MAY ALSO LIKE
-   แสดงสินค้าที่ไม่ได้อยู่ใน cart
-   2-col grid — card markup เหมือน cardHTML() ใน index.html
 ══════════════════════════════════════════ */
 function buildRec() {
     const inCart     = new Set(cart.map(c => c.id));
@@ -851,7 +778,7 @@ function buildRec() {
     <div class="p-card-body">
         <div class="p-name">${p.name}</div>
         <div class="p-meta">
-            <div class="p-price">$${(p.price/33).toFixed(2)}</div>
+            <div class="p-price">$${(p.price/100).toFixed(2)}</div>
             <div class="p-colors">${dots}</div>
         </div>
     </div>
@@ -862,7 +789,7 @@ function buildRec() {
 /* ══════════════════════════════════════════
    UTILS
 ══════════════════════════════════════════ */
-function fmtUSD(thb) { return `$${(thb/33).toFixed(2)}`; }
+function fmtUSD(usd) { return `$${usd.toFixed(2)}`; }
 function saveCart()  { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 
 /* ══════════════════════════════════════════
@@ -881,5 +808,5 @@ function showToast(type, title, sub) {
     clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2600);
 }
 </script>
-</body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f94d2dee55ff82a',t:'MTc3ODM3MjkwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
