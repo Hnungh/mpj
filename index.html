@@ -707,6 +707,7 @@ const S = {
 ════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
     updateCounts();
+    restoreSearch();   // ← restore ก่อน render
     renderGrid();
     renderNewArrivals();
     renderCategories();
@@ -729,13 +730,15 @@ function toggleSearch() {
     if (_searchOpen) {
         setTimeout(() => document.getElementById('searchInput').focus(), 340);
     } else {
-        clearSearch();
+        // ปิด panel แต่ไม่ clear search — ผลยังอยู่
     }
 }
 
 function onSearch(val) {
     S.query = val.toLowerCase().trim();
     document.getElementById('searchClearBtn').classList.toggle('on', val.length > 0);
+    // บันทึกไว้ใน sessionStorage — กด back กลับมาผลยังอยู่
+    sessionStorage.setItem('BARDS_SEARCH', val);
     renderGrid();
 }
 
@@ -745,7 +748,24 @@ function clearSearch() {
     if (inp) inp.value = '';
     document.getElementById('searchClearBtn').classList.remove('on');
     document.getElementById('searchHint').innerText = '';
+    sessionStorage.removeItem('BARDS_SEARCH');
     renderGrid();
+}
+
+/* restore search state เมื่อ back กลับมา */
+function restoreSearch() {
+    const saved = sessionStorage.getItem('BARDS_SEARCH');
+    if (!saved) return;
+    S.query = saved.toLowerCase().trim();
+    const inp = document.getElementById('searchInput');
+    if (inp) inp.value = saved;
+    document.getElementById('searchClearBtn').classList.toggle('on', saved.length > 0);
+    // เปิด panel ให้เห็น
+    _searchOpen = true;
+    document.getElementById('searchPanel').classList.add('open');
+    document.getElementById('searchMask').classList.add('open');
+    document.getElementById('filterStrip').classList.add('shifted');
+    document.getElementById('searchBtn').classList.add('search-active');
 }
 
 /* ════════════════════════════════════════
