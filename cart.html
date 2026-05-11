@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cart — Bards</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cart — Bards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
         :root {
             --black:    #0A0A0A;
             --white:    #FAFAFA;
@@ -29,9 +29,7 @@
             font-family:'Space Grotesk',sans-serif;
             background:var(--gray-100); color:var(--black);
             overscroll-behavior:none; min-height:100vh;
-            padding-bottom:var(--bar-h);
         }
-        @media (min-width:900px) { body { padding-bottom:0; } }
 
         /* NAV */
         .nav {
@@ -69,18 +67,17 @@
         /* PAGE */
         .page {
             margin-top:var(--nav-h);
+            max-width:1100px;
+            margin-left:auto; margin-right:auto;
             padding:0 14px;
         }
         @media (min-width:900px) {
-            .page {
-                display:grid;
-                grid-template-columns:1fr 360px;
-                gap:28px;
-                max-width:1200px;
-                margin-left:auto; margin-right:auto;
-                padding:0 40px;
-                align-items:start;
-            }
+            .page { display:grid; grid-template-columns:1fr 340px; gap:24px; padding:0 32px; align-items:start; }
+            .sidebar { position:sticky; top:calc(var(--nav-h)+20px); }
+        }
+        @media (max-width:899px) {
+            .sidebar { display:none; }
+            body      { padding-bottom:var(--bar-h); }
         }
         .main-col { min-width:0; }
 
@@ -95,6 +92,7 @@
             border:2px solid var(--gray-300); background:var(--white);
             display:flex; align-items:center; justify-content:center;
             flex-shrink:0; transition:all .15s; cursor:pointer;
+            position:relative; z-index:1;
         }
         .cb.on      { background:var(--black); border-color:var(--black); }
         .cb.partial { background:var(--gray-200); border-color:var(--gray-400); }
@@ -108,7 +106,7 @@
             background:var(--white);
             border:1.5px solid var(--gray-200);
             border-radius:var(--radius); overflow:hidden;
-            transition:border-color .18s, box-shadow .18s;
+            transition:border-color .18s, box-shadow .18s; position:relative;
         }
         .item-row.selected { border-color:var(--black); box-shadow:0 0 0 1px var(--black); }
         .item-cb {
@@ -173,7 +171,7 @@
             padding:40px 0 28px; text-align:center;
         }
         .empty-wrap.show { display:flex; }
-        .empty-icon {
+        .empty-icon  {
             width:60px; height:60px; border-radius:50%; background:var(--gray-200);
             display:flex; align-items:center; justify-content:center; margin-bottom:14px;
         }
@@ -190,10 +188,27 @@
         .empty-cta:active { opacity:.78; }
 
         /* YOU MAY ALSO LIKE */
-        .rec-wrap { padding:24px 0 28px; }
-        .rec-hd { margin-bottom:13px; }
-        .rec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black); }
+        .rec-wrap {
+            padding:24px 0 28px;
+        }
+        .rec-hd {
+            display:flex; align-items:center; justify-content:space-between;
+            margin-bottom:13px;
+        }
+        .rec-hd-title {
+            font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black);
+        }
+        .rec-see-all {
+            font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+            color:var(--gray-400); background:none; border:none; cursor:pointer;
+            display:flex; align-items:center; gap:3px;
+            font-family:'Space Grotesk',sans-serif; transition:color .18s;
+            text-decoration:none;
+        }
+        .rec-see-all:active { color:var(--black); }
+
         .rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
         .p-card {
             background:var(--white); border-radius:var(--radius);
             border:1px solid var(--gray-200); overflow:hidden;
@@ -202,8 +217,12 @@
             transition:transform .22s, box-shadow .22s;
         }
         .p-card:active { transform:scale(.975); box-shadow:0 6px 24px rgba(0,0,0,.09); }
-        .p-card-img { aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative; }
-        .p-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease; }
+        .p-card-img {
+            aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative;
+        }
+        .p-card-img img {
+            width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease;
+        }
         .p-card:active .p-card-img img { transform:scale(1.04); }
         .p-tag {
             position:absolute; top:9px; left:9px; z-index:2;
@@ -221,65 +240,34 @@
         .p-colors     { display:flex; gap:4px; }
         .p-dot        { width:10px; height:10px; border-radius:50%; border:1.5px solid rgba(255,255,255,.7); box-shadow:0 0 0 1px rgba(0,0,0,.12); }
 
-        /* DESKTOP SIDEBAR */
-        .sidebar { display:none; }
-        @media (min-width:900px) {
-            .sidebar {
-                display:block;
-                padding-top:calc(18px + 24px + 12px);
-                position:sticky;
-                top:calc(var(--nav-h) + 20px);
-            }
-        }
-        .sum-card {
-            background:var(--white);
-            border:1.5px solid var(--gray-200);
-            border-radius:var(--radius);
-            padding:22px;
-        }
+        /* SIDEBAR */
+        .sidebar { padding:18px 0; }
+        .sum-card { background:var(--white); border:1.5px solid var(--gray-200); border-radius:var(--radius); padding:20px; }
         .sum-sec-title {
             font-family:'Bebas Neue'; font-size:15px; letter-spacing:2.5px;
-            margin-bottom:14px; display:flex; align-items:center; gap:8px;
+            margin-bottom:13px; display:flex; align-items:center; gap:8px;
         }
         .sum-sec-title::after { content:''; flex:1; height:1px; background:var(--gray-200); }
-
-        .sum-select-row {
-            display:flex; align-items:center; gap:10px;
-            padding:12px 14px;
-            background:var(--gray-50);
-            border:1.5px solid var(--gray-200);
-            border-radius:var(--radius-sm);
-            cursor:pointer; margin-bottom:16px;
-            transition:border-color .18s;
-        }
-        .sum-select-row:hover { border-color:var(--gray-400); }
-        .sum-select-label { font-size:12px; font-weight:600; color:var(--gray-600); }
-        .sum-select-count { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray-400); margin-left:auto; }
-
-        .divider  { border:none; border-top:1px solid var(--gray-200); margin:14px 0; }
-        .sum-row  { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+        .divider  { border:none; border-top:1px solid var(--gray-200); margin:12px 0; }
+        .sum-row  { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
         .sum-lbl  { font-size:12px; color:var(--gray-400); font-weight:500; }
         .sum-val  { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--gray-600); }
         .sum-total-row { display:flex; justify-content:space-between; align-items:baseline; }
         .sum-total-lbl { font-size:14px; font-weight:700; }
-        .sum-total-val { font-family:'DM Mono',monospace; font-size:26px; font-weight:500; color:var(--red); }
-
-        /* Checkout button — mirrors product.html confirm-btn states */
+        .sum-total-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--red); }
         .ck-btn {
-            width:100%; height:52px;
-            border:none; border-radius:var(--radius-sm);
-            font-family:'Bebas Neue'; font-size:17px; letter-spacing:3px;
-            cursor:pointer;
+            width:100%; height:50px; background:var(--black); color:#fff; border:none;
+            border-radius:var(--radius-sm); font-family:'Bebas Neue';
+            font-size:17px; letter-spacing:3px; cursor:pointer;
             display:flex; align-items:center; justify-content:center; gap:8px;
-            margin-top:18px;
-            transition:opacity .18s, transform .12s, background .25s;
+            transition:opacity .18s, transform .12s; margin-top:16px;
         }
-        .ck-btn.idle    { background:var(--black); color:#fff; }
-        .ck-btn.idle:active { opacity:.82; transform:scale(.98); }
-        .ck-btn.loading { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
-        .ck-btn[disabled] { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; opacity:1; pointer-events:none; }
+        .ck-btn:active          { opacity:.82; transform:scale(.98); }
+        .ck-btn:disabled        { cursor:default; transform:none; }
+        .ck-btn.loading         { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
+        .ck-btn.success         { background:var(--green);    color:#fff;            pointer-events:none; }
         .ck-sub {
-            margin-top:10px; font-size:10px; color:var(--gray-400);
+            margin-top:9px; font-size:10px; color:var(--gray-400);
             display:flex; align-items:center; justify-content:center; gap:5px;
         }
 
@@ -306,233 +294,236 @@
             transition:opacity .18s, transform .1s;
         }
         .bar-ck:active   { opacity:.82; transform:scale(.97); }
-        .bar-ck:disabled { background:var(--gray-200); color:var(--gray-400); cursor:default; transform:none; }
+        .bar-ck:disabled { cursor:default; transform:none; }
+        .bar-ck.loading  { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
+        .bar-ck.success  { background:var(--green);    color:#fff;            pointer-events:none; }
 
-        /* TOAST — identical to product.html */
+        /* TOAST */
         .toast {
             position:fixed; bottom:calc(var(--bar-h) + 10px); left:50%;
             transform:translateX(-50%) translateY(6px);
             background:var(--black); color:#fff;
-            padding:12px 18px 12px 14px; border-radius:14px;
-            font-size:13px; font-weight:500;
-            z-index:9999; opacity:0; transition:opacity .28s,transform .28s;
-            white-space:nowrap; display:flex; align-items:center; gap:10px;
-            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28);
-            min-width:220px;
+            padding:11px 16px 11px 12px; border-radius:13px;
+            z-index:9999; opacity:0; transition:opacity .26s,transform .26s;
+            display:flex; align-items:center; gap:9px;
+            pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.25);
+            min-width:190px; white-space:nowrap;
         }
         .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
-        @media (min-width:900px) { .toast { bottom:24px; } }
-        .toast-icon-wrap { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .toast-icon-wrap.success { background:rgba(22,163,74,.25); }
-        .toast-icon-wrap.warn    { background:rgba(234,179,8,.2); }
-        .toast-text  { display:flex; flex-direction:column; gap:1px; }
-        .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
-        .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); font-weight:400; }
+        .toast-icon { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .toast-icon.ok   { background:rgba(22,163,74,.25); }
+        .toast-icon.warn { background:rgba(234,179,8,.2); }
+        .toast-ttl  { font-size:12px; font-weight:700; }
+        .toast-sub  { font-size:11px; color:rgba(255,255,255,.5); }
+        .toast-text { display:flex; flex-direction:column; gap:1px; }
 
         @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes spin    { from{transform:rotate(0deg)}               to{transform:rotate(360deg)} }
         .fu  { animation:fadeUp .36s ease both; }
         .d1  { animation-delay:.05s; }
         .d2  { animation-delay:.10s; }
     </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="nav">
-    <div class="nav-left">
-        <button class="icon-btn" onclick="history.back()" aria-label="Back">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
-        </button>
-        <a href="index.html" class="brand">BARDS</a>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <!-- NAV -->
+  <nav class="nav">
+   <div class="nav-left">
+    <button class="icon-btn" onclick="history.back()" aria-label="Back">
+     <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5" />
+     </svg></button> <a href="index.html" class="brand">BARDS</a>
+   </div>
+   <div class="nav-right">
+    <button class="edit-btn" id="editBtn" onclick="toggleEdit()" style="visibility:hidden">Edit</button>
+   </div>
+  </nav><!-- PAGE -->
+  <div class="page">
+   <!-- MAIN COL -->
+   <div class="main-col">
+    <div class="cart-header fu">
+     <span class="cart-title">MY CART</span> <span class="cart-count" id="cartCount">—</span>
+    </div><!-- Real items -->
+    <div class="item-list" id="itemList"></div><!-- Empty state -->
+    <div class="empty-wrap" id="emptyWrap">
+     <div class="empty-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /> <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+     </div>
+     <div class="empty-title">
+      Your cart is empty
+     </div>
+     <div class="empty-sub">
+      Looks like you haven't added anything yet.
+     </div><a href="all-products.html" class="empty-cta">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg> SHOP NOW </a>
+    </div><!-- YOU MAY ALSO LIKE — 2-col grid -->
+    <div class="rec-wrap fu d2" id="recWrap">
+     <div class="rec-hd">
+      <span class="rec-hd-title">You May Also Like</span>
+     </div>
+     <div class="rec-grid" id="recGrid"></div>
     </div>
-    <div class="nav-right">
-        <button class="edit-btn" id="editBtn" onclick="toggleEdit()" style="visibility:hidden">Edit</button>
+   </div><!-- /main-col --> <!-- SIDEBAR -->
+   <aside class="sidebar fu d1">
+    <div class="sum-card">
+     <p class="sum-sec-title">ORDER SUMMARY</p>
+     <div class="sum-row"><span class="sum-lbl">Subtotal</span><span class="sum-val" id="sumSubD">$0.00</span>
+     </div>
+     <hr class="divider" style="margin:10px 0 14px;">
+     <div class="sum-total-row">
+      <span class="sum-total-lbl">Total</span> <span class="sum-total-val" id="sumTotalD">$0.00</span>
+     </div><button class="ck-btn" id="ckBtnD" onclick="goCheckout()" disabled> CHECKOUT 
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg></button>
+     <div class="ck-sub">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg> Secure checkout
+     </div>
     </div>
-</nav>
-
-<!-- PAGE -->
-<div class="page">
-
-    <!-- MAIN COL -->
-    <div class="main-col">
-        <div class="cart-header fu">
-            <span class="cart-title">MY CART</span>
-            <span class="cart-count" id="cartCount">—</span>
-        </div>
-
-        <div class="item-list" id="itemList"></div>
-
-        <div class="empty-wrap" id="emptyWrap">
-            <div class="empty-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-                     stroke="#9A9A95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-            </div>
-            <div class="empty-title">Your cart is empty</div>
-            <div class="empty-sub">Looks like you haven't added anything yet.</div>
-            <a href="all-products.html" class="empty-cta">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-                SHOP NOW
-            </a>
-        </div>
-
-        <div class="rec-wrap fu d2" id="recWrap">
-            <div class="rec-hd"><span class="rec-hd-title">You May Also Like</span></div>
-            <div class="rec-grid" id="recGrid"></div>
-        </div>
+   </aside>
+  </div><!-- /page --> <!-- MOBILE BOTTOM BAR -->
+  <div class="bottom-bar" id="bottomBar">
+   <div class="bar-all-wrap" onclick="toggleSelectAll()">
+    <div class="cb" id="barAllCb">
+     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+     </svg>
+    </div><span class="bar-all-lbl">All</span>
+   </div>
+   <div class="bar-price-wrap">
+    <div class="bar-total" id="barTotal">
+     $0.00
     </div>
-
-    <!-- DESKTOP SIDEBAR -->
-    <aside class="sidebar fu d1">
-        <div class="sum-card">
-            <p class="sum-sec-title">Order Summary</p>
-
-            <div class="sum-select-row" onclick="toggleSelectAll()">
-                <div class="cb" id="sidebarAllCb">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                         stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                </div>
-                <span class="sum-select-label">Select all items</span>
-                <span class="sum-select-count" id="sidebarSelCount">0 selected</span>
-            </div>
-
-            <div class="sum-row"><span class="sum-lbl">Subtotal</span><span class="sum-val" id="sumSubD">$0.00</span></div>
-            <div class="sum-row"><span class="sum-lbl">Shipping</span><span class="sum-val">FREE</span></div>
-            <hr class="divider" style="margin:10px 0 14px;">
-            <div class="sum-total-row">
-                <span class="sum-total-lbl">Total</span>
-                <span class="sum-total-val" id="sumTotalD">$0.00</span>
-            </div>
-
-            <button class="ck-btn idle" id="ckBtnD" onclick="goCheckout()" disabled>
-                CHECKOUT
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </button>
-            <div class="ck-sub">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Secure checkout
-            </div>
-        </div>
-    </aside>
-
-</div>
-
-<!-- MOBILE BOTTOM BAR -->
-<div class="bottom-bar" id="bottomBar">
-    <div class="bar-all-wrap" onclick="toggleSelectAll()">
-        <div class="cb" id="barAllCb">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                 stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-            </svg>
-        </div>
-        <span class="bar-all-lbl">All</span>
+    <div class="bar-items" id="barItems">
+     0 items selected
     </div>
-    <div class="bar-price-wrap">
-        <div class="bar-total" id="barTotal">$0.00</div>
-        <div class="bar-items" id="barItems">0 items selected</div>
-    </div>
-    <button class="bar-ck" id="barCk" onclick="goCheckout()" disabled>
-        CHECKOUT&thinsp;(<span id="barSelCount">0</span>)
-    </button>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-    <div class="toast-icon-wrap" id="toastIconWrap"></div>
-    <div class="toast-text">
-        <div class="toast-title" id="toastTitle"></div>
-        <div class="toast-sub"  id="toastSub"></div>
-    </div>
-</div>
-
-<script>
-/* ─── price เป็น USD ตรงๆ ไม่มีการหาร ─── */
+   </div><button class="bar-ck" id="barCk" onclick="goCheckout()" disabled> CHECKOUT (<span id="barSelCount">0</span>) </button>
+  </div><!-- TOAST -->
+  <div class="toast" id="toast">
+   <div class="toast-icon" id="toastIcon"></div>
+   <div class="toast-text">
+    <div class="toast-ttl" id="toastTtl"></div>
+    <div class="toast-sub" id="toastSub"></div>
+   </div>
+  </div>
+  <script>
+/* ═══════════════════════════════════════════
+   PRODUCT CATALOG
+   RULE 3: price values are stored as Numbers (not Strings)
+═══════════════════════════════════════════ */
 const PRODUCTS = {
     'oversized-tee-black': {
-        name:'Classic Black Oversized Tee', price:23.94,
-        tag:'BESTSELLER', tagOrange:true, stock:'in-stock',
+        name:'Classic Black Oversized Tee', price: 7.90,
+        tag:'BESTSELLER', tagOrange:true, category:'tops', isNew:false, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}]
+        colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
+        sizes:['S','M','L','XL'], desc:'Crafted from 300GSM premium heavy-weight cotton.',
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-olive': {
-        name:'Military Olive Cargo Pants', price:48.18,
-        tag:'NEW', tagOrange:false, stock:'in-stock',
+        name:'Military Olive Cargo Pants', price: 15.90,
+        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}]
+        colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
+        sizes:['M','L','XL'], desc:'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง',
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-grey': {
-        name:'Stone Grey Pullover Hoodie', price:39.09,
-        tag:'POPULAR', tagOrange:false, stock:'in-stock',
+        name:'Stone Grey Pullover Hoodie', price: 12.90,
+        tag:'POPULAR', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}]
+        colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
+        sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีเทาหิน ผ้า French Terry 380GSM',
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-retro': {
-        name:'Retro Square Sunglasses', price:26.97,
-        tag:'LIMITED', tagOrange:true, stock:'low-stock',
+        name:'Retro Square Sunglasses', price: 8.90,
+        tag:'LIMITED', tagOrange:true, category:'accessories', isNew:true, stock:'low-stock',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}]
+        colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
+        sizes:['One Size'], desc:'แว่นตากันแดดทรงสี่เหลี่ยม เฟรม Acetate เลนส์ UV400',
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
     },
     'oversized-tee-white': {
-        name:'Stone White Oversized Tee', price:23.94,
-        tag:'NEW', tagOrange:false, stock:'in-stock',
+        name:'Stone White Oversized Tee', price: 7.90,
+        tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
-        colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}]
+        colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
+        sizes:['S','M','L','XL'], desc:'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton',
+        specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
     },
     'cargo-pants-black': {
-        name:'Tactical Black Cargo Pants', price:48.18,
-        tag:'NEW', tagOrange:false, stock:'in-stock',
+        name:'Tactical Black Cargo Pants', price: 15.90,
+        tag:'NEW', tagOrange:false, category:'pants', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}]
+        colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
+        sizes:['M','L','XL'], desc:'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง',
+        specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
     },
     'hoodie-navy': {
-        name:'Midnight Navy Pullover Hoodie', price:39.09,
-        tag:'NEW', tagOrange:false, stock:'in-stock',
+        name:'Midnight Navy Pullover Hoodie', price: 12.90,
+        tag:'NEW', tagOrange:false, category:'tops', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}]
+        colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
+        sizes:['S','M','L','XL'], desc:'เสื้อฮู้ดดี้สีกรมท่า ผ้า French Terry 380GSM',
+        specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
     },
     'sunglasses-black': {
-        name:'Classic Black Sunglasses', price:26.97,
-        tag:'NEW', tagOrange:false, stock:'in-stock',
+        name:'Classic Black Sunglasses', price: 8.90,
+        tag:'NEW', tagOrange:false, category:'accessories', isNew:true, stock:'in-stock',
         images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors:[{name:'Glossy Black',hex:'#111111'}]
+        colors:[{name:'Glossy Black',hex:'#111111'}],
+        sizes:['One Size'], desc:'แว่นตากันแดดคลาสสิกสีดำ เฟรม Acetate เลนส์ UV400',
+        specs:{Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'}
     }
 };
 
 const CART_KEY = 'BARDS_CART';
-let cart = [], editMode = false, selected = new Set();
 
-/* BOOT — no skeleton, render immediately */
+/* STATE */
+let cart     = [];
+let editMode = false;
+let selected = new Set();
+
+/* ══════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════ */
 window.onload = function () {
     cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+    // RULE 3: Ensure all cart item prices are Numbers (not Strings)
+    cart = cart.map(item => ({
+        ...item,
+        price: Number(item.price)
+    }));
+
     const buyNowId = sessionStorage.getItem('BUY_NOW_ID');
     if (buyNowId) {
         const idx = cart.findIndex(c => c.id === buyNowId);
         if (idx !== -1) selected.add(idx);
         sessionStorage.removeItem('BUY_NOW_ID');
     }
+
     render();
     buildRec();
 };
 
-/* RENDER */
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
 function render() {
     const hasItems   = cart.length > 0;
     const totalItems = cart.reduce((s,c) => s + c.quantity, 0);
 
-    document.getElementById('cartCount').textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+    document.getElementById('cartCount').textContent = `${totalItems} item${totalItems!==1?'s':''}`;
     document.getElementById('emptyWrap').classList.toggle('show', !hasItems);
     document.getElementById('bottomBar').classList.toggle('show', hasItems);
     document.getElementById('editBtn').style.visibility = hasItems ? 'visible' : 'hidden';
@@ -554,6 +545,7 @@ function render() {
         list.innerHTML = '';
         list.classList.remove('edit-mode');
     }
+
     syncSelectUI();
     updateSummary();
 }
@@ -565,6 +557,9 @@ function patchRow(row, item, idx) {
     const prEl = row.querySelector('.item-price'); if (prEl) prEl.textContent = fmtUSD(item.price * item.quantity);
     const unEl = row.querySelector('.item-unit');  if (unEl) unEl.textContent = item.quantity > 1 ? `${fmtUSD(item.price)} each` : '';
     const qv   = row.querySelector('.q-val');      if (qv)   qv.textContent  = item.quantity;
+    // dim ปุ่ม − เมื่อ qty = 1
+    const minusBtn = row.querySelector('.q-btn');
+    if (minusBtn) minusBtn.style.opacity = item.quantity === 1 ? '0.3' : '1';
 }
 
 function rowHTML(item, idx) {
@@ -573,7 +568,10 @@ function rowHTML(item, idx) {
 <div class="item-row fu${isSel?' selected':''}" data-idx="${idx}" style="animation-delay:${idx*.05}s">
     <div class="item-cb" onclick="toggleItem(${idx})">
         <div class="cb${isSel?' on':''}">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
         </div>
     </div>
     <div class="item-img" onclick="location.href='product.html?id=${item.id}'">
@@ -583,7 +581,10 @@ function rowHTML(item, idx) {
         <div class="item-top">
             <a class="item-name" href="product.html?id=${item.id}">${item.name}</a>
             <button class="item-del" onclick="removeItem(${idx})" title="Remove">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
             </button>
         </div>
         <div class="item-meta">
@@ -605,7 +606,9 @@ function rowHTML(item, idx) {
 </div>`;
 }
 
-/* SELECTION */
+/* ══════════════════════════════════════════
+   SELECTION
+══════════════════════════════════════════ */
 function toggleItem(idx) {
     selected.has(idx) ? selected.delete(idx) : selected.add(idx);
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
@@ -619,23 +622,18 @@ function toggleSelectAll() {
 }
 function syncSelectUI() {
     const total = cart.length, sel = selected.size;
-    [document.getElementById('barAllCb'), document.getElementById('sidebarAllCb')].forEach(cb => {
-        if (!cb) return;
-        cb.classList.remove('on','partial');
-        if (sel > 0 && sel < total) cb.classList.add('partial');
-        if (sel === total && total > 0) cb.classList.add('on');
-    });
-    const barSel = document.getElementById('barSelCount');     if (barSel)  barSel.textContent  = sel;
-    const sidSel = document.getElementById('sidebarSelCount'); if (sidSel)  sidSel.textContent  = `${sel} selected`;
-    const canCk = sel > 0;
-    document.getElementById('barCk').disabled = !canCk;
-    const ckD = document.getElementById('ckBtnD');
-    if (ckD && !ckD.classList.contains('loading')) {
-        ckD.disabled = !canCk;
+    const barCb = document.getElementById('barAllCb');
+    if (barCb) {
+        barCb.classList.remove('on','partial');
+        if (sel > 0 && sel < total) barCb.classList.add('partial');
+        if (sel === total && total > 0) barCb.classList.add('on');
     }
+    setCkState('idle');
 }
 
-/* EDIT MODE */
+/* ══════════════════════════════════════════
+   EDIT MODE
+══════════════════════════════════════════ */
 function toggleEdit() {
     editMode = !editMode;
     const btn = document.getElementById('editBtn');
@@ -644,23 +642,31 @@ function toggleEdit() {
     document.getElementById('itemList').classList.toggle('edit-mode', editMode);
 }
 
-/* CART ACTIONS */
+/* ══════════════════════════════════════════
+   CART ACTIONS
+══════════════════════════════════════════ */
 function changeQty(idx, delta) {
-    cart[idx].quantity = Math.max(1, Math.min(30, cart[idx].quantity + delta));
+    const prev = cart[idx].quantity;
+    cart[idx].quantity = Math.max(1, Math.min(30, prev + delta));
+    if (delta > 0 && prev === 30) { showToast('warn', 'Max quantity', 'Limit is 30 per item'); return; }
     saveCart();
     const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
-    if (row) patchRow(row, cart[idx], idx);
+    if (row) {
+        patchRow(row, cart[idx], idx);
+        // dim ปุ่ม − เมื่อ qty = 1
+        const minusBtn = row.querySelector('.q-btn');
+        if (minusBtn) minusBtn.style.opacity = cart[idx].quantity === 1 ? '0.3' : '1';
+    }
     const total = cart.reduce((s,c) => s + c.quantity, 0);
-    document.getElementById('cartCount').textContent = `${total} item${total !== 1 ? 's' : ''}`;
+    document.getElementById('cartCount').textContent = `${total} item${total!==1?'s':''}`;
     updateSummary();
 }
-
 function removeItem(idx) {
-    const itemName = cart[idx]?.name || 'Item';
-    const row = document.querySelector(`.item-row[data-idx="${idx}"]`);
+    const name = cart[idx]?.name || 'Item';
+    const row  = document.querySelector(`.item-row[data-idx="${idx}"]`);
     const doRemove = () => {
         const next = new Set();
-        selected.forEach(i => { if (i < idx) next.add(i); else if (i > idx) next.add(i-1); });
+        selected.forEach(i => { if(i<idx) next.add(i); else if(i>idx) next.add(i-1); });
         selected.clear(); next.forEach(i => selected.add(i));
         cart.splice(idx, 1); saveCart();
         if (!cart.length && editMode) {
@@ -669,7 +675,7 @@ function removeItem(idx) {
             document.getElementById('editBtn').classList.remove('in-edit');
         }
         render(); buildRec();
-        showToast('ok', 'Removed from cart', itemName.split(' ').slice(0,3).join(' '));
+        showToast('ok', 'Removed', name);
     };
     if (row) {
         row.style.transition = 'opacity .18s,transform .18s';
@@ -678,53 +684,90 @@ function removeItem(idx) {
     } else doRemove();
 }
 
-/* SUMMARY */
+/* ══════════════════════════════════════════
+   SUMMARY
+   RULE 2: renamed subtotalTHB → subtotal, totalTHB → total
+   RULE 4: use fmtUSD for all display
+══════════════════════════════════════════ */
 function updateSummary() {
     const items    = selected.size > 0 ? [...selected].map(i => cart[i]) : [];
-    const subtotal = items.reduce((s,c) => s + c.price * c.quantity, 0);
+    const subtotal = items.reduce((s,c) => s + Number(c.price) * c.quantity, 0);
     const selQty   = items.reduce((s,c) => s + c.quantity, 0);
-    const subEl    = document.getElementById('sumSubD');   if (subEl)   subEl.textContent   = fmtUSD(subtotal);
-    const totalEl  = document.getElementById('sumTotalD'); if (totalEl) totalEl.textContent  = fmtUSD(subtotal);
-    const barTot   = document.getElementById('barTotal');  if (barTot)  barTot.textContent   = fmtUSD(subtotal);
-    const barItm   = document.getElementById('barItems');  if (barItm)  barItm.textContent   = `${selQty} item${selQty !== 1 ? 's' : ''} selected`;
+    const total    = subtotal;
+
+    document.getElementById('sumSubD').textContent   = fmtUSD(subtotal);
+    document.getElementById('sumTotalD').textContent = fmtUSD(total);
+    document.getElementById('barTotal').textContent  = fmtUSD(total);
+    document.getElementById('barItems').textContent  = `${selQty} item${selQty!==1?'s':''} selected`;
 }
 
-/* CHECKOUT — spinner identical to product.html setConfirm('loading') */
+/* ══════════════════════════════════════════
+   CHECKOUT
+══════════════════════════════════════════ */
 let _ckLock = false;
-const SPIN_SVG = `<svg style="animation:spin .8s linear infinite" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+
+// reset lock เมื่อ user กด Back กลับมาจาก checkout
+window.addEventListener('pageshow', () => {
+    _ckLock = false;
+    setCkState('idle');
+});
+
+const SPIN_SVG    = `<svg style="animation:spin .8s linear infinite" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+const CHECK_SVG   = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const ARROW_SVG   = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+
+function setCkState(state) {
+    const dsk = document.getElementById('ckBtnD');
+    const bar = document.getElementById('barCk');
+    const sel = selected.size;
+
+    if (dsk) {
+        dsk.disabled = state !== 'idle' || sel === 0;
+        dsk.className = `ck-btn ${state !== 'idle' ? state : ''}`.trim();
+        if (state === 'idle')    dsk.innerHTML = `CHECKOUT ${ARROW_SVG}`;
+        if (state === 'loading') dsk.innerHTML = `${SPIN_SVG} PROCESSING`;
+        if (state === 'success') dsk.innerHTML = `${CHECK_SVG} CONFIRMED`;
+    }
+    if (bar) {
+        bar.disabled = state !== 'idle' || sel === 0;
+        bar.className = `bar-ck ${state !== 'idle' ? state : ''}`.trim();
+        if (state === 'idle')    bar.innerHTML = `CHECKOUT (<span id="barSelCount">${sel}</span>)`;
+        if (state === 'loading') bar.innerHTML = `${SPIN_SVG}`;
+        if (state === 'success') bar.innerHTML = `${CHECK_SVG}`;
+    }
+}
 
 function goCheckout() {
     if (!selected.size || _ckLock) return;
     _ckLock = true;
-    sessionStorage.setItem('CHECKOUT_ITEMS', JSON.stringify([...selected].map(i => cart[i])));
 
-    /* Desktop button */
-    const dskBtn = document.getElementById('ckBtnD');
-    if (dskBtn) {
-        dskBtn.disabled = true;
-        dskBtn.className = 'ck-btn loading';
-        dskBtn.innerHTML = `${SPIN_SVG}<span style="letter-spacing:0">Processing…</span>`;
-    }
-    /* Mobile button */
-    const barBtn = document.getElementById('barCk');
-    if (barBtn) {
-        barBtn.disabled = true;
-        barBtn.innerHTML = `${SPIN_SVG} Processing…`;
-        barBtn.style.opacity = '.7';
-        barBtn.style.letterSpacing = '0';
-    }
-    setTimeout(() => { location.href = 'checkout.html'; }, 380);
+    sessionStorage.setItem('CHECKOUT_ITEMS',   JSON.stringify([...selected].map(i => cart[i])));
+    sessionStorage.setItem('CHECKOUT_SHIPFEE', '0');
+
+    setCkState('loading');
+    setTimeout(() => {
+        setCkState('success');
+        setTimeout(() => { location.href = 'checkout.html'; }, 480);
+    }, 680);
 }
 
-/* YOU MAY ALSO LIKE */
+/* ══════════════════════════════════════════
+   YOU MAY ALSO LIKE
+══════════════════════════════════════════ */
 function buildRec() {
     const inCart     = new Set(cart.map(c => c.id));
     const candidates = Object.entries(PRODUCTS).filter(([id]) => !inCart.has(id));
-    const wrap = document.getElementById('recWrap');
-    const grid = document.getElementById('recGrid');
+    const wrap       = document.getElementById('recWrap');
+    const grid       = document.getElementById('recGrid');
     if (!wrap || !grid) return;
-    if (!candidates.length) { wrap.style.display = 'none'; return; }
+
+    if (!candidates.length) {
+        wrap.style.display = 'none';
+        return;
+    }
     wrap.style.display = '';
+
+    // RULE 4: use fmtUSD for rec card price display
     grid.innerHTML = candidates.map(([id, p]) => {
         const dots     = p.colors.map(c => `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
         const lowStock = p.stock === 'low-stock' ? `<div class="p-tag low">LOW STOCK</div>` : '';
@@ -746,28 +789,30 @@ function buildRec() {
     }).join('');
 }
 
-/* UTILS */
-/* ไม่ใช้ toLocaleString เพราะมัน format comma — ใช้ toFixed แทน = $1290.00 */
+/* ══════════════════════════════════════════
+   UTILS
+   RULE 1: fmtUSD — ใช้ toLocaleString แทน manual toFixed
+══════════════════════════════════════════ */
 function fmtUSD(num) {
     return '$' + Number(num).toFixed(2);
 }
 function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
 
-/* TOAST — identical to product.html */
-const SVG_CHECK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-const SVG_WARN  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+const IC_OK   = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const IC_WARN = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
 let _tt;
 function showToast(type, title, sub) {
-    const wrap = document.getElementById('toastIconWrap');
-    wrap.className = `toast-icon-wrap ${type === 'warn' ? 'warn' : 'success'}`;
-    wrap.innerHTML = type === 'warn' ? SVG_WARN : SVG_CHECK;
-    document.getElementById('toastTitle').textContent = title;
-    document.getElementById('toastSub').textContent   = sub || '';
-    const t = document.getElementById('toast');
-    t.classList.add('on');
-    clearTimeout(_tt);
-    _tt = setTimeout(() => t.classList.remove('on'), 2800);
+    const ic = document.getElementById('toastIcon');
+    ic.className = `toast-icon ${type==='warn'?'warn':'ok'}`;
+    ic.innerHTML = type==='warn' ? IC_WARN : IC_OK;
+    document.getElementById('toastTtl').textContent = title;
+    document.getElementById('toastSub').textContent = sub || '';
+    const t = document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2600);
 }
 </script>
-</body>
+ </body>
 </html>
