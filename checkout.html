@@ -851,7 +851,7 @@ async function submitPayment() {
         const total = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
 
         // ยิง API ไปยัง Supabase (ใส่ URL ของคุณที่นี่)
-        const res = await fetch("YOUR_SUPABASE_FUNCTION_URL/create-order", {
+        const res = await fetch("https://didnquegkwiubxbkvilv.supabase.co/functions/v1/create-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
