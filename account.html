@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -22,21 +22,6 @@
             --radius-sm: 10px;
             --nav-h:     60px;
         }
-
-        [data-theme="dark"] {
-            --black:    #FAFAFA;
-            --white:    #0A0A0A;
-            --gray-50:  #1A1A1A;
-            --gray-100: #222222;
-            --gray-200: #333333;
-            --gray-300: #555555;
-            --gray-400: #888888;
-            --gray-600: #AAAAAA;
-            --orange:   #FF6B35;
-            --red:      #FF4444;
-            --green:    #4ADE80;
-        }
-
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         html { scroll-behavior:smooth; }
         body {
@@ -45,7 +30,6 @@
             color:var(--black);
             overscroll-behavior:none;
             padding-bottom:120px;
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .nav {
@@ -56,11 +40,6 @@
             background:rgba(250,250,250,.9);
             backdrop-filter:blur(18px) saturate(160%);
             -webkit-backdrop-filter:blur(18px) saturate(160%);
-            border-bottom:1px solid var(--gray-200);
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-        [data-theme="dark"] .nav {
-            background:rgba(10,10,10,.9);
             border-bottom:1px solid var(--gray-200);
         }
         .nav-left  { display:flex; align-items:center; gap:12px; }
@@ -173,6 +152,141 @@
         }
         .see-all:active { color:var(--black); }
 
+        .order-list { display:flex; flex-direction:column; gap:10px; }
+        .order-card {
+            background:var(--white); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); overflow:hidden;
+            transition:transform .18s, box-shadow .18s; cursor:pointer;
+        }
+        .order-card:active { transform:scale(.985); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+        .order-card.on { border-color:var(--black); }
+        .order-top {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:13px 14px 11px;
+        }
+        .order-id {
+            font-family:'DM Mono',monospace; font-size:11px; font-weight:500;
+            color:var(--gray-400); letter-spacing:.5px;
+        }
+        .order-status {
+            font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+            padding:3px 9px; border-radius:20px;
+        }
+        .status-delivered { background:#DCFCE7; color:var(--green); }
+        .status-shipped   { background:#DBEAFE; color:#2563EB; }
+        .status-pending   { background:#FEF3C7; color:#B45309; }
+        .status-cancelled { background:#FEE2E2; color:var(--red); }
+
+        .order-mid {
+            display:flex; gap:12px; padding:0 14px 12px;
+            align-items:center;
+        }
+        .order-thumb {
+            width:48px; height:48px; border-radius:var(--radius-sm);
+            object-fit:cover; border:1px solid var(--gray-200); flex-shrink:0;
+        }
+        .order-details { flex:1; min-width:0; }
+        .order-name {
+            font-size:13px; font-weight:600; line-height:1.35;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .order-meta { font-size:11px; color:var(--gray-400); margin-top:2px; }
+        .order-price {
+            font-family:'DM Mono',monospace; font-size:14px; font-weight:500;
+            color:var(--black); white-space:nowrap;
+        }
+
+        .order-expand {
+            max-height:0; overflow:hidden;
+            transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .25s;
+            opacity:0; border-top:1px solid transparent;
+        }
+        .order-expand.open {
+            max-height:400px; opacity:1;
+            border-top-color:var(--gray-200);
+        }
+        .order-expand-inner { padding:14px; }
+        .order-track {
+            display:flex; align-items:center; gap:6px; margin-bottom:14px;
+        }
+        .track-step {
+            display:flex; flex-direction:column; align-items:center; gap:5px;
+            flex:1;
+        }
+        .track-dot {
+            width:10px; height:10px; border-radius:50%;
+            background:var(--gray-200); position:relative;
+        }
+        .track-dot.done { background:var(--green); }
+        .track-dot.done::after {
+            content:''; position:absolute; inset:-3px; border-radius:50%;
+            border:1.5px solid var(--green); opacity:.35;
+        }
+        .track-dot.current { background:var(--orange); }
+        .track-line {
+            flex:1; height:2px; background:var(--gray-200); border-radius:1px;
+        }
+        .track-line.done { background:var(--green); }
+        .track-label {
+            font-size:8px; font-weight:700; letter-spacing:.8px;
+            text-transform:uppercase; color:var(--gray-400);
+        }
+        .track-step.done .track-label { color:var(--green); }
+        .track-step.current .track-label { color:var(--orange); }
+
+        .order-actions { display:flex; gap:8px; }
+        .order-btn {
+            flex:1; height:38px; border-radius:var(--radius-sm);
+            font-size:12px; font-weight:600; cursor:pointer;
+            border:none; display:flex; align-items:center; justify-content:center; gap:5px;
+            transition:opacity .18s, transform .12s;
+        }
+        .order-btn:active { opacity:.78; transform:scale(.97); }
+        .order-btn.primary { background:var(--black); color:#fff; }
+        .order-btn.secondary { background:var(--gray-100); color:var(--black); border:1.5px solid var(--gray-200); }
+
+        .wish-scroll {
+            overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+            padding:0 18px 4px;
+        }
+        .wish-scroll::-webkit-scrollbar { display:none; }
+        .wish-row { display:flex; gap:10px; width:max-content; }
+        .wish-card {
+            width:calc((100vw - 46px) / 2.3); flex-shrink:0;
+            background:var(--white); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); overflow:hidden;
+            cursor:pointer; text-decoration:none; color:inherit;
+            transition:transform .18s, box-shadow .18s;
+            position:relative;
+        }
+        .wish-card:active { transform:scale(.975); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+        .wish-img {
+            aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative;
+        }
+        .wish-img img {
+            width:100%; height:100%; object-fit:cover; display:block;
+            transition:transform .38s ease;
+        }
+        .wish-card:active .wish-img img { transform:scale(1.04); }
+        .wish-remove {
+            position:absolute; top:8px; right:8px; z-index:2;
+            width:28px; height:28px; border-radius:50%;
+            background:rgba(255,255,255,.9); border:none;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:transform .15s,background .15s;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+        }
+        .wish-remove:active { transform:scale(.85); background:#FEE2E2; }
+        .wish-body { padding:10px 11px 12px; }
+        .wish-name {
+            font-size:12px; font-weight:600; line-height:1.35;
+            letter-spacing:-.1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .wish-price {
+            font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
+            color:var(--red); margin-top:5px;
+        }
+
         .settings-list { display:flex; flex-direction:column; gap:6px; }
         .setting-row {
             display:flex; align-items:center; justify-content:space-between;
@@ -250,19 +364,6 @@
         }
         .add-btn:active { border-color:var(--black); color:var(--black); background:var(--gray-50); transform:scale(.98); }
 
-        .sign-out-section {
-            padding:0 18px; max-width:800px; margin:0 auto;
-        }
-        .sign-out-btn {
-            width:100%; height:52px; border-radius:var(--radius-sm);
-            background:var(--red); color:#fff; border:none;
-            font-family:'Bebas Neue'; font-size:18px; letter-spacing:2.5px;
-            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-            transition:background .25s, transform .12s;
-            margin-top:8px;
-        }
-        .sign-out-btn:active { opacity:.85; transform:scale(.98); }
-
         .mask {
             position:fixed; inset:0; z-index:300;
             background:rgba(10,10,10,.55); display:none; opacity:0;
@@ -279,7 +380,7 @@
         }
         .sheet.on { bottom:0; }
         .sheet-handle { width:38px; height:4px; border-radius:2px; background:var(--gray-200); margin:10px auto 20px; }
-        .sheet-title { font-family:'Bebas Neue'; font-size:19px; letter-spacing:2px; margin-bottom:18px; color:var(--black); }
+        .sheet-title { font-family:'Bebas Neue'; font-size:19px; letter-spacing:2px; margin-bottom:18px; }
         .form-group { margin-bottom:14px; }
         .form-label { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray-400); margin-bottom:6px; display:block; }
         .form-input {
@@ -343,23 +444,6 @@
         .empty-icon { font-size:36px; margin-bottom:12px; }
         .empty-title { font-size:15px; font-weight:600; }
         .empty-sub { font-size:12px; color:var(--gray-400); margin-top:5px; line-height:1.65; }
-
-        .footer-links {
-            text-align:center; margin-top:24px; padding:16px;
-            max-width:800px; margin-left:auto; margin-right:auto;
-        }
-        .footer-links a {
-            color:var(--gray-400); text-decoration:none; font-size:12px;
-            transition:color .18s;
-        }
-        .footer-links a:hover { color:var(--black); }
-        .footer-links .separator {
-            color:var(--gray-300); margin:0 8px;
-        }
-        .version {
-            text-align:center; color:var(--gray-400); font-size:11px;
-            margin-top:4px; font-family:'DM Mono',monospace;
-        }
     </style>
 </head>
 <body>
@@ -406,13 +490,17 @@
         </div>
         <div class="profile-email" id="profileEmail">user@example.com</div>
         <div class="profile-meta-row">
-            <div class="profile-meta-chip"><div class="dot"></div> Active</div>
-            <div class="profile-meta-chip" id="joinDate">11/05/26</div>
+            <div class="profile-meta-chip"><div class="dot"></div> Member</div>
+            <div class="profile-meta-chip" id="joinDate">Joined Jan 2025</div>
         </div>
     </div>
 </div>
 
 <div class="stats-strip fu d1">
+    <div class="stat-tile" onclick="scrollToSection('ordersSection')">
+        <div class="stat-val" id="statOrders">0</div>
+        <div class="stat-label">Orders</div>
+    </div>
     <div class="stat-tile" onclick="scrollToSection('wishlistSection')">
         <div class="stat-val" id="statWishlist">0</div>
         <div class="stat-label">Wishlist</div>
@@ -421,10 +509,28 @@
         <div class="stat-val" id="statAddresses">0</div>
         <div class="stat-label">Addresses</div>
     </div>
+    <div class="stat-tile" onclick="scrollToSection('settingsSection')">
+        <div class="stat-val" id="statPoints">0</div>
+        <div class="stat-label">Points</div>
+    </div>
 </div>
 
 <div class="divider"></div>
-<div id="wishlistSection" class="fu d2">
+<div class="section fu d2" id="ordersSection">
+    <div class="sec-hd">
+        <span class="sec-hd-title">My Orders</span>
+        <button class="see-all" onclick="showToast('Info','All orders page coming soon')">See all →</button>
+    </div>
+    <div class="order-list" id="orderList"></div>
+    <div class="empty" id="emptyOrders">
+        <div class="empty-icon">📦</div>
+        <div class="empty-title">ยังไม่มีคำสั่งซื้อ</div>
+        <div class="empty-sub">เริ่มช้อปปิ้งแล้วคำสั่งซื้อจะปรากฏที่นี่</div>
+    </div>
+</div>
+
+<div class="divider"></div>
+<div id="wishlistSection" class="fu d3">
     <div class="section">
         <div class="sec-hd">
             <span class="sec-hd-title">Wishlist</span>
@@ -436,13 +542,13 @@
     </div>
     <div class="empty" id="emptyWishlist" style="padding:30px 20px;">
         <div class="empty-icon">❤️</div>
-        <div class="empty-title">Wishlist is empty</div>
-        <div class="empty-sub">Tap the heart icon on products you love to save them here</div>
+        <div class="empty-title">Wishlist ว่างเปล่า</div>
+        <div class="empty-sub">กด ❤️ บนสินค้าที่ชอบเพื่อบันทึกไว้ที่นี่</div>
     </div>
 </div>
 
 <div class="divider"></div>
-<div class="section fu d3" id="addressesSection">
+<div class="section fu d4" id="addressesSection">
     <div class="sec-hd">
         <span class="sec-hd-title">Addresses</span>
     </div>
@@ -453,42 +559,20 @@
     </button>
     <div class="empty" id="emptyAddresses">
         <div class="empty-icon">📍</div>
-        <div class="empty-title">No addresses yet</div>
-        <div class="empty-sub">Add a shipping address for faster checkout next time</div>
+        <div class="empty-title">ยังไม่มีที่อยู่</div>
+        <div class="empty-sub">เพิ่มที่อยู่จัดส่งเพื่อความสะดวกในการสั่งซื้อครั้งต่อไป</div>
     </div>
 </div>
 
 <div class="divider"></div>
-<div class="section fu d4" id="settingsSection">
+<div class="section fu d5" id="settingsSection">
     <div class="sec-hd">
         <span class="sec-hd-title">Settings</span>
     </div>
     <div class="settings-list" id="settingsList"></div>
 </div>
 
-<div class="divider"></div>
-<div class="section fu d5" id="legalSection">
-    <div class="sec-hd">
-        <span class="sec-hd-title">Legal</span>
-    </div>
-    <div class="settings-list" id="legalList"></div>
-</div>
-
 <div style="height:32px"></div>
-
-<div class="sign-out-section">
-    <button class="sign-out-btn" onclick="signOut()">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        SIGN OUT
-    </button>
-</div>
-
-<div class="footer-links">
-    <a href="#" onclick="showToast('info','Help','Support page coming soon')">Help Center</a>
-    <span class="separator">|</span>
-    <a href="#" onclick="showToast('info','Contact','support@bards.co')">Contact Us</a>
-</div>
-<div class="version">v2.1.0</div>
 
 <div class="mask" id="mask" onclick="hideSheet()"></div>
 <div class="sheet" id="addrSheet">
@@ -500,20 +584,20 @@
     </div>
     <div class="form-group">
         <label class="form-label">Phone</label>
-        <input type="tel" class="form-input" id="addrPhone" placeholder="+1 (555) 000-0000">
+        <input type="tel" class="form-input" id="addrPhone" placeholder="+66 8x xxx xxxx">
     </div>
     <div class="form-group">
         <label class="form-label">Address</label>
-        <textarea class="form-textarea" id="addrLine" placeholder="123 Main Street, Apt 4B..."></textarea>
+        <textarea class="form-textarea" id="addrLine" placeholder="123 Sukhumvit Rd, Khlong Toei..."></textarea>
     </div>
     <div class="form-row">
         <div class="form-group">
             <label class="form-label">City</label>
-            <input type="text" class="form-input" id="addrCity" placeholder="New York">
+            <input type="text" class="form-input" id="addrCity" placeholder="Bangkok">
         </div>
         <div class="form-group">
             <label class="form-label">Postal Code</label>
-            <input type="text" class="form-input" id="addrZip" placeholder="10001">
+            <input type="text" class="form-input" id="addrZip" placeholder="10110">
         </div>
     </div>
     <button class="confirm-btn idle" id="addrConfirmBtn" onclick="saveAddress()">SAVE ADDRESS</button>
@@ -576,8 +660,10 @@ const S = {
         name: 'Alex Mercer',
         email: 'alex@bards.co',
         avatar: '',
-        joined: new Date().toISOString()
+        joined: new Date().toISOString(),
+        points: 240
     },
+    orders: JSON.parse(localStorage.getItem('BARDS_ORDERS') || '[]'),
     favs: JSON.parse(localStorage.getItem('NW_FAVS') || '[]'),
     addresses: JSON.parse(localStorage.getItem('BARDS_ADDRESSES') || '[]'),
     settings: JSON.parse(localStorage.getItem('BARDS_SETTINGS') || 'null') || {
@@ -588,50 +674,47 @@ const S = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    initTheme();
+document.addEventListener('DOMContentLoaded', () => {
     initProfile();
+    renderOrders();
     renderWishlist();
     renderAddresses();
     renderSettings();
-    renderLegal();
     updateStats();
     updateBadge();
 });
 
-function initTheme() {
-    var savedTheme = S.settings.darkMode ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-}
-
 function initProfile() {
-    var nameEl = document.getElementById('profileNameText');
-    var emailEl = document.getElementById('profileEmail');
-    var avatarEl = document.getElementById('profileAvatar');
-    var joinEl = document.getElementById('joinDate');
+    const nameEl = document.getElementById('profileNameText');
+    const emailEl = document.getElementById('profileEmail');
+    const avatarEl = document.getElementById('profileAvatar');
+    const joinEl = document.getElementById('joinDate');
 
     nameEl.innerText = S.profile.name;
     emailEl.innerText = S.profile.email;
     if (S.profile.avatar) avatarEl.src = S.profile.avatar;
-    joinEl.innerText = '11/05/26';
+
+    const d = new Date(S.profile.joined);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    joinEl.innerText = 'Joined ' + months[d.getMonth()] + ' ' + d.getFullYear();
 }
 
 function editName() {
-    var wrap = document.getElementById('profileNameWrap');
-    var current = S.profile.name;
-    wrap.innerHTML = '<input type="text" id="nameInput" value="' + current + '" onblur="saveName()" onkeydown="if(event.key==='Enter')saveName()">';
+    const wrap = document.getElementById('profileNameWrap');
+    const current = S.profile.name;
+    wrap.innerHTML = '<input type="text" id="nameInput" value="' + current + '" onblur="saveName()" onkeydown="if(event.key===\'Enter\')saveName()">';
     document.getElementById('nameInput').focus();
 }
 
 function saveName() {
-    var input = document.getElementById('nameInput');
+    const input = document.getElementById('nameInput');
     if (!input) return;
-    var val = input.value.trim();
+    const val = input.value.trim();
     if (val) {
         S.profile.name = val;
         localStorage.setItem('BARDS_PROFILE', JSON.stringify(S.profile));
     }
-    var wrap = document.getElementById('profileNameWrap');
+    const wrap = document.getElementById('profileNameWrap');
     wrap.innerHTML = '<span id="profileNameText">' + S.profile.name + '</span>' +
         '<button class="icon-btn" style="width:28px;height:28px;" onclick="editName()" id="editNameBtn">' +
         '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a2.5 2.5 0 0 0-3.5-3.5L3 5v3h3l4.5-4.5z"/><path d="M1 15v2a2 2 0 0 0 2 2h2"/></svg>' +
@@ -644,10 +727,10 @@ function triggerAvatar() {
 }
 
 function handleAvatar(input) {
-    var file = input.files[0];
+    const file = input.files[0];
     if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(e) {
+    const reader = new FileReader();
+    reader.onload = e => {
         S.profile.avatar = e.target.result;
         localStorage.setItem('BARDS_PROFILE', JSON.stringify(S.profile));
         document.getElementById('profileAvatar').src = e.target.result;
@@ -657,17 +740,114 @@ function handleAvatar(input) {
 }
 
 function updateStats() {
+    document.getElementById('statOrders').innerText = S.orders.length;
     document.getElementById('statWishlist').innerText = S.favs.length;
     document.getElementById('statAddresses').innerText = S.addresses.length;
+    document.getElementById('statPoints').innerText = S.profile.points;
 }
 
 function scrollToSection(id) {
     document.getElementById(id).scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
+function renderOrders() {
+    const list = document.getElementById('orderList');
+    const empty = document.getElementById('emptyOrders');
+
+    if (!S.orders.length) {
+        list.innerHTML = '';
+        empty.classList.add('show');
+        return;
+    }
+    empty.classList.remove('show');
+    list.innerHTML = S.orders.map((o, i) => orderHTML(o, i)).join('');
+}
+
+function orderHTML(o, idx) {
+    const statusMap = {
+        delivered: ['status-delivered','Delivered'],
+        shipped:   ['status-shipped','Shipped'],
+        pending:   ['status-pending','Pending'],
+        cancelled: ['status-cancelled','Cancelled']
+    };
+    const st = statusMap[o.status] || statusMap.pending;
+    const cls = st[0], label = st[1];
+    const priceStr = '$' + (o.total/33).toFixed(2);
+    const thumb = o.items[0]?.image || 'https://via.placeholder.com/100/0A0A0A?text=?';
+    const itemCount = o.items.length;
+    const extra = itemCount > 1 ? ' +' + (itemCount-1) + ' more' : '';
+
+    const trackSteps = ['Ordered','Packed','Shipped','Delivered'];
+    const stepIdx = { pending:0, shipped:2, delivered:3, cancelled:-1 }[o.status] || 0;
+
+    let trackHTML = '';
+    for (let i = 0; i < trackSteps.length; i++) {
+        const done = i <= stepIdx && stepIdx >= 0;
+        const current = i === stepIdx && stepIdx >= 0;
+        const dotCls = current ? 'current' : (done ? 'done' : '');
+        const stepCls = current ? 'current' : (done ? 'done' : '');
+        const lineCls = i < trackSteps.length - 1 ? (i < stepIdx ? 'done' : '') : '';
+        trackHTML += '<div class="track-step ' + stepCls + '">' +
+            '<div class="track-dot ' + dotCls + '"></div>' +
+            '<span class="track-label">' + trackSteps[i] + '</span></div>';
+        if (i < trackSteps.length - 1) {
+            trackHTML += '<div class="track-line ' + lineCls + '"></div>';
+        }
+    }
+
+    return '<div class="order-card" id="order-' + idx + '" onclick="toggleOrder(' + idx + ')">' +
+        '<div class="order-top">' +
+        '<span class="order-id">#' + o.id + '</span>' +
+        '<span class="order-status ' + cls + '">' + label + '</span></div>' +
+        '<div class="order-mid">' +
+        '<img src="' + thumb + '" class="order-thumb" alt="">' +
+        '<div class="order-details">' +
+        '<div class="order-name">' + (o.items[0]?.name || 'Order') + extra + '</div>' +
+        '<div class="order-meta">' + o.date + ' · ' + itemCount + ' item' + (itemCount!==1?'s':'') + '</div></div>' +
+        '<div class="order-price">' + priceStr + '</div></div>' +
+        '<div class="order-expand" id="orderExpand-' + idx + '">' +
+        '<div class="order-expand-inner">' +
+        '<div class="order-track">' + trackHTML + '</div>' +
+        '<div class="order-actions">' +
+        '<button class="order-btn primary" onclick="event.stopPropagation();reorder(' + idx + ')">' +
+        '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 1 4 1"/><path d="M1 1l3.5 3.5A7 7 0 0 1 16 8a7 7 0 0 1-7 7 7 7 0 0 1-7-7"/></svg>' +
+        'Reorder</button>' +
+        '<button class="order-btn secondary" onclick="event.stopPropagation();showToast(\'info\',\'Tracking\',\'Tracking number: ' + (o.tracking||'N/A') + '\')">' +
+        '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>' +
+        'Track</button></div></div></div></div>';
+}
+
+function toggleOrder(idx) {
+    const card = document.getElementById('order-' + idx);
+    const expand = document.getElementById('orderExpand-' + idx);
+    const isOpen = expand.classList.contains('open');
+
+    document.querySelectorAll('.order-expand.open').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.order-card.on').forEach(el => el.classList.remove('on'));
+
+    if (!isOpen) {
+        expand.classList.add('open');
+        card.classList.add('on');
+    }
+}
+
+function reorder(idx) {
+    const order = S.orders[idx];
+    if (!order) return;
+    const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
+    order.items.forEach(item => {
+        const existing = cart.find(c => c.id === item.id && c.color === item.color && c.size === item.size);
+        if (existing) existing.quantity += item.quantity;
+        else cart.push({ ...item });
+    });
+    localStorage.setItem('BARDS_CART', JSON.stringify(cart));
+    updateBadge();
+    showToast('ok', 'Added to cart', order.items.length + ' item(s) from order #' + order.id);
+}
+
 function renderWishlist() {
-    var row = document.getElementById('wishRow');
-    var empty = document.getElementById('emptyWishlist');
+    const row = document.getElementById('wishRow');
+    const empty = document.getElementById('emptyWishlist');
 
     if (!S.favs.length) {
         row.innerHTML = '';
@@ -676,14 +856,14 @@ function renderWishlist() {
     }
     empty.classList.remove('show');
 
-    row.innerHTML = S.favs.map(function(id) {
-        var p = PRODUCTS[id];
+    row.innerHTML = S.favs.map(id => {
+        const p = PRODUCTS[id];
         if (!p) return '';
-        var priceStr = '$' + (p.price/33).toFixed(2);
+        const priceStr = '$' + (p.price/33).toFixed(2);
         return '<div class="wish-card">' +
             '<div class="wish-img">' +
             '<img src="' + p.images[0] + '" alt="' + p.name + '" loading="lazy">' +
-            '<button class="wish-remove" onclick="removeFav('' + id + '',this)" aria-label="Remove">' +
+            '<button class="wish-remove" onclick="removeFav(\'' + id + '\',this)" aria-label="Remove">' +
             '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>' +
             '</button></div>' +
             '<a href="product.html?id=' + id + '" style="text-decoration:none;color:inherit;">' +
@@ -695,8 +875,8 @@ function renderWishlist() {
 
 function removeFav(id, btn) {
     btn.closest('.wish-card').style.transform = 'scale(.9) opacity(0)';
-    setTimeout(function() {
-        var idx = S.favs.indexOf(id);
+    setTimeout(() => {
+        const idx = S.favs.indexOf(id);
         if (idx > -1) {
             S.favs.splice(idx, 1);
             localStorage.setItem('NW_FAVS', JSON.stringify(S.favs));
@@ -708,8 +888,8 @@ function removeFav(id, btn) {
 }
 
 function renderAddresses() {
-    var list = document.getElementById('addrList');
-    var empty = document.getElementById('emptyAddresses');
+    const list = document.getElementById('addrList');
+    const empty = document.getElementById('emptyAddresses');
 
     if (!S.addresses.length) {
         list.innerHTML = '';
@@ -718,7 +898,7 @@ function renderAddresses() {
     }
     empty.classList.remove('show');
 
-    list.innerHTML = S.addresses.map(function(a, i) {
+    list.innerHTML = S.addresses.map((a, i) => {
         return '<div class="addr-card ' + (a.default?'default':'') + '" onclick="setDefaultAddr(' + i + ')">' +
             (a.default?'<span class="addr-tag">Default</span>':'') +
             '<div class="addr-name">' + a.name + '</div>' +
@@ -739,7 +919,7 @@ function openAddrSheet() {
     document.getElementById('addrCity').value = '';
     document.getElementById('addrZip').value = '';
     document.getElementById('mask').style.display = 'block';
-    requestAnimationFrame(function() {
+    requestAnimationFrame(() => {
         document.getElementById('mask').classList.add('on');
         document.getElementById('addrSheet').classList.add('on');
     });
@@ -748,22 +928,22 @@ function openAddrSheet() {
 function hideSheet() {
     document.getElementById('addrSheet').classList.remove('on');
     document.getElementById('mask').classList.remove('on');
-    setTimeout(function() { document.getElementById('mask').style.display = 'none'; }, 380);
+    setTimeout(() => document.getElementById('mask').style.display = 'none', 380);
 }
 
 function saveAddress() {
-    var name = document.getElementById('addrName').value.trim();
-    var phone = document.getElementById('addrPhone').value.trim();
-    var line = document.getElementById('addrLine').value.trim();
-    var city = document.getElementById('addrCity').value.trim();
-    var zip = document.getElementById('addrZip').value.trim();
+    const name = document.getElementById('addrName').value.trim();
+    const phone = document.getElementById('addrPhone').value.trim();
+    const line = document.getElementById('addrLine').value.trim();
+    const city = document.getElementById('addrCity').value.trim();
+    const zip = document.getElementById('addrZip').value.trim();
 
     if (!name || !phone || !line || !city || !zip) {
         showToast('warn', 'Missing info', 'Please fill in all fields');
         return;
     }
 
-    var addr = { name: name, phone: phone, line: line, city: city, zip: zip, default: S.addresses.length === 0 };
+    const addr = { name, phone, line, city, zip, default: S.addresses.length === 0 };
     S.addresses.push(addr);
     localStorage.setItem('BARDS_ADDRESSES', JSON.stringify(S.addresses));
 
@@ -774,7 +954,7 @@ function saveAddress() {
 }
 
 function setDefaultAddr(idx) {
-    S.addresses.forEach(function(a, i) { a.default = (i === idx); });
+    S.addresses.forEach((a, i) => a.default = (i === idx));
     localStorage.setItem('BARDS_ADDRESSES', JSON.stringify(S.addresses));
     renderAddresses();
     showToast('ok', 'Default updated', S.addresses[idx].name);
@@ -790,7 +970,7 @@ function deleteAddr(idx) {
 }
 
 function editAddr(idx) {
-    var a = S.addresses[idx];
+    const a = S.addresses[idx];
     document.getElementById('addrName').value = a.name;
     document.getElementById('addrPhone').value = a.phone;
     document.getElementById('addrLine').value = a.line;
@@ -801,8 +981,8 @@ function editAddr(idx) {
 }
 
 function renderSettings() {
-    var list = document.getElementById('settingsList');
-    var items = [
+    const list = document.getElementById('settingsList');
+    const items = [
         {
             icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
             title: 'Notifications', desc: 'Order updates & promotions',
@@ -816,24 +996,34 @@ function renderSettings() {
         {
             icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
             title: 'Language', desc: S.settings.language,
-            type: 'arrow', action: function() { cycleLanguage(); }
+            type: 'arrow', action: () => cycleLanguage()
         },
         {
             icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
             title: 'Currency', desc: S.settings.currency,
-            type: 'arrow', action: function() { cycleCurrency(); }
+            type: 'arrow', action: () => cycleCurrency()
+        },
+        {
+            icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+            title: 'Order History', desc: 'View past purchases',
+            type: 'arrow', action: () => scrollToSection('ordersSection')
         },
         {
             icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
-            title: 'About Bards', desc: 'v2.1.0',
-            type: 'arrow', action: function() { showToast('info','Bards','Streetwear by Bards — v2.1.0'); }
+            title: 'About Bards', desc: 'v1.0.0',
+            type: 'arrow', action: () => showToast('info','Bards','Streetwear by Bards — v1.0.0')
+        },
+        {
+            icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/><polyline points="12 15 9 12 12 9"/><path d="M15 12H9"/></svg>',
+            title: 'Sign Out', desc: 'Log out of your account',
+            type: 'arrow', action: () => signOut()
         }
     ];
 
-    list.innerHTML = items.map(function(item) {
+    list.innerHTML = items.map(item => {
         if (item.type === 'toggle') {
-            var on = S.settings[item.key] ? 'on' : '';
-            return '<div class="setting-row" onclick="toggleSetting('' + item.key + '')">' +
+            const on = S.settings[item.key] ? 'on' : '';
+            return '<div class="setting-row" onclick="toggleSetting(\'' + item.key + '\')">' +
                 '<div class="setting-left">' +
                 '<div class="setting-icon">' + item.icon + '</div>' +
                 '<div class="setting-info">' +
@@ -855,55 +1045,16 @@ function renderSettings() {
     }).join('');
 }
 
-function renderLegal() {
-    var list = document.getElementById('legalList');
-    var items = [
-        {
-            icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
-            title: 'Privacy Policy', desc: 'How we handle your data',
-            action: function() { showToast('info','Privacy Policy','Opening privacy policy...'); }
-        },
-        {
-            icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
-            title: 'Terms of Service', desc: 'Rules for using our platform',
-            action: function() { showToast('info','Terms of Service','Opening terms...'); }
-        },
-        {
-            icon: '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-            title: 'Cookie Policy', desc: 'How we use cookies',
-            action: function() { showToast('info','Cookie Policy','Opening cookie policy...'); }
-        }
-    ];
-
-    list.innerHTML = items.map(function(item, idx) {
-        return '<div class="setting-row" onclick="' + item.action.toString() + '()">' +
-            '<div class="setting-left">' +
-            '<div class="setting-icon">' + item.icon + '</div>' +
-            '<div class="setting-info">' +
-            '<div class="setting-title">' + item.title + '</div>' +
-            '<div class="setting-desc">' + item.desc + '</div></div></div>' +
-            '<div class="setting-right">' +
-            '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" class="setting-arrow"><path d="M5 1l5 5.5L5 12"/></svg>' +
-            '</div></div>';
-    }).join('');
-}
-
 function toggleSetting(key) {
     S.settings[key] = !S.settings[key];
     localStorage.setItem('BARDS_SETTINGS', JSON.stringify(S.settings));
     document.getElementById('toggle-' + key).classList.toggle('on', S.settings[key]);
-
-    if (key === 'darkMode') {
-        var newTheme = S.settings.darkMode ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', newTheme);
-    }
-
     showToast('ok', 'Setting saved', key + ' is now ' + (S.settings[key]?'on':'off'));
 }
 
 function cycleLanguage() {
-    var opts = ['EN'];
-    var idx = opts.indexOf(S.settings.language);
+    const opts = ['EN','TH','JP'];
+    const idx = opts.indexOf(S.settings.language);
     S.settings.language = opts[(idx + 1) % opts.length];
     localStorage.setItem('BARDS_SETTINGS', JSON.stringify(S.settings));
     renderSettings();
@@ -911,8 +1062,8 @@ function cycleLanguage() {
 }
 
 function cycleCurrency() {
-    var opts = ['USD'];
-    var idx = opts.indexOf(S.settings.currency);
+    const opts = ['USD','THB','JPY'];
+    const idx = opts.indexOf(S.settings.currency);
     S.settings.currency = opts[(idx + 1) % opts.length];
     localStorage.setItem('BARDS_SETTINGS', JSON.stringify(S.settings));
     renderSettings();
@@ -928,74 +1079,29 @@ function signOut() {
     localStorage.removeItem('BARDS_ADDRESSES');
     localStorage.removeItem('BARDS_SETTINGS');
     showToast('ok', 'Signed out', 'See you soon!');
-    setTimeout(function() { window.location.href = 'index.html'; }, 1200);
+    setTimeout(() => window.location.href = 'index.html', 1200);
 }
 
 function updateBadge() {
-    var cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
-    var n = cart.reduce(function(t,c) { return t+c.quantity; }, 0);
-    var b = document.getElementById('cartBadge');
+    const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
+    const n = cart.reduce((t,c) => t+c.quantity, 0);
+    const b = document.getElementById('cartBadge');
     b.innerText = n > 99 ? '99+' : n;
     b.style.display = n > 0 ? 'flex' : 'none';
 }
 
-var SVG_CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-var SVG_WARN  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-var _tt;
+const SVG_CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const SVG_WARN  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+let _tt;
 function showToast(type,title,sub){
-    var wrap = document.getElementById('toastIconWrap');
+    const wrap = document.getElementById('toastIconWrap');
     wrap.className = 'toast-icon-wrap ' + (type==='warn'?'warn':'success');
     wrap.innerHTML = type==='warn'?SVG_WARN:SVG_CHECK;
     document.getElementById('toastTitle').innerText = title;
     document.getElementById('toastSub').innerText = sub || '';
-    var t = document.getElementById('toast'); t.classList.add('on');
-    clearTimeout(_tt); _tt = setTimeout(function() { t.classList.remove('on'); }, 2800);
+    const t = document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('on'), 2800);
 }
 </script>
-
-<style>
-.wish-scroll {
-    overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-    padding:0 18px 4px;
-}
-.wish-scroll::-webkit-scrollbar { display:none; }
-.wish-row { display:flex; gap:10px; width:max-content; }
-.wish-card {
-    width:calc((100vw - 46px) / 2.3); flex-shrink:0;
-    background:var(--white); border:1.5px solid var(--gray-200);
-    border-radius:var(--radius); overflow:hidden;
-    cursor:pointer; text-decoration:none; color:inherit;
-    transition:transform .18s, box-shadow .18s;
-    position:relative;
-}
-.wish-card:active { transform:scale(.975); box-shadow:0 6px 20px rgba(0,0,0,.06); }
-.wish-img {
-    aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative;
-}
-.wish-img img {
-    width:100%; height:100%; object-fit:cover; display:block;
-    transition:transform .38s ease;
-}
-.wish-card:active .wish-img img { transform:scale(1.04); }
-.wish-remove {
-    position:absolute; top:8px; right:8px; z-index:2;
-    width:28px; height:28px; border-radius:50%;
-    background:rgba(255,255,255,.9); border:none;
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:transform .15s,background .15s;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
-.wish-remove:active { transform:scale(.85); background:#FEE2E2; }
-.wish-body { padding:10px 11px 12px; }
-.wish-name {
-    font-size:12px; font-weight:600; line-height:1.35;
-    letter-spacing:-.1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.wish-price {
-    font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
-    color:var(--red); margin-top:5px;
-}
-</style>
-
 </body>
 </html>
