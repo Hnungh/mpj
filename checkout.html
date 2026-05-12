@@ -28,7 +28,7 @@
             font-family:'Space Grotesk', sans-serif;
             background:var(--gray-100); color:var(--black);
             overscroll-behavior:none; min-height:100vh;
-            padding-bottom:48px;
+            padding-bottom:56px;
         }
 
         /* NAV */
@@ -51,7 +51,12 @@
         }
         .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
         .brand { font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px; color:var(--black); text-decoration:none; }
-        .nav-sub { font-family:'Bebas Neue'; font-size:14px; letter-spacing:2px; color:var(--gray-300); }
+        .nav-secure {
+            margin-left:auto;
+            display:flex; align-items:center; gap:5px;
+            font-family:'DM Mono',monospace; font-size:10px;
+            color:var(--gray-400); letter-spacing:.5px; white-space:nowrap;
+        }
 
         /* PAGE */
         .page {
@@ -60,154 +65,129 @@
             max-width:540px;
             margin-left:auto; margin-right:auto;
         }
-        @media (min-width:960px) {
-            .page {
-                display:grid; grid-template-columns:1fr 340px;
-                gap:20px; max-width:920px;
-                padding:20px 24px 0;
-            }
-        }
-        .left-col  { min-width:0; }
-        .right-col { min-width:0; }
 
-        /* CARD */
+        /* CARDS */
         .ck-card {
-            background:var(--white);
-            border:1.5px solid var(--gray-200);
-            border-radius:var(--radius);
-            margin-bottom:12px; overflow:hidden;
+            background:var(--white); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); margin-bottom:12px; overflow:hidden;
         }
-        .ck-hd {
+        .ck-card-hd {
             padding:14px 16px 13px;
             display:flex; align-items:center; gap:10px;
             border-bottom:1px solid var(--gray-100);
         }
         .ck-icon {
             width:28px; height:28px; border-radius:8px;
-            background:var(--black); display:flex; align-items:center; justify-content:center;
-            flex-shrink:0;
+            background:var(--black); color:#fff;
+            display:flex; align-items:center; justify-content:center; flex-shrink:0;
         }
-        .ck-title { font-family:'Bebas Neue'; font-size:16px; letter-spacing:2px; }
+        .ck-title { font-family:'Bebas Neue'; font-size:16px; letter-spacing:2px; flex:1; }
         .ck-body  { padding:16px; }
 
-        /* ORDER ITEMS */
-        .o-item {
+        /* ORDER SUMMARY */
+        .order-item {
             display:flex; gap:11px; align-items:center;
             padding:9px 0; border-bottom:1px solid var(--gray-100);
         }
-        .o-item:last-child { border-bottom:none; }
-        .o-img {
-            width:56px; height:56px; border-radius:9px;
+        .order-item:last-child { border-bottom:none; }
+        .oi-img {
+            width:52px; height:52px; border-radius:9px;
             overflow:hidden; background:var(--gray-100); flex-shrink:0;
+            border:1px solid var(--gray-200);
         }
-        .o-img img { width:100%; height:100%; object-fit:cover; display:block; }
-        .o-info { flex:1; min-width:0; }
-        .o-name { font-size:12px; font-weight:600; line-height:1.3; }
-        .o-meta { font-size:10px; color:var(--gray-400); margin-top:2px; }
-        .o-qty  {
-            display:inline-block; margin-top:4px;
-            font-family:'DM Mono',monospace; font-size:9px;
-            background:var(--gray-100); border-radius:5px; padding:2px 6px; color:var(--gray-600);
+        .oi-img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .oi-info { flex:1; min-width:0; }
+        .oi-name { font-size:12px; font-weight:600; line-height:1.3; }
+        .oi-meta { font-size:10px; color:var(--gray-400); margin-top:2px; }
+        .oi-qty  {
+            font-family:'DM Mono',monospace; font-size:10px;
+            background:var(--gray-100); border-radius:5px;
+            padding:2px 7px; margin-top:4px; display:inline-block;
         }
-        .o-price { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); flex-shrink:0; }
+        .oi-price { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); flex-shrink:0; }
 
-        /* TOTALS */
-        .totals { padding-top:12px; }
-        .t-row  { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; }
-        .t-lbl  { font-size:12px; color:var(--gray-400); font-weight:500; }
-        .t-val  { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--gray-600); }
-        .t-val.green { color:var(--green); font-weight:700; }
-        .t-val.paid  { color:var(--red); }
-        hr.t-div     { border:none; border-top:1px solid var(--gray-200); margin:10px 0; }
-        .t-grand-row { display:flex; justify-content:space-between; align-items:baseline; }
-        .t-grand-lbl { font-size:14px; font-weight:700; }
-        .t-grand-val { font-family:'DM Mono',monospace; font-size:26px; font-weight:500; color:var(--red); }
+        .sum-area     { padding-top:12px; }
+        .sum-row      { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; }
+        .sum-lbl      { font-size:12px; color:var(--gray-400); font-weight:500; }
+        .sum-val      { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--gray-600); }
+        .sum-val.free { color:var(--green); font-weight:700; }
+        .sum-val.paid { color:var(--black); }
+        .sum-divider  { border:none; border-top:1px solid var(--gray-200); margin:9px 0 10px; }
+        .sum-total-row { display:flex; justify-content:space-between; align-items:baseline; }
+        .sum-total-lbl { font-size:14px; font-weight:700; }
+        .sum-total-val { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--red); }
 
-        /* SHIP RATE BANNER */
-        .ship-banner {
-            display:flex; align-items:center; gap:10px;
-            border-radius:var(--radius-sm); padding:10px 13px;
-            margin-top:12px; border:1.5px solid; transition:all .25s;
+        .ship-note {
+            margin-top:10px; padding:9px 12px;
+            background:var(--gray-50); border-radius:var(--radius-sm);
+            border:1px solid var(--gray-200);
+            font-size:11px; color:var(--gray-600); line-height:1.55;
+            display:flex; gap:7px; align-items:flex-start;
         }
-        .ship-banner.free { background:#F0FDF4; border-color:#BBF7D0; }
-        .ship-banner.paid { background:#FFF7ED; border-color:#FED7AA; }
-        .ship-banner.none { background:var(--gray-50); border-color:var(--gray-200); }
-        .sb-icon { width:30px; height:30px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-        .ship-banner.free .sb-icon { background:#BBF7D0; }
-        .ship-banner.paid .sb-icon { background:#FED7AA; }
-        .ship-banner.none .sb-icon { background:var(--gray-200); }
-        .sb-info { flex:1; min-width:0; }
-        .sb-lbl  { font-size:12px; font-weight:700; }
-        .ship-banner.free .sb-lbl { color:var(--green); }
-        .ship-banner.paid .sb-lbl { color:#C2410C; }
-        .ship-banner.none .sb-lbl { color:var(--gray-400); }
-        .sb-sub  { font-size:10px; color:var(--gray-400); margin-top:1px; }
-        .sb-price { font-family:'DM Mono',monospace; font-size:14px; font-weight:700; flex-shrink:0; }
-        .ship-banner.free .sb-price { color:var(--green); }
-        .ship-banner.paid .sb-price { color:#C2410C; }
-        .ship-banner.none .sb-price { color:var(--gray-300); }
 
         /* FORM */
-        .f-row   { margin-bottom:12px; }
-        .f-2col  { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-        .f-lbl {
+        .form-row       { margin-bottom:13px; }
+        .form-row.two   { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .f-label {
             font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-            color:var(--gray-400); display:flex; align-items:center; gap:3px; margin-bottom:6px;
+            color:var(--gray-400); margin-bottom:6px; display:flex; align-items:center; gap:3px;
         }
-        .req  { color:var(--red); font-size:11px; line-height:1; }
-        .f-inp, .f-sel {
+        .f-req { color:var(--red); font-size:11px; line-height:1; }
+        .f-opt { font-weight:400; text-transform:none; letter-spacing:0; color:var(--gray-300); font-size:9px; }
+        .f-input, .f-select {
             width:100%; height:44px;
             border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
             background:var(--white); font-family:'Space Grotesk',sans-serif;
             font-size:13px; font-weight:500; color:var(--black);
             padding:0 13px; outline:none;
             transition:border-color .18s;
-            -webkit-appearance:none;
+            -webkit-appearance:none; appearance:none;
         }
-        .f-inp:focus, .f-sel:focus { border-color:var(--black); }
-        .f-inp.err, .f-sel.err { border-color:var(--red); }
-        .f-inp::placeholder { color:var(--gray-300); font-weight:400; }
-        .f-sel {
-            cursor:pointer; appearance:none; padding-right:32px;
-            background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238A8A88' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat:no-repeat; background-position:right 13px center;
+        .f-input:focus, .f-select:focus { border-color:var(--black); }
+        .f-input.err,   .f-select.err   { border-color:var(--red); background:#FFF5F5; }
+        .f-input::placeholder { color:var(--gray-300); font-weight:400; }
+        .f-select {
+            background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238A8A88' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:right 14px center;
+            cursor:pointer; padding-right:36px;
         }
-        .f-err { font-size:10px; color:var(--red); margin-top:4px; display:none; }
-        .f-err.on { display:block; }
+        .f-err { font-size:10px; color:var(--red); margin-top:4px; display:none; font-weight:500; }
+        .f-err.show { display:block; }
 
         /* PAYMENT */
-        .pay-opt {
+        .pay-method {
             border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
-            padding:13px 14px; display:flex; align-items:center; gap:12px;
-            cursor:pointer; transition:border-color .18s, background .18s;
+            padding:13px 14px; cursor:pointer; display:flex;
+            align-items:center; gap:12px;
+            transition:border-color .18s, background .18s;
         }
-        .pay-opt.on { border-color:var(--black); background:var(--gray-50); }
-        .p-radio { width:18px; height:18px; border-radius:50%; border:2px solid var(--gray-300); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .18s; }
-        .pay-opt.on .p-radio { border-color:var(--black); }
-        .p-dot   { width:8px; height:8px; border-radius:50%; background:var(--black); display:none; }
-        .pay-opt.on .p-dot { display:block; }
-        .p-info  { flex:1; min-width:0; }
-        .p-name  { font-size:13px; font-weight:700; }
-        .p-sub   { font-size:10px; color:var(--gray-400); margin-top:2px; line-height:1.4; }
+        .pay-method.on { border-color:var(--black); background:var(--gray-50); }
+        .pay-radio {
+            width:18px; height:18px; border-radius:50%;
+            border:2px solid var(--gray-300); flex-shrink:0;
+            display:flex; align-items:center; justify-content:center; transition:all .18s;
+        }
+        .pay-method.on .pay-radio { border-color:var(--black); }
+        .pay-dot { width:8px; height:8px; border-radius:50%; background:var(--black); display:none; }
+        .pay-method.on .pay-dot { display:block; }
+        .pay-info { flex:1; min-width:0; }
+        .pay-name { font-size:13px; font-weight:700; }
+        .pay-sub  { font-size:10px; color:var(--gray-400); margin-top:2px; line-height:1.45; }
 
         /* PLACE BTN */
         .place-btn {
             width:100%; height:54px; border:none; border-radius:var(--radius-sm);
             font-family:'Bebas Neue'; font-size:18px; letter-spacing:3px;
-            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-            margin-top:14px; transition:opacity .18s, transform .12s, background .25s;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px;
+            margin-top:16px; transition:opacity .18s, transform .12s, background .2s;
         }
         .place-btn.idle    { background:var(--black); color:#fff; }
         .place-btn.idle:active { opacity:.82; transform:scale(.98); }
         .place-btn.loading { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
         .place-sub {
-            margin-top:8px; font-size:10px; color:var(--gray-400);
-            display:flex; align-items:center; justify-content:center; gap:5px; text-align:center;
-        }
-
-        /* DESKTOP STICKY */
-        @media (min-width:960px) {
-            .right-col .ck-card { position:sticky; top:calc(var(--nav-h) + 16px); }
+            margin-top:10px; font-size:10px; color:var(--gray-400);
+            display:flex; align-items:center; justify-content:center; gap:5px;
+            line-height:1.55; text-align:center;
         }
 
         /* TOAST */
@@ -222,18 +202,19 @@
             pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:200px;
         }
         .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
-        .ti  { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .ti.ok   { background:rgba(22,163,74,.25); }
-        .ti.warn { background:rgba(234,179,8,.2); }
-        .tt  { display:flex; flex-direction:column; gap:1px; }
-        .ttl { font-size:12px; font-weight:700; letter-spacing:.3px; }
-        .tsb { font-size:11px; color:rgba(255,255,255,.55); }
+        .t-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .t-icon.ok   { background:rgba(22,163,74,.25); }
+        .t-icon.warn { background:rgba(234,179,8,.2); }
+        .t-text  { display:flex; flex-direction:column; gap:1px; }
+        .t-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
+        .t-sub   { font-size:11px; color:rgba(255,255,255,.55); }
 
-        @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         @keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-        .fu { animation:fadeUp .36s ease both; }
-        .d1 { animation-delay:.04s; } .d2 { animation-delay:.09s; }
-        .d3 { animation-delay:.14s; } .d4 { animation-delay:.19s; }
+        .fu { animation:fadeUp .38s ease both; }
+        .d1 { animation-delay:.06s; }
+        .d2 { animation-delay:.12s; }
+        .d3 { animation-delay:.18s; }
     </style>
 </head>
 <body>
@@ -244,476 +225,370 @@
              stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
     </button>
     <a href="index.html" class="brand">BARDS</a>
-    <span class="nav-sub" style="color:var(--gray-300)">&nbsp;/ CHECKOUT</span>
+    <div class="nav-secure">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Secure Checkout
+    </div>
 </nav>
 
 <div class="page">
 
-    <!-- ══ LEFT ═══════════════════════════════════ -->
-    <div class="left-col">
-
-        <!-- ① ORDER SUMMARY -->
-        <div class="ck-card fu d1">
-            <div class="ck-hd">
-                <div class="ck-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                         stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                        <line x1="3" y1="6" x2="21" y2="6"/>
-                        <path d="M16 10a4 4 0 01-8 0"/>
-                    </svg>
-                </div>
-                <span class="ck-title">Order Summary</span>
-                <span id="itemCnt" style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--gray-400)"></span>
+    <!-- ① ORDER SUMMARY -->
+    <div class="ck-card fu">
+        <div class="ck-card-hd">
+            <div class="ck-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
             </div>
-            <div class="ck-body">
-                <div id="orderList"></div>
-
-                <!-- Shipping rate banner — updates on province select -->
-                <div class="ship-banner none" id="shipBanner">
-                    <div class="sb-icon">
-                        <svg width="14" height="14" fill="none" stroke="var(--gray-400)" stroke-width="2.4"
-                             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                            <rect x="1" y="3" width="15" height="13" rx="1"/>
-                            <path d="M16 8h4l3 5v3h-7V8z"/>
-                            <circle cx="5.5" cy="18.5" r="2.5"/>
-                            <circle cx="18.5" cy="18.5" r="2.5"/>
-                        </svg>
-                    </div>
-                    <div class="sb-info">
-                        <div class="sb-lbl" id="shipBannerLbl">Select province to see shipping</div>
-                        <div class="sb-sub" id="shipBannerSub">Delivery estimate will appear here</div>
-                    </div>
-                    <div class="sb-price" id="shipBannerPrice">—</div>
-                </div>
-
-                <div class="totals">
-                    <div class="t-row"><span class="t-lbl">Subtotal</span><span class="t-val" id="tSub">$0.00</span></div>
-                    <div class="t-row"><span class="t-lbl">Shipping</span><span class="t-val" id="tShip" style="color:var(--gray-300)">—</span></div>
-                    <hr class="t-div">
-                    <div class="t-grand-row">
-                        <span class="t-grand-lbl">Total</span>
-                        <span class="t-grand-val" id="tTotal">$0.00</span>
-                    </div>
-                </div>
-            </div>
+            <span class="ck-title">Order Summary</span>
+            <a href="cart.html" style="font-size:11px;font-weight:700;color:var(--gray-400);text-decoration:none;letter-spacing:.5px">Edit</a>
         </div>
-
-        <!-- ② SHIPPING INFO -->
-        <div class="ck-card fu d2">
-            <div class="ck-hd">
-                <div class="ck-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                         stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
+        <div class="ck-body">
+            <div id="orderItemsList"></div>
+            <div class="sum-area">
+                <div class="sum-row">
+                    <span class="sum-lbl">Subtotal</span>
+                    <span class="sum-val" id="sumSub">$0.00</span>
                 </div>
-                <span class="ck-title">Shipping Info</span>
+                <div class="sum-row">
+                    <span class="sum-lbl">Shipping</span>
+                    <span class="sum-val" id="sumShip">—</span>
+                </div>
+                <hr class="sum-divider">
+                <div class="sum-total-row">
+                    <span class="sum-total-lbl">Total</span>
+                    <span class="sum-total-val" id="sumTotal">$0.00</span>
+                </div>
             </div>
-            <div class="ck-body">
-
-                <div class="f-2col">
-                    <div>
-                        <label class="f-lbl">First Name <span class="req">*</span></label>
-                        <input class="f-inp" id="fname" type="text" placeholder="Dara" autocomplete="given-name">
-                        <div class="f-err" id="fname-e">Required</div>
-                    </div>
-                    <div>
-                        <label class="f-lbl">Last Name <span class="req">*</span></label>
-                        <input class="f-inp" id="lname" type="text" placeholder="Chan" autocomplete="family-name">
-                        <div class="f-err" id="lname-e">Required</div>
-                    </div>
-                </div>
-
-                <div class="f-row">
-                    <label class="f-lbl">Phone Number <span class="req">*</span></label>
-                    <input class="f-inp" id="phone" type="tel" placeholder="+855 12 345 678" autocomplete="tel">
-                    <div class="f-err" id="phone-e">Required</div>
-                </div>
-
-                <div class="f-row">
-                    <label class="f-lbl">Address <span class="req">*</span></label>
-                    <input class="f-inp" id="addr" type="text" placeholder="House No. / Street / Village" autocomplete="address-line1">
-                    <div class="f-err" id="addr-e">Required</div>
-                </div>
-
-                <div class="f-row">
-                    <label class="f-lbl">Sangkat / Commune
-                        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:9px">&nbsp;optional</span>
-                    </label>
-                    <input class="f-inp" id="commune" type="text" placeholder="Sangkat / Khan">
-                </div>
-
-                <div class="f-row">
-                    <label class="f-lbl">Province / City <span class="req">*</span></label>
-                    <select class="f-sel" id="province" onchange="onProvince()">
-                        <option value="">— Select Province —</option>
-                        <option value="PNH">Phnom Penh (រាជធានីភ្នំពេញ)</option>
-                        <option value="KDL">Kandal (ខេត្តកណ្ដាល)</option>
-                        <option value="SRP">Siem Reap (ខេត្តសៀមរាប)</option>
-                        <option value="BTB">Battambang (ខេត្តបាត់ដំបង)</option>
-                        <option value="SHV">Sihanoukville / Preah Sihanouk (ខេត្តព្រះសីហនុ)</option>
-                        <option value="KPG">Kampong Cham (ខេត្តកំពង់ចាម)</option>
-                        <option value="TBK">Tbong Khmum (ខេត្តត្បូងឃ្មុំ)</option>
-                        <option value="KPS">Kampong Speu (ខេត្តកំពង់ស្ពឺ)</option>
-                        <option value="KPC">Kampong Chhnang (ខេត្តកំពង់ឆ្នាំង)</option>
-                        <option value="KPM">Kampong Thom (ខេត្តកំពង់ធំ)</option>
-                        <option value="KPT">Kampot (ខេត្តកំពត)</option>
-                        <option value="KEP">Kep (ខេត្តកែប)</option>
-                        <option value="TKO">Takéo (ខេត្តតាកែវ)</option>
-                        <option value="PRS">Prey Veng (ខេត្តព្រៃវែង)</option>
-                        <option value="SVR">Svay Rieng (ខេត្តស្វាយរៀង)</option>
-                        <option value="PVG">Pursat (ខេត្តពោធ៍សាត់)</option>
-                        <option value="PVH">Pailin (ខេត្តប៉ៃលិន)</option>
-                        <option value="KHS">Koh Kong (ខេត្តកោះកុង)</option>
-                        <option value="KRT">Kratié (ខេត្តក្រចេះ)</option>
-                        <option value="STG">Stung Treng (ខេត្តស្ទឹងត្រែង)</option>
-                        <option value="PKM">Preah Vihear (ខេត្តព្រះវិហារ)</option>
-                        <option value="ORM">Oddar Meanchey (ខេត្តឧត្ដរមានជ័យ)</option>
-                        <option value="RKR">Ratanakiri (ខេត្តរតនគីរី)</option>
-                        <option value="MKR">Mondulkiri (ខេត្តមណ្ឌលគីរី)</option>
-                    </select>
-                    <div class="f-err" id="prov-e">Please select your province</div>
-                </div>
-
-                <div class="f-row">
-                    <label class="f-lbl">Order Note
-                        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:9px">&nbsp;optional</span>
-                    </label>
-                    <input class="f-inp" id="note" type="text" placeholder="Special instructions…">
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ③ PAYMENT METHOD -->
-        <div class="ck-card fu d3">
-            <div class="ck-hd">
-                <div class="ck-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                         stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="1" y="4" width="22" height="16" rx="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                </div>
-                <span class="ck-title">Payment Method</span>
-            </div>
-            <div class="ck-body">
-
-                <div class="pay-opt on" id="pm-khqr">
-                    <div class="p-radio"><div class="p-dot"></div></div>
-                    <!-- Official KHQR SVG logo -->
-                    <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 20"
-                         style="width:54px;height:31px;flex-shrink:0;border-radius:5px;box-shadow:0 1px 4px rgba(0,0,0,.12)">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M31.8969 20H2.10315C0.946422 20 0 19.0596 0 17.9103V2.08968C0 0.940362 0.946422 0 2.10315 0H31.8969C33.0536 0 34 0.940362 34 2.08968V17.9103C34 19.0596 33.0536 20 31.8969 20Z" fill="#E1232E"/>
-                        <path d="M20.2524 9.22561V11.1126H18.3882C18.197 11.1126 18.0536 10.9554 18.0536 10.7739V9.23772C18.0536 9.04418 18.2089 8.89902 18.3882 8.89902H19.9059C20.109 8.88692 20.2524 9.03207 20.2524 9.22561Z" fill="white"/>
-                        <path d="M28.9881 9.98776H28.056C28.056 8.86281 27.1478 7.9435 26.0364 7.9435C25.1521 7.9435 24.3753 8.52412 24.1124 9.37086C24.0526 9.57649 24.0168 9.78213 24.0168 9.98776V12.9876H23.9929C23.491 12.9876 23.0847 12.5763 23.0847 12.0683V9.98776H23.0966C23.0966 9.16522 23.4312 8.37896 24.0287 7.81044C24.5784 7.2903 25.2955 7 26.0483 7C27.6736 7 28.9881 8.34267 28.9881 9.98776Z" fill="white"/>
-                        <path d="M29 12.9879L27.6855 13L27.3628 12.6734L26.6458 11.9476L25.6539 10.9436H26.9685L29 12.9879Z" fill="white"/>
-                        <path d="M20.5632 12.0441H17.7549C17.4083 12.0441 17.1335 11.7659 17.1335 11.4151V8.57251C17.1335 8.22172 17.4083 7.9435 17.7549 7.9435H20.5632C20.9098 7.9435 21.1846 8.22172 21.1846 8.57251V11.4151L22.1167 12.3586V7.91931C22.1167 7.41127 21.7104 7 21.2085 7H17.1096C16.6077 7 16.2014 7.41127 16.2014 7.91931V12.0683C16.2014 12.5763 16.6077 12.9876 17.1096 12.9876H21.4953L20.5632 12.0441Z" fill="white"/>
-                        <path d="M9.15058 12.9997H7.83605L5.08748 10.2055V12.9997H4V7H5.08748V9.67326L7.72849 7H9.01912L6.15105 9.87889L9.15058 12.9997Z" fill="white"/>
-                        <path d="M14.0623 7H15.1259V12.9997H14.0623V10.399H11.027V12.9997H9.96338V7H11.027V9.50391H14.0623V7Z" fill="white"/>
-                    </svg>
-                    <div class="p-info">
-                        <div class="p-name">KHQR</div>
-                        <div class="p-sub">Bakong · ABA · Wing · ACLEDA and all KHQR-supported apps</div>
-                    </div>
-                </div>
-
-                <button class="place-btn idle" id="placeBtn" onclick="placeOrder()">
-                    PLACE ORDER
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
-                <div class="place-sub">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                    Secure checkout · By placing your order you agree to our Terms
-                </div>
-
-            </div>
-        </div>
-
-    </div><!-- /left-col -->
-
-    <!-- ══ RIGHT (desktop sticky) ══════════════════ -->
-    <div class="right-col">
-        <div class="ck-card fu d4" style="margin-bottom:0">
-            <div class="ck-hd">
-                <div class="ck-icon" style="background:var(--gray-400)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                         stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                        <line x1="3" y1="6" x2="21" y2="6"/>
-                        <path d="M16 10a4 4 0 01-8 0"/>
-                    </svg>
-                </div>
-                <span class="ck-title">Your Order</span>
-            </div>
-            <div class="ck-body">
-                <div id="sideList"></div>
-                <div class="totals" style="padding-top:10px">
-                    <div class="t-row"><span class="t-lbl">Subtotal</span><span class="t-val" id="sSub">$0.00</span></div>
-                    <div class="t-row"><span class="t-lbl">Shipping</span><span class="t-val" id="sShip" style="color:var(--gray-300)">—</span></div>
-                    <hr class="t-div">
-                    <div class="t-grand-row">
-                        <span class="t-grand-lbl">Total</span>
-                        <span class="t-grand-val" id="sTotal">$0.00</span>
-                    </div>
-                </div>
-                <div id="sideDelivery" style="margin-top:11px;font-size:11px;color:var(--gray-400);line-height:1.6;padding:10px 12px;background:var(--gray-50);border-radius:9px;border:1px solid var(--gray-200)">
-                    Select your province to see shipping fee &amp; delivery estimate.
-                </div>
+            <div class="ship-note">
+                <svg style="margin-top:1px;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24"
+                     fill="none" stroke="var(--gray-400)" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <span id="shipNoteText">Select your province to calculate shipping cost.</span>
             </div>
         </div>
     </div>
 
-</div><!-- /page -->
+    <!-- ② SHIPPING INFO -->
+    <div class="ck-card fu d1">
+        <div class="ck-card-hd">
+            <div class="ck-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+            </div>
+            <span class="ck-title">Shipping Info</span>
+        </div>
+        <div class="ck-body">
+
+            <div class="form-row two">
+                <div>
+                    <label class="f-label">First Name <span class="f-req">*</span></label>
+                    <input class="f-input" id="fname" type="text" placeholder="Sokha" autocomplete="given-name">
+                    <div class="f-err" id="fname-err">Required</div>
+                </div>
+                <div>
+                    <label class="f-label">Last Name <span class="f-req">*</span></label>
+                    <input class="f-input" id="lname" type="text" placeholder="Chan" autocomplete="family-name">
+                    <div class="f-err" id="lname-err">Required</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="f-label">Phone Number <span class="f-req">*</span></label>
+                <input class="f-input" id="phone" type="tel" placeholder="+855 12 345 678" autocomplete="tel">
+                <div class="f-err" id="phone-err">Required</div>
+            </div>
+
+            <div class="form-row">
+                <label class="f-label">Address <span class="f-req">*</span></label>
+                <input class="f-input" id="addr1" type="text" placeholder="Street / House No. / Village" autocomplete="address-line1">
+                <div class="f-err" id="addr1-err">Required</div>
+            </div>
+
+            <div class="form-row">
+                <label class="f-label">Address Line 2 <span class="f-opt">(optional)</span></label>
+                <input class="f-input" id="addr2" type="text" placeholder="Commune / Sangkat / District…" autocomplete="address-line2">
+            </div>
+
+            <div class="form-row">
+                <label class="f-label">Province <span class="f-req">*</span></label>
+                <select class="f-select" id="province" onchange="onProvinceChange(this.value)">
+                    <option value="">— Select Province —</option>
+                    <option value="Phnom Penh">ភ្នំពេញ · Phnom Penh</option>
+                    <option value="Siem Reap">សៀមរាប · Siem Reap</option>
+                    <option value="Sihanoukville">ព្រះសីហនុ · Sihanoukville</option>
+                    <option value="Battambang">បាត់ដំបង · Battambang</option>
+                    <option value="Kampong Cham">កំពង់ចាម · Kampong Cham</option>
+                    <option value="Kampong Chhnang">កំពង់ឆ្នាំង · Kampong Chhnang</option>
+                    <option value="Kampong Speu">កំពង់ស្ពឺ · Kampong Speu</option>
+                    <option value="Kampong Thom">កំពង់ធំ · Kampong Thom</option>
+                    <option value="Kampot">កំពត · Kampot</option>
+                    <option value="Kandal">កណ្ដាល · Kandal</option>
+                    <option value="Kep">កែប · Kep</option>
+                    <option value="Koh Kong">កោះកុង · Koh Kong</option>
+                    <option value="Kratie">ក្រចេះ · Kratie</option>
+                    <option value="Mondulkiri">មណ្ឌលគីរី · Mondulkiri</option>
+                    <option value="Oddar Meanchey">ឧត្ដរមានជ័យ · Oddar Meanchey</option>
+                    <option value="Pailin">ប៉ៃលិន · Pailin</option>
+                    <option value="Preah Vihear">ព្រះវិហារ · Preah Vihear</option>
+                    <option value="Prey Veng">ព្រៃវែង · Prey Veng</option>
+                    <option value="Pursat">ពោធិ៍សាត់ · Pursat</option>
+                    <option value="Ratanakiri">រតនគីរី · Ratanakiri</option>
+                    <option value="Stung Treng">ស្ទឹងត្រែង · Stung Treng</option>
+                    <option value="Svay Rieng">ស្វាយរៀង · Svay Rieng</option>
+                    <option value="Takeo">តាកែវ · Takeo</option>
+                    <option value="Tboung Khmum">ត្បូងឃ្មុំ · Tboung Khmum</option>
+                </select>
+                <div class="f-err" id="province-err">Please select a province</div>
+            </div>
+
+            <div class="form-row" style="margin-bottom:0">
+                <label class="f-label">Order Note <span class="f-opt">(optional)</span></label>
+                <input class="f-input" id="note" type="text" placeholder="E.g. Leave at door, call before delivery…">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ③ PAYMENT METHOD -->
+    <div class="ck-card fu d2">
+        <div class="ck-card-hd">
+            <div class="ck-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+            </div>
+            <span class="ck-title">Payment Method</span>
+        </div>
+        <div class="ck-body">
+
+            <div class="pay-method on" id="pm-khqr" onclick="selectPay('khqr')">
+                <div class="pay-radio"><div class="pay-dot"></div></div>
+                <!-- Official KHQR SVG -->
+                <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 20"
+                     style="width:56px;height:34px;border-radius:5px;flex-shrink:0">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M31.8969 20H2.10315C0.946422 20 0 19.0596 0 17.9103V2.08968C0 0.940362 0.946422 0 2.10315 0H31.8969C33.0536 0 34 0.940362 34 2.08968V17.9103C34 19.0596 33.0536 20 31.8969 20Z"
+                          fill="#E1232E"/>
+                    <path d="M20.2524 9.22561V11.1126H18.3882C18.197 11.1126 18.0536 10.9554 18.0536 10.7739V9.23772C18.0536 9.04418 18.2089 8.89902 18.3882 8.89902H19.9059C20.109 8.88692 20.2524 9.03207 20.2524 9.22561Z" fill="white"/>
+                    <path d="M28.9881 9.98776H28.056C28.056 8.86281 27.1478 7.9435 26.0364 7.9435C25.1521 7.9435 24.3753 8.52412 24.1124 9.37086C24.0526 9.57649 24.0168 9.78213 24.0168 9.98776V12.9876H23.9929C23.491 12.9876 23.0847 12.5763 23.0847 12.0683V9.98776H23.0966C23.0966 9.16522 23.4312 8.37896 24.0287 7.81044C24.5784 7.2903 25.2955 7 26.0483 7C27.6736 7 28.9881 8.34267 28.9881 9.98776Z" fill="white"/>
+                    <path d="M29 12.9879L27.6855 13L27.3628 12.6734L26.6458 11.9476L25.6539 10.9436H26.9685L29 12.9879Z" fill="white"/>
+                    <path d="M20.5632 12.0441H17.7549C17.4083 12.0441 17.1335 11.7659 17.1335 11.4151V8.57251C17.1335 8.22172 17.4083 7.9435 17.7549 7.9435H20.5632C20.9098 7.9435 21.1846 8.22172 21.1846 8.57251V11.4151L22.1167 12.3586V7.91931C22.1167 7.41127 21.7104 7 21.2085 7H17.1096C16.6077 7 16.2014 7.41127 16.2014 7.91931V12.0683C16.2014 12.5763 16.6077 12.9876 17.1096 12.9876H21.4953L20.5632 12.0441Z" fill="white"/>
+                    <path d="M9.15058 12.9997H7.83605L5.08748 10.2055V12.9997H4V7H5.08748V9.67326L7.72849 7H9.01912L6.15105 9.87889L9.15058 12.9997Z" fill="white"/>
+                    <path d="M14.0623 7H15.1259V12.9997H14.0623V10.399H11.027V12.9997H9.96338V7H11.027V9.50391H14.0623V7Z" fill="white"/>
+                </svg>
+                <div class="pay-info">
+                    <div class="pay-name">KHQR</div>
+                    <div class="pay-sub">Bakong · ABA · Wing · ACLEDA and all KHQR apps</div>
+                </div>
+            </div>
+
+            <button class="place-btn idle" id="placeBtn" onclick="placeOrder()">
+                PLACE ORDER
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+            <div class="place-sub">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                By placing your order you agree to our Terms of Service
+            </div>
+        </div>
+    </div>
+
+    <div style="height:8px"></div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast">
-    <div class="ti ok" id="ti"></div>
-    <div class="tt">
-        <div class="ttl" id="ttl"></div>
-        <div class="tsb" id="tsb"></div>
+    <div class="t-icon" id="toastIcon"></div>
+    <div class="t-text">
+        <div class="t-title" id="toastTitle"></div>
+        <div class="t-sub"   id="toastSub"></div>
     </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════
+/* ═══════════════════════════════════════════════════
    BARDS checkout.html
-   Submit → sessionStorage draft → payment.html
-════════════════════════════════════════ */
+   → PLACE ORDER saves order data → goes to payment.html
+   → payment.html shows KHQR QR → verify → success.html
+═══════════════════════════════════════════════════ */
 
-/* ── SHIPPING RATES (USD) ───────────────────────────────────────
-   Source: J&T Express Cambodia, Kerry Express KH, Flash KH 2024
-   PNH + Kandal = own delivery (free or $1.50)
-   Major hubs   = $2.50
-   Mid           = $3.00 – $3.50
-   Remote border = $4.00 – $5.00
-──────────────────────────────────────────────────────────────── */
-const PROV = {
-    PNH: { name:'Phnom Penh',          ship:0,    eta:'Same day – 1 day',  courier:'Own delivery' },
-    KDL: { name:'Kandal',              ship:1.50, eta:'Same day – 1 day',  courier:'J&T / Kerry' },
-    SRP: { name:'Siem Reap',           ship:2.50, eta:'1–2 days',          courier:'J&T / Kerry' },
-    BTB: { name:'Battambang',          ship:2.50, eta:'1–2 days',          courier:'J&T / Flash' },
-    SHV: { name:'Sihanoukville',       ship:3.00, eta:'1–2 days',          courier:'J&T / Kerry' },
-    KPG: { name:'Kampong Cham',        ship:2.50, eta:'1–2 days',          courier:'J&T / Kerry' },
-    TBK: { name:'Tbong Khmum',         ship:3.00, eta:'2–3 days',          courier:'J&T / Flash' },
-    KPS: { name:'Kampong Speu',        ship:2.50, eta:'1–2 days',          courier:'J&T / Kerry' },
-    KPC: { name:'Kampong Chhnang',     ship:3.00, eta:'2–3 days',          courier:'J&T / Flash' },
-    KPM: { name:'Kampong Thom',        ship:3.50, eta:'2–3 days',          courier:'J&T / Flash' },
-    KPT: { name:'Kampot',              ship:3.00, eta:'1–2 days',          courier:'J&T / Kerry' },
-    KEP: { name:'Kep',                 ship:3.50, eta:'2–3 days',          courier:'J&T' },
-    TKO: { name:'Takéo',               ship:2.50, eta:'1–2 days',          courier:'J&T / Kerry' },
-    PRS: { name:'Prey Veng',           ship:2.50, eta:'1–2 days',          courier:'J&T / Flash' },
-    SVR: { name:'Svay Rieng',          ship:2.50, eta:'1–2 days',          courier:'J&T / Flash' },
-    PVG: { name:'Pursat',              ship:3.50, eta:'2–3 days',          courier:'J&T / Flash' },
-    PVH: { name:'Pailin',              ship:3.50, eta:'2–3 days',          courier:'J&T' },
-    KHS: { name:'Koh Kong',            ship:4.50, eta:'2–3 days',          courier:'J&T' },
-    KRT: { name:'Kratié',              ship:3.50, eta:'2–3 days',          courier:'J&T / Flash' },
-    STG: { name:'Stung Treng',         ship:4.00, eta:'3–4 days',          courier:'J&T' },
-    PKM: { name:'Preah Vihear',        ship:3.50, eta:'3–4 days',          courier:'J&T' },
-    ORM: { name:'Oddar Meanchey',      ship:4.00, eta:'3–4 days',          courier:'J&T' },
-    RKR: { name:'Ratanakiri',          ship:4.50, eta:'3–4 days',          courier:'J&T' },
-    MKR: { name:'Mondulkiri',          ship:5.00, eta:'3–5 days',          courier:'J&T' },
+/* ── CAMBODIA SHIPPING RATES (USD) ─────────────────
+   Based on J&T / Kerry Express / local rider (2024)
+   FREE for orders ≥ $60
+─────────────────────────────────────────────────── */
+const SHIPPING = {
+    'Phnom Penh':      1.50,  // same city
+    'Kandal':          2.50,
+    'Kampong Speu':    2.50,
+    'Takeo':           2.50,
+    'Prey Veng':       2.50,
+    'Svay Rieng':      2.50,
+    'Kampong Chhnang': 2.50,
+    'Kampot':          2.50,
+    'Kep':             2.50,
+    'Siem Reap':       3.00,
+    'Battambang':      3.00,
+    'Kampong Cham':    3.00,
+    'Kampong Thom':    3.00,
+    'Pursat':          3.00,
+    'Sihanoukville':   3.00,
+    'Tboung Khmum':    3.00,
+    'Koh Kong':        3.50,
+    'Kratie':          3.50,
+    'Pailin':          4.00,
+    'Mondulkiri':      4.50,
+    'Ratanakiri':      4.50,
+    'Stung Treng':     4.50,
+    'Oddar Meanchey':  4.50,
+    'Preah Vihear':    4.50,
 };
+const FREE_OVER = 60.00;
 
-let ITEMS   = [];
-let shipFee = 0;
-let shipSelected = false;
+let ITEMS    = [];
+let subtotal = 0;
+let shipCost = 0;
 
-/* ── INIT ──────────────────────────────────────── */
-window.onload = function () {
+window.onload = function() {
     const raw = sessionStorage.getItem('CHECKOUT_ITEMS') || localStorage.getItem('BARDS_CART') || '[]';
     ITEMS = JSON.parse(raw);
     if (!ITEMS.length) {
-        showToast('warn', 'Cart is empty', 'Redirecting to shop…');
-        setTimeout(() => { location.href = 'index.html'; }, 1800);
+        showToast('warn','Cart is empty','Redirecting…');
+        setTimeout(() => { location.href = 'index.html'; }, 1600);
         return;
     }
-    renderItems();
+    renderSummary();
 };
 
-/* ── RENDER ITEMS ──────────────────────────────── */
-function renderItems() {
-    const sub      = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
-    const totalQty = ITEMS.reduce((s, c) => s + c.quantity, 0);
-    const html     = ITEMS.map(i => `
-<div class="o-item">
-    <div class="o-img"><img src="${i.image}" loading="lazy" alt="${i.name}"></div>
-    <div class="o-info">
-        <div class="o-name">${i.name}</div>
-        <div class="o-meta">${i.color} · ${i.size}</div>
-        <span class="o-qty">Qty ${i.quantity}</span>
+function renderSummary() {
+    subtotal = ITEMS.reduce((s,c) => s + c.price * c.quantity, 0);
+    document.getElementById('orderItemsList').innerHTML = ITEMS.map(item => `
+<div class="order-item">
+    <div class="oi-img"><img src="${item.image}" loading="lazy" alt="${item.name}"></div>
+    <div class="oi-info">
+        <div class="oi-name">${item.name}</div>
+        <div class="oi-meta">${item.color} · ${item.size}</div>
+        <div class="oi-qty">×${item.quantity}</div>
     </div>
-    <div class="o-price">${fmtUSD(i.price * i.quantity)}</div>
+    <div class="oi-price">${fmtUSD(item.price * item.quantity)}</div>
 </div>`).join('');
-
-    document.getElementById('orderList').innerHTML = html;
-    document.getElementById('sideList').innerHTML  = html;
-    document.getElementById('itemCnt').textContent = `${totalQty} item${totalQty !== 1 ? 's' : ''}`;
-
-    updateTotals(sub);
+    document.getElementById('sumSub').textContent   = fmtUSD(subtotal);
+    document.getElementById('sumTotal').textContent = fmtUSD(subtotal);
 }
 
-/* ── TOTALS ─────────────────────────────────────── */
-function updateTotals(sub) {
-    if (sub === undefined) sub = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
-    const total = sub + shipFee;
+function onProvinceChange(prov) {
+    document.getElementById('province').classList.remove('err');
+    document.getElementById('province-err').classList.remove('show');
 
-    const shipTxt = !shipSelected ? '—' : (shipFee === 0 ? 'FREE' : fmtUSD(shipFee));
-    const shipCls = !shipSelected ? '' : (shipFee === 0 ? 'green' : 'paid');
+    const shipEl  = document.getElementById('sumShip');
+    const totalEl = document.getElementById('sumTotal');
+    const noteEl  = document.getElementById('shipNoteText');
 
-    // Main
-    document.getElementById('tSub').textContent   = fmtUSD(sub);
-    document.getElementById('tShip').textContent  = shipTxt;
-    document.getElementById('tShip').className    = 't-val ' + shipCls;
-    document.getElementById('tTotal').textContent = shipSelected ? fmtUSD(total) : fmtUSD(sub) + '+';
-    // Side
-    document.getElementById('sSub').textContent   = fmtUSD(sub);
-    document.getElementById('sShip').textContent  = shipTxt;
-    document.getElementById('sShip').className    = 't-val ' + shipCls;
-    document.getElementById('sTotal').textContent = shipSelected ? fmtUSD(total) : fmtUSD(sub) + '+';
-}
+    if (!prov) { shipEl.textContent='—'; shipEl.className='sum-val'; totalEl.textContent=fmtUSD(subtotal); noteEl.textContent='Select your province to calculate shipping cost.'; return; }
 
-/* ── PROVINCE CHANGE ───────────────────────────── */
-function onProvince() {
-    const sel  = document.getElementById('province');
-    const code = sel.value;
-    const info = PROV[code];
-    if (!info) return;
+    const rate = SHIPPING[prov] ?? 3.00;
 
-    shipFee      = info.ship;
-    shipSelected = true;
-
-    // Clear error
-    sel.classList.remove('err');
-    document.getElementById('prov-e').classList.remove('on');
-
-    // Banner
-    const banner = document.getElementById('shipBanner');
-    const lbl    = document.getElementById('shipBannerLbl');
-    const sub2   = document.getElementById('shipBannerSub');
-    const priceE = document.getElementById('shipBannerPrice');
-    const icon   = banner.querySelector('.sb-icon svg');
-
-    if (info.ship === 0) {
-        banner.className = 'ship-banner free';
-        lbl.textContent  = 'Free Delivery';
-        sub2.textContent = `${info.name} · ${info.eta}`;
-        priceE.textContent = 'FREE';
-        icon.setAttribute('stroke', '#16A34A');
+    if (subtotal >= FREE_OVER) {
+        shipCost = 0;
+        shipEl.textContent = 'FREE'; shipEl.className = 'sum-val free';
+        noteEl.textContent = `🎉 Free shipping on orders over ${fmtUSD(FREE_OVER)}!`;
     } else {
-        banner.className = 'ship-banner paid';
-        lbl.textContent  = 'Standard Delivery';
-        sub2.textContent = `${info.name} · ${info.eta} · via ${info.courier}`;
-        priceE.textContent = fmtUSD(info.ship);
-        icon.setAttribute('stroke', '#C2410C');
+        shipCost = rate;
+        shipEl.textContent = fmtUSD(rate); shipEl.className = 'sum-val paid';
+        const left = FREE_OVER - subtotal;
+        noteEl.textContent = `Add ${fmtUSD(left)} more for FREE shipping to ${prov}.`;
     }
-
-    // Side delivery info
-    document.getElementById('sideDelivery').innerHTML =
-        `<strong style="color:var(--black)">${info.name}</strong><br>` +
-        `Delivery: <strong style="color:var(--black)">${info.eta}</strong><br>` +
-        `Fee: <strong style="color:${info.ship===0?'var(--green)':'var(--red)'}">${info.ship===0?'FREE':fmtUSD(info.ship)}</strong><br>` +
-        `<span style="color:var(--gray-300)">via ${info.courier}</span>`;
-
-    updateTotals();
+    totalEl.textContent = fmtUSD(subtotal + shipCost);
 }
 
-/* ── VALIDATE + SUBMIT ─────────────────────────── */
+function selectPay(id) {
+    document.querySelectorAll('.pay-method').forEach(el =>
+        el.classList.toggle('on', el.id === 'pm-' + id));
+}
+
 function placeOrder() {
-    let valid = true;
-
-    // Required text fields
-    [['fname','fname-e'],['lname','lname-e'],['phone','phone-e'],['addr','addr-e']].forEach(([id,eid]) => {
-        const el  = document.getElementById(id);
-        const err = document.getElementById(eid);
-        if (!el.value.trim()) { el.classList.add('err'); err.classList.add('on'); valid = false; }
-        else                  { el.classList.remove('err'); err.classList.remove('on'); }
+    // Validate
+    const req = ['fname','lname','phone','addr1','province'];
+    let ok = true;
+    req.forEach(id => {
+        const el = document.getElementById(id);
+        const er = document.getElementById(id+'-err');
+        if (!el.value.trim()) { el.classList.add('err'); er.classList.add('show'); ok = false; }
+        else                  { el.classList.remove('err'); er.classList.remove('show'); }
     });
-
-    // Province
-    const provEl = document.getElementById('province');
-    if (!provEl.value) {
-        provEl.classList.add('err');
-        document.getElementById('prov-e').classList.add('on');
-        valid = false;
-    }
-
-    if (!valid) {
-        showToast('warn', 'Please fill in all required fields', '');
-        document.querySelector('.f-inp.err, .f-sel.err')?.scrollIntoView({ behavior:'smooth', block:'center' });
+    if (!ok) {
+        showToast('warn','Please fill in all required fields','');
+        document.querySelector('.f-input.err, .f-select.err')?.scrollIntoView({behavior:'smooth',block:'center'});
         return;
     }
+
+    const prov = document.getElementById('province').value;
+    const ORDER_ID = 'BD-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,5).toUpperCase();
+
+    const order = {
+        orderId:      ORDER_ID,
+        items:        ITEMS,
+        shipping: {
+            name:     document.getElementById('fname').value.trim() + ' ' + document.getElementById('lname').value.trim(),
+            phone:    document.getElementById('phone').value.trim(),
+            addr1:    document.getElementById('addr1').value.trim(),
+            addr2:    document.getElementById('addr2').value.trim(),
+            province: prov,
+            note:     document.getElementById('note').value.trim(),
+        },
+        subtotal,
+        shippingCost: shipCost,
+        total:        subtotal + shipCost,
+        payMethod:    'khqr',
+        createdAt:    new Date().toISOString(),
+    };
+    sessionStorage.setItem('BARDS_ORDER', JSON.stringify(order));
 
     // Loading state
     const btn = document.getElementById('placeBtn');
     btn.className = 'place-btn loading';
-    btn.innerHTML = `
-        <svg style="animation:spin .8s linear infinite" width="18" height="18" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-        </svg>
-        PROCESSING…`;
-
-    // Build draft
-    const code   = provEl.value;
-    const info   = PROV[code] || {};
-    const sub    = ITEMS.reduce((s, c) => s + c.price * c.quantity, 0);
-    const orderId = 'BD-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,5).toUpperCase();
-
-    const draft = {
-        id:        orderId,
-        items:     ITEMS,
-        shipping: {
-            name:         document.getElementById('fname').value.trim() + ' ' + document.getElementById('lname').value.trim(),
-            phone:        document.getElementById('phone').value.trim(),
-            addr:         document.getElementById('addr').value.trim(),
-            commune:      document.getElementById('commune').value.trim(),
-            province:     info.name || code,
-            provinceCode: code,
-            eta:          info.eta || '',
-            courier:      info.courier || '',
-            note:         document.getElementById('note').value.trim(),
-        },
-        payment:  'KHQR',
-        shipFee:   shipFee,
-        subtotal:  sub,
-        total:     sub + shipFee,
-        status:   'pending',
-        createdAt: new Date().toISOString(),
-    };
-
-    sessionStorage.setItem('BARDS_ORDER_DRAFT', JSON.stringify(draft));
+    btn.innerHTML = `<svg style="animation:spin .8s linear infinite" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Processing…`;
 
     setTimeout(() => { location.href = 'payment.html'; }, 480);
 }
 
-/* ── UTILS ──────────────────────────────────────── */
 function fmtUSD(n) { return '$' + Number(n).toFixed(2); }
 
-/* ── TOAST ─────────────────────────────────────── */
-const OK_SVG   = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-const WARN_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+const IC_OK   = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const IC_WARN = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
 let _tt;
 function showToast(type, title, sub) {
-    const icon = document.getElementById('ti');
-    icon.className = 'ti ' + (type === 'warn' ? 'warn' : 'ok');
-    icon.innerHTML = type === 'warn' ? WARN_SVG : OK_SVG;
-    document.getElementById('ttl').textContent = title;
-    document.getElementById('tsb').textContent = sub || '';
-    const t = document.getElementById('toast');
-    t.classList.add('on');
-    clearTimeout(_tt);
-    _tt = setTimeout(() => t.classList.remove('on'), 2800);
+    const ic = document.getElementById('toastIcon');
+    ic.className = 't-icon ' + (type==='warn'?'warn':'ok');
+    ic.innerHTML = type==='warn' ? IC_WARN : IC_OK;
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastSub').textContent   = sub||'';
+    const t = document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2800);
 }
 </script>
 </body>
