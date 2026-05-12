@@ -64,7 +64,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--
 .p-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 0 0 1px rgba(0,0,0,.12);}
 .empty{padding:60px 20px;text-align:center;display:none;}
 .empty.show{display:block;}
-.empty-icon{margin-bottom:16px;color:var(--gray-300);}
+.empty-icon{margin-bottom:16px;color:var(--gray-400);}
 .empty-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;}
 .empty-sub{font-size:12px;color:var(--gray-400);margin-top:6px;line-height:1.6;}
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--black);color:#fff;padding:12px 18px 12px 14px;border-radius:14px;z-index:9999;opacity:0;transition:opacity .28s,transform .28s;white-space:nowrap;display:flex;align-items:center;gap:10px;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.28);min-width:220px;}
@@ -81,19 +81,13 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--
 <body>
 <nav class="nav">
   <div class="nav-left">
-    <button class="icon-btn" onclick="history.back()">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
-    </button>
+    <button class="icon-btn" onclick="history.back()"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg></button>
     <a href="index.html" class="brand">BARDS</a>
   </div>
   <div class="nav-right">
-    <a href="account.html" class="icon-btn" aria-label="Account">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    </a>
+    <a href="account.html" class="icon-btn" aria-label="Account"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
     <div class="cart-wrap">
-      <a href="cart.html" class="icon-btn" aria-label="Cart">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-      </a>
+      <a href="cart.html" class="icon-btn" aria-label="Cart"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></a>
       <span class="cart-badge" id="cartBadge"></span>
     </div>
   </div>
@@ -101,10 +95,10 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--
 
 <div class="filter-strip">
   <div class="filter-row" id="filterRow">
-    <div class="f-chip on" data-cat="all" onclick="setCat(this,'all')">All <span class="f-count" id="cnt-all">0</span></div>
-    <div class="f-chip" data-cat="tops" onclick="setCat(this,'tops')">Tops <span class="f-count" id="cnt-tops">0</span></div>
-    <div class="f-chip" data-cat="pants" onclick="setCat(this,'pants')">Pants <span class="f-count" id="cnt-pants">0</span></div>
-    <div class="f-chip" data-cat="accessories" onclick="setCat(this,'accessories')">Accessories <span class="f-count" id="cnt-accessories">0</span></div>
+    <div class="f-chip on" data-cat="all"         onclick="setCat(this,'all')">All <span class="f-count" id="cnt-all">0</span></div>
+    <div class="f-chip"   data-cat="tops"         onclick="setCat(this,'tops')">Tops <span class="f-count" id="cnt-tops">0</span></div>
+    <div class="f-chip"   data-cat="pants"        onclick="setCat(this,'pants')">Pants <span class="f-count" id="cnt-pants">0</span></div>
+    <div class="f-chip"   data-cat="accessories"  onclick="setCat(this,'accessories')">Accessories <span class="f-count" id="cnt-accessories">0</span></div>
   </div>
 </div>
 
@@ -128,9 +122,7 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--
 <div class="section fu d2">
   <div class="p-grid" id="productGrid"></div>
   <div class="empty" id="emptyState">
-    <div class="empty-icon">
-      <svg width="52" height="52" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </div>
+    <div class="empty-icon"><svg width="52" height="52" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
     <div class="empty-title">No Results</div>
     <div class="empty-sub">Try a different search or filter.</div>
   </div>
@@ -143,28 +135,30 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--
 </div>
 
 <script>
+/* price เป็น USD ตรงๆ */
 const PRODUCTS={
-  'oversized-tee-black':{name:'Classic Black Oversized Tee',price:790,tag:'BESTSELLER',tagLight:false,category:'tops',isNew:false,stock:'in-stock',dateAdded:'2024-10-01',images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],sizes:['S','M','L','XL']},
-  'cargo-pants-olive':{name:'Military Olive Cargo Pants',price:1590,tag:'NEW',tagLight:false,category:'pants',isNew:false,stock:'in-stock',dateAdded:'2024-11-01',images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],sizes:['M','L','XL']},
-  'hoodie-grey':{name:'Stone Grey Pullover Hoodie',price:1290,tag:'POPULAR',tagLight:false,category:'tops',isNew:false,stock:'in-stock',dateAdded:'2024-10-15',images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],sizes:['S','M','L','XL']},
-  'sunglasses-retro':{name:'Retro Square Sunglasses',price:890,tag:'LIMITED',tagLight:false,category:'accessories',isNew:false,stock:'low-stock',dateAdded:'2024-10-20',images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],sizes:['One Size']},
-  'oversized-tee-white':{name:'Stone White Oversized Tee',price:790,tag:'NEW',tagLight:false,category:'tops',isNew:true,stock:'in-stock',dateAdded:'2025-01-10',images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],sizes:['S','M','L','XL']},
-  'cargo-pants-black':{name:'Tactical Black Cargo Pants',price:1590,tag:'NEW',tagLight:false,category:'pants',isNew:true,stock:'in-stock',dateAdded:'2025-01-12',images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],sizes:['M','L','XL']},
-  'hoodie-navy':{name:'Midnight Navy Pullover Hoodie',price:1290,tag:'NEW',tagLight:false,category:'tops',isNew:true,stock:'in-stock',dateAdded:'2025-01-15',images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],sizes:['S','M','L','XL']},
-  'sunglasses-black':{name:'Classic Black Sunglasses',price:890,tag:'NEW',tagLight:false,category:'accessories',isNew:true,stock:'in-stock',dateAdded:'2025-01-18',images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],colors:[{name:'Glossy Black',hex:'#111111'}],sizes:['One Size']}
+  'oversized-tee-black':{name:'Classic Black Oversized Tee',price:23.94,tag:'BESTSELLER',tagLight:false,category:'tops',isNew:false,stock:'in-stock',dateAdded:'2024-10-01',images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],sizes:['S','M','L','XL']},
+  'cargo-pants-olive':  {name:'Military Olive Cargo Pants', price:48.18,tag:'NEW',       tagLight:false,category:'pants',isNew:false,stock:'in-stock',dateAdded:'2024-11-01',images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],sizes:['M','L','XL']},
+  'hoodie-grey':        {name:'Stone Grey Pullover Hoodie', price:39.09,tag:'POPULAR',   tagLight:false,category:'tops',isNew:false,stock:'in-stock',dateAdded:'2024-10-15',images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],sizes:['S','M','L','XL']},
+  'sunglasses-retro':   {name:'Retro Square Sunglasses',   price:26.97,tag:'LIMITED',   tagLight:false,category:'accessories',isNew:false,stock:'low-stock',dateAdded:'2024-10-20',images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],sizes:['One Size']},
+  'oversized-tee-white':{name:'Stone White Oversized Tee', price:23.94,tag:'NEW',       tagLight:false,category:'tops',isNew:true, stock:'in-stock',dateAdded:'2025-01-10',images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],sizes:['S','M','L','XL']},
+  'cargo-pants-black':  {name:'Tactical Black Cargo Pants',price:48.18,tag:'NEW',       tagLight:false,category:'pants',isNew:true, stock:'in-stock',dateAdded:'2025-01-12',images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],sizes:['M','L','XL']},
+  'hoodie-navy':        {name:'Midnight Navy Pullover Hoodie',price:39.09,tag:'NEW',    tagLight:false,category:'tops',isNew:true, stock:'in-stock',dateAdded:'2025-01-15',images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],sizes:['S','M','L','XL']},
+  'sunglasses-black':   {name:'Classic Black Sunglasses',  price:26.97,tag:'NEW',       tagLight:false,category:'accessories',isNew:true, stock:'in-stock',dateAdded:'2025-01-18',images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],colors:[{name:'Glossy Black',hex:'#111111'}],sizes:['One Size']}
 };
 const SORT_OPTS=[
-  {label:'Sort',    fn:null},
-  {label:'Price ↑', fn:([,a],[,b])=>a.price-b.price},
-  {label:'Price ↓', fn:([,a],[,b])=>b.price-a.price},
-  {label:'A → Z',   fn:([,a],[,b])=>a.name.localeCompare(b.name,'th')},
-  {label:'Newest',  fn:([,a],[,b])=>new Date(b.dateAdded)-new Date(a.dateAdded)},
+  {label:'Sort',   fn:null},
+  {label:'Price ↑',fn:([,a],[,b])=>a.price-b.price},
+  {label:'Price ↓',fn:([,a],[,b])=>b.price-a.price},
+  {label:'A → Z',  fn:([,a],[,b])=>a.name.localeCompare(b.name,'th')},
+  {label:'Newest', fn:([,a],[,b])=>new Date(b.dateAdded)-new Date(a.dateAdded)},
 ];
 const S={sort:0,cat:'all',query:'',favs:JSON.parse(localStorage.getItem('NW_FAVS')||'[]')};
 
-document.addEventListener('DOMContentLoaded',()=>{
-  updateCounts(); renderGrid(); updateBadge();
-});
+function fmtUSD(num){ return '$'+Number(num).toFixed(2); }
+
+document.addEventListener('DOMContentLoaded',()=>{ updateCounts(); renderGrid(); updateBadge(); });
+
 function updateCounts(){
   const all=Object.values(PRODUCTS);
   document.getElementById('cnt-all').innerText=all.length;
@@ -175,13 +169,9 @@ function updateCounts(){
 function setCat(el,cat){
   S.cat=cat;
   document.querySelectorAll('.f-chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
-  renderGrid();
+  el.classList.add('on'); renderGrid();
 }
-function onSearch(val){
-  S.query=val.toLowerCase().trim();
-  renderGrid();
-}
+function onSearch(val){ S.query=val.toLowerCase().trim(); renderGrid(); }
 function cycleSort(){
   S.sort=(S.sort+1)%SORT_OPTS.length;
   document.getElementById('sortLabel').innerText=SORT_OPTS[S.sort].label;
@@ -191,43 +181,33 @@ function cycleSort(){
 function getItems(){
   let items=Object.entries(PRODUCTS);
   if(S.cat!=='all') items=items.filter(([,p])=>p.category===S.cat);
-  if(S.query) items=items.filter(([id,p])=>
-    p.name.toLowerCase().includes(S.query)||
-    p.category.toLowerCase().includes(S.query)||
-    p.tag.toLowerCase().includes(S.query)||
-    id.toLowerCase().includes(S.query)
-  );
-  const fn=SORT_OPTS[S.sort].fn;
-  if(fn) items=[...items].sort(fn);
+  if(S.query) items=items.filter(([id,p])=>p.name.toLowerCase().includes(S.query)||p.category.toLowerCase().includes(S.query)||p.tag.toLowerCase().includes(S.query)||id.toLowerCase().includes(S.query));
+  const fn=SORT_OPTS[S.sort].fn; if(fn) items=[...items].sort(fn);
   return items;
 }
 function renderGrid(){
-  const items=getItems();
-  const n=items.length;
+  const items=getItems(); const n=items.length;
   document.getElementById('resultsLabel').innerText=`${n} ${n===1?'Product':'Products'}`;
-  const grid=document.getElementById('productGrid');
-  const empty=document.getElementById('emptyState');
+  const grid=document.getElementById('productGrid'); const empty=document.getElementById('emptyState');
   if(!n){grid.innerHTML='';empty.classList.add('show');return;}
   empty.classList.remove('show');
   grid.innerHTML=items.map(([id,p])=>cardHTML(id,p,false)).join('');
 }
 function cardHTML(id,p,wide){
-  const price=`$${(p.price/33).toFixed(2)}`;
-  const tagCls=p.tagLight?'light':'';
-  const low=p.stock==='low-stock'?`<div class="p-tag low-stock">LOW STOCK</div>`:'';
   const isFav=S.favs.includes(id);
   const dots=p.colors.map(c=>`<div class="p-dot" style="background:${c.hex}"></div>`).join('');
+  const low=p.stock==='low-stock'?`<div class="p-tag low-stock">LOW STOCK</div>`:'';
   return`<a href="product.html?id=${id}" class="p-card${wide?' wide':''}">
   <div class="p-card-img">
     <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
-    <div class="p-tag ${tagCls}">${p.tag}</div>${low}
-    <button class="p-fav ${isFav?'liked':''}" onclick="toggleFav(event,'${id}',this)" aria-label="Wishlist">
+    <div class="p-tag${p.tagLight?' light':''}">${p.tag}</div>${low}
+    <button class="p-fav${isFav?' liked':''}" onclick="toggleFav(event,'${id}',this)" aria-label="Wishlist">
       <svg width="13" height="13" fill="${isFav?'currentColor':'none'}" stroke="${isFav?'#fff':'var(--gray-600)'}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </button>
   </div>
   <div class="p-card-body">
     <div class="p-name">${p.name}</div>
-    <div class="p-meta"><div class="p-price">${price}</div><div class="p-colors">${dots}</div></div>
+    <div class="p-meta"><div class="p-price">${fmtUSD(p.price)}</div><div class="p-colors">${dots}</div></div>
   </div></a>`;
 }
 function toggleFav(e,id,btn){
