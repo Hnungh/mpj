@@ -23,336 +23,109 @@
         }
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         html { scroll-behavior:smooth; }
-        body {
-            font-family:'Space Grotesk',sans-serif;
-            background:var(--white);
-            color:var(--black);
-            overscroll-behavior:none;
-            padding-bottom:32px;
-        }
+        body { font-family:'Space Grotesk',sans-serif; background:var(--white); color:var(--black); overscroll-behavior:none; padding-bottom:32px; }
 
-        /* ────────────────────────────────────────
-           NAV
-        ──────────────────────────────────────── */
-        .nav {
-            position:fixed; top:0; left:0; right:0; z-index:200;
-            height:var(--nav-h);
-            display:flex; align-items:center; justify-content:space-between;
-            padding:0 18px;
-            background:rgba(250,250,250,.9);
-            backdrop-filter:blur(18px) saturate(160%);
-            -webkit-backdrop-filter:blur(18px) saturate(160%);
-            border-bottom:1px solid var(--gray-200);
-        }
+        .nav { position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 18px; background:rgba(250,250,250,.9); backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%); border-bottom:1px solid var(--gray-200); }
         .nav-left  { display:flex; align-items:center; gap:12px; }
         .nav-right { display:flex; align-items:center; gap:4px; }
-        .brand {
-            font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px;
-            color:var(--black); text-decoration:none;
-        }
-        .icon-btn {
-            width:36px; height:36px; border-radius:50%;
-            background:var(--gray-100); border:none;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:background .18s,transform .12s;
-            text-decoration:none; color:var(--black); position:relative;
-        }
+        .brand { font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px; color:var(--black); text-decoration:none; }
+        .icon-btn { width:36px; height:36px; border-radius:50%; background:var(--gray-100); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .18s,transform .12s; text-decoration:none; color:var(--black); position:relative; }
         .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
         .icon-btn.search-active { background:var(--black); color:var(--white); }
         .cart-wrap { position:relative; }
+        .cart-badge { position:absolute; top:-2px; right:-2px; background:var(--orange); color:#fff; font-size:8px; font-weight:700; font-family:'DM Mono',monospace; min-width:15px; height:15px; border-radius:8px; display:none; align-items:center; justify-content:center; padding:0 3px; border:1.5px solid var(--white); }
 
-        /* ── FIX 1: cart badge สีส้ม เหมือน product.html ── */
-        .cart-badge {
-            position:absolute; top:-2px; right:-2px;
-            background:var(--orange); color:#fff;
-            font-size:8px; font-weight:700; font-family:'DM Mono',monospace;
-            min-width:15px; height:15px; border-radius:8px;
-            display:none; align-items:center; justify-content:center;
-            padding:0 3px; border:1.5px solid var(--white);
-        }
-
-        /* ────────────────────────────────────────
-           SEARCH
-           ── FIX 2: overlay เต็มหน้าจอ แตะนอก = ปิด
-           ── FIX 3: ไม่มี SVG แว่นซ้อนใน search box
-        ──────────────────────────────────────── */
-
-        /* mask คลุมทั้งหน้า แตะปิด */
-        .search-mask {
-            display:none;
-            position:fixed; inset:0; z-index:149;
-        }
+        .search-mask { display:none; position:fixed; inset:0; z-index:149; }
         .search-mask.open { display:block; }
-
-        .search-panel {
-            position:fixed; top:var(--nav-h); left:0; right:0; z-index:150;
-            background:var(--white); border-bottom:1px solid var(--gray-200);
-            padding:11px 18px 13px;
-            transform:translateY(-110%);
-            transition:transform .34s cubic-bezier(.22,1,.36,1);
-            pointer-events:none;
-        }
-        .search-panel.open {
-            transform:translateY(0);
-            pointer-events:all;
-        }
-
-        /* search box — input + clear btn เท่านั้น, ไม่มี icon ซ้อน */
-        .search-inner {
-            display:flex; align-items:center; gap:10px;
-            background:var(--gray-100); border:1.5px solid var(--gray-200);
-            border-radius:30px; padding:0 16px; height:42px;
-            transition:border-color .2s, background .2s;
-        }
-        .search-panel.open .search-inner:focus-within {
-            border-color:var(--black); background:var(--white);
-        }
-        .search-inner input {
-            flex:1; border:none; background:transparent;
-            font-family:'Space Grotesk',sans-serif; font-size:13px;
-            color:var(--black); outline:none;
-        }
-        /* ลบปุ่ม X ที่ browser สร้างให้กับ input[type=search] */
+        .search-panel { position:fixed; top:var(--nav-h); left:0; right:0; z-index:150; background:var(--white); border-bottom:1px solid var(--gray-200); padding:11px 18px 13px; transform:translateY(-110%); transition:transform .34s cubic-bezier(.22,1,.36,1); pointer-events:none; }
+        .search-panel.open { transform:translateY(0); pointer-events:all; }
+        .search-inner { display:flex; align-items:center; gap:10px; background:var(--gray-100); border:1.5px solid var(--gray-200); border-radius:30px; padding:0 16px; height:42px; transition:border-color .2s,background .2s; }
+        .search-panel.open .search-inner:focus-within { border-color:var(--black); background:var(--white); }
+        .search-inner input { flex:1; border:none; background:transparent; font-family:'Space Grotesk',sans-serif; font-size:13px; color:var(--black); outline:none; }
         .search-inner input[type="search"]::-webkit-search-decoration,
         .search-inner input[type="search"]::-webkit-search-cancel-button,
         .search-inner input[type="search"]::-webkit-search-results-button,
         .search-inner input[type="search"]::-webkit-search-results-decoration { display:none; }
         .search-inner input::placeholder { color:var(--gray-400); }
-        .search-clear {
-            background:none; border:none; cursor:pointer;
-            color:var(--gray-400); padding:2px;
-            display:none; align-items:center; justify-content:center;
-            flex-shrink:0;
-        }
+        .search-clear { background:none; border:none; cursor:pointer; color:var(--gray-400); padding:2px; display:none; align-items:center; justify-content:center; flex-shrink:0; }
         .search-clear.on { display:flex; }
-        .search-hint {
-            font-family:'DM Mono',monospace; font-size:10px;
-            color:var(--gray-400); margin-top:8px; letter-spacing:.5px; min-height:15px;
-        }
+        .search-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); margin-top:8px; letter-spacing:.5px; min-height:15px; }
 
-        /* ────────────────────────────────────────
-           FILTER STRIP  —  sticky below nav
-        ──────────────────────────────────────── */
-        .filter-strip {
-            position:sticky; top:var(--nav-h); z-index:90;
-            background:rgba(250,250,250,.92);
-            backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-            border-bottom:1px solid var(--gray-200);
-            padding:10px 0;
-            transition:top .34s cubic-bezier(.22,1,.36,1);
-        }
+        .filter-strip { position:sticky; top:var(--nav-h); z-index:90; background:rgba(250,250,250,.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--gray-200); padding:10px 0; transition:top .34s cubic-bezier(.22,1,.36,1); }
         .filter-strip.shifted { top:calc(var(--nav-h) + 92px); }
-        .filter-row {
-            display:flex; gap:7px; padding:0 18px;
-            overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-        }
+        .filter-row { display:flex; gap:7px; padding:0 18px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
         .filter-row::-webkit-scrollbar { display:none; }
-        .f-chip {
-            height:32px; padding:0 13px;
-            border:1.5px solid var(--gray-200); border-radius:30px;
-            font-size:11px; font-weight:600; cursor:pointer;
-            background:var(--white); color:var(--gray-600);
-            transition:background .18s, border-color .18s, color .18s;
-            white-space:nowrap; flex-shrink:0;
-            display:flex; align-items:center; gap:5px;
-            font-family:'Space Grotesk',sans-serif;
-        }
+        .f-chip { height:32px; padding:0 13px; border:1.5px solid var(--gray-200); border-radius:30px; font-size:11px; font-weight:600; cursor:pointer; background:var(--white); color:var(--gray-600); transition:background .18s,border-color .18s,color .18s; white-space:nowrap; flex-shrink:0; display:flex; align-items:center; gap:5px; font-family:'Space Grotesk',sans-serif; }
         .f-chip.on { background:var(--black); border-color:var(--black); color:#fff; }
         .f-chip:active { opacity:.7; }
-        .f-count {
-            font-family:'DM Mono',monospace; font-size:9px;
-            background:rgba(0,0,0,.07); border-radius:8px; padding:1px 5px;
-        }
+        .f-count { font-family:'DM Mono',monospace; font-size:9px; background:rgba(0,0,0,.07); border-radius:8px; padding:1px 5px; }
         .f-chip.on .f-count { background:rgba(255,255,255,.18); }
 
-        /* ────────────────────────────────────────
-           LAYOUT CHROME
-        ──────────────────────────────────────── */
         .page-start { height:var(--nav-h); }
-
         .section { padding:0 18px; max-width:800px; margin:0 auto; }
         .divider { border:none; border-top:1px solid var(--gray-200); margin:24px 18px; }
-
-        .sec-hd {
-            display:flex; align-items:center; justify-content:space-between;
-            margin-bottom:13px;
-        }
-        .sec-hd-title {
-            font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black);
-        }
-        .see-all {
-            font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-            color:var(--gray-400); text-decoration:none;
-            display:flex; align-items:center; gap:3px;
-            border:none; background:none; cursor:pointer;
-            font-family:'Space Grotesk',sans-serif;
-            transition:color .18s;
-        }
+        .sec-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:13px; }
+        .sec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black); }
+        .see-all { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray-400); text-decoration:none; display:flex; align-items:center; gap:3px; border:none; background:none; cursor:pointer; font-family:'Space Grotesk',sans-serif; transition:color .18s; }
         .see-all:active { color:var(--black); }
 
-        /* ────────────────────────────────────────
-           SORT ROW
-        ──────────────────────────────────────── */
-        .sort-row {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:13px 18px 6px; max-width:800px; margin:0 auto;
-        }
-        .sort-results {
-            font-family:'DM Mono',monospace; font-size:10px;
-            color:var(--gray-400); letter-spacing:.5px;
-        }
-        .sort-btn {
-            height:28px; padding:0 12px;
-            border:1.5px solid var(--gray-200); border-radius:20px;
-            font-size:11px; font-weight:600; cursor:pointer;
-            background:var(--white); color:var(--gray-600);
-            display:flex; align-items:center; gap:5px;
-            font-family:'Space Grotesk',sans-serif; transition:all .18s;
-        }
+        .sort-row { display:flex; align-items:center; justify-content:space-between; padding:13px 18px 6px; max-width:800px; margin:0 auto; }
+        .sort-results { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); letter-spacing:.5px; }
+        .sort-btn { height:28px; padding:0 12px; border:1.5px solid var(--gray-200); border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; background:var(--white); color:var(--gray-600); display:flex; align-items:center; gap:5px; font-family:'Space Grotesk',sans-serif; transition:all .18s; }
         .sort-btn:active { background:var(--gray-100); }
         .sort-btn.active { background:var(--black); border-color:var(--black); color:#fff; }
 
-        /* ────────────────────────────────────────
-           PRODUCT GRID  (2-col)
-        ──────────────────────────────────────── */
         .p-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-
-        .p-card {
-            background:var(--white); border-radius:var(--radius);
-            border:1px solid var(--gray-200); overflow:hidden;
-            cursor:pointer; display:flex; flex-direction:column;
-            text-decoration:none; color:inherit; position:relative;
-            transition:transform .22s,box-shadow .22s;
-        }
+        .p-card { background:var(--white); border-radius:var(--radius); border:1px solid var(--gray-200); overflow:hidden; cursor:pointer; display:flex; flex-direction:column; text-decoration:none; color:inherit; position:relative; transition:transform .22s,box-shadow .22s; }
         .p-card:active { transform:scale(.975); box-shadow:0 6px 24px rgba(0,0,0,.09); }
         .p-card.wide { grid-column:1/-1; }
-
-        .p-card-img {
-            aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative;
-        }
+        .p-card-img { aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative; }
         .p-card.wide .p-card-img { aspect-ratio:2/1; }
-        .p-card-img img {
-            width:100%; height:100%; object-fit:cover; display:block;
-            transition:transform .38s ease;
-        }
+        .p-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease; }
         .p-card:active .p-card-img img { transform:scale(1.04); }
-
-        .p-tag {
-            position:absolute; top:9px; left:9px; z-index:2;
-            background:var(--black); color:#fff;
-            font-family:'DM Mono',monospace; font-size:8px;
-            letter-spacing:1.5px; text-transform:uppercase;
-            padding:3px 9px; border-radius:20px;
-        }
+        .p-tag { position:absolute; top:9px; left:9px; z-index:2; background:var(--black); color:#fff; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; padding:3px 9px; border-radius:20px; }
         .p-tag.light { background:var(--white); color:var(--black); }
         .p-tag.low-stock { background:var(--gray-600); color:#fff; top:auto; bottom:9px; }
-
-        .p-fav {
-            position:absolute; top:9px; right:9px; z-index:2;
-            width:29px; height:29px; border-radius:50%;
-            background:rgba(255,255,255,.88); border:none;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:transform .18s,background .18s;
-        }
+        .p-fav { position:absolute; top:9px; right:9px; z-index:2; width:29px; height:29px; border-radius:50%; background:rgba(255,255,255,.88); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform .18s,background .18s; }
         .p-fav:active { transform:scale(.85); }
         .p-fav.liked { background:var(--black); }
         .p-fav.liked svg { stroke:#fff; fill:#fff; }
-
         .p-card-body { padding:10px 11px 13px; flex:1; display:flex; flex-direction:column; gap:7px; }
         .p-name { font-size:12px; font-weight:600; line-height:1.35; letter-spacing:-.1px; }
         .p-card.wide .p-name { font-size:14px; }
         .p-meta { display:flex; align-items:center; justify-content:space-between; }
-
-        /* ── FIX: ราคาสีแดง เหมือน product.html ── */
         .p-price { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); }
-
         .p-colors { display:flex; gap:4px; }
-        .p-dot {
-            width:10px; height:10px; border-radius:50%;
-            border:1.5px solid rgba(255,255,255,.7); box-shadow:0 0 0 1px rgba(0,0,0,.12);
-        }
+        .p-dot { width:10px; height:10px; border-radius:50%; border:1.5px solid rgba(255,255,255,.7); box-shadow:0 0 0 1px rgba(0,0,0,.12); }
 
-        /* ────────────────────────────────────────
-           EMPTY STATE
-        ──────────────────────────────────────── */
         .empty { padding:60px 20px; text-align:center; display:none; }
         .empty.show { display:block; }
         .empty-icon { font-size:36px; margin-bottom:12px; }
         .empty-title { font-size:15px; font-weight:600; }
         .empty-sub { font-size:12px; color:var(--gray-400); margin-top:5px; line-height:1.65; }
 
-        /* NEW ARRIVALS — horizontal scroll, การ์ดเหมือน Featured ทุกประการ */
-        .na-scroll {
-            overflow-x:auto;
-            -webkit-overflow-scrolling:touch;
-            scrollbar-width:none;
-            padding:0 18px 4px;
-        }
+        .na-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 18px 4px; }
         .na-scroll::-webkit-scrollbar { display:none; }
-        .na-row {
-            display:flex;
-            flex-direction:row;
-            gap:10px;
-            width:max-content;
-        }
-        /* กว้างเท่ากับการ์ดใน Featured grid พอดี: (100vw - 18px*2 - 10px gap) / 2 */
-        .na-row .p-card {
-            width:calc((100vw - 46px) / 2);
-            flex-shrink:0;
-        }
-        .na-row .p-card .p-card-img {
-            aspect-ratio:1/1;
-        }
+        .na-row { display:flex; flex-direction:row; gap:10px; width:max-content; }
+        .na-row .p-card { width:calc((100vw - 46px) / 2); flex-shrink:0; }
+        .na-row .p-card .p-card-img { aspect-ratio:1/1; }
 
-        /* ────────────────────────────────────────
-           CATEGORIES GRID
-        ──────────────────────────────────────── */
         .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-        .cat-card {
-            border-radius:var(--radius-sm); aspect-ratio:4/3;
-            position:relative; overflow:hidden; cursor:pointer;
-        }
-        .cat-card img {
-            width:100%; height:100%; object-fit:cover; display:block;
-            filter:brightness(.5) saturate(.75);
-            transition:transform .4s ease,filter .3s;
-        }
+        .cat-card { border-radius:var(--radius-sm); aspect-ratio:4/3; position:relative; overflow:hidden; cursor:pointer; }
+        .cat-card img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.5) saturate(.75); transition:transform .4s ease,filter .3s; }
         .cat-card:active img { transform:scale(1.07); filter:brightness(.35) saturate(.6); }
-        .cat-info {
-            position:absolute; bottom:10px; left:12px; right:12px;
-            display:flex; align-items:flex-end; justify-content:space-between;
-        }
+        .cat-info { position:absolute; bottom:10px; left:12px; right:12px; display:flex; align-items:flex-end; justify-content:space-between; }
         .cat-name { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2px; color:#fff; }
         .cat-count { font-family:'DM Mono',monospace; font-size:8px; color:rgba(255,255,255,.55); }
-        .cat-arrow {
-            position:absolute; top:9px; right:9px;
-            width:24px; height:24px; border-radius:50%;
-            background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
-            display:flex; align-items:center; justify-content:center; color:#fff;
-        }
+        .cat-arrow { position:absolute; top:9px; right:9px; width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center; color:#fff; }
 
-        /* ────────────────────────────────────────
-           TOAST
-        ──────────────────────────────────────── */
-        .toast {
-            position:fixed; bottom:32px; left:50%;
-            transform:translateX(-50%) translateY(6px);
-            background:var(--black); color:#fff;
-            padding:12px 18px 12px 14px; border-radius:14px;
-            font-size:13px; font-weight:500; z-index:9999;
-            opacity:0; transition:opacity .28s,transform .28s;
-            white-space:nowrap; display:flex; align-items:center; gap:10px;
-            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px;
-        }
+        .toast { position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(6px); background:var(--black); color:#fff; padding:12px 18px 12px 14px; border-radius:14px; font-size:13px; font-weight:500; z-index:9999; opacity:0; transition:opacity .28s,transform .28s; white-space:nowrap; display:flex; align-items:center; gap:10px; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px; }
         .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
         .toast-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(255,255,255,.1); }
         .toast-text { display:flex; flex-direction:column; gap:1px; }
         .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
         .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); }
 
-        /* ────────────────────────────────────────
-           ANIMATIONS
-        ──────────────────────────────────────── */
         @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
         .fu { animation:fadeUp .42s ease both; }
         .d1 { animation-delay:.06s; } .d2 { animation-delay:.12s; }
@@ -361,103 +134,56 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════
-     NAV
-     ── FIX 2: logo เปลี่ยนเป็น BARDS
-     ── FIX 3: เพิ่ม account icon ระหว่าง search กับ cart
-═══════════════════════════════════════════════ -->
 <nav class="nav">
     <div class="nav-left">
         <a href="index.html" class="brand">BARDS</a>
     </div>
     <div class="nav-right">
-
-        <!-- Search -->
         <button class="icon-btn" id="searchBtn" onclick="toggleSearch()" aria-label="Search">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="6.5" cy="6.5" r="5.5"/>
-                <line x1="11" y1="11" x2="14" y2="14"/>
-            </svg>
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="5.5"/><line x1="11" y1="11" x2="14" y2="14"/></svg>
         </button>
-
-        <!-- Account (กลาง) — ready for account.html -->
         <a href="account.html" class="icon-btn" aria-label="Account">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"
-                 stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-            </svg>
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
-
-        <!-- Cart -->
         <div class="cart-wrap">
             <a href="cart.html" class="icon-btn" aria-label="Cart">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2.5"
-                     stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </a>
             <span class="cart-badge" id="cartBadge"></span>
         </div>
-
     </div>
 </nav>
 
-<!-- mask: แตะที่ไหนก็ปิด search ได้ -->
 <div class="search-mask" id="searchMask" onclick="toggleSearch()"></div>
-
-<!-- SEARCH PANEL — ไม่มี SVG แว่นข้างใน -->
 <div class="search-panel" id="searchPanel">
     <div class="search-inner">
-        <input type="search" id="searchInput"
-               placeholder="ค้นหาสินค้า เช่น tee, hoodie, cargo…"
-               oninput="onSearch(this.value)"
-               autocomplete="off" spellcheck="false">
+        <input type="search" id="searchInput" placeholder="ค้นหาสินค้า เช่น tee, hoodie, cargo…" oninput="onSearch(this.value)" autocomplete="off" spellcheck="false">
         <button class="search-clear" id="searchClearBtn" onclick="clearSearch()">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round">
-                <line x1="1" y1="1" x2="12" y2="12"/>
-                <line x1="12" y1="1" x2="1" y2="12"/>
-            </svg>
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="1" y1="1" x2="12" y2="12"/><line x1="12" y1="1" x2="1" y2="12"/></svg>
         </button>
     </div>
     <div class="search-hint" id="searchHint"></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     FILTER STRIP
-═══════════════════════════════════════════════ -->
 <div class="filter-strip" id="filterStrip">
     <div class="filter-row" id="filterRow">
-        <div class="f-chip on" data-filter="all"         onclick="setFilter(this,'all')">All <span class="f-count" id="cnt-all">4</span></div>
-        <div class="f-chip"   data-filter="tops"         onclick="setFilter(this,'tops')">Tops <span class="f-count" id="cnt-tops">0</span></div>
-        <div class="f-chip"   data-filter="pants"        onclick="setFilter(this,'pants')">Pants <span class="f-count" id="cnt-pants">0</span></div>
-        <div class="f-chip"   data-filter="accessories"  onclick="setFilter(this,'accessories')">Accessories <span class="f-count" id="cnt-accessories">0</span></div>
+        <div class="f-chip on" data-filter="all"        onclick="setFilter(this,'all')">All <span class="f-count" id="cnt-all">0</span></div>
+        <div class="f-chip"   data-filter="tops"        onclick="setFilter(this,'tops')">Tops <span class="f-count" id="cnt-tops">0</span></div>
+        <div class="f-chip"   data-filter="pants"       onclick="setFilter(this,'pants')">Pants <span class="f-count" id="cnt-pants">0</span></div>
+        <div class="f-chip"   data-filter="accessories" onclick="setFilter(this,'accessories')">Accessories <span class="f-count" id="cnt-accessories">0</span></div>
     </div>
 </div>
 
 <div class="page-start"></div>
 
-<!-- ═══════════════════════════════════════════════
-     SORT ROW
-═══════════════════════════════════════════════ -->
 <div class="sort-row fu d1">
-    <span class="sort-results" id="resultsLabel">4 Products</span>
+    <span class="sort-results" id="resultsLabel">0 Products</span>
     <button class="sort-btn" id="sortBtn" onclick="cycleSort()">
-        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.3"
-             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 3h9M3 6.5h5M5.5 10h1"/>
-        </svg>
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h9M3 6.5h5M5.5 10h1"/></svg>
         <span id="sortLabel">Sort</span>
     </button>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     FEATURED GRID
-═══════════════════════════════════════════════ -->
 <div class="section fu d2" style="margin-top:4px;" id="featuredSection">
     <div class="sec-hd">
         <span class="sec-hd-title" id="featuredTitle">Featured</span>
@@ -473,11 +199,6 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════════════════════════════════
-     NEW ARRIVALS — 2 rows, max 8 items
-     ── FIX 4: h-grid แทน h-row เพื่อให้เป็น 2 แถว
-     ── FIX 5: See all → new-arrival.html (เตรียมไว้)
-═══════════════════════════════════════════════ -->
 <div id="newSection" class="fu d3">
     <div class="section">
         <div class="sec-hd">
@@ -492,9 +213,6 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════════════════════════════════
-     CATEGORIES
-═══════════════════════════════════════════════ -->
 <div class="section fu d4" id="catSection">
     <div class="sec-hd">
         <span class="sec-hd-title">Categories</span>
@@ -504,7 +222,6 @@
 
 <div style="height:32px"></div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
     <div class="toast-icon" id="toastIcon"></div>
     <div class="toast-text">
@@ -514,479 +231,72 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════
-   PRODUCT DATABASE  —  single source of truth
-   ▸ image path: https://hnungh.github.io/mpj/img/NAME.jpg
-   ▸ category: 'tops' | 'pants' | 'accessories'  (extend freely)
-   ▸ stock:    'in-stock' | 'low-stock' | 'out-of-stock'
-═══════════════════════════════════════════════════════════════ */
+/* price เป็น USD ตรงๆ ทุกตัว */
 const PRODUCTS = {
-    /* ── สินค้าหลัก (Featured) ──────────────────────────────────── */
-    'oversized-tee-black': {
-        name:     'Classic Black Oversized Tee',
-        price:    790,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-10-01',
-        rating:   4.9, reviews: 248,
-        desc:     'Crafted from 300GSM premium heavy-weight cotton. ทรงหลวมสบายสไตล์ Y2K เหมาะทุกโอกาส ตัดเย็บเนี้ยบ ทนทาน',
-        images:   [
-            'https://hnungh.github.io/mpj/img/oversized-tee-black.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'cargo-pants-olive': {
-        name:     'Military Olive Cargo Pants',
-        price:    1590,
-        tag:      'NEW', tagLight: false,
-        category: 'pants',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-11-01',
-        rating:   4.7, reviews: 91,
-        desc:     'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon กันน้ำเบื้องต้น',
-        images:   [
-            'https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg',
-            'https://hnungh.github.io/mpj/img/hoodie-grey.jpg'
-        ],
-        colors: [{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
-    },
-    'hoodie-grey': {
-        name:     'Stone Grey Pullover Hoodie',
-        price:    1290,
-        tag:      'POPULAR', tagLight: false,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-10-15',
-        rating:   4.8, reviews: 175,
-        desc:     'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ ให้ความอบอุ่น เหมาะทุกฤดู',
-        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    },
-    'sunglasses-retro': {
-        name:     'Retro Square Sunglasses',
-        price:    890,
-        tag:      'LIMITED', tagLight: false,
-        category: 'accessories',
-        isNew:    false, isSale: true,
-        stock:    'low-stock',
-        dateAdded: '2024-10-20',
-        rating:   4.6, reviews: 58,
-        desc:     'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค เฟรม Acetate หนาและเลนส์ UV400 คุณภาพสูง',
-        images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors: [{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}],
-        sizes:  ['One Size'],
-        specs:  {Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'}
-    },
-
-    /* ── New Arrivals — สินค้าที่เพิ่งเพิ่มเข้ามาใหม่ ──────────── */
-    'oversized-tee-white': {
-        name:     'Stone White Oversized Tee',
-        price:    790,
-        tag:      'NEW', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-01-10',
-        rating:   4.8, reviews: 112,
-        desc:     'เสื้อ oversized สีขาวหิน ผ้า 300GSM premium cotton เนื้อนุ่ม ทรงหลวมสบาย',
-        images:   ['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'],
-        colors: [{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'}
-    },
-    'cargo-pants-black': {
-        name:     'Tactical Black Cargo Pants',
-        price:    1590,
-        tag:      'NEW', tagLight: false,
-        category: 'pants',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-01-12',
-        rating:   4.7, reviews: 44,
-        desc:     'กางเกงคาร์โก้สีดำ สไตล์ tactical มีกระเป๋า 8 ช่อง ผ้า Ripstop Nylon',
-        images:   ['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'],
-        colors: [{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'}
-    },
-    'hoodie-navy': {
-        name:     'Midnight Navy Pullover Hoodie',
-        price:    1290,
-        tag:      'NEW', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-01-15',
-        rating:   4.7, reviews: 63,
-        desc:     'เสื้อฮู้ดดี้สีกรมท่า ทรงคลาสสิก ผ้า French Terry 380GSM นุ่มพิเศษ',
-        images:   ['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'],
-        colors: [{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'}
-    },
-    'sunglasses-black': {
-        name:     'Classic Black Sunglasses',
-        price:    890,
-        tag:      'NEW', tagLight: false,
-        category: 'accessories',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-01-18',
-        rating:   4.5, reviews: 21,
-        desc:     'แว่นตากันแดดคลาสสิกสีดำ เฟรม Acetate น้ำหนักเบา เลนส์ UV400',
-        images:   ['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'],
-        colors: [{name:'Glossy Black',hex:'#111111'}],
-        sizes:  ['One Size'],
-        specs:  {Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'}
-    },
-    'vintage-denim-jacket': {
-        name:     'Classic Vintage Denim Jacket',
-        price:    1890,
-        tag:      'HOT', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-02-01',
-        rating:   4.9, reviews: 85,
-        desc:     'เสื้อแจ็คเก็ตยีนส์ฟอกสไตล์วินเทจ ทรงสวย แข็งแรงทนทาน ใส่ได้นานไม่มีเอาท์',
-        images:   ['https://hnungh.github.io/mpj/img/denim-jacket.jpg'],
-        colors: [{name:'Indigo Wash',hex:'#3B5998'},{name:'Light Blue',hex:'#ADD8E6'}],
-        sizes:  ['M','L','XL','2XL'],
-        specs:  {Material:'14oz Denim',Weight:'Medium-Heavy',Fit:'Regular Vintage',Care:'Hand Wash Only'}
-    },
-    'slim-fit-chinos-khaki': {
-        name:     'Urban Slim-Fit Chinos',
-        price:    1150,
-        tag:      'POPULAR', tagLight: true,
-        category: 'pants',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-12-15',
-        rating:   4.6, reviews: 120,
-        desc:     'กางเกงชิโนทรงสลิมฟิต สีกากี เนื้อผ้าคอตตอนผสมยืดหยุ่นเล็กน้อย ใส่สบายทั้งวันทำงานและวันหยุด',
-        images:   ['https://hnungh.github.io/mpj/img/chinos-khaki.jpg'],
-        colors: [{name:'Khaki',hex:'#C3B091'},{name:'Navy',hex:'#000080'}],
-        sizes:  ['30','32','34','36'],
-        specs:  {Material:'Stretch Cotton',Pockets:'4 Pockets',Fit:'Slim-fit',Care:'Machine Wash'}
-    },
-    'minimalist-tote-bag': {
-        name:     'Minimalist Canvas Tote',
-        price:    450,
-        tag:      'ECO', tagLight: true,
-        category: 'accessories',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-02-10',
-        rating:   4.8, reviews: 42,
-        desc:     'กระเป๋าผ้าแคนวาสเนื้อหนา ดีไซน์มินิมอล ใส่โน้ตบุ๊กและของใช้ประจำวันได้สบาย',
-        images:   ['https://hnungh.github.io/mpj/img/tote-bag.jpg'],
-        colors: [{name:'Cream',hex:'#FFFDD0'},{name:'Black',hex:'#000000'}],
-        sizes:  ['One Size'],
-        specs:  {Material:'12oz Canvas',Size:'15x16 inches',Fit:'Universal',Care:'Hand Wash'}
-    },
-    'graphic-tee-cyberpunk': {
-        name:     'Cyberpunk Graphic Oversized Tee',
-        price:    850,
-        tag:      'LIMITED', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'low-stock',
-        dateAdded: '2025-02-14',
-        rating:   5.0, reviews: 15,
-        desc:     'เสื้อยืดลายกราฟิกสไตล์ Cyberpunk สกรีนแบบ High-density นูนสวย คมชัด',
-        images:   ['https://hnungh.github.io/mpj/img/tee-cyber.jpg'],
-        colors: [{name:'Cyber Black',hex:'#050505'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Premium Cotton',Weight:'280 GSM',Fit:'Oversized',Care:'Inside out wash'}
-    },
-    'linen-relaxed-shirt': {
-        name:     'Linen Relaxed Summer Shirt',
-        price:    990,
-        tag:      'NEW', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-01-20',
-        rating:   4.7, reviews: 34,
-        desc:     'เสื้อเชิ้ตผ้าลินินแท้ ระบายอากาศได้ดีเยี่ยม เหมาะสำหรับอากาศเมืองไทย',
-        images:   ['https://hnungh.github.io/mpj/img/linen-shirt.jpg'],
-        colors: [{name:'Sky Blue',hex:'#87CEEB'},{name:'White Sand',hex:'#F5F5DC'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'100% Linen',Weight:'Light',Fit:'Relaxed',Care:'Cold Water Only'}
-    },
-    'beanie-merino-wool': {
-        name:     'Merino Wool Knit Beanie',
-        price:    590,
-        tag:      'WINTER', tagLight: true,
-        category: 'accessories',
-        isNew:    false, isSale: true,
-        stock:    'in-stock',
-        dateAdded: '2024-11-20',
-        rating:   4.5, reviews: 28,
-        desc:     'หมวกไหมพรมถักจากขนแกะ Merino ให้ความอบอุ่นแต่ไม่คัน นุ่มเบาสบายหัว',
-        images:   ['https://hnungh.github.io/mpj/img/beanie.jpg'],
-        colors: [{name:'Charcoal',hex:'#36454F'},{name:'Mustard',hex:'#FFDB58'}],
-        sizes:  ['Free Size'],
-        specs:  {Material:'Merino Wool',Type:'Ribbed Knit',Fit:'Stretchable',Care:'Dry Clean'}
-    },
-    'joggers-utility-tech': {
-        name:     'Utility Techwear Joggers',
-        price:    1650,
-        tag:      'HOT', tagLight: false,
-        category: 'pants',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-12-05',
-        rating:   4.7, reviews: 76,
-        desc:     'กางเกงจ็อกเกอร์สไตล์เทคแวร์ เนื้อผ้ากันละอองน้ำ มีสายรัดปรับระดับได้ตามตัว',
-        images:   ['https://hnungh.github.io/mpj/img/jogger-tech.jpg'],
-        colors: [{name:'Matte Black',hex:'#1A1A1A'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Nylon Spandex',Pockets:'6 Pockets',Fit:'Tapered',Care:'Machine Wash'}
-    },
-    'baseball-cap-logo': {
-        name:     'Signature Logo Baseball Cap',
-        price:    750,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'accessories',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-09-10',
-        rating:   4.9, reviews: 312,
-        desc:     'หมวกแก๊ปทรงสวย ปักโลโก้แบรนด์ด้านหน้า ปรับขนาดได้ด้วยสายหนังด้านหลัง',
-        images:   ['https://hnungh.github.io/mpj/img/cap-black.jpg'],
-        colors: [{name:'Deep Black',hex:'#000000'},{name:'Forest Green',hex:'#013220'}],
-        sizes:  ['Adjustable'],
-        specs:  {Material:'Twill Cotton',Strap:'Leather',Fit:'Classic Cap',Care:'Spot Clean'}
-    },
-    'oxford-shirt-white': {
-        name:     'Essential White Oxford Shirt',
-        price:    1290,
-        tag:      'CLASSIC', tagLight: true,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-08-15',
-        rating:   4.8, reviews: 189,
-        desc:     'เสื้อเชิ้ตออกซฟอร์ดสีขาว คัตติ้งเนี้ยบ เหมาะสำหรับทั้งลุคทางการและลำลอง',
-        images:   ['https://hnungh.github.io/mpj/img/oxford-white.jpg'],
-        colors: [{name:'Pure White',hex:'#FFFFFF'}],
-        sizes:  ['S','M','L','XL','2XL'],
-        specs:  {Material:'Oxford Cotton',Weight:'Medium',Fit:'Slim-Fit',Care:'Easy Iron'}
-    },
-    'short-shorts-active': {
-        name:     'Active Performance Shorts',
-        price:    690,
-        tag:      'SALE', tagLight: true,
-        category: 'pants',
-        isNew:    false, isSale: true,
-        stock:    'in-stock',
-        dateAdded: '2024-11-30',
-        rating:   4.4, reviews: 52,
-        desc:     'กางเกกงขาสั้นใส่ออกกำลังกาย ผ้าแห้งไว มีซับในและกระเป๋าซิปซ่อน',
-        images:   ['https://hnungh.github.io/mpj/img/active-shorts.jpg'],
-        colors: [{name:'Slate',hex:'#708090'},{name:'Electric Blue',hex:'#0000FF'}],
-        sizes:  ['M','L','XL'],
-        specs:  {Material:'Polyester Mix',Feature:'Quick-dry',Fit:'Athletic',Care:'Machine Wash'}
-    },
-    'bomber-jacket-ma1': {
-        name:     'MA-1 Flight Bomber Jacket',
-        price:    2490,
-        tag:      'PREMIUM', tagLight: false,
-        category: 'tops',
-        isNew:    true, isSale: false,
-        stock:    'low-stock',
-        dateAdded: '2025-02-05',
-        rating:   4.9, reviews: 29,
-        desc:     'แจ็คเก็ตบอมเบอร์บุใยสังเคราะห์กันหนาวได้ดี ดีไซน์ถอดแบบจากชุดนักบิน',
-        images:   ['https://hnungh.github.io/mpj/img/bomber-olive.jpg'],
-        colors: [{name:'Olive Drab',hex:'#3E4233'},{name:'Black Ops',hex:'#111111'}],
-        sizes:  ['L','XL','2XL'],
-        specs:  {Material:'Heavy Nylon',Lining:'Orange Polyester',Fit:'Puffy',Care:'Dry Clean'}
-    },
-    'leather-wallet-minimal': {
-        name:     'Minimalist Leather Card Holder',
-        price:    890,
-        tag:      'NEW', tagLight: false,
-        category: 'accessories',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-01-25',
-        rating:   4.7, reviews: 18,
-        desc:     'กระเป๋าบัตรหนังแท้ขนาดกะทัดรัด ดีไซน์บางเฉียบ พกพาสะดวก',
-        images:   ['https://hnungh.github.io/mpj/img/wallet-tan.jpg'],
-        colors: [{name:'Tan Leather',hex:'#D2B48C'},{name:'Midnight',hex:'#2C3E50'}],
-        sizes:  ['One Size'],
-        specs:  {Material:'Full-grain Leather',Slots:'6 Slots',Fit:'Pocket size',Care:'Leather Polish'}
-    },
-    'striped-long-sleeve': {
-        name:     'Breton Striped Long Sleeve',
-        price:    950,
-        tag:      'TRENDING', tagLight: true,
-        category: 'tops',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-12-10',
-        rating:   4.6, reviews: 67,
-        desc:     'เสื้อแขนยาวลายทางขาว-กรมท่า สไตล์ปารีเซียง ผ้าเนื้อนุ่มทรงสวย',
-        images:   ['https://hnungh.github.io/mpj/img/stripe-top.jpg'],
-        colors: [{name:'Navy/White',hex:'#F0F0F0'}],
-        sizes:  ['S','M','L','XL'],
-        specs:  {Material:'Combed Cotton',Pattern:'Striped',Fit:'Regular',Care:'Cold Wash'}
-    },
-    'cargo-shorts-khaki': {
-        name:     'Summer Utility Cargo Shorts',
-        price:    1050,
-        tag:      'BESTSELLER', tagLight: false,
-        category: 'pants',
-        isNew:    false, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2024-07-20',
-        rating:   4.8, reviews: 145,
-        desc:     'กางเกงคาร์โก้ขาสั้น ผ้าแคนวาสฟอกนุ่ม ช่องกระเป๋าเยอะใช้งานได้จริง',
-        images:   ['https://hnungh.github.io/mpj/img/cargo-shorts.jpg'],
-        colors: [{name:'Sand',hex:'#C2B280'},{name:'Olive',hex:'#556B2F'}],
-        sizes:  ['30','32','34','36'],
-        specs:  {Material:'Cotton Canvas',Pockets:'6 Pockets',Fit:'Relaxed',Care:'Machine Wash'}
-    },
-    'polarized-sunglasses': {
-        name:     'Modern Polarized Sunglasses',
-        price:    1250,
-        tag:      'NEW', tagLight: false,
-        category: 'accessories',
-        isNew:    true, isSale: false,
-        stock:    'in-stock',
-        dateAdded: '2025-02-12',
-        rating:   4.7, reviews: 12,
-        desc:     'แว่นกันแดดเลนส์ Polarized ตัดแสงสะท้อนได้ดีเยี่ยม ดีไซน์ทันสมัยน้ำหนักเบา',
-        images:   ['https://hnungh.github.io/mpj/img/sunglasses-mod.jpg'],
-        colors: [{name:'Matte Grey',hex:'#7F8C8D'}],
-        sizes:  ['One Size'],
-        specs:  {Frame:'TR90',Lens:'Polarized UV400',Weight:'25g',Care:'Microfiber wipe'}
-    }
-
-    /*
-    ── HOW TO ADD A PRODUCT ─────────────────────────────────────────
-    'product-id': {
-        name:'...', price:0,
-        tag:'NEW', tagLight:false,
-        category:'tops',
-        isNew:true,   ← true = ขึ้น New Arrivals, false = แค่ Featured
-        isSale:false,
-        stock:'in-stock',
-        dateAdded:'2025-01-01',  ← วันที่เพิ่มสินค้า ใช้เรียง New Arrivals ใหม่สุดก่อน
-        rating:0, reviews:0, desc:'...',
-        images:['https://hnungh.github.io/mpj/img/FILENAME.jpg'],
-        colors:[{name:'...',hex:'#...'}],
-        sizes:['S','M','L','XL'],
-        specs:{Key:'Value'}
-    },
-    ───────────────────────────────────────────────────────────────── */
+    'oversized-tee-black': { name:'Classic Black Oversized Tee', price:23.94, tag:'BESTSELLER', tagLight:false, category:'tops', isNew:false, isSale:false, stock:'in-stock', dateAdded:'2024-10-01', rating:4.9, reviews:248, desc:'Crafted from 300GSM premium heavy-weight cotton.', images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'], colors:[{name:'Noir Black',hex:'#111111'},{name:'Stone White',hex:'#EDE9E1'}], sizes:['S','M','L','XL'], specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'} },
+    'cargo-pants-olive':   { name:'Military Olive Cargo Pants',  price:48.18, tag:'NEW',        tagLight:false, category:'pants', isNew:false, isSale:false, stock:'in-stock', dateAdded:'2024-11-01', rating:4.7, reviews:91,  desc:'กางเกงคาร์โก้สีเขียวมะกอก 8 ช่อง Ripstop Nylon', images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg','https://hnungh.github.io/mpj/img/hoodie-grey.jpg'], colors:[{name:'Olive Green',hex:'#6B7C4A'},{name:'Tactical Black',hex:'#2A2A2A'}], sizes:['M','L','XL'], specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'} },
+    'hoodie-grey':         { name:'Stone Grey Pullover Hoodie',  price:39.09, tag:'POPULAR',    tagLight:false, category:'tops', isNew:false, isSale:false, stock:'in-stock', dateAdded:'2024-10-15', rating:4.8, reviews:175, desc:'เสื้อฮู้ดดี้สีเทาหิน French Terry 380GSM', images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'], colors:[{name:'Stone Grey',hex:'#9A9A95'},{name:'Midnight Navy',hex:'#1A2240'}], sizes:['S','M','L','XL'], specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'} },
+    'sunglasses-retro':    { name:'Retro Square Sunglasses',     price:26.97, tag:'LIMITED',    tagLight:false, category:'accessories', isNew:false, isSale:true, stock:'low-stock', dateAdded:'2024-10-20', rating:4.6, reviews:58, desc:'แว่นตากันแดดทรงสี่เหลี่ยม Acetate UV400', images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'], colors:[{name:'Glossy Black',hex:'#111111'},{name:'Tortoise',hex:'#8B5E3C'}], sizes:['One Size'], specs:{Frame:'Acetate',Lens:'UV400',Style:'Square Retro','Lens Width':'52mm'} },
+    'oversized-tee-white': { name:'Stone White Oversized Tee',   price:23.94, tag:'NEW',        tagLight:false, category:'tops', isNew:true,  isSale:false, stock:'in-stock', dateAdded:'2025-01-10', rating:4.8, reviews:112, desc:'เสื้อ oversized สีขาวหิน 300GSM', images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'], colors:[{name:'Stone White',hex:'#EDE9E1'},{name:'Noir Black',hex:'#111111'}], sizes:['S','M','L','XL'], specs:{Material:'Premium Cotton',Weight:'300 GSM',Fit:'Oversized',Care:'Machine Wash'} },
+    'cargo-pants-black':   { name:'Tactical Black Cargo Pants',  price:48.18, tag:'NEW',        tagLight:false, category:'pants', isNew:true,  isSale:false, stock:'in-stock', dateAdded:'2025-01-12', rating:4.7, reviews:44,  desc:'กางเกงคาร์โก้สีดำ 8 ช่อง Ripstop Nylon', images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'], colors:[{name:'Tactical Black',hex:'#2A2A2A'},{name:'Olive Green',hex:'#6B7C4A'}], sizes:['M','L','XL'], specs:{Material:'Ripstop Nylon',Pockets:'8 Pockets',Fit:'Relaxed',Care:'Cold Wash'} },
+    'hoodie-navy':         { name:'Midnight Navy Pullover Hoodie',price:39.09, tag:'NEW',        tagLight:false, category:'tops', isNew:true,  isSale:false, stock:'in-stock', dateAdded:'2025-01-15', rating:4.7, reviews:63,  desc:'เสื้อฮู้ดดี้สีกรมท่า French Terry 380GSM', images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'], colors:[{name:'Midnight Navy',hex:'#1A2240'},{name:'Stone Grey',hex:'#9A9A95'}], sizes:['S','M','L','XL'], specs:{Material:'French Terry',Weight:'380 GSM',Fit:'Regular',Care:'Gentle Wash'} },
+    'sunglasses-black':    { name:'Classic Black Sunglasses',     price:26.97, tag:'NEW',        tagLight:false, category:'accessories', isNew:true,  isSale:false, stock:'in-stock', dateAdded:'2025-01-18', rating:4.5, reviews:21, desc:'แว่นตากันแดดคลาสสิกสีดำ Acetate UV400', images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'], colors:[{name:'Glossy Black',hex:'#111111'}], sizes:['One Size'], specs:{Frame:'Acetate',Lens:'UV400',Style:'Classic',Care:'Wipe clean'} }
 };
 
-/* ── CATEGORY DISPLAY CONFIG ─────────────────────────────────────
-   url: หน้าที่จะสร้างในอนาคต เช่น categories/tops.html
-   ดึงสินค้าด้วย PRODUCTS filter category === id เหมือนกันทุกหน้า
-──────────────────────────────────────────────────────────────── */
 const CATEGORIES = [
-    { id:'tops',        label:'Tops',        url:'categories/tops.html',        img: PRODUCTS['oversized-tee-black'].images[0] },
-    { id:'pants',       label:'Pants',       url:'categories/pants.html',       img: PRODUCTS['cargo-pants-olive'].images[0]   },
-    { id:'accessories', label:'Accessories', url:'categories/accessories.html', img: PRODUCTS['sunglasses-retro'].images[0]    },
-    /* เพิ่ม category ใหม่:
-    { id:'footwear', label:'Footwear', url:'categories/footwear.html', img:'...' }, */
+    { id:'tops',        label:'Tops',        url:'categories/tops.html',        img:PRODUCTS['oversized-tee-black'].images[0] },
+    { id:'pants',       label:'Pants',       url:'categories/pants.html',       img:PRODUCTS['cargo-pants-olive'].images[0]   },
+    { id:'accessories', label:'Accessories', url:'categories/accessories.html', img:PRODUCTS['sunglasses-retro'].images[0]    },
 ];
 
-/* ── SORT OPTIONS ─────────────────────────────────────────────── */
 const SORT_OPTS = [
-    { label:'Sort',    fn: null },
-    { label:'Price ↑', fn: ([,a],[,b]) => a.price - b.price },
-    { label:'Price ↓', fn: ([,a],[,b]) => b.price - a.price },
-    { label:'A → Z',   fn: ([,a],[,b]) => a.name.localeCompare(b.name,'th') },
+    { label:'Sort',    fn:null },
+    { label:'Price ↑', fn:([,a],[,b]) => a.price - b.price },
+    { label:'Price ↓', fn:([,a],[,b]) => b.price - a.price },
+    { label:'A → Z',   fn:([,a],[,b]) => a.name.localeCompare(b.name,'th') },
 ];
 
-/* ── NEW ARRIVALS CONFIG ──────────────────────────────────────── */
-const NEW_ARRIVALS_MAX = 16;  // แสดงสูงสุด 16 รายการ (2 แถว × 8 คอล)
+const NEW_ARRIVALS_MAX = 16;
+const FEATURED_MAX     = 16;
 
-/* ════════════════════════════════════════
-   STATE
-════════════════════════════════════════ */
-const S = {
-    filter: 'all',
-    query:  '',
-    sort:   0,
-    favs:   JSON.parse(localStorage.getItem('NW_FAVS') || '[]'),
-};
+const S = { filter:'all', query:'', sort:0, favs:JSON.parse(localStorage.getItem('NW_FAVS')||'[]') };
 
-/* ════════════════════════════════════════
-   BOOT
-════════════════════════════════════════ */
+/* ── format: $23.94 ไม่มี comma ── */
+function fmtUSD(num) { return '$' + Number(num).toFixed(2); }
+
 document.addEventListener('DOMContentLoaded', () => {
-    updateCounts();
-    restoreSearch();   // ← restore ก่อน render
-    renderGrid();
-    renderNewArrivals();
-    renderCategories();
-    updateBadge();
+    updateCounts(); restoreSearch(); renderGrid(); renderNewArrivals(); renderCategories(); updateBadge();
 });
 
-/* ════════════════════════════════════════
-   SEARCH
-   ── แตะที่ไหนนอก panel ก็ปิดได้ (mask)
-════════════════════════════════════════ */
+/* SEARCH */
 let _searchOpen = false;
-
 function toggleSearch() {
     _searchOpen = !_searchOpen;
     document.getElementById('searchPanel').classList.toggle('open', _searchOpen);
     document.getElementById('searchMask').classList.toggle('open', _searchOpen);
     document.getElementById('filterStrip').classList.toggle('shifted', _searchOpen);
     document.getElementById('searchBtn').classList.toggle('search-active', _searchOpen);
-
-    if (_searchOpen) {
-        setTimeout(() => document.getElementById('searchInput').focus(), 340);
-    } else {
-        // ปิด panel แต่ไม่ clear search — ผลยังอยู่
-    }
+    if (_searchOpen) setTimeout(() => document.getElementById('searchInput').focus(), 340);
 }
-
 function onSearch(val) {
     S.query = val.toLowerCase().trim();
     document.getElementById('searchClearBtn').classList.toggle('on', val.length > 0);
-    // บันทึกไว้ใน sessionStorage — กด back กลับมาผลยังอยู่
     sessionStorage.setItem('BARDS_SEARCH', val);
     renderGrid();
 }
-
 function clearSearch() {
     S.query = '';
-    const inp = document.getElementById('searchInput');
-    if (inp) inp.value = '';
+    const inp = document.getElementById('searchInput'); if (inp) inp.value = '';
     document.getElementById('searchClearBtn').classList.remove('on');
     document.getElementById('searchHint').innerText = '';
     sessionStorage.removeItem('BARDS_SEARCH');
     renderGrid();
 }
-
-/* restore search state เมื่อ back กลับมา */
 function restoreSearch() {
-    const saved = sessionStorage.getItem('BARDS_SEARCH');
-    if (!saved) return;
+    const saved = sessionStorage.getItem('BARDS_SEARCH'); if (!saved) return;
     S.query = saved.toLowerCase().trim();
-    const inp = document.getElementById('searchInput');
-    if (inp) inp.value = saved;
+    const inp = document.getElementById('searchInput'); if (inp) inp.value = saved;
     document.getElementById('searchClearBtn').classList.toggle('on', saved.length > 0);
-    // เปิด panel ให้เห็น
     _searchOpen = true;
     document.getElementById('searchPanel').classList.add('open');
     document.getElementById('searchMask').classList.add('open');
@@ -994,35 +304,14 @@ function restoreSearch() {
     document.getElementById('searchBtn').classList.add('search-active');
 }
 
-/* ════════════════════════════════════════
-   FILTER
-════════════════════════════════════════ */
+/* FILTER */
 function setFilter(el, filter) {
     S.filter = filter;
-    document.querySelectorAll('.f-chip').forEach(c =>
-        c.classList.toggle('on', c.dataset.filter === filter));
+    document.querySelectorAll('.f-chip').forEach(c => c.classList.toggle('on', c.dataset.filter === filter));
     renderGrid();
 }
 
-function setFilterAll() {
-    S.filter = 'all';
-    document.querySelectorAll('.f-chip').forEach(c =>
-        c.classList.toggle('on', c.dataset.filter === 'all'));
-    renderGrid();
-    window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function filterByCategory(id) {
-    S.filter = id;
-    document.querySelectorAll('.f-chip').forEach(c =>
-        c.classList.toggle('on', c.dataset.filter === id));
-    renderGrid();
-    document.getElementById('featuredSection').scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-/* ════════════════════════════════════════
-   SORT
-════════════════════════════════════════ */
+/* SORT */
 function cycleSort() {
     S.sort = (S.sort + 1) % SORT_OPTS.length;
     document.getElementById('sortLabel').innerText = SORT_OPTS[S.sort].label;
@@ -1030,153 +319,81 @@ function cycleSort() {
     renderGrid();
 }
 
-/* ════════════════════════════════════════
-   COMPUTED FILTERED LIST
-════════════════════════════════════════ */
+/* ITEMS */
 function getItems() {
     let items = Object.entries(PRODUCTS);
-
-    if (S.filter !== 'all') {
-        items = items.filter(([,p]) => p.category === S.filter);
-    }
-
-    if (S.query) {
-        items = items.filter(([id,p]) =>
-            p.name.toLowerCase().includes(S.query)     ||
-            p.category.toLowerCase().includes(S.query) ||
-            p.tag.toLowerCase().includes(S.query)      ||
-            id.toLowerCase().includes(S.query)         ||
-            p.colors.some(c => c.name.toLowerCase().includes(S.query))
-        );
-    }
-
-    const fn = SORT_OPTS[S.sort].fn;
-    if (fn) items = [...items].sort(fn);
+    if (S.filter !== 'all') items = items.filter(([,p]) => p.category === S.filter);
+    if (S.query) items = items.filter(([id,p]) =>
+        p.name.toLowerCase().includes(S.query) || p.category.toLowerCase().includes(S.query) ||
+        p.tag.toLowerCase().includes(S.query)  || id.toLowerCase().includes(S.query) ||
+        p.colors.some(c => c.name.toLowerCase().includes(S.query))
+    );
+    const fn = SORT_OPTS[S.sort].fn; if (fn) items = [...items].sort(fn);
     return items;
 }
 
-/* ════════════════════════════════════════
-   RENDER: PRODUCT GRID
-   — จำกัด 16 รายการ
-   — See all → category page อัตโนมัติ
-════════════════════════════════════════ */
-const FEATURED_MAX = 16;
-
+/* RENDER GRID */
 function renderGrid() {
     const allItems = getItems();
     const items    = allItems.slice(0, FEATURED_MAX);
-    const grid     = document.getElementById('productGrid');
-    const empty    = document.getElementById('emptyState');
-    const lbl      = document.getElementById('resultsLabel');
-    const hint     = document.getElementById('searchHint');
-    const seeAll   = document.getElementById('featuredSeeAll');
-    const title    = document.getElementById('featuredTitle');
-
-    const n    = allItems.length;
-    const noun = n === 1 ? 'Product' : 'Products';
-    lbl.innerText = S.query
-        ? `${n} result${n!==1?'s':''} — "${S.query}"`
-        : `${n} ${noun}`;
-
+    const n        = allItems.length;
+    const noun     = n === 1 ? 'Product' : 'Products';
+    document.getElementById('resultsLabel').innerText = S.query ? `${n} result${n!==1?'s':''} — "${S.query}"` : `${n} ${noun}`;
+    const hint = document.getElementById('searchHint');
     if (S.query) hint.innerText = n > 0 ? `พบ ${n} รายการ` : 'ไม่พบสินค้า — ลองคำค้นอื่น';
     else         hint.innerText = '';
-
-    // ชื่อ section + see all
     const catInfo = CATEGORIES.find(c => c.id === S.filter);
-    if (catInfo) {
-        title.innerText = catInfo.label;
-        seeAll.href     = catInfo.url;
-    } else {
-        title.innerText = 'Featured';
-        seeAll.href     = 'all-products.html';
-    }
+    const title   = document.getElementById('featuredTitle');
+    const seeAll  = document.getElementById('featuredSeeAll');
+    if (catInfo) { title.innerText = catInfo.label; seeAll.href = catInfo.url; }
+    else         { title.innerText = 'Featured';    seeAll.href = 'all-products.html'; }
     seeAll.style.display = 'flex';
-
-    if (n === 0) {
-        grid.innerHTML = '';
-        empty.classList.add('show');
-        return;
-    }
+    const grid  = document.getElementById('productGrid');
+    const empty = document.getElementById('emptyState');
+    if (n === 0) { grid.innerHTML = ''; empty.classList.add('show'); return; }
     empty.classList.remove('show');
     grid.innerHTML = items.map(([id,p],i) => cardHTML(id, p, i===0 && items.length >= 2)).join('');
 }
 
+/* CARD HTML */
 function cardHTML(id, p, wide) {
-    const priceStr    = `$${(p.price/33).toFixed(2)}`;
-    const tagCls      = p.tagLight ? 'light' : '';
-    const lowTag      = p.stock === 'low-stock'
-        ? `<div class="p-tag low-stock">LOW STOCK</div>` : '';
-    const isFav       = S.favs.includes(id);
-    const dots        = p.colors.map(c =>
-        `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
-    const heartFill   = isFav ? 'currentColor' : 'none';
-    const heartStroke = isFav ? '#fff' : 'var(--gray-600)';
-
+    const isFav = S.favs.includes(id);
+    const dots  = p.colors.map(c => `<div class="p-dot" style="background:${c.hex}"></div>`).join('');
+    const low   = p.stock === 'low-stock' ? `<div class="p-tag low-stock">LOW STOCK</div>` : '';
     return `
 <a href="product.html?id=${id}" class="p-card${wide?' wide':''}">
     <div class="p-card-img">
         <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
-        <div class="p-tag ${tagCls}">${p.tag}</div>
-        ${lowTag}
-        <button class="p-fav ${isFav?'liked':''}"
-                onclick="toggleFav(event,'${id}',this)" aria-label="Wishlist">
-            <svg width="13" height="13" fill="${heartFill}"
-                 stroke="${heartStroke}" stroke-width="2.3"
-                 stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06
-                         a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23
-                         l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
+        <div class="p-tag${p.tagLight?' light':''}">${p.tag}</div>${low}
+        <button class="p-fav${isFav?' liked':''}" onclick="toggleFav(event,'${id}',this)" aria-label="Wishlist">
+            <svg width="13" height="13" fill="${isFav?'currentColor':'none'}" stroke="${isFav?'#fff':'var(--gray-600)'}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
     </div>
     <div class="p-card-body">
         <div class="p-name">${p.name}</div>
-        <div class="p-meta">
-            <div class="p-price">${priceStr}</div>
-            <div class="p-colors">${dots}</div>
-        </div>
+        <div class="p-meta"><div class="p-price">${fmtUSD(p.price)}</div><div class="p-colors">${dots}</div></div>
     </div>
 </a>`;
 }
 
+/* NEW ARRIVALS */
 function renderNewArrivals() {
-    const all = Object.entries(PRODUCTS)
-        .filter(([,p]) => p.isNew)
+    const all = Object.entries(PRODUCTS).filter(([,p]) => p.isNew)
         .sort(([,a],[,b]) => new Date(b.dateAdded) - new Date(a.dateAdded))
         .slice(0, NEW_ARRIVALS_MAX);
-
-    if (!all.length) {
-        document.getElementById('newSection').style.display = 'none';
-        return;
-    }
-    document.getElementById('newRow').innerHTML =
-        all.map(([id,p]) => cardHTML(id, p, false)).join('');
+    if (!all.length) { document.getElementById('newSection').style.display = 'none'; return; }
+    document.getElementById('newRow').innerHTML = all.map(([id,p]) => cardHTML(id, p, false)).join('');
     document.getElementById('newSection').style.display = '';
 }
-function getNewArrivals(limit) {
-    const all = Object.entries(PRODUCTS)
-        .filter(([,p]) => p.isNew)
-        .sort(([,a],[,b]) => new Date(b.dateAdded) - new Date(a.dateAdded));
-    return limit ? all.slice(0, limit) : all;
-}
 
-/* ════════════════════════════════════════
-   RENDER: CATEGORIES
-════════════════════════════════════════ */
+/* CATEGORIES */
 function renderCategories() {
     const countMap = {};
-    Object.values(PRODUCTS).forEach(p => {
-        countMap[p.category] = (countMap[p.category] || 0) + 1;
-    });
+    Object.values(PRODUCTS).forEach(p => { countMap[p.category] = (countMap[p.category]||0) + 1; });
     document.getElementById('catGrid').innerHTML = CATEGORIES.map(cat => `
-<div class="cat-card" onclick="gotoCategory('${cat.id}','${cat.url}')">
+<div class="cat-card" onclick="window.location.href='${cat.url}'">
     <img src="${cat.img}" alt="${cat.label}" loading="lazy">
-    <div class="cat-arrow">
-        <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 4.5h7M5 1.5l3 3-3 3"/>
-        </svg>
-    </div>
+    <div class="cat-arrow"><svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4.5h7M5 1.5l3 3-3 3"/></svg></div>
     <div class="cat-info">
         <span class="cat-name">${cat.label.toUpperCase()}</span>
         <span class="cat-count">${countMap[cat.id]||0} items</span>
@@ -1184,19 +401,7 @@ function renderCategories() {
 </div>`).join('');
 }
 
-/* ── Category routing ────────────────────────────────────────────
-   ตอนนี้: filter สินค้าใน index นี้เลย
-   อนาคต: สร้างไฟล์ categories/tops.html ฯลฯ แล้วเอา
-           const CAT_ID = new URLSearchParams(location.search).get('cat')
-           หรือ parse จาก pathname มา filter PRODUCTS ได้เลย
-──────────────────────────────────────────────────────────────── */
-function gotoCategory(id, url) {
-    window.location.href = url;
-}
-
-/* ════════════════════════════════════════
-   FILTER CHIP COUNTS
-════════════════════════════════════════ */
+/* COUNTS */
 function updateCounts() {
     const all = Object.values(PRODUCTS);
     document.getElementById('cnt-all').innerText         = all.length;
@@ -1205,53 +410,32 @@ function updateCounts() {
     document.getElementById('cnt-accessories').innerText = all.filter(p=>p.category==='accessories').length;
 }
 
-/* ════════════════════════════════════════
-   WISHLIST
-════════════════════════════════════════ */
+/* WISHLIST */
 function toggleFav(e, id, btn) {
     e.preventDefault(); e.stopPropagation();
-    const idx = S.favs.indexOf(id);
-    const svg = btn.querySelector('svg');
-    if (idx > -1) {
-        S.favs.splice(idx, 1);
-        btn.classList.remove('liked');
-        svg.setAttribute('fill', 'none');
-        svg.setAttribute('stroke', 'var(--gray-600)');
-        showToast('Removed', 'นำออกจาก Wishlist แล้ว');
-    } else {
-        S.favs.push(id);
-        btn.classList.add('liked');
-        svg.setAttribute('fill', 'currentColor');
-        svg.setAttribute('stroke', '#fff');
-        showToast('Saved!', 'เพิ่มใน Wishlist แล้ว ❤️');
-    }
+    const idx = S.favs.indexOf(id); const svg = btn.querySelector('svg');
+    if (idx > -1) { S.favs.splice(idx,1); btn.classList.remove('liked'); svg.setAttribute('fill','none'); svg.setAttribute('stroke','var(--gray-600)'); showToast('Removed','Removed from Wishlist'); }
+    else          { S.favs.push(id);      btn.classList.add('liked');    svg.setAttribute('fill','currentColor'); svg.setAttribute('stroke','#fff'); showToast('Saved!','Added to Wishlist ❤️'); }
     localStorage.setItem('NW_FAVS', JSON.stringify(S.favs));
 }
 
-/* ════════════════════════════════════════
-   CART BADGE
-════════════════════════════════════════ */
+/* BADGE */
 function updateBadge() {
-    const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
-    const n = cart.reduce((t,c) => t+c.quantity, 0);
+    const cart = JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
+    const n = cart.reduce((t,c)=>t+c.quantity,0);
     const b = document.getElementById('cartBadge');
-    b.innerText = n > 99 ? '99+' : n;
-    b.style.display = n > 0 ? 'flex' : 'none';
+    b.innerText = n > 99 ? '99+' : n; b.style.display = n > 0 ? 'flex' : 'none';
 }
 
-/* ════════════════════════════════════════
-   TOAST
-════════════════════════════════════════ */
+/* TOAST */
 const ICON_OK = `<svg width="13" height="13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 3 5 10 2 7"/></svg>`;
 let _tt;
 function showToast(title, sub) {
     document.getElementById('toastIcon').innerHTML = ICON_OK;
     document.getElementById('toastTitle').innerText = title;
     document.getElementById('toastSub').innerText   = sub || '';
-    const t = document.getElementById('toast');
-    t.classList.add('on');
-    clearTimeout(_tt);
-    _tt = setTimeout(() => t.classList.remove('on'), 2700);
+    const t = document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('on'), 2700);
 }
 </script>
 </body>
