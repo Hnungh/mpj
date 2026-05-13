@@ -7,276 +7,187 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --black:    #0A0A0A;
-            --white:    #FAFAFA;
-            --gray-50:  #F9F9F7;
-            --gray-100: #F2F2F0;
-            --gray-200: #E4E4E2;
-            --gray-300: #C8C8C6;
-            --gray-400: #8A8A88;
-            --gray-600: #4A4A48;
-            --orange:   #FF4F00;
-            --red:      #C8001A;
-            --green:    #16A34A;
-            --blue:     #2563EB;
-            --radius:    14px;
-            --radius-sm: 10px;
-            --nav-h:     60px;
+            --black:#0A0A0A; --white:#FAFAFA; --gray-50:#F9F9F7; --gray-100:#F2F2F0;
+            --gray-200:#E4E4E2; --gray-300:#C8C8C6; --gray-400:#8A8A88; --gray-600:#4A4A48;
+            --orange:#FF4F00; --red:#C8001A; --green:#16A34A; --blue:#2563EB;
+            --radius:14px; --radius-sm:10px; --nav-h:60px;
         }
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-        html { scroll-behavior:smooth; }
-        body { font-family:'Space Grotesk',sans-serif; background:var(--gray-100); color:var(--black); overscroll-behavior:none; min-height:100vh; padding-bottom:40px; }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Space Grotesk',sans-serif;background:#111114;color:var(--white);overscroll-behavior:none;min-height:100vh;padding-bottom:48px;}
 
         /* NAV */
-        .nav {
-            position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h);
-            display:flex; align-items:center; justify-content:space-between;
-            padding:0 18px;
-            background:rgba(250,250,250,.92); backdrop-filter:blur(18px) saturate(160%);
-            -webkit-backdrop-filter:blur(18px) saturate(160%);
-            border-bottom:1px solid var(--gray-200);
-        }
-        .nav-left  { display:flex; align-items:center; gap:12px; }
-        .nav-right { display:flex; align-items:center; gap:4px; }
-        .brand { font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px; color:var(--black); text-decoration:none; }
-        .icon-btn {
-            width:36px; height:36px; border-radius:50%; background:var(--gray-100); border:none;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:background .18s,transform .12s;
-            text-decoration:none; color:var(--black); position:relative;
-        }
-        .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
-        .cart-wrap { position:relative; }
-        .cart-badge {
-            position:absolute; top:-2px; right:-2px; background:var(--orange); color:#fff;
-            font-size:8px; font-weight:700; font-family:'DM Mono',monospace;
-            min-width:15px; height:15px; border-radius:8px;
-            display:none; align-items:center; justify-content:center;
-            padding:0 3px; border:1.5px solid var(--white);
-        }
-        .page-start { height:var(--nav-h); }
+        .nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(17,17,20,.92);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07);}
+        .nav-left{display:flex;align-items:center;gap:12px;}
+        .nav-right{display:flex;align-items:center;gap:4px;}
+        .brand{font-family:'Bebas Neue';font-size:21px;letter-spacing:3px;color:var(--white);text-decoration:none;}
+        .icon-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,transform .12s;text-decoration:none;color:var(--white);}
+        .icon-btn:active{background:rgba(255,255,255,.14);transform:scale(.9);}
+        .cart-wrap{position:relative;}
+        .cart-badge{position:absolute;top:-2px;right:-2px;background:var(--orange);color:#fff;font-size:8px;font-weight:700;font-family:'DM Mono',monospace;min-width:15px;height:15px;border-radius:8px;display:none;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #111114;}
+        .page-start{height:var(--nav-h);}
 
-        /* ── FILTER TABS ── */
-        .filter-bar {
-            position:sticky; top:var(--nav-h); z-index:90;
-            background:rgba(250,250,250,.95); backdrop-filter:blur(16px);
-            -webkit-backdrop-filter:blur(16px);
-            border-bottom:1px solid var(--gray-200);
-            padding:10px 0;
-        }
-        .filter-scroll { display:flex; gap:7px; padding:0 18px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-        .filter-scroll::-webkit-scrollbar { display:none; }
-        .f-tab {
-            height:32px; padding:0 14px; border:1.5px solid var(--gray-200); border-radius:30px;
-            font-size:11px; font-weight:600; cursor:pointer; background:var(--white);
-            color:var(--gray-600); transition:all .18s; white-space:nowrap; flex-shrink:0;
-            display:flex; align-items:center; gap:5px; font-family:'Space Grotesk',sans-serif;
-        }
-        .f-tab.on { background:var(--black); border-color:var(--black); color:#fff; }
-        .f-tab:active { opacity:.7; }
-        .f-cnt { font-family:'DM Mono',monospace; font-size:9px; background:rgba(0,0,0,.07); border-radius:8px; padding:1px 5px; }
-        .f-tab.on .f-cnt { background:rgba(255,255,255,.18); }
+        /* FILTER TABS */
+        .filter-bar{position:sticky;top:var(--nav-h);z-index:90;background:rgba(17,17,20,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07);padding:10px 0;}
+        .filter-scroll{display:flex;gap:7px;padding:0 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+        .filter-scroll::-webkit-scrollbar{display:none;}
+        .f-tab{height:30px;padding:0 13px;border:1px solid rgba(255,255,255,.12);border-radius:30px;font-size:11px;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,.45);transition:all .2s;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px;font-family:'Space Grotesk',sans-serif;}
+        .f-tab.on{background:var(--white);border-color:var(--white);color:var(--black);}
+        .f-tab:active{opacity:.7;}
+        .f-cnt{font-family:'DM Mono',monospace;font-size:9px;background:rgba(255,255,255,.1);border-radius:8px;padding:1px 5px;}
+        .f-tab.on .f-cnt{background:rgba(0,0,0,.1);}
 
-        /* ── PAGE ── */
-        .page { max-width:800px; margin:0 auto; padding:16px 14px 0; }
+        /* PAGE */
+        .page{max-width:760px;margin:0 auto;padding:20px 14px 0;}
+        .page-heading{display:flex;align-items:baseline;gap:10px;margin-bottom:18px;}
+        .page-title{font-family:'Bebas Neue';font-size:32px;letter-spacing:4px;color:var(--white);}
+        .page-count{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.5px;}
 
-        .results-row {
-            display:flex; align-items:center; justify-content:space-between;
-            margin-bottom:12px;
-        }
-        .results-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); letter-spacing:.5px; }
+        /* ORDER CARD */
+        .order-list{display:flex;flex-direction:column;gap:12px;}
+        .order-card{background:#1A1A1D;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;transition:border-color .22s,transform .18s;cursor:pointer;}
+        .order-card:active{transform:scale(.99);}
+        .order-card:hover{border-color:rgba(255,255,255,.18);}
 
-        /* ── ORDER CARD ── */
-        .order-list { display:flex; flex-direction:column; gap:10px; }
+        .oc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+        .oc-id-wrap{display:flex;flex-direction:column;gap:1px;}
+        .oc-id{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:rgba(255,255,255,.9);letter-spacing:.8px;}
+        .oc-date{font-size:10px;color:rgba(255,255,255,.3);}
+        .oc-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
+        .st-delivered{background:rgba(22,163,74,.15);color:#4ADE80;border:1px solid rgba(22,163,74,.25);}
+        .st-shipped{background:rgba(37,99,235,.15);color:#60A5FA;border:1px solid rgba(37,99,235,.25);}
+        .st-pending{background:rgba(234,179,8,.12);color:#FCD34D;border:1px solid rgba(234,179,8,.2);}
+        .st-cancelled{background:rgba(200,0,26,.12);color:#F87171;border:1px solid rgba(200,0,26,.2);}
 
-        .order-card {
-            background:var(--white); border:1.5px solid var(--gray-200);
-            border-radius:var(--radius); overflow:hidden;
-            transition:transform .18s,box-shadow .18s;
-        }
-        .order-card-hd {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:12px 14px 10px;
-            border-bottom:1px solid var(--gray-100);
-        }
-        .order-id-wrap { display:flex; flex-direction:column; gap:2px; }
-        .order-id { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--black); letter-spacing:.5px; }
-        .order-date { font-size:10px; color:var(--gray-400); }
-        .order-status { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:20px; }
-        .status-delivered { background:#DCFCE7; color:var(--green); }
-        .status-shipped   { background:#DBEAFE; color:var(--blue); }
-        .status-pending   { background:#FEF3C7; color:#B45309; }
-        .status-cancelled { background:#FEE2E2; color:var(--red); }
+        .oc-items{display:flex;padding:12px 14px 0;align-items:center;}
+        .oc-thumbs{display:flex;}
+        .oc-thumb{width:48px;height:48px;border-radius:9px;object-fit:cover;border:2px solid #1A1A1D;flex-shrink:0;}
+        .oc-thumb+.oc-thumb{margin-left:-12px;}
+        .oc-more{width:48px;height:48px;border-radius:9px;background:rgba(255,255,255,.07);border:2px solid #1A1A1D;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);margin-left:-12px;flex-shrink:0;font-family:'DM Mono',monospace;}
+        .oc-summary{flex:1;min-width:0;margin-left:14px;}
+        .oc-itemcount{font-size:12px;font-weight:600;color:rgba(255,255,255,.7);}
+        .oc-total{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--white);margin-top:1px;}
 
-        /* items strip */
-        .order-items-strip { display:flex; gap:8px; padding:12px 14px; align-items:center; }
-        .order-thumb-stack { display:flex; position:relative; }
-        .order-thumb {
-            width:52px; height:52px; border-radius:9px; object-fit:cover;
-            border:2px solid var(--white); flex-shrink:0;
-        }
-        .order-thumb + .order-thumb { margin-left:-16px; }
-        .order-more {
-            width:52px; height:52px; border-radius:9px;
-            background:var(--gray-100); border:2px solid var(--white);
-            display:flex; align-items:center; justify-content:center;
-            font-size:11px; font-weight:700; color:var(--gray-400);
-            margin-left:-16px; flex-shrink:0; font-family:'DM Mono',monospace;
-        }
-        .order-summary { flex:1; min-width:0; margin-left:4px; }
-        .order-item-count { font-size:12px; font-weight:600; }
-        .order-total { font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--red); margin-top:2px; }
+        .oc-track{padding:14px 14px 0;}
+        .track-rail{display:flex;align-items:center;}
+        .t-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;position:relative;z-index:1;}
+        .t-dot.done{background:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.2);}
+        .t-dot.current{background:var(--orange);box-shadow:0 0 0 3px rgba(255,79,0,.25);}
+        .t-dot.wait{background:rgba(255,255,255,.15);}
+        .t-line{flex:1;height:1.5px;}
+        .t-line.done{background:var(--green);}
+        .t-line.wait{background:rgba(255,255,255,.1);}
+        .track-labels{display:flex;justify-content:space-between;margin-top:5px;margin-bottom:12px;}
+        .t-lbl{font-size:8px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+        .t-lbl.done{color:var(--green);}
+        .t-lbl.current{color:var(--orange);}
+        .t-lbl.wait{color:rgba(255,255,255,.2);}
 
-        /* TRACKING BAR */
-        .order-track-wrap { padding:0 14px 14px; }
-        .track-bar { display:flex; align-items:center; gap:0; margin-bottom:8px; }
-        .track-step { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; }
-        .track-dot {
-            width:10px; height:10px; border-radius:50%; background:var(--gray-200); position:relative; z-index:1;
-        }
-        .track-dot.done    { background:var(--green); }
-        .track-dot.done::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid var(--green); opacity:.3; }
-        .track-dot.current { background:var(--orange); }
-        .track-dot.current::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid var(--orange); opacity:.4; }
-        .track-line { flex:1; height:2px; background:var(--gray-200); border-radius:1px; margin-top:-18px; }
-        .track-line.done { background:var(--green); }
-        .track-label { font-size:8px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--gray-400); margin-top:2px; }
-        .track-step.done    .track-label { color:var(--green); }
-        .track-step.current .track-label { color:var(--orange); }
+        .oc-actions{display:flex;gap:8px;padding:0 14px 14px;}
+        .oc-btn{flex:1;height:36px;border-radius:var(--radius-sm);font-size:11px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:5px;transition:opacity .18s,transform .12s;letter-spacing:.3px;}
+        .oc-btn:active{opacity:.78;transform:scale(.97);}
+        .oc-btn.view{background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.1);}
+        .oc-btn.reorder{background:var(--white);color:var(--black);}
 
-        /* ACTION ROW */
-        .order-actions {
-            display:flex; gap:8px; padding:0 14px 14px;
-        }
-        .order-btn {
-            flex:1; height:38px; border-radius:var(--radius-sm);
-            font-size:12px; font-weight:600; cursor:pointer; border:none;
-            display:flex; align-items:center; justify-content:center; gap:5px;
-            transition:opacity .18s,transform .12s;
-        }
-        .order-btn:active { opacity:.78; transform:scale(.97); }
-        .order-btn.primary   { background:var(--black); color:#fff; }
-        .order-btn.secondary { background:var(--gray-100); color:var(--black); border:1.5px solid var(--gray-200); }
-        .order-btn.danger    { background:#FFF5F5; color:var(--red); border:1.5px solid #FECACA; }
+        /* EMPTY */
+        .empty-wrap{padding:72px 20px;text-align:center;display:none;}
+        .empty-wrap.show{display:block;}
+        .empty-icon{font-size:48px;margin-bottom:16px;opacity:.5;}
+        .empty-title{font-size:16px;font-weight:700;color:rgba(255,255,255,.8);}
+        .empty-sub{font-size:12px;color:rgba(255,255,255,.3);margin-top:6px;line-height:1.7;}
+        .empty-cta{margin-top:22px;display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 24px;background:var(--white);color:var(--black);border:none;border-radius:var(--radius-sm);font-family:'Bebas Neue';font-size:15px;letter-spacing:2px;cursor:pointer;text-decoration:none;transition:opacity .18s;}
+        .empty-cta:active{opacity:.8;}
 
-        /* ── DETAIL PANEL (slide up) ── */
-        .mask {
-            position:fixed; inset:0; z-index:300;
-            background:rgba(10,10,10,.55); display:none; opacity:0;
-            transition:opacity .32s ease;
-            backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
-        }
-        .mask.on { opacity:1; }
-        .detail-sheet {
-            position:fixed; bottom:-100%; left:0; right:0; z-index:301;
-            background:var(--white); border-radius:24px 24px 0 0;
-            max-height:88vh; overflow-y:auto;
-            transition:bottom .4s cubic-bezier(.22,1,.36,1);
-            max-width:800px; margin:0 auto;
-            box-shadow:0 -4px 30px rgba(0,0,0,.1);
-        }
-        .detail-sheet.on { bottom:0; }
-        .sheet-handle { width:38px; height:4px; border-radius:2px; background:var(--gray-200); margin:10px auto 0; }
-        .detail-nav {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:14px 18px 10px;
-            border-bottom:1px solid var(--gray-100);
-        }
-        .detail-title { font-family:'Bebas Neue'; font-size:18px; letter-spacing:2px; }
-        .close-btn {
-            width:30px; height:30px; border-radius:50%;
-            background:var(--gray-100); border:none;
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; color:var(--gray-400); transition:all .15s;
-        }
-        .close-btn:active { background:var(--gray-200); }
+        /* MASK */
+        .mask{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.75);display:none;opacity:0;transition:opacity .32s ease;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);}
+        .mask.on{opacity:1;}
 
-        .detail-body { padding:16px 18px 32px; }
+        /* DETAIL SHEET */
+        .detail-sheet{position:fixed;bottom:-100%;left:0;right:0;z-index:301;background:#1C1C20;border:1px solid rgba(255,255,255,.1);border-radius:22px 22px 0 0;max-height:91vh;overflow-y:auto;transition:bottom .42s cubic-bezier(.22,1,.36,1);max-width:760px;margin:0 auto;box-shadow:0 -8px 48px rgba(0,0,0,.7);}
+        .detail-sheet.on{bottom:0;}
 
-        /* Detail status + tracking */
-        .detail-status-row { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
-        .detail-status-badge { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; padding:5px 12px; border-radius:20px; }
+        .sheet-sticky{position:sticky;top:0;z-index:10;background:#1C1C20;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:12px;}
+        .sheet-handle{width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:10px auto 14px;}
+        .sheet-nav{display:flex;align-items:center;justify-content:space-between;padding:0 18px;}
+        .sheet-title{font-family:'Bebas Neue';font-size:19px;letter-spacing:2.5px;color:var(--white);}
+        .sheet-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
+        .close-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.5);transition:all .15s;}
+        .close-btn:active{background:rgba(255,255,255,.14);}
+        .detail-body{padding:16px 18px 36px;}
 
-        /* Detail items */
-        .detail-items-title { font-family:'Bebas Neue'; font-size:14px; letter-spacing:2px; color:var(--gray-400); margin-bottom:10px; }
-        .detail-item {
-            display:flex; gap:12px; align-items:center;
-            padding:10px 0; border-bottom:1px solid var(--gray-100);
-        }
-        .detail-item:last-child { border-bottom:none; }
-        .di-img { width:56px; height:56px; border-radius:9px; object-fit:cover; border:1px solid var(--gray-200); flex-shrink:0; }
-        .di-info { flex:1; min-width:0; }
-        .di-name { font-size:13px; font-weight:600; line-height:1.3; }
-        .di-meta { font-size:11px; color:var(--gray-400); margin-top:2px; }
-        .di-price { font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--red); flex-shrink:0; }
+        /* detail track */
+        .det-track{margin-bottom:22px;}
+        .det-track-rail{display:flex;align-items:center;}
+        .det-t-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;z-index:1;position:relative;}
+        .det-t-dot.done{background:var(--green);}
+        .det-t-dot.done::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid rgba(22,163,74,.35);}
+        .det-t-dot.current{background:var(--orange);}
+        .det-t-dot.current::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid rgba(255,79,0,.4);}
+        .det-t-dot.wait{background:rgba(255,255,255,.12);}
+        .det-t-line{flex:1;height:2px;}
+        .det-t-line.done{background:var(--green);}
+        .det-t-line.wait{background:rgba(255,255,255,.08);}
+        .det-track-labels{display:flex;justify-content:space-between;margin-top:7px;}
+        .det-t-lbl{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+        .det-t-lbl.done{color:#4ADE80;}
+        .det-t-lbl.current{color:var(--orange);}
+        .det-t-lbl.wait{color:rgba(255,255,255,.2);}
 
-        /* Detail totals */
-        .detail-totals { margin-top:16px; background:var(--gray-50); border-radius:var(--radius-sm); padding:14px; }
-        .tot-row { display:flex; justify-content:space-between; margin-bottom:7px; }
-        .tot-row:last-child { margin-bottom:0; }
-        .tot-lbl { font-size:12px; color:var(--gray-400); }
-        .tot-val { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--gray-600); }
-        .tot-divider { border:none; border-top:1px solid var(--gray-200); margin:10px 0; }
-        .tot-total-lbl { font-size:13px; font-weight:700; }
-        .tot-total-val { font-family:'DM Mono',monospace; font-size:16px; font-weight:500; color:var(--red); }
+        /* section label */
+        .det-sec-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+        .det-sec-lbl::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06);}
 
-        /* Detail shipping */
-        .detail-ship { margin-top:14px; background:var(--gray-50); border-radius:var(--radius-sm); padding:14px; }
-        .detail-ship-title { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray-400); margin-bottom:8px; }
-        .detail-ship-name { font-size:13px; font-weight:700; }
-        .detail-ship-line { font-size:12px; color:var(--gray-600); margin-top:3px; line-height:1.5; }
-        .detail-ship-phone { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray-400); margin-top:5px; }
+        /* detail items */
+        .det-item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+        .det-item:last-child{border-bottom:none;}
+        .det-thumb{width:56px;height:56px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+        .det-info{flex:1;min-width:0;}
+        .det-name{font-size:13px;font-weight:600;line-height:1.3;color:var(--white);}
+        .det-meta{font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;}
+        .det-qty{display:inline-block;margin-top:5px;font-family:'DM Mono',monospace;font-size:9px;background:rgba(255,255,255,.07);border-radius:5px;padding:2px 7px;color:rgba(255,255,255,.5);}
+        .det-price{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#F87171;flex-shrink:0;}
 
-        /* Detail actions */
-        .detail-actions { display:flex; gap:8px; margin-top:16px; }
-        .detail-btn {
-            flex:1; height:46px; border-radius:var(--radius-sm);
-            font-size:13px; font-weight:600; cursor:pointer; border:none;
-            display:flex; align-items:center; justify-content:center; gap:6px;
-            transition:opacity .18s,transform .12s;
-        }
-        .detail-btn:active { opacity:.78; transform:scale(.97); }
-        .detail-btn.primary   { background:var(--black); color:#fff; }
-        .detail-btn.secondary { background:var(--gray-100); color:var(--black); border:1.5px solid var(--gray-200); }
+        /* totals */
+        .det-totals{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;}
+        .tot-row{display:flex;justify-content:space-between;margin-bottom:7px;}
+        .tot-row:last-child{margin-bottom:0;}
+        .tot-lbl{font-size:12px;color:rgba(255,255,255,.35);}
+        .tot-val{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,.6);}
+        .tot-val.free{color:#4ADE80;font-weight:700;}
+        .tot-divider{border:none;border-top:1px solid rgba(255,255,255,.07);margin:9px 0 10px;}
+        .tot-total-lbl{font-size:13px;font-weight:700;color:var(--white);}
+        .tot-total-val{font-family:'DM Mono',monospace;font-size:18px;color:#F87171;font-weight:500;}
 
-        /* Empty */
-        .empty-wrap { padding:64px 20px; text-align:center; display:none; }
-        .empty-wrap.show { display:block; }
-        .empty-icon  { font-size:40px; margin-bottom:14px; }
-        .empty-title { font-size:15px; font-weight:600; }
-        .empty-sub   { font-size:12px; color:var(--gray-400); margin-top:5px; line-height:1.65; }
-        .empty-cta {
-            margin-top:18px; display:inline-flex; align-items:center; gap:7px;
-            height:42px; padding:0 22px; background:var(--black); color:#fff;
-            border:none; border-radius:var(--radius-sm);
-            font-family:'Bebas Neue'; font-size:15px; letter-spacing:2px;
-            cursor:pointer; text-decoration:none; transition:opacity .18s;
-        }
-        .empty-cta:active { opacity:.78; }
+        /* ship block */
+        .det-ship{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius-sm);padding:14px;margin-bottom:20px;}
+        .det-ship-name{font-size:13px;font-weight:700;color:var(--white);}
+        .det-ship-line{font-size:12px;color:rgba(255,255,255,.45);margin-top:4px;line-height:1.6;}
+        .det-ship-phone{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;}
+
+        /* ACTION BUTTONS */
+        .det-actions{display:flex;flex-direction:column;gap:9px;}
+        .det-btn-reorder{width:100%;height:52px;background:var(--white);color:var(--black);border:none;border-radius:var(--radius-sm);font-family:'Bebas Neue';font-size:17px;letter-spacing:2.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .18s,transform .12s;}
+        .det-btn-reorder:active{opacity:.82;transform:scale(.98);}
+        .det-btn-row{display:flex;gap:9px;}
+        .det-btn-cart{flex:1;height:46px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);font-size:12px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .18s,transform .12s,background .18s;}
+        .det-btn-cart:active{background:rgba(255,255,255,.13);transform:scale(.98);}
+        .det-btn-buy{flex:1;height:46px;background:var(--orange);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Bebas Neue';font-size:15px;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .18s,transform .12s;}
+        .det-btn-buy:active{opacity:.85;transform:scale(.98);}
 
         /* TOAST */
-        .toast {
-            position:fixed; bottom:24px; left:50%;
-            transform:translateX(-50%) translateY(6px);
-            background:var(--black); color:#fff;
-            padding:12px 18px 12px 14px; border-radius:14px;
-            font-size:13px; font-weight:500; z-index:9999;
-            opacity:0; transition:opacity .28s,transform .28s;
-            white-space:nowrap; display:flex; align-items:center; gap:10px;
-            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px;
-        }
-        .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
-        .toast-iw { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .toast-iw.ok   { background:rgba(22,163,74,.25); }
-        .toast-iw.warn { background:rgba(234,179,8,.2); }
-        .toast-text { display:flex; flex-direction:column; gap:1px; }
-        .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
-        .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); }
+        .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:#222226;color:#fff;padding:12px 18px 12px 14px;border-radius:14px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity .26s,transform .26s;white-space:nowrap;display:flex;align-items:center;gap:10px;pointer-events:none;min-width:220px;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 24px rgba(0,0,0,.5);}
+        .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+        .t-iw{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .t-iw.ok{background:rgba(22,163,74,.25);}
+        .t-iw.warn{background:rgba(234,179,8,.2);}
+        .t-text{display:flex;flex-direction:column;gap:1px;}
+        .t-title{font-size:12px;font-weight:700;letter-spacing:.3px;}
+        .t-sub{font-size:11px;color:rgba(255,255,255,.45);}
 
-        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-        .fu  { animation:fadeUp .38s ease both; }
-        .d1  { animation-delay:.05s; }
+        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        .fu{animation:fadeUp .38s ease both;}
+        .d1{animation-delay:.05s;}
     </style>
 </head>
 <body>
@@ -300,20 +211,20 @@
 
 <div class="page-start"></div>
 
-<!-- FILTER TABS -->
 <div class="filter-bar">
     <div class="filter-scroll" id="filterScroll"></div>
 </div>
 
 <div class="page">
-    <div class="results-row fu">
-        <span class="results-label" id="resultsLabel">— orders</span>
+    <div class="page-heading fu">
+        <span class="page-title">MY ORDERS</span>
+        <span class="page-count" id="pageCount">— orders</span>
     </div>
     <div class="order-list" id="orderList"></div>
     <div class="empty-wrap" id="emptyWrap">
         <div class="empty-icon">📦</div>
-        <div class="empty-title">No orders found</div>
-        <div class="empty-sub">Once you place an order, it will appear here.</div>
+        <div class="empty-title">No orders yet</div>
+        <div class="empty-sub">Once you place an order it will appear here.</div>
         <a href="index.html" class="empty-cta">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             SHOP NOW
@@ -321,326 +232,275 @@
     </div>
 </div>
 
-<!-- MASK + DETAIL SHEET -->
 <div class="mask" id="mask" onclick="closeDetail()"></div>
+
 <div class="detail-sheet" id="detailSheet">
-    <div class="sheet-handle"></div>
-    <div class="detail-nav">
-        <span class="detail-title" id="detailTitle">Order #—</span>
-        <button class="close-btn" onclick="closeDetail()">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="1" y1="1" x2="12" y2="12"/><line x1="12" y1="1" x2="1" y2="12"/></svg>
-        </button>
+    <div class="sheet-sticky">
+        <div class="sheet-handle"></div>
+        <div class="sheet-nav">
+            <span class="sheet-title" id="sheetTitle">Order #—</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span class="sheet-badge" id="sheetBadge"></span>
+                <button class="close-btn" onclick="closeDetail()">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+                </button>
+            </div>
+        </div>
     </div>
     <div class="detail-body" id="detailBody"></div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
-    <div class="toast-iw" id="toastIw"></div>
-    <div class="toast-text">
-        <div class="toast-title" id="toastTitle"></div>
-        <div class="toast-sub" id="toastSub"></div>
+    <div class="t-iw" id="toastIw"></div>
+    <div class="t-text">
+        <div class="t-title" id="toastTitle"></div>
+        <div class="t-sub"   id="toastSub"></div>
     </div>
 </div>
 
 <script>
-/* ═══════════════════════════════════
-   FILTER CONFIG
-═══════════════════════════════════ */
-const FILTERS = [
-    { id:'all',       label:'All' },
-    { id:'pending',   label:'Pending' },
-    { id:'shipped',   label:'Shipped' },
-    { id:'delivered', label:'Delivered' },
-    { id:'cancelled', label:'Cancelled' },
-];
+const FILTERS=[{id:'all',label:'All'},{id:'pending',label:'Pending'},{id:'shipped',label:'Shipped'},{id:'delivered',label:'Delivered'},{id:'cancelled',label:'Cancelled'}];
+const STATUS_CSS={delivered:'st-delivered',shipped:'st-shipped',pending:'st-pending',cancelled:'st-cancelled'};
+const STATUS_LBL={delivered:'Delivered',shipped:'Shipped',pending:'Pending',cancelled:'Cancelled'};
+const TRACK_STEPS=['Ordered','Packed','Shipped','Delivered'];
+const TRACK_IDX={pending:0,shipped:2,delivered:3,cancelled:-1};
 
-const STATUS_MAP = {
-    delivered: ['status-delivered','Delivered'],
-    shipped:   ['status-shipped','Shipped'],
-    pending:   ['status-pending','Pending'],
-    cancelled: ['status-cancelled','Cancelled']
-};
+let allOrders=[];
+let activeFilter='all';
 
-const TRACK_STEPS = ['Ordered','Packed','Shipped','Delivered'];
-const TRACK_IDX   = { pending:0, shipped:2, delivered:3, cancelled:-1 };
-
-let orders      = [];
-let activeFilter = 'all';
-let detailOrder = null;
-
-/* ═══════════════════════════════════
-   BOOT
-═══════════════════════════════════ */
-window.onload = function() {
-    orders = JSON.parse(localStorage.getItem('BARDS_ORDERS') || '[]').reverse();
+window.onload=function(){
+    allOrders=JSON.parse(localStorage.getItem('BARDS_ORDERS')||'[]').reverse();
     buildFilterTabs();
-    renderOrders();
+    render();
     updateBadge();
-
-    // If coming with ?id= open that order's detail
-    const qId = new URLSearchParams(location.search).get('id');
-    if (qId) {
-        const o = orders.find(x => x.id === qId);
-        if (o) setTimeout(() => openDetail(o), 400);
-    }
+    const qId=new URLSearchParams(location.search).get('id');
+    if(qId){const o=allOrders.find(x=>x.id===qId);if(o)setTimeout(()=>openDetail(o),320);}
 };
 
-/* ═══════════════════════════════════
-   FILTER TABS
-═══════════════════════════════════ */
-function buildFilterTabs() {
-    const scroll = document.getElementById('filterScroll');
-    scroll.innerHTML = FILTERS.map(f => {
-        const count = f.id === 'all'
-            ? orders.length
-            : orders.filter(o => o.status === f.id).length;
-        return `<div class="f-tab ${f.id==='all'?'on':''}" data-filter="${f.id}" onclick="setFilter('${f.id}')">
-            ${f.label}
-            <span class="f-cnt">${count}</span>
-        </div>`;
+function buildFilterTabs(){
+    document.getElementById('filterScroll').innerHTML=FILTERS.map(f=>{
+        const cnt=f.id==='all'?allOrders.length:allOrders.filter(o=>o.status===f.id).length;
+        return`<div class="f-tab ${f.id==='all'?'on':''}" data-filter="${f.id}" onclick="setFilter('${f.id}')">${f.label}<span class="f-cnt">${cnt}</span></div>`;
     }).join('');
 }
 
-function setFilter(id) {
-    activeFilter = id;
-    document.querySelectorAll('.f-tab').forEach(t => t.classList.toggle('on', t.dataset.filter === id));
-    renderOrders();
+function setFilter(id){
+    activeFilter=id;
+    document.querySelectorAll('.f-tab').forEach(t=>t.classList.toggle('on',t.dataset.filter===id));
+    render();
 }
 
-/* ═══════════════════════════════════
-   RENDER ORDER LIST
-═══════════════════════════════════ */
-function renderOrders() {
-    const filtered = activeFilter === 'all'
-        ? orders
-        : orders.filter(o => o.status === activeFilter);
-
-    const n    = filtered.length;
-    const noun = n === 1 ? 'order' : 'orders';
-    document.getElementById('resultsLabel').textContent = `${n} ${noun}`;
-    document.getElementById('emptyWrap').classList.toggle('show', n === 0);
-
-    const list = document.getElementById('orderList');
-    list.innerHTML = filtered.map((o,i) => orderCardHTML(o,i)).join('');
+function render(){
+    const list=activeFilter==='all'?allOrders:allOrders.filter(o=>o.status===activeFilter);
+    const n=list.length;
+    document.getElementById('pageCount').textContent=`${n} order${n!==1?'s':''}`;
+    document.getElementById('emptyWrap').classList.toggle('show',n===0);
+    document.getElementById('orderList').innerHTML=list.map((o,i)=>cardHTML(o,i)).join('');
 }
 
-function orderCardHTML(o, i) {
-    const [statusCls, statusLabel] = STATUS_MAP[o.status] || STATUS_MAP.pending;
-    const stepIdx = TRACK_IDX[o.status] ?? 0;
-
-    // Thumbs (show max 3 + overflow)
-    const thumbs = (o.items || []).slice(0,3).map(item =>
-        `<img src="${item.image}" class="order-thumb" alt="${item.name}" loading="lazy">`
-    ).join('');
-    const extra = o.items?.length > 3
-        ? `<div class="order-more">+${o.items.length - 3}</div>`
-        : '';
-
-    // Track HTML
-    let trackHTML = '';
-    for (let j = 0; j < TRACK_STEPS.length; j++) {
-        const done    = stepIdx >= 0 && j <= stepIdx;
-        const current = stepIdx >= 0 && j === stepIdx;
-        const dotCls  = current ? 'current' : (done ? 'done' : '');
-        const stepCls = current ? 'current' : (done ? 'done' : '');
-        const lineCls = j < stepIdx ? 'done' : '';
-        trackHTML += `<div class="track-step ${stepCls}">
-            <div class="track-dot ${dotCls}"></div>
-            <span class="track-label">${TRACK_STEPS[j]}</span>
-        </div>`;
-        if (j < TRACK_STEPS.length - 1) trackHTML += `<div class="track-line ${lineCls}"></div>`;
-    }
-
-    const itemCount = o.items?.length || 0;
-    const total     = '$' + Number(o.total).toFixed(2);
-
-    // Action buttons based on status
-    let actions = '';
-    if (o.status === 'pending') {
-        actions = `
-            <button class="order-btn primary" onclick="buyAgain('${o.id}')">
-                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 1 4 1"/><path d="M1 1l3.5 3.5A7 7 0 0 1 16 8a7 7 0 0 1-7 7 7 7 0 0 1-7-7"/></svg>
-                Buy Again
-            </button>
-            <button class="order-btn secondary" onclick="openDetail(orders.find(x=>x.id==='${o.id}'))">Details</button>`;
-    } else if (o.status === 'delivered') {
-        actions = `
-            <button class="order-btn primary" onclick="buyAgain('${o.id}')">
-                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 1 4 1"/><path d="M1 1l3.5 3.5A7 7 0 0 1 16 8a7 7 0 0 1-7 7 7 7 0 0 1-7-7"/></svg>
-                Buy Again
-            </button>
-            <button class="order-btn secondary" onclick="openDetail(orders.find(x=>x.id==='${o.id}'))">Details</button>`;
-    } else {
-        actions = `
-            <button class="order-btn secondary" onclick="openDetail(orders.find(x=>x.id==='${o.id}'))">View Details</button>`;
-    }
-
-    return `<div class="order-card fu" style="animation-delay:${i*.04}s">
-        <div class="order-card-hd">
-            <div class="order-id-wrap">
-                <div class="order-id">#${o.id}</div>
-                <div class="order-date">${o.date || '—'}</div>
-            </div>
-            <span class="order-status ${statusCls}">${statusLabel}</span>
+function cardHTML(o,idx){
+    const stCss=STATUS_CSS[o.status]||'st-pending';
+    const stLbl=STATUS_LBL[o.status]||'Pending';
+    const stepIdx=TRACK_IDX[o.status]??0;
+    const items=o.items||[];
+    const thumbs=items.slice(0,3).map(it=>`<img class="oc-thumb" src="${it.image}" alt="" loading="lazy">`).join('');
+    const more=items.length>3?`<div class="oc-more">+${items.length-3}</div>`:'';
+    let rail='',labels='';
+    TRACK_STEPS.forEach((s,j)=>{
+        const done=stepIdx>=0&&j<=stepIdx;
+        const cur=stepIdx>=0&&j===stepIdx;
+        rail+=`<div class="t-dot ${cur?'current':done?'done':'wait'}"></div>`;
+        if(j<TRACK_STEPS.length-1)rail+=`<div class="t-line ${j<stepIdx?'done':'wait'}"></div>`;
+        labels+=`<span class="t-lbl ${cur?'current':done?'done':'wait'}">${s}</span>`;
+    });
+    const total='$'+Number(o.total||0).toFixed(2);
+    const cnt=items.length;
+    const reorderBtn=o.status!=='cancelled'
+        ?`<button class="oc-btn reorder" onclick="event.stopPropagation();quickBuyAgain('${o.id}')">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 1 4 1"/><path d="M1 1l3.5 3.5A7 7 0 0 1 15 7.5a7 7 0 0 1-7 7 7 7 0 0 1-7-7"/></svg>
+            Buy Again</button>`:
+        `<button class="oc-btn view" style="opacity:.35;pointer-events:none;">Cancelled</button>`;
+    return`<div class="order-card fu" style="animation-delay:${idx*.04}s" onclick="openDetailById('${o.id}')">
+        <div class="oc-head">
+            <div class="oc-id-wrap"><span class="oc-id">#${o.id}</span><span class="oc-date">${o.date||'—'}</span></div>
+            <span class="oc-badge ${stCss}">${stLbl}</span>
         </div>
-        <div class="order-items-strip">
-            <div class="order-thumb-stack">${thumbs}${extra}</div>
-            <div class="order-summary">
-                <div class="order-item-count">${itemCount} item${itemCount!==1?'s':''}</div>
-                <div class="order-total">${total}</div>
+        <div class="oc-items">
+            <div class="oc-thumbs">${thumbs}${more}</div>
+            <div class="oc-summary">
+                <div class="oc-itemcount">${cnt} item${cnt!==1?'s':''}</div>
+                <div class="oc-total">${total}</div>
             </div>
         </div>
-        <div class="order-track-wrap">
-            <div class="track-bar">${trackHTML}</div>
+        <div class="oc-track">
+            <div class="track-rail">${rail}</div>
+            <div class="track-labels">${labels}</div>
         </div>
-        <div class="order-actions">${actions}</div>
+        <div class="oc-actions">
+            <button class="oc-btn view" onclick="event.stopPropagation();openDetailById('${o.id}')">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s3-7 11-7 11 7 11 7-3 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                View Details
+            </button>
+            ${reorderBtn}
+        </div>
     </div>`;
 }
 
-/* ═══════════════════════════════════
-   DETAIL SHEET
-═══════════════════════════════════ */
-function openDetail(o) {
-    if (!o) return;
-    detailOrder = o;
-    document.getElementById('detailTitle').innerText = 'Order #' + o.id;
+/* ── DETAIL SHEET ── */
+function openDetailById(id){const o=allOrders.find(x=>x.id===id);if(o)openDetail(o);}
 
-    const [statusCls, statusLabel] = STATUS_MAP[o.status] || STATUS_MAP.pending;
-    const stepIdx = TRACK_IDX[o.status] ?? 0;
+function openDetail(o){
+    const stCss=STATUS_CSS[o.status]||'st-pending';
+    const stLbl=STATUS_LBL[o.status]||'Pending';
+    const stepIdx=TRACK_IDX[o.status]??0;
 
-    // Tracking
-    let trackHTML = '';
-    for (let j = 0; j < TRACK_STEPS.length; j++) {
-        const done    = stepIdx >= 0 && j <= stepIdx;
-        const current = stepIdx >= 0 && j === stepIdx;
-        const dotCls  = current ? 'current' : (done ? 'done' : '');
-        const stepCls = current ? 'current' : (done ? 'done' : '');
-        const lineCls = j < stepIdx ? 'done' : '';
-        trackHTML += `<div class="track-step ${stepCls}">
-            <div class="track-dot ${dotCls}"></div>
-            <span class="track-label">${TRACK_STEPS[j]}</span>
-        </div>`;
-        if (j < TRACK_STEPS.length - 1) trackHTML += `<div class="track-line ${lineCls}"></div>`;
-    }
+    document.getElementById('sheetTitle').textContent=`Order #${o.id}`;
+    const badge=document.getElementById('sheetBadge');
+    badge.textContent=stLbl; badge.className=`sheet-badge ${stCss}`;
 
-    // Items
-    const itemsHTML = (o.items || []).map(item => `
-        <div class="detail-item">
-            <img class="di-img" src="${item.image}" alt="${item.name}" loading="lazy">
-            <div class="di-info">
-                <div class="di-name">${item.name}</div>
-                <div class="di-meta">${item.color} · ${item.size} · ×${item.quantity}</div>
+    let rail='',labels='';
+    TRACK_STEPS.forEach((s,j)=>{
+        const done=stepIdx>=0&&j<=stepIdx;
+        const cur=stepIdx>=0&&j===stepIdx;
+        rail+=`<div class="det-t-dot ${cur?'current':done?'done':'wait'}"></div>`;
+        if(j<TRACK_STEPS.length-1)rail+=`<div class="det-t-line ${j<stepIdx?'done':'wait'}"></div>`;
+        labels+=`<span class="det-t-lbl ${cur?'current':done?'done':'wait'}">${s}</span>`;
+    });
+
+    const items=o.items||[];
+    const itemsHTML=items.map(it=>`
+        <div class="det-item">
+            <img class="det-thumb" src="${it.image}" alt="${it.name}" loading="lazy">
+            <div class="det-info">
+                <div class="det-name">${it.name}</div>
+                <div class="det-meta">${it.color} · ${it.size}</div>
+                <span class="det-qty">×${it.quantity}</span>
             </div>
-            <div class="di-price">$${(item.price * item.quantity).toFixed(2)}</div>
+            <div class="det-price">$${(it.price*it.quantity).toFixed(2)}</div>
         </div>`).join('');
 
-    const subtotal = o.items?.reduce((s,c) => s + c.price*c.quantity, 0) || 0;
-    const shipCost = o.shippingCost ?? 0;
-    const total    = o.total ?? (subtotal + shipCost);
+    const subtotal=items.reduce((s,c)=>s+c.price*c.quantity,0);
+    const shipCost=o.shippingCost??0;
+    const total=o.total??(subtotal+shipCost);
+    const shipVal=shipCost===0?'<span class="tot-val free">FREE</span>':`<span class="tot-val">$${shipCost.toFixed(2)}</span>`;
 
-    // Shipping info
-    const ship = o.shipping || {};
-    const shipHTML = ship.name ? `
-        <div class="detail-ship">
-            <div class="detail-ship-title">Shipping Address</div>
-            <div class="detail-ship-name">${ship.name}</div>
-            <div class="detail-ship-line">${ship.addr1}${ship.addr2?', '+ship.addr2:''}<br>${ship.province}</div>
-            <div class="detail-ship-phone">${ship.phone}</div>
-        </div>` : '';
+    const ship=o.shipping||{};
+    const shipBlock=ship.name?`
+        <div class="det-ship">
+            <div class="det-ship-name">${ship.name}</div>
+            <div class="det-ship-line">${ship.addr1}${ship.addr2?', '+ship.addr2:''}<br>${ship.province}</div>
+            <div class="det-ship-phone">${ship.phone}</div>
+            ${ship.note?`<div style="font-size:10px;color:rgba(255,255,255,.25);margin-top:6px;">Note: ${ship.note}</div>`:''}
+        </div>`:'';
 
-    // Action buttons
-    const actionBtns = o.status !== 'cancelled'
-        ? `<button class="detail-btn primary" onclick="buyAgain('${o.id}');closeDetail()">
-               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 1 4 1"/><path d="M1 1l3.5 3.5A7 7 0 0 1 16 8a7 7 0 0 1-7 7 7 7 0 0 1-7-7"/></svg>
-               Buy Again
-           </button>`
-        : `<button class="detail-btn secondary" style="color:var(--gray-400);" disabled>Cancelled</button>`;
+    const isCancelled=o.status==='cancelled';
+    const actionHTML=isCancelled
+        ?`<div class="det-actions"><button class="det-btn-cart" disabled style="opacity:.3;cursor:not-allowed;">Order Cancelled</button></div>`
+        :`<div class="det-actions">
+            <button class="det-btn-reorder" onclick="handleBuyAgain('${o.id}')">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 1 4 1"/><path d="M1 1l3.5 3.5A7 7 0 0 1 15 7.5a7 7 0 0 1-7 7 7 7 0 0 1-7-7"/></svg>
+                BUY AGAIN
+            </button>
+            <div class="det-btn-row">
+                <button class="det-btn-cart" onclick="handleAddToCart('${o.id}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Add to Cart
+                </button>
+                <button class="det-btn-buy" onclick="handleBuyNow('${o.id}')">
+                    BUY NOW
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>`;
 
-    document.getElementById('detailBody').innerHTML = `
-        <div class="detail-status-row">
-            <span class="detail-status-badge ${statusCls}">${statusLabel}</span>
-            <span style="font-size:11px;color:var(--gray-400);">${o.date || ''}</span>
+    document.getElementById('detailBody').innerHTML=`
+        <div class="det-track">
+            <div class="det-track-rail">${rail}</div>
+            <div class="det-track-labels">${labels}</div>
         </div>
-        <div class="track-bar" style="margin-bottom:20px;">${trackHTML}</div>
-
-        <div class="detail-items-title">Items</div>
+        <div class="det-sec-lbl">Items Ordered</div>
         ${itemsHTML}
-
-        <div class="detail-totals">
+        <div class="det-totals" style="margin-top:16px;">
             <div class="tot-row"><span class="tot-lbl">Subtotal</span><span class="tot-val">$${subtotal.toFixed(2)}</span></div>
-            <div class="tot-row">
-                <span class="tot-lbl">Shipping</span>
-                <span class="tot-val ${shipCost===0?'':'paid'}">${shipCost===0?'FREE':'$'+shipCost.toFixed(2)}</span>
-            </div>
+            <div class="tot-row"><span class="tot-lbl">Shipping</span>${shipVal}</div>
             <div class="tot-divider"></div>
-            <div class="tot-row">
-                <span class="tot-total-lbl">Total</span>
-                <span class="tot-total-val">$${total.toFixed(2)}</span>
-            </div>
+            <div class="tot-row"><span class="tot-total-lbl">Total</span><span class="tot-total-val">$${total.toFixed(2)}</span></div>
         </div>
+        ${shipBlock?`<div class="det-sec-lbl" style="margin-top:16px;">Shipping Address</div>${shipBlock}`:''}
+        <div class="det-sec-lbl" style="margin-top:4px;">Actions</div>
+        ${actionHTML}`;
 
-        ${shipHTML}
-
-        <div class="detail-actions">${actionBtns}</div>
-    `;
-
-    document.getElementById('mask').style.display = 'block';
-    requestAnimationFrame(() => {
+    document.getElementById('mask').style.display='block';
+    requestAnimationFrame(()=>{
         document.getElementById('mask').classList.add('on');
         document.getElementById('detailSheet').classList.add('on');
     });
 }
 
-function closeDetail() {
+function closeDetail(){
     document.getElementById('detailSheet').classList.remove('on');
     document.getElementById('mask').classList.remove('on');
-    setTimeout(() => document.getElementById('mask').style.display = 'none', 380);
+    setTimeout(()=>document.getElementById('mask').style.display='none',400);
 }
 
-/* ═══════════════════════════════════
-   BUY AGAIN — add all items to cart
-═══════════════════════════════════ */
-function buyAgain(orderId) {
-    const o = orders.find(x => x.id === orderId);
-    if (!o || !o.items?.length) return;
-
-    const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
-    o.items.forEach(item => {
-        const ex = cart.find(c => c.id===item.id && c.color===item.color && c.size===item.size);
-        if (ex) ex.quantity += item.quantity;
-        else cart.push({ ...item });
-    });
-    localStorage.setItem('BARDS_CART', JSON.stringify(cart));
+/* ── ACTION HANDLERS ── */
+function handleBuyAgain(orderId){
+    if(!_addToCart(orderId))return;
+    closeDetail();
+    setTimeout(()=>{location.href='cart.html';},350);
+}
+function handleAddToCart(orderId){
+    const o=allOrders.find(x=>x.id===orderId);
+    if(!_addToCart(orderId))return;
     updateBadge();
-    showToast('ok','Added to cart', o.items.length + ' item(s) added');
+    showToast('ok','Added to cart',`${o?.items?.length||0} item(s) added`);
+    closeDetail();
+}
+function handleBuyNow(orderId){
+    const o=allOrders.find(x=>x.id===orderId);
+    if(!o||!o.items?.length)return;
+    _addToCart(orderId);
+    sessionStorage.setItem('BUY_NOW_ID',o.items[0]?.id||'');
+    closeDetail();
+    setTimeout(()=>{location.href='cart.html';},350);
+}
+function quickBuyAgain(orderId){
+    const o=allOrders.find(x=>x.id===orderId);
+    if(!_addToCart(orderId))return;
+    updateBadge();
+    showToast('ok','Added to cart',`${o?.items?.length||0} item(s) from #${orderId}`);
+}
+function _addToCart(orderId){
+    const o=allOrders.find(x=>x.id===orderId);
+    if(!o||!o.items?.length)return false;
+    const cart=JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
+    o.items.forEach(item=>{
+        const ex=cart.find(c=>c.id===item.id&&c.color===item.color&&c.size===item.size);
+        if(ex)ex.quantity+=item.quantity;
+        else cart.push({...item});
+    });
+    localStorage.setItem('BARDS_CART',JSON.stringify(cart));
+    return true;
 }
 
-/* ═══════════════════════════════════
-   BADGE
-═══════════════════════════════════ */
-function updateBadge() {
-    const cart = JSON.parse(localStorage.getItem('BARDS_CART') || '[]');
-    const n = cart.reduce((t,c) => t+c.quantity, 0);
-    const b = document.getElementById('cartBadge');
-    b.innerText = n > 99 ? '99+' : n;
-    b.style.display = n > 0 ? 'flex' : 'none';
+function updateBadge(){
+    const cart=JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
+    const n=cart.reduce((t,c)=>t+c.quantity,0);
+    const b=document.getElementById('cartBadge');
+    b.innerText=n>99?'99+':n; b.style.display=n>0?'flex':'none';
 }
 
-/* ═══════════════════════════════════
-   TOAST
-═══════════════════════════════════ */
-const SVG_CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-const SVG_WARN  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+const SVG_OK='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const SVG_WARN='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
 let _tt;
-function showToast(type, title, sub) {
-    const iw = document.getElementById('toastIw');
-    iw.className = 'toast-iw ' + (type==='warn'?'warn':'ok');
-    iw.innerHTML = type==='warn' ? SVG_WARN : SVG_CHECK;
-    document.getElementById('toastTitle').innerText = title;
-    document.getElementById('toastSub').innerText   = sub || '';
-    const t = document.getElementById('toast'); t.classList.add('on');
-    clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('on'), 2800);
+function showToast(type,title,sub){
+    const iw=document.getElementById('toastIw');
+    iw.className='t-iw '+(type==='warn'?'warn':'ok');
+    iw.innerHTML=type==='warn'?SVG_WARN:SVG_OK;
+    document.getElementById('toastTitle').textContent=title;
+    document.getElementById('toastSub').textContent=sub||'';
+    const t=document.getElementById('toast');t.classList.add('on');
+    clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('on'),2800);
 }
 </script>
 </body>
