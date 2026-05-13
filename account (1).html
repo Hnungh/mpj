@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Account — Bards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:    #0A0A0A;
+            --white:    #FAFAFA;
+            --gray-50:  #F9F9F7;
+            --gray-100: #F2F2F0;
+            --gray-200: #E4E4E2;
+            --gray-300: #C8C8C6;
+            --gray-400: #8A8A88;
+            --gray-600: #4A4A48;
+            --orange:   #FF4F00;
+            --red:      #C8001A;
+            --green:    #16A34A;
+            --blue:     #2563EB;
+            --radius:    14px;
+            --radius-sm: 10px;
+            --nav-h:     60px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        html { scroll-behavior:smooth; }
+        body {
+            font-family:'Space Grotesk',sans-serif;
+            background:var(--white);
+            color:var(--black);
+            overscroll-behavior:none;
+            padding-bottom:120px;
+        }
+
+        /* ── NAV ── */
+        .nav {
+            position:fixed; top:0; left:0; right:0; z-index:200;
+            height:var(--nav-h);
+            display:flex; align-items:center; justify-content:space-between;
+            padding:0 18px;
+            background:rgba(250,250,250,.92);
+            backdrop-filter:blur(18px) saturate(160%);
+            -webkit-backdrop-filter:blur(18px) saturate(160%);
+            border-bottom:1px solid var(--gray-200);
+        }
+        .nav-left  { display:flex; align-items:center; gap:12px; }
+        .nav-right { display:flex; align-items:center; gap:4px; }
+        .brand { font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px; color:var(--black); text-decoration:none; }
+        .icon-btn {
+            width:36px; height:36px; border-radius:50%;
+            background:var(--gray-100); border:none;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:background .18s,transform .12s;
+            text-decoration:none; color:var(--black); position:relative;
+        }
+        .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
+        .cart-wrap { position:relative; }
+        .cart-badge {
+            position:absolute; top:-2px; right:-2px;
+            background:var(--orange); color:#fff;
+            font-size:8px; font-weight:700; font-family:'DM Mono',monospace;
+            min-width:15px; height:15px; border-radius:8px;
+            display:none; align-items:center; justify-content:center;
+            padding:0 3px; border:1.5px solid var(--white);
+        }
+
+        .page-start { height:var(--nav-h); }
+
+        /* ── PROFILE HEADER ── */
+        .profile-header {
+            padding:24px 18px 18px;
+            max-width:800px; margin:0 auto;
+            display:flex; align-items:center; gap:16px;
+        }
+        .profile-avatar-wrap { position:relative; flex-shrink:0; }
+        .profile-avatar {
+            width:72px; height:72px; border-radius:50%;
+            object-fit:cover; border:2px solid var(--gray-200);
+            background:var(--gray-100);
+        }
+        /* Initials fallback */
+        .profile-avatar-init {
+            width:72px; height:72px; border-radius:50%;
+            background:var(--black); color:#fff;
+            font-family:'Bebas Neue'; font-size:26px; letter-spacing:2px;
+            display:flex; align-items:center; justify-content:center;
+            border:2px solid var(--gray-200); flex-shrink:0;
+        }
+        .profile-avatar-edit {
+            position:absolute; bottom:0; right:0;
+            width:26px; height:26px; border-radius:50%;
+            background:var(--black); color:#fff;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; border:2px solid var(--white);
+            transition:transform .15s;
+        }
+        .profile-avatar-edit:active { transform:scale(.88); }
+        .profile-info { flex:1; min-width:0; }
+        .profile-name {
+            font-size:20px; font-weight:700; letter-spacing:-.3px;
+            display:flex; align-items:center; gap:8px;
+        }
+        .profile-name input {
+            font:inherit; font-size:20px; font-weight:700; letter-spacing:-.3px;
+            border:none; border-bottom:1.5px solid var(--gray-200);
+            background:transparent; width:100%; outline:none;
+            padding-bottom:2px; color:var(--black);
+        }
+        .profile-name input:focus { border-color:var(--black); }
+        .profile-email { font-size:12px; color:var(--gray-400); margin-top:4px; font-family:'DM Mono',monospace; letter-spacing:.3px; }
+        .profile-meta-row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+        .profile-meta-chip {
+            font-size:10px; font-weight:600;
+            padding:4px 10px; border-radius:20px;
+            background:var(--gray-100); color:var(--gray-600);
+            display:flex; align-items:center; gap:4px;
+        }
+        .profile-meta-chip .dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
+
+        /* ── STATS STRIP (3 tiles now: Orders, Wishlist, Addresses) ── */
+        .stats-strip { display:flex; gap:8px; padding:0 18px; max-width:800px; margin:0 auto; }
+        .stat-tile {
+            flex:1; background:var(--gray-50); border:1px solid var(--gray-200);
+            border-radius:var(--radius-sm); padding:14px 10px;
+            text-align:center; cursor:pointer; transition:background .18s,transform .12s;
+        }
+        .stat-tile:active { background:var(--gray-100); transform:scale(.97); }
+        .stat-val { font-family:'DM Mono',monospace; font-size:20px; font-weight:500; color:var(--black); line-height:1; }
+        .stat-label { font-size:9px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--gray-400); margin-top:6px; }
+
+        /* ── SECTIONS ── */
+        .section { padding:0 18px; max-width:800px; margin:0 auto; }
+        .divider { border:none; border-top:1px solid var(--gray-200); margin:24px 18px; max-width:764px; }
+        .sec-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:13px; }
+        .sec-hd-title { font-family:'Bebas Neue'; font-size:17px; letter-spacing:2.5px; color:var(--black); }
+        .see-all {
+            font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+            color:var(--gray-400); text-decoration:none;
+            display:flex; align-items:center; gap:3px;
+            border:none; background:none; cursor:pointer;
+            font-family:'Space Grotesk',sans-serif; transition:color .18s;
+        }
+        .see-all:active { color:var(--black); }
+
+        /* ── ORDERS PREVIEW (3 most recent) ── */
+        .order-list { display:flex; flex-direction:column; gap:10px; }
+        .order-card {
+            background:var(--white); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); overflow:hidden;
+            transition:transform .18s,box-shadow .18s; cursor:pointer;
+            text-decoration:none; color:inherit; display:block;
+        }
+        .order-card:active { transform:scale(.985); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+        .order-top { display:flex; align-items:center; justify-content:space-between; padding:13px 14px 11px; }
+        .order-id { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--gray-400); letter-spacing:.5px; }
+        .order-status { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 9px; border-radius:20px; }
+        .status-delivered { background:#DCFCE7; color:var(--green); }
+        .status-shipped   { background:#DBEAFE; color:var(--blue); }
+        .status-pending   { background:#FEF3C7; color:#B45309; }
+        .status-cancelled { background:#FEE2E2; color:var(--red); }
+        .order-mid { display:flex; gap:12px; padding:0 14px 13px; align-items:center; }
+        .order-thumb { width:48px; height:48px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--gray-200); flex-shrink:0; }
+        .order-details { flex:1; min-width:0; }
+        .order-name { font-size:13px; font-weight:600; line-height:1.35; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .order-meta { font-size:11px; color:var(--gray-400); margin-top:2px; }
+        .order-price { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--black); white-space:nowrap; }
+        .order-arrow { color:var(--gray-300); flex-shrink:0; padding-right:2px; }
+
+        /* ── WISHLIST SCROLL ── */
+        .wish-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 18px 4px; }
+        .wish-scroll::-webkit-scrollbar { display:none; }
+        .wish-row { display:flex; gap:10px; width:max-content; }
+        .wish-card {
+            width:138px; flex-shrink:0;
+            background:var(--white); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius); overflow:hidden;
+            cursor:pointer; text-decoration:none; color:inherit;
+            transition:transform .18s,box-shadow .18s; position:relative;
+        }
+        .wish-card:active { transform:scale(.975); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+        .wish-img { aspect-ratio:1/1; overflow:hidden; background:var(--gray-100); position:relative; }
+        .wish-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .38s ease; }
+        .wish-card:active .wish-img img { transform:scale(1.04); }
+        .wish-remove {
+            position:absolute; top:7px; right:7px; z-index:2;
+            width:26px; height:26px; border-radius:50%;
+            background:rgba(255,255,255,.9); border:none;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:transform .15s,background .15s;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+        }
+        .wish-remove:active { transform:scale(.85); background:#FEE2E2; }
+        .wish-body { padding:9px 10px 11px; }
+        .wish-name { font-size:11px; font-weight:600; line-height:1.35; letter-spacing:-.1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .wish-price { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--red); margin-top:4px; }
+
+        /* ── SETTINGS ── */
+        .settings-list { display:flex; flex-direction:column; gap:6px; }
+        .setting-row {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:14px; background:var(--gray-50); border-radius:var(--radius-sm);
+            border:1px solid var(--gray-200); cursor:pointer;
+            transition:background .18s,transform .12s;
+        }
+        .setting-row:active { background:var(--gray-100); transform:scale(.985); }
+        .setting-left { display:flex; align-items:center; gap:12px; }
+        .setting-icon {
+            width:34px; height:34px; border-radius:10px;
+            background:var(--white); border:1.5px solid var(--gray-200);
+            display:flex; align-items:center; justify-content:center;
+            color:var(--black); flex-shrink:0;
+        }
+        .setting-title { font-size:13px; font-weight:600; }
+        .setting-desc  { font-size:11px; color:var(--gray-400); margin-top:1px; }
+        .setting-right { display:flex; align-items:center; gap:6px; color:var(--gray-400); }
+
+        /* ── TOGGLE ── */
+        .toggle { width:44px; height:24px; border-radius:12px; background:var(--gray-200); position:relative; cursor:pointer; transition:background .25s; flex-shrink:0; }
+        .toggle.on { background:var(--black); }
+        .toggle-knob { width:20px; height:20px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; transition:transform .25s cubic-bezier(.22,1,.36,1); box-shadow:0 1px 4px rgba(0,0,0,.15); }
+        .toggle.on .toggle-knob { transform:translateX(20px); }
+
+        /* ── ADDRESS ── */
+        .addr-list { display:flex; flex-direction:column; gap:10px; }
+        .addr-card {
+            background:var(--gray-50); border:1.5px solid var(--gray-200);
+            border-radius:var(--radius-sm); padding:14px;
+            position:relative; transition:transform .12s,border-color .18s; cursor:pointer;
+        }
+        .addr-card:active { transform:scale(.985); }
+        .addr-card.default { border-color:var(--black); }
+        .addr-tag { position:absolute; top:10px; right:10px; font-size:8px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; border-radius:20px; background:var(--black); color:#fff; }
+        .addr-name { font-size:13px; font-weight:700; }
+        .addr-line { font-size:12px; color:var(--gray-600); margin-top:3px; line-height:1.5; }
+        .addr-phone { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray-400); margin-top:6px; }
+        .addr-actions { display:flex; gap:8px; margin-top:10px; }
+        .addr-btn { font-size:11px; font-weight:600; padding:5px 12px; border-radius:20px; border:1.5px solid var(--gray-200); background:var(--white); color:var(--gray-600); cursor:pointer; transition:all .18s; }
+        .addr-btn:active { background:var(--gray-100); transform:scale(.95); }
+        .addr-btn.primary { background:var(--black); color:#fff; border-color:var(--black); }
+        .add-btn {
+            width:100%; height:44px; border-radius:var(--radius-sm);
+            border:1.5px dashed var(--gray-300); background:transparent;
+            color:var(--gray-400); font-size:12px; font-weight:600;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
+            transition:all .18s; margin-top:8px;
+        }
+        .add-btn:active { border-color:var(--black); color:var(--black); background:var(--gray-50); transform:scale(.98); }
+
+        /* ── SHEET ── */
+        .mask {
+            position:fixed; inset:0; z-index:300;
+            background:rgba(10,10,10,.55); display:none; opacity:0;
+            transition:opacity .32s ease;
+            backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+        }
+        .mask.on { opacity:1; }
+        .sheet {
+            position:fixed; bottom:-100%; left:0; right:0; z-index:301;
+            background:var(--white); border-radius:24px 24px 0 0;
+            padding:8px 20px 44px; transition:bottom .4s cubic-bezier(.22,1,.36,1);
+            max-width:800px; margin:0 auto;
+            box-shadow:0 -4px 30px rgba(0,0,0,.1);
+            max-height:90vh; overflow-y:auto;
+        }
+        .sheet.on { bottom:0; }
+        .sheet-handle { width:38px; height:4px; border-radius:2px; background:var(--gray-200); margin:10px auto 20px; }
+        .sheet-title { font-family:'Bebas Neue'; font-size:19px; letter-spacing:2px; margin-bottom:18px; }
+
+        /* Form */
+        .form-group { margin-bottom:13px; }
+        .form-row-two { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:13px; }
+        .form-label { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gray-400); margin-bottom:6px; display:block; }
+        .f-req { color:var(--red); }
+        .form-input, .form-select {
+            width:100%; height:46px; padding:0 14px;
+            border:1.5px solid var(--gray-200); border-radius:var(--radius-sm);
+            font-family:'Space Grotesk',sans-serif; font-size:13px;
+            background:var(--white); color:var(--black); outline:none;
+            transition:border-color .2s; -webkit-appearance:none; appearance:none;
+        }
+        .form-input:focus, .form-select:focus { border-color:var(--black); }
+        .form-input::placeholder { color:var(--gray-300); }
+        .form-select {
+            background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238A8A88' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:right 14px center;
+            cursor:pointer; padding-right:36px;
+        }
+        .confirm-btn {
+            width:100%; height:52px; border:none; border-radius:var(--radius-sm);
+            font-family:'Bebas Neue'; font-size:18px; letter-spacing:2.5px;
+            cursor:pointer; transition:background .25s,transform .12s;
+            display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px;
+        }
+        .confirm-btn.idle   { background:var(--black); color:#fff; }
+        .confirm-btn.idle:active { opacity:.82; transform:scale(.98); }
+        .confirm-btn.loading { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
+        .confirm-btn.success { background:var(--green); color:#fff; pointer-events:none; }
+
+        /* ── TOAST ── */
+        .toast {
+            position:fixed; bottom:32px; left:50%;
+            transform:translateX(-50%) translateY(6px);
+            background:var(--black); color:#fff;
+            padding:12px 18px 12px 14px; border-radius:14px;
+            font-size:13px; font-weight:500; z-index:9999;
+            opacity:0; transition:opacity .28s,transform .28s;
+            white-space:nowrap; display:flex; align-items:center; gap:10px;
+            pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:220px;
+        }
+        .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast-icon-wrap { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .toast-icon-wrap.success { background:rgba(22,163,74,.25); }
+        .toast-icon-wrap.warn    { background:rgba(234,179,8,.2); }
+        .toast-text { display:flex; flex-direction:column; gap:1px; }
+        .toast-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
+        .toast-sub   { font-size:11px; color:rgba(255,255,255,.55); font-weight:400; }
+
+        /* ── LANG PICKER MODAL ── */
+        .lang-sheet { padding-bottom:36px; }
+        .lang-opt {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:14px 16px; border-radius:var(--radius-sm); cursor:pointer;
+            border:1.5px solid var(--gray-200); background:var(--gray-50);
+            margin-bottom:8px; transition:all .18s;
+        }
+        .lang-opt.on { border-color:var(--black); background:var(--white); }
+        .lang-opt:active { transform:scale(.98); }
+        .lang-info .lang-name { font-size:14px; font-weight:700; }
+        .lang-info .lang-native { font-size:11px; color:var(--gray-400); margin-top:2px; }
+        .lang-radio { width:18px; height:18px; border-radius:50%; border:2px solid var(--gray-300); display:flex; align-items:center; justify-content:center; transition:all .18s; }
+        .lang-opt.on .lang-radio { border-color:var(--black); }
+        .lang-dot { width:8px; height:8px; border-radius:50%; background:var(--black); display:none; }
+        .lang-opt.on .lang-dot { display:block; }
+
+        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+        .fu { animation:fadeUp .42s ease both; }
+        .d1 { animation-delay:.06s; } .d2 { animation-delay:.12s; }
+        .d3 { animation-delay:.18s; } .d4 { animation-delay:.24s; }
+
+        .empty { padding:40px 20px; text-align:center; display:none; }
+        .empty.show { display:block; }
+        .empty-icon { font-size:36px; margin-bottom:12px; }
+        .empty-title { font-size:15px; font-weight:600; }
+        .empty-sub { font-size:12px; color:var(--gray-400); margin-top:5px; line-height:1.65; }
+
+        /* Sign out dangerous zone */
+        .danger-zone { padding:0 18px; max-width:800px; margin:0 auto; }
+        .sign-out-btn {
+            width:100%; height:46px; border-radius:var(--radius-sm);
+            border:1.5px solid #FEE2E2; background:#FFF5F5;
+            color:var(--red); font-size:13px; font-weight:700;
+            cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+            transition:all .18s;
+        }
+        .sign-out-btn:active { background:#FEE2E2; transform:scale(.98); }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-left">
+        <button class="icon-btn" onclick="history.back()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
+        </button>
+        <a href="index.html" class="brand">BARDS</a>
+    </div>
+    <div class="nav-right">
+        <a href="index.html" class="icon-btn" aria-label="Home">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </a>
+        <div class="cart-wrap">
+            <a href="cart.html" class="icon-btn" aria-label="Cart">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </a>
+            <span class="cart-badge" id="cartBadge"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="page-start"></div>
+
+<!-- PROFILE HEADER -->
+<div class="profile-header fu" id="profileHeader">
+    <div class="profile-avatar-wrap">
+        <div id="avatarDisplay"></div>
+        <button class="profile-avatar-edit" onclick="triggerAvatar()" aria-label="Change avatar">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a2.5 2.5 0 0 0-3.5-3.5L3 5v3h3l4.5-4.5z"/><path d="M1 15v2a2 2 0 0 0 2 2h2"/></svg>
+        </button>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatar(this)">
+    </div>
+    <div class="profile-info">
+        <div class="profile-name" id="profileNameWrap">
+            <span id="profileNameText">User</span>
+            <button class="icon-btn" style="width:28px;height:28px;" onclick="editName()" id="editNameBtn">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a2.5 2.5 0 0 0-3.5-3.5L3 5v3h3l4.5-4.5z"/><path d="M1 15v2a2 2 0 0 0 2 2h2"/></svg>
+            </button>
+        </div>
+        <div class="profile-email" id="profileEmail">user@example.com</div>
+        <div class="profile-meta-row">
+            <div class="profile-meta-chip"><div class="dot"></div> Member</div>
+            <div class="profile-meta-chip" id="joinDate">Joined —</div>
+        </div>
+    </div>
+</div>
+
+<!-- STATS (3 tiles) -->
+<div class="stats-strip fu d1">
+    <div class="stat-tile" onclick="scrollToSection('ordersSection')">
+        <div class="stat-val" id="statOrders">0</div>
+        <div class="stat-label">Orders</div>
+    </div>
+    <div class="stat-tile" onclick="scrollToSection('wishlistSection')">
+        <div class="stat-val" id="statWishlist">0</div>
+        <div class="stat-label">Wishlist</div>
+    </div>
+    <div class="stat-tile" onclick="scrollToSection('addressesSection')">
+        <div class="stat-val" id="statAddresses">0</div>
+        <div class="stat-label">Addresses</div>
+    </div>
+</div>
+
+<!-- ORDERS -->
+<div class="divider"></div>
+<div class="section fu d2" id="ordersSection">
+    <div class="sec-hd">
+        <span class="sec-hd-title">Recent Orders</span>
+        <a href="orders.html" class="see-all">See all →</a>
+    </div>
+    <div class="order-list" id="orderList"></div>
+    <div class="empty" id="emptyOrders">
+        <div class="empty-icon">📦</div>
+        <div class="empty-title">No orders yet</div>
+        <div class="empty-sub">Your orders will appear here once you shop.</div>
+    </div>
+</div>
+
+<!-- WISHLIST -->
+<div class="divider"></div>
+<div id="wishlistSection" class="fu d2">
+    <div class="section">
+        <div class="sec-hd">
+            <span class="sec-hd-title">Wishlist</span>
+            <a href="index.html" class="see-all">Browse →</a>
+        </div>
+    </div>
+    <div class="wish-scroll">
+        <div class="wish-row" id="wishRow"></div>
+    </div>
+    <div class="empty" id="emptyWishlist" style="padding:28px 20px;">
+        <div class="empty-icon">❤️</div>
+        <div class="empty-title">Wishlist is empty</div>
+        <div class="empty-sub">Tap ❤️ on any item to save it here.</div>
+    </div>
+</div>
+
+<!-- ADDRESSES -->
+<div class="divider"></div>
+<div class="section fu d3" id="addressesSection">
+    <div class="sec-hd">
+        <span class="sec-hd-title">Addresses</span>
+    </div>
+    <div class="addr-list" id="addrList"></div>
+    <button class="add-btn" onclick="openAddrSheet()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        Add New Address
+    </button>
+    <div class="empty" id="emptyAddresses">
+        <div class="empty-icon">📍</div>
+        <div class="empty-title">No addresses saved</div>
+        <div class="empty-sub">Add a shipping address for faster checkout.</div>
+    </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="divider"></div>
+<div class="section fu d4" id="settingsSection">
+    <div class="sec-hd">
+        <span class="sec-hd-title">Settings</span>
+    </div>
+    <div class="settings-list" id="settingsList"></div>
+</div>
+
+<!-- SIGN OUT -->
+<div class="divider"></div>
+<div class="danger-zone fu d4">
+    <button class="sign-out-btn" onclick="signOut()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+    </button>
+</div>
+
+<div style="height:32px"></div>
+
+<!-- MASK -->
+<div class="mask" id="mask" onclick="hideSheet()"></div>
+
+<!-- ADDRESS SHEET -->
+<div class="sheet" id="addrSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="addrSheetTitle">New Address</div>
+
+    <div class="form-row-two">
+        <div>
+            <label class="form-label">First Name <span class="f-req">*</span></label>
+            <input type="text" class="form-input" id="addrFname" placeholder="Sokha" autocomplete="given-name">
+        </div>
+        <div>
+            <label class="form-label">Last Name <span class="f-req">*</span></label>
+            <input type="text" class="form-input" id="addrLname" placeholder="Chan" autocomplete="family-name">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Phone <span class="f-req">*</span></label>
+        <input type="tel" class="form-input" id="addrPhone" placeholder="+855 12 345 678" autocomplete="tel">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Address <span class="f-req">*</span></label>
+        <input type="text" class="form-input" id="addrLine" placeholder="Street / House No. / Village" autocomplete="address-line1">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Address Line 2 <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:9px;">(optional)</span></label>
+        <input type="text" class="form-input" id="addrLine2" placeholder="Commune / Sangkat / District…" autocomplete="address-line2">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Province <span class="f-req">*</span></label>
+        <select class="form-select" id="addrProvince">
+            <option value="">— Select Province —</option>
+            <option value="Phnom Penh">ភ្នំពេញ · Phnom Penh</option>
+            <option value="Siem Reap">សៀមរាប · Siem Reap</option>
+            <option value="Sihanoukville">ព្រះសីហនុ · Sihanoukville</option>
+            <option value="Battambang">បាត់ដំបង · Battambang</option>
+            <option value="Kampong Cham">កំពង់ចាម · Kampong Cham</option>
+            <option value="Kampong Chhnang">កំពង់ឆ្នាំង · Kampong Chhnang</option>
+            <option value="Kampong Speu">កំពង់ស្ពឺ · Kampong Speu</option>
+            <option value="Kampong Thom">កំពង់ធំ · Kampong Thom</option>
+            <option value="Kampot">កំពត · Kampot</option>
+            <option value="Kandal">កណ្ដាល · Kandal</option>
+            <option value="Kep">កែប · Kep</option>
+            <option value="Koh Kong">កោះកុង · Koh Kong</option>
+            <option value="Kratie">ក្រចេះ · Kratie</option>
+            <option value="Mondulkiri">មណ្ឌលគីរី · Mondulkiri</option>
+            <option value="Oddar Meanchey">ឧត្ដរមានជ័យ · Oddar Meanchey</option>
+            <option value="Pailin">ប៉ៃលិន · Pailin</option>
+            <option value="Preah Vihear">ព្រះវិហារ · Preah Vihear</option>
+            <option value="Prey Veng">ព្រៃវែង · Prey Veng</option>
+            <option value="Pursat">ពោធិ៍សាត់ · Pursat</option>
+            <option value="Ratanakiri">រតនគីរី · Ratanakiri</option>
+            <option value="Stung Treng">ស្ទឹងត្រែង · Stung Treng</option>
+            <option value="Svay Rieng">ស្វាយរៀង · Svay Rieng</option>
+            <option value="Takeo">តាកែវ · Takeo</option>
+            <option value="Tboung Khmum">ត្បូងឃ្មុំ · Tboung Khmum</option>
+        </select>
+    </div>
+
+    <button class="confirm-btn idle" id="addrConfirmBtn" onclick="saveAddress()">SAVE ADDRESS</button>
+</div>
+
+<!-- LANGUAGE SHEET -->
+<div class="sheet lang-sheet" id="langSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Select Language</div>
+    <div id="langOptions"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <div class="toast-icon-wrap" id="toastIconWrap"></div>
+    <div class="toast-text">
+        <div class="toast-title" id="toastTitle">Done</div>
+        <div class="toast-sub" id="toastSub"></div>
+    </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   PRODUCTS (for wishlist display)
+═══════════════════════════════════════════ */
+const PRODUCTS = {
+    'oversized-tee-black': { name:'Classic Black Oversized Tee', price:23.94, images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'] },
+    'cargo-pants-olive':   { name:'Military Olive Cargo Pants',  price:48.18, images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'] },
+    'hoodie-grey':         { name:'Stone Grey Pullover Hoodie',  price:39.09, images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'] },
+    'sunglasses-retro':    { name:'Retro Square Sunglasses',     price:26.97, images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'] },
+    'oversized-tee-white': { name:'Stone White Oversized Tee',   price:23.94, images:['https://hnungh.github.io/mpj/img/oversized-tee-black.jpg'] },
+    'cargo-pants-black':   { name:'Tactical Black Cargo Pants',  price:48.18, images:['https://hnungh.github.io/mpj/img/cargo-pants-olive.jpg'] },
+    'hoodie-navy':         { name:'Midnight Navy Pullover Hoodie',price:39.09, images:['https://hnungh.github.io/mpj/img/hoodie-grey.jpg'] },
+    'sunglasses-black':    { name:'Classic Black Sunglasses',     price:26.97, images:['https://hnungh.github.io/mpj/img/sunglasses-retro.jpg'] }
+};
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+const S = {
+    profile: JSON.parse(localStorage.getItem('BARDS_PROFILE') || 'null') || {
+        name: 'Alex Mercer',
+        email: 'alex@bards.co',
+        avatar: '',
+        joined: new Date().toISOString()
+    },
+    orders:    JSON.parse(localStorage.getItem('BARDS_ORDERS')    || '[]'),
+    favs:      JSON.parse(localStorage.getItem('NW_FAVS')         || '[]'),
+    addresses: JSON.parse(localStorage.getItem('BARDS_ADDRESSES') || '[]'),
+    settings:  JSON.parse(localStorage.getItem('BARDS_SETTINGS')  || 'null') || {
+        notifications: true,
+        language: 'EN'
+    }
+};
+
+let _editingAddrIdx = -1; // -1 = new, >=0 = editing
+
+/* ═══════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+    initProfile();
+    renderOrders();
+    renderWishlist();
+    renderAddresses();
+    renderSettings();
+    updateStats();
+    updateBadge();
+});
+
+/* ═══════════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════════ */
+function initProfile() {
+    document.getElementById('profileNameText').innerText = S.profile.name;
+    document.getElementById('profileEmail').innerText    = S.profile.email;
+
+    // Avatar: image or initials
+    renderAvatar();
+
+    // Join date: DD/MM/YY
+    const d = new Date(S.profile.joined);
+    const dd  = String(d.getDate()).padStart(2,'0');
+    const mm  = String(d.getMonth()+1).padStart(2,'0');
+    const yy  = String(d.getFullYear()).slice(2);
+    document.getElementById('joinDate').innerText = 'Joined ' + dd + '/' + mm + '/' + yy;
+}
+
+function renderAvatar() {
+    const wrap = document.getElementById('avatarDisplay');
+    if (S.profile.avatar) {
+        wrap.innerHTML = `<img src="${S.profile.avatar}" class="profile-avatar" id="profileAvatar" alt="Avatar">`;
+    } else {
+        // initials from name
+        const parts = S.profile.name.trim().split(' ');
+        const initials = (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+        wrap.innerHTML = `<div class="profile-avatar-init">${initials.toUpperCase()}</div>`;
+    }
+}
+
+function editName() {
+    const wrap = document.getElementById('profileNameWrap');
+    const current = S.profile.name;
+    wrap.innerHTML = `<input type="text" id="nameInput" value="${current}" onblur="saveName()" onkeydown="if(event.key==='Enter')saveName()">`;
+    document.getElementById('nameInput').focus();
+}
+
+function saveName() {
+    const input = document.getElementById('nameInput');
+    if (!input) return;
+    const val = input.value.trim();
+    if (val) { S.profile.name = val; localStorage.setItem('BARDS_PROFILE', JSON.stringify(S.profile)); }
+    const wrap = document.getElementById('profileNameWrap');
+    wrap.innerHTML = `<span id="profileNameText">${S.profile.name}</span>
+        <button class="icon-btn" style="width:28px;height:28px;" onclick="editName()" id="editNameBtn">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a2.5 2.5 0 0 0-3.5-3.5L3 5v3h3l4.5-4.5z"/><path d="M1 15v2a2 2 0 0 0 2 2h2"/></svg>
+        </button>`;
+    renderAvatar();
+    showToast('ok','Profile updated','Your name has been saved');
+}
+
+function triggerAvatar() { document.getElementById('avatarInput').click(); }
+
+function handleAvatar(input) {
+    const file = input.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        S.profile.avatar = e.target.result;
+        localStorage.setItem('BARDS_PROFILE', JSON.stringify(S.profile));
+        renderAvatar();
+        showToast('ok','Avatar updated','Profile picture saved');
+    };
+    reader.readAsDataURL(file);
+}
+
+/* ═══════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════ */
+function updateStats() {
+    document.getElementById('statOrders').innerText    = S.orders.length;
+    document.getElementById('statWishlist').innerText  = S.favs.length;
+    document.getElementById('statAddresses').innerText = S.addresses.length;
+}
+
+function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ═══════════════════════════════════════════
+   ORDERS PREVIEW (latest 3)
+═══════════════════════════════════════════ */
+function renderOrders() {
+    const list  = document.getElementById('orderList');
+    const empty = document.getElementById('emptyOrders');
+    if (!S.orders.length) { list.innerHTML = ''; empty.classList.add('show'); return; }
+    empty.classList.remove('show');
+
+    const recent = [...S.orders].reverse().slice(0,3);
+    list.innerHTML = recent.map(o => orderCardHTML(o)).join('');
+}
+
+function orderCardHTML(o) {
+    const statusMap = {
+        delivered: ['status-delivered','Delivered'],
+        shipped:   ['status-shipped','Shipped'],
+        pending:   ['status-pending','Pending'],
+        cancelled: ['status-cancelled','Cancelled']
+    };
+    const [cls, label] = statusMap[o.status] || statusMap.pending;
+    const priceStr = '$' + Number(o.total).toFixed(2);
+    const thumb = o.items?.[0]?.image || 'https://via.placeholder.com/100/0A0A0A?text=?';
+    const itemCount = o.items?.length || 1;
+    const extra = itemCount > 1 ? ` +${itemCount-1} more` : '';
+
+    return `<a class="order-card" href="orders.html?id=${o.id}">
+        <div class="order-top">
+            <span class="order-id">#${o.id}</span>
+            <span class="order-status ${cls}">${label}</span>
+        </div>
+        <div class="order-mid">
+            <img src="${thumb}" class="order-thumb" alt="">
+            <div class="order-details">
+                <div class="order-name">${o.items?.[0]?.name || 'Order'}${extra}</div>
+                <div class="order-meta">${o.date} · ${itemCount} item${itemCount!==1?'s':''}</div>
+            </div>
+            <div class="order-price">${priceStr}</div>
+            <div class="order-arrow">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 1l5 5.5L5 12"/></svg>
+            </div>
+        </div>
+    </a>`;
+}
+
+/* ═══════════════════════════════════════════
+   WISHLIST
+═══════════════════════════════════════════ */
+function renderWishlist() {
+    const row   = document.getElementById('wishRow');
+    const empty = document.getElementById('emptyWishlist');
+    if (!S.favs.length) { row.innerHTML = ''; empty.classList.add('show'); return; }
+    empty.classList.remove('show');
+
+    row.innerHTML = S.favs.map(id => {
+        const p = PRODUCTS[id]; if (!p) return '';
+        const priceStr = '$' + p.price.toFixed(2);
+        return `<div class="wish-card">
+            <div class="wish-img">
+                <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+                <button class="wish-remove" onclick="removeFav('${id}',this)" aria-label="Remove">
+                    <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="1" y1="1" x2="10" y2="10"/><line x1="10" y1="1" x2="1" y2="10"/></svg>
+                </button>
+            </div>
+            <a href="product.html?id=${id}" style="text-decoration:none;color:inherit;">
+                <div class="wish-body">
+                    <div class="wish-name">${p.name}</div>
+                    <div class="wish-price">${priceStr}</div>
+                </div>
+            </a>
+        </div>`;
+    }).join('');
+}
+
+function removeFav(id, btn) {
+    const card = btn.closest('.wish-card');
+    card.style.transition = 'opacity .18s,transform .18s';
+    card.style.opacity = '0'; card.style.transform = 'scale(.9)';
+    setTimeout(() => {
+        const idx = S.favs.indexOf(id);
+        if (idx > -1) { S.favs.splice(idx,1); localStorage.setItem('NW_FAVS', JSON.stringify(S.favs)); }
+        renderWishlist(); updateStats();
+        showToast('ok','Removed','Item removed from wishlist');
+    }, 200);
+}
+
+/* ═══════════════════════════════════════════
+   ADDRESSES
+═══════════════════════════════════════════ */
+function renderAddresses() {
+    const list  = document.getElementById('addrList');
+    const empty = document.getElementById('emptyAddresses');
+    if (!S.addresses.length) { list.innerHTML = ''; empty.classList.add('show'); return; }
+    empty.classList.remove('show');
+
+    list.innerHTML = S.addresses.map((a,i) => `
+        <div class="addr-card ${a.default?'default':''}">
+            ${a.default ? '<span class="addr-tag">Default</span>' : ''}
+            <div class="addr-name">${a.name}</div>
+            <div class="addr-line">${a.line}${a.line2?', '+a.line2:''}<br>${a.province}</div>
+            <div class="addr-phone">${a.phone}</div>
+            <div class="addr-actions">
+                <button class="addr-btn" onclick="editAddr(${i})">Edit</button>
+                <button class="addr-btn" style="color:var(--red);border-color:#FECACA;" onclick="deleteAddr(${i})">Delete</button>
+                ${!a.default ? `<button class="addr-btn primary" onclick="setDefaultAddr(${i})">Set Default</button>` : ''}
+            </div>
+        </div>`).join('');
+}
+
+function openAddrSheet(idx) {
+    _editingAddrIdx = (idx !== undefined) ? idx : -1;
+    const isEdit = _editingAddrIdx >= 0;
+    document.getElementById('addrSheetTitle').innerText = isEdit ? 'Edit Address' : 'New Address';
+    document.getElementById('addrConfirmBtn').querySelector('span') && (document.getElementById('addrConfirmBtn').querySelector('span').innerText = isEdit ? 'SAVE CHANGES' : 'SAVE ADDRESS');
+
+    if (isEdit) {
+        const a = S.addresses[idx];
+        const nameParts = a.name.split(' ');
+        document.getElementById('addrFname').value     = nameParts[0] || '';
+        document.getElementById('addrLname').value     = nameParts.slice(1).join(' ') || '';
+        document.getElementById('addrPhone').value     = a.phone;
+        document.getElementById('addrLine').value      = a.line;
+        document.getElementById('addrLine2').value     = a.line2 || '';
+        document.getElementById('addrProvince').value  = a.province;
+    } else {
+        document.getElementById('addrFname').value    = '';
+        document.getElementById('addrLname').value    = '';
+        document.getElementById('addrPhone').value    = '';
+        document.getElementById('addrLine').value     = '';
+        document.getElementById('addrLine2').value    = '';
+        document.getElementById('addrProvince').value = '';
+    }
+    openSheetById('addrSheet');
+}
+
+function hideSheet() {
+    document.querySelectorAll('.sheet').forEach(s => s.classList.remove('on'));
+    document.getElementById('mask').classList.remove('on');
+    setTimeout(() => document.getElementById('mask').style.display = 'none', 380);
+}
+
+function openSheetById(id) {
+    document.getElementById('mask').style.display = 'block';
+    requestAnimationFrame(() => {
+        document.getElementById('mask').classList.add('on');
+        document.getElementById(id).classList.add('on');
+    });
+}
+
+function saveAddress() {
+    const fname    = document.getElementById('addrFname').value.trim();
+    const lname    = document.getElementById('addrLname').value.trim();
+    const phone    = document.getElementById('addrPhone').value.trim();
+    const line     = document.getElementById('addrLine').value.trim();
+    const line2    = document.getElementById('addrLine2').value.trim();
+    const province = document.getElementById('addrProvince').value;
+
+    if (!fname || !phone || !line || !province) {
+        showToast('warn','Missing info','Please fill in all required fields');
+        return;
+    }
+
+    const name = (fname + ' ' + lname).trim();
+    const addr = { name, phone, line, line2, province, default: false };
+
+    if (_editingAddrIdx >= 0) {
+        addr.default = S.addresses[_editingAddrIdx].default;
+        S.addresses[_editingAddrIdx] = addr;
+        showToast('ok','Address updated', name + ' — ' + province);
+    } else {
+        addr.default = S.addresses.length === 0;
+        S.addresses.push(addr);
+        showToast('ok','Address saved', name + ' — ' + province);
+    }
+
+    localStorage.setItem('BARDS_ADDRESSES', JSON.stringify(S.addresses));
+    hideSheet(); renderAddresses(); updateStats();
+}
+
+function setDefaultAddr(idx) {
+    S.addresses.forEach((a,i) => a.default = (i===idx));
+    localStorage.setItem('BARDS_ADDRESSES', JSON.stringify(S.addresses));
+    renderAddresses();
+    showToast('ok','Default updated', S.addresses[idx].name);
+}
+
+function deleteAddr(idx) {
+    if (!confirm('Delete this address?')) return;
+    S.addresses.splice(idx,1);
+    localStorage.setItem('BARDS_ADDRESSES', JSON.stringify(S.addresses));
+    renderAddresses(); updateStats();
+    showToast('ok','Deleted','Address removed');
+}
+
+function editAddr(idx) { openAddrSheet(idx); }
+
+/* ═══════════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════════ */
+function renderSettings() {
+    const list = document.getElementById('settingsList');
+    const langLabel = { EN:'English', KH:'ភាសាខ្មែរ' }[S.settings.language] || S.settings.language;
+
+    const items = [
+        {
+            icon:'<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+            title:'Notifications', desc:'Order updates & promotions',
+            type:'toggle', key:'notifications'
+        },
+        {
+            icon:'<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+            title:'Language', desc:langLabel,
+            type:'arrow', action:'openLangSheet()'
+        },
+        {
+            icon:'<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+            title:'Privacy Policy', desc:'How we handle your data',
+            type:'arrow', action:'showToast(\'info\',\'Privacy Policy\',\'Coming soon\')'
+        },
+        {
+            icon:'<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+            title:'Help & Support', desc:'FAQ, contact us',
+            type:'arrow', action:'showToast(\'info\',\'Support\',\'support@bards.co\')'
+        }
+    ];
+
+    list.innerHTML = items.map(item => {
+        if (item.type === 'toggle') {
+            const on = S.settings[item.key] ? 'on' : '';
+            return `<div class="setting-row" onclick="toggleSetting('${item.key}')">
+                <div class="setting-left">
+                    <div class="setting-icon">${item.icon}</div>
+                    <div>
+                        <div class="setting-title">${item.title}</div>
+                        <div class="setting-desc">${item.desc}</div>
+                    </div>
+                </div>
+                <div class="setting-right">
+                    <div class="toggle ${on}" id="toggle-${item.key}"><div class="toggle-knob"></div></div>
+                </div>
+            </div>`;
+        }
+        return `<div class="setting-row" onclick="${item.action}">
+            <div class="setting-left">
+                <div class="setting-icon">${item.icon}</div>
+                <div>
+                    <div class="setting-title">${item.title}</div>
+                    <div class="setting-desc">${item.desc}</div>
+                </div>
+            </div>
+            <div class="setting-right">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 1l5 5.5L5 12"/></svg>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function toggleSetting(key) {
+    S.settings[key] = !S.settings[key];
+    localStorage.setItem('BARDS_SETTINGS', JSON.stringify(S.settings));
+    document.getElementById('toggle-'+key).classList.toggle('on', S.settings[key]);
+    showToast('ok','Setting saved', key + ' is now ' + (S.settings[key]?'on':'off'));
+}
+
+/* ── Language Sheet ── */
+const LANGS = [
+    { code:'EN', name:'English',    native:'English' },
+    { code:'KH', name:'Khmer',      native:'ភាសាខ្មែរ' }
+];
+
+function openLangSheet() {
+    const opts = document.getElementById('langOptions');
+    opts.innerHTML = LANGS.map(l => `
+        <div class="lang-opt ${S.settings.language===l.code?'on':''}" onclick="selectLang('${l.code}')">
+            <div class="lang-info">
+                <div class="lang-name">${l.name}</div>
+                <div class="lang-native">${l.native}</div>
+            </div>
+            <div class="lang-radio"><div class="lang-dot"></div></div>
+        </div>`).join('');
+    openSheetById('langSheet');
+}
+
+function selectLang(code) {
+    S.settings.language = code;
+    localStorage.setItem('BARDS_SETTINGS', JSON.stringify(S.settings));
+    hideSheet();
+    renderSettings();
+    showToast('ok','Language changed', LANGS.find(l=>l.code===code)?.name || code);
+}
+
+/* ── Sign Out ── */
+function signOut() {
+    if (!confirm('Sign out of your account?')) return;
+    ['BARDS_PROFILE','BARDS_CART','NW_FAVS','BARDS_ORDERS','BARDS_ADDRESSES','BARDS_SETTINGS'].forEach(k => localStorage.removeItem(k));
+    showToast('ok','Signed out','See you soon!');
+    setTimeout(() => window.location.href = 'index.html', 1200);
+}
+
+/* ═══════════════════════════════════════════
+   CART BADGE
+═══════════════════════════════════════════ */
+function updateBadge() {
+    const cart = JSON.parse(localStorage.getItem('BARDS_CART')||'[]');
+    const n = cart.reduce((t,c)=>t+c.quantity,0);
+    const b = document.getElementById('cartBadge');
+    b.innerText = n > 99 ? '99+' : n;
+    b.style.display = n > 0 ? 'flex' : 'none';
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+const SVG_CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const SVG_WARN  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+let _tt;
+function showToast(type, title, sub) {
+    const wrap = document.getElementById('toastIconWrap');
+    wrap.className = 'toast-icon-wrap ' + (type==='warn'?'warn':'success');
+    wrap.innerHTML = type==='warn' ? SVG_WARN : SVG_CHECK;
+    document.getElementById('toastTitle').innerText = title;
+    document.getElementById('toastSub').innerText   = sub || '';
+    const t = document.getElementById('toast'); t.classList.add('on');
+    clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('on'), 2800);
+}
+</script>
+</body>
+</html>
