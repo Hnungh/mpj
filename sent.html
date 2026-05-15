@@ -8,76 +8,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root {
-    --black:    #0A0A0A;
-    --white:    #FAFAFA;
-    --orange:   #FF4F00;
-    --green:    #16A34A;
-    --red:      #C8001A;
-    --khqr-red: #E1232E;
-    --gray-50:  #F9F9F7;
-    --gray-100: #F2F2F0;
-    --gray-200: #E4E4E2;
-    --gray-300: #C8C8C6;
-    --gray-400: #8A8A88;
-    --gray-600: #4A4A48;
-    --radius:    14px;
-    --radius-sm: 10px;
-    --nav-h:     60px;
+    --black:    #0A0A0A; --white:    #FAFAFA;
+    --green:    #16A34A; --red:      #C8001A; --khqr-red: #E1232E;
+    --gray-100: #F2F2F0; --gray-200: #E4E4E2;
+    --gray-400: #8A8A88; --gray-600: #4A4A48;
+    --radius: 14px; --radius-sm: 10px; --nav-h: 60px;
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body {
-    font-family:'Space Grotesk',sans-serif;
-    background:var(--gray-100); color:var(--black);
-    min-height:100vh; overscroll-behavior:none;
-    padding-bottom:56px;
-}
+body { font-family:'Space Grotesk',sans-serif; background:var(--gray-100); color:var(--black); min-height:100vh; overscroll-behavior:none; padding-bottom:56px; }
 
-/* NAV */
-.nav {
-    position:fixed; top:0; left:0; right:0; z-index:200;
-    height:var(--nav-h);
-    display:flex; align-items:center; gap:12px; padding:0 18px;
-    background:rgba(250,250,250,.97);
-    backdrop-filter:blur(18px) saturate(160%);
-    -webkit-backdrop-filter:blur(18px) saturate(160%);
-    border-bottom:1px solid var(--gray-200);
-}
-.icon-btn {
-    width:36px; height:36px; border-radius:50%;
-    background:var(--gray-100); border:none;
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:background .18s, transform .12s;
-    color:var(--black); flex-shrink:0;
-}
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h); display:flex; align-items:center; gap:12px; padding:0 18px; background:rgba(250,250,250,.97); backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%); border-bottom:1px solid var(--gray-200); }
+.icon-btn { width:36px; height:36px; border-radius:50%; background:var(--gray-100); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .18s, transform .12s; color:var(--black); flex-shrink:0; }
 .icon-btn:active { background:var(--gray-200); transform:scale(.9); }
 .brand { font-family:'Bebas Neue'; font-size:21px; letter-spacing:3px; color:var(--black); text-decoration:none; }
-.nav-timer {
-    margin-left:auto;
-    font-family:'DM Mono',monospace; font-size:11px;
-    color:var(--gray-400); display:flex; align-items:center; gap:5px;
-}
+.nav-timer { margin-left:auto; font-family:'DM Mono',monospace; font-size:11px; color:var(--gray-400); display:flex; align-items:center; gap:5px; }
 .timer-val { color:var(--black); font-weight:700; }
 .timer-val.warn { color:var(--red); }
 
-/* PAGE */
-.page {
-    margin-top:var(--nav-h);
-    padding:16px 14px 0;
-    max-width:460px;
-    margin-left:auto; margin-right:auto;
-}
+.page { margin-top:var(--nav-h); padding:16px 14px 0; max-width:460px; margin-left:auto; margin-right:auto; }
 
-/* QR CARD */
-.qr-card {
-    background:var(--white); border:1.5px solid var(--gray-200);
-    border-radius:var(--radius); overflow:hidden; margin-bottom:12px;
-}
-
-/* Top band — KHQR branded */
-.qr-topband {
-    background:var(--khqr-red); padding:14px 18px;
-    display:flex; align-items:center; justify-content:space-between;
-}
+.qr-card { background:var(--white); border:1.5px solid var(--gray-200); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+.qr-topband { background:var(--khqr-red); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; }
 .qr-brand-row { display:flex; align-items:center; gap:10px; }
 .qr-brand-name { font-family:'Bebas Neue'; font-size:15px; letter-spacing:2px; color:#fff; }
 .qr-brand-sub  { font-size:9px; color:rgba(255,255,255,.6); margin-top:1px; letter-spacing:.5px; }
@@ -86,125 +37,46 @@ body {
 .qr-amount-val  { font-family:'DM Mono',monospace; font-size:22px; color:#fff; font-weight:500; line-height:1; }
 .qr-amount-sub  { font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,.5); }
 
-/* QR body */
-.qr-body {
-    padding:22px 22px 18px;
-    display:flex; flex-direction:column; align-items:center;
-}
+.qr-body { padding:22px 22px 18px; display:flex; flex-direction:column; align-items:center; }
+/* ✅ white centered frame for QR */
+.qr-canvas-wrap { width:240px; height:240px; border-radius:14px; border:3px solid var(--gray-100); box-shadow:0 4px 24px rgba(0,0,0,.1); background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+#qrCanvas { display:flex; align-items:center; justify-content:center; width:200px; height:200px; background:#fff; }
+#qrCanvas canvas, #qrCanvas img { width:200px !important; height:200px !important; display:block; image-rendering:pixelated; }
 
-/* ✅ FIX: QR wrapper — centered white frame */
-.qr-canvas-wrap {
-    position:relative;
-    width:240px; height:240px;
-    border-radius:14px;
-    border:3px solid var(--gray-100);
-    box-shadow:0 4px 24px rgba(0,0,0,.1);
-    background:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    margin: 22px auto 0;
-}
-
-/* ✅ FIX: qrcode.min.js generates a <canvas> or <img> inside the div — style both */
-#qrCanvas {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:200px;
-    height:200px;
-    background:#fff;
-}
-#qrCanvas canvas,
-#qrCanvas img {
-    width:200px !important;
-    height:200px !important;
-    display:block;
-    image-rendering:pixelated;
-}
-
-.qr-ref {
-    margin-top:14px; font-family:'DM Mono',monospace;
-    font-size:10px; color:var(--gray-400); letter-spacing:.5px; text-align:center;
-}
+.qr-ref { margin-top:14px; font-family:'DM Mono',monospace; font-size:10px; color:var(--gray-400); letter-spacing:.5px; text-align:center; }
 .qr-ref strong { color:var(--black); }
-
-.qr-actions {
-    display:flex; gap:8px; margin-top:14px; width:100%;
-    padding: 0 22px 18px;
-}
-.qr-act-btn {
-    flex:1; height:36px; border:1.5px solid var(--gray-200);
-    border-radius:var(--radius-sm); background:var(--white);
-    font-size:11px; font-weight:700; color:var(--gray-600);
-    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;
-    transition:all .18s;
-}
+.qr-actions { display:flex; gap:8px; padding:0 22px 18px; width:100%; }
+.qr-act-btn { flex:1; height:36px; border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); background:var(--white); font-size:11px; font-weight:700; color:var(--gray-600); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; transition:all .18s; }
 .qr-act-btn:active { background:var(--gray-100); }
 
-/* Steps */
-.steps-card {
-    background:var(--white); border:1.5px solid var(--gray-200);
-    border-radius:var(--radius); padding:16px; margin-bottom:12px;
-}
-.steps-title {
-    font-family:'Bebas Neue'; font-size:14px; letter-spacing:2px;
-    color:var(--gray-400); margin-bottom:12px;
-}
-.step-row {
-    display:flex; gap:12px; align-items:flex-start;
-    padding:9px 0; border-bottom:1px solid var(--gray-100);
-}
+.steps-card { background:var(--white); border:1.5px solid var(--gray-200); border-radius:var(--radius); padding:16px; margin-bottom:12px; }
+.steps-title { font-family:'Bebas Neue'; font-size:14px; letter-spacing:2px; color:var(--gray-400); margin-bottom:12px; }
+.step-row { display:flex; gap:12px; align-items:flex-start; padding:9px 0; border-bottom:1px solid var(--gray-100); }
 .step-row:last-child { border-bottom:none; padding-bottom:0; }
-.step-num {
-    width:22px; height:22px; border-radius:50%;
-    background:var(--gray-100); flex-shrink:0;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'DM Mono',monospace; font-size:9px; font-weight:700; color:var(--gray-600);
-}
+.step-num { width:22px; height:22px; border-radius:50%; background:var(--gray-100); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:9px; font-weight:700; color:var(--gray-600); }
 .step-txt { font-size:12px; color:var(--gray-600); line-height:1.55; }
 .step-txt strong { color:var(--black); }
 
-/* Confirm button */
-.confirm-btn {
-    width:100%; height:54px; border:none; border-radius:var(--radius-sm);
-    font-family:'Bebas Neue'; font-size:18px; letter-spacing:3px;
-    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-    transition:all .25s;
-}
+.confirm-btn { width:100%; height:54px; border:none; border-radius:var(--radius-sm); font-family:'Bebas Neue'; font-size:18px; letter-spacing:3px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all .25s; }
 .confirm-btn.idle    { background:var(--black); color:#fff; }
 .confirm-btn.idle:active { opacity:.82; transform:scale(.98); }
 .confirm-btn.loading { background:var(--gray-200); color:var(--gray-400); pointer-events:none; }
 .confirm-btn.success { background:var(--green); color:#fff; pointer-events:none; }
-.confirm-sub {
-    margin-top:10px; font-size:10px; color:var(--gray-400);
-    text-align:center; line-height:1.55;
-}
+.confirm-sub { margin-top:10px; font-size:10px; color:var(--gray-400); text-align:center; line-height:1.55; }
 .confirm-sub a { color:var(--black); font-weight:700; text-decoration:none; cursor:pointer; }
 
-/* TOAST */
-.toast {
-    position:fixed; bottom:24px; left:50%;
-    transform:translateX(-50%) translateY(6px);
-    background:var(--black); color:#fff;
-    padding:12px 18px 12px 14px; border-radius:14px;
-    font-size:13px; font-weight:500; z-index:9999;
-    opacity:0; transition:opacity .28s,transform .28s;
-    white-space:nowrap; display:flex; align-items:center; gap:10px;
-    pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:200px;
-}
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(6px); background:var(--black); color:#fff; padding:12px 18px 12px 14px; border-radius:14px; font-size:13px; font-weight:500; z-index:9999; opacity:0; transition:opacity .28s, transform .28s; white-space:nowrap; display:flex; align-items:center; gap:10px; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.28); min-width:200px; }
 .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
 .t-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .t-icon.ok   { background:rgba(22,163,74,.25); }
 .t-icon.warn { background:rgba(234,179,8,.2); }
 .t-icon.err  { background:rgba(200,0,26,.25); }
-.t-text  { display:flex; flex-direction:column; gap:1px; }
+.t-text { display:flex; flex-direction:column; gap:1px; }
 .t-title { font-size:12px; font-weight:700; letter-spacing:.3px; }
 .t-sub   { font-size:11px; color:rgba(255,255,255,.55); }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-@keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes spin   { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 .fu { animation:fadeUp .38s ease both; }
 .d1 { animation-delay:.07s; }
 </style>
@@ -213,32 +85,22 @@ body {
 
 <nav class="nav">
     <button class="icon-btn" onclick="history.back()" aria-label="Back">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 11.5L6 8l3.5-3.5"/></svg>
     </button>
     <a href="index.html" class="brand">BARDS</a>
     <div class="nav-timer">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-        </svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span class="timer-val" id="navTimer">10:00</span>
     </div>
 </nav>
 
 <div class="page">
 
-    <!-- QR CARD -->
     <div class="qr-card fu">
-        <!-- Branded top band -->
         <div class="qr-topband">
             <div class="qr-brand-row">
-                <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 20"
-                     style="width:48px;height:28px;border-radius:4px">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M31.8969 20H2.10315C0.946422 20 0 19.0596 0 17.9103V2.08968C0 0.940362 0.946422 0 2.10315 0H31.8969C33.0536 0 34 0.940362 34 2.08968V17.9103C34 19.0596 33.0536 20 31.8969 20Z"
-                          fill="#fff" fill-opacity=".18"/>
+                <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 20" style="width:48px;height:28px;border-radius:4px">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M31.8969 20H2.10315C0.946422 20 0 19.0596 0 17.9103V2.08968C0 0.940362 0.946422 0 2.10315 0H31.8969C33.0536 0 34 0.940362 34 2.08968V17.9103C34 19.0596 33.0536 20 31.8969 20Z" fill="#fff" fill-opacity=".18"/>
                     <path d="M20.2524 9.22561V11.1126H18.3882C18.197 11.1126 18.0536 10.9554 18.0536 10.7739V9.23772C18.0536 9.04418 18.2089 8.89902 18.3882 8.89902H19.9059C20.109 8.88692 20.2524 9.03207 20.2524 9.22561Z" fill="white"/>
                     <path d="M28.9881 9.98776H28.056C28.056 8.86281 27.1478 7.9435 26.0364 7.9435C25.1521 7.9435 24.3753 8.52412 24.1124 9.37086C24.0526 9.57649 24.0168 9.78213 24.0168 9.98776V12.9876H23.9929C23.491 12.9876 23.0847 12.5763 23.0847 12.0683V9.98776H23.0966C23.0966 9.16522 23.4312 8.37896 24.0287 7.81044C24.5784 7.2903 25.2955 7 26.0483 7C27.6736 7 28.9881 8.34267 28.9881 9.98776Z" fill="white"/>
                     <path d="M29 12.9879L27.6855 13L27.3628 12.6734L26.6458 11.9476L25.6539 10.9436H26.9685L29 12.9879Z" fill="white"/>
@@ -254,17 +116,14 @@ body {
             <div class="qr-amount-wrap">
                 <div class="qr-amount-lbl">AMOUNT</div>
                 <div class="qr-amount-val" id="qrAmountVal">$0.00</div>
-                <!-- ✅ FIX: Show USD (currency code 840) not KHR -->
                 <div class="qr-amount-sub">USD</div>
             </div>
         </div>
 
-        <!-- ✅ FIX: QR body with centered frame -->
         <div class="qr-body">
             <div class="qr-canvas-wrap">
                 <div id="qrCanvas"></div>
             </div>
-
             <div class="qr-ref" style="margin-top:14px;">
                 Order ref: <strong id="qrRefId">—</strong>
             </div>
@@ -272,62 +131,35 @@ body {
 
         <div class="qr-actions">
             <button class="qr-act-btn" onclick="copyQR()">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2"/>
-                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                </svg>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                 Copy QR Code
             </button>
             <button class="qr-act-btn" onclick="regenerate()">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 4 23 10 17 10"/>
-                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                </svg>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                 Refresh
             </button>
         </div>
     </div>
 
-    <!-- HOW TO PAY -->
     <div class="steps-card fu d1">
         <div class="steps-title">HOW TO PAY</div>
-        <div class="step-row">
-            <div class="step-num">1</div>
-            <div class="step-txt">Open your banking app: <strong>Bakong, ABA Mobile, Wing, ACLEDA</strong> or any KHQR-supported app.</div>
-        </div>
-        <div class="step-row">
-            <div class="step-num">2</div>
-            <div class="step-txt">Tap <strong>Scan QR</strong> and point your camera at the code above.</div>
-        </div>
-        <div class="step-row">
-            <div class="step-num">3</div>
-            <div class="step-txt">Confirm the amount — <strong id="stepAmtText">$0.00 USD</strong> — then approve the transfer.</div>
-        </div>
-        <div class="step-row">
-            <div class="step-num">4</div>
-            <div class="step-txt">Come back here and tap <strong>I've Paid</strong> to confirm your order.</div>
-        </div>
+        <div class="step-row"><div class="step-num">1</div><div class="step-txt">Open your banking app: <strong>Bakong, ABA Mobile, Wing, ACLEDA</strong> or any KHQR-supported app.</div></div>
+        <div class="step-row"><div class="step-num">2</div><div class="step-txt">Tap <strong>Scan QR</strong> and point your camera at the code above.</div></div>
+        <div class="step-row"><div class="step-num">3</div><div class="step-txt">Confirm the amount — <strong id="stepAmtText">$0.00 USD</strong> — then approve the transfer.</div></div>
+        <div class="step-row"><div class="step-num">4</div><div class="step-txt">Come back here and tap <strong>I've Paid</strong> to confirm your order.</div></div>
     </div>
 
-    <!-- CONFIRM -->
     <div class="fu d1">
         <button class="confirm-btn idle" id="confirmBtn" onclick="confirmPayment()">
             I'VE PAID — CONFIRM ORDER
         </button>
         <div class="confirm-sub">
-            Having trouble?
-            <a onclick="contactSupport()">Contact Support</a>
-            &nbsp;·&nbsp;
-            <a href="checkout.html">Change payment</a>
+            Having trouble? <a onclick="contactSupport()">Contact Support</a> &nbsp;·&nbsp; <a href="checkout.html">Change payment</a>
         </div>
     </div>
-
     <div style="height:16px"></div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
     <div class="t-icon" id="toastIcon"></div>
     <div class="t-text">
@@ -336,28 +168,23 @@ body {
     </div>
 </div>
 
+<!-- api.js ต้องมาก่อน — ให้ PaymentAPI, Auth, Cart -->
 <script src="api.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   BARDS payment.html — Fixed Version
-   Fixes:
-     1. Timer interval: 1000ms (was 50000ms) ✅
-     2. Currency: USD (840) displayed, QR string uses USD ✅
-     3. Fail-to-fetch: better error handling with server-offline detection ✅
-     4. Auto-poll: 5000ms with error 429 handling ✅
-     5. drawQR: properly centered in white frame ✅
+   payment.html — ใช้ PaymentAPI / Auth / Cart จาก api.js ทั้งหมด
+   ไม่มี fetch() ของตัวเอง
 ═══════════════════════════════════════════════════════════════ */
 
-const API_BASE = 'http://localhost:3000'; // ← Change to your backend URL
-
-let ORDER       = null;
-let QR_SECS     = 600;
-let TIMER_ID    = null;
-let _qrString   = '';
+let ORDER         = null;
+let QR_SECS       = 600;
+let TIMER_ID      = null;
+let _qrString     = '';
 let _pollInterval = null;
+let _confirming   = false;
 
-window.onload = async function() {
-    if (typeof Auth !== 'undefined' && !Auth.isLoggedIn()) {
+window.onload = async function () {
+    if (!Auth.isLoggedIn()) {
         location.href = 'signin.html?redirect=payment.html';
         return;
     }
@@ -366,9 +193,9 @@ window.onload = async function() {
     if (!raw) { location.href = 'checkout.html'; return; }
     ORDER = JSON.parse(raw);
 
-    document.getElementById('qrAmountVal').textContent  = fmtUSD(ORDER.total);
-    document.getElementById('qrRefId').textContent      = ORDER.orderId || '—';
-    document.getElementById('stepAmtText').textContent  = fmtUSD(ORDER.total) + ' USD';
+    document.getElementById('qrAmountVal').textContent = fmtUSD(ORDER.total);
+    document.getElementById('qrRefId').textContent     = ORDER.orderId || '—';
+    document.getElementById('stepAmtText').textContent = fmtUSD(ORDER.total) + ' USD';
 
     if (ORDER.qrString) {
         _qrString = ORDER.qrString;
@@ -381,270 +208,172 @@ window.onload = async function() {
     startAutoPoll();
 };
 
-/* ── QR RENDERER ─────────────────────────────────────────────────────────
-   ✅ FIX: Clear container first; qrcode.min.js injects <canvas> or <img>
-   We size both via CSS to 200×200 and center inside the 240×240 white frame.
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── QR RENDERER ─────────────────────────────────────────────── */
 function drawQR(data) {
-    const container = document.getElementById('qrCanvas');
-    container.innerHTML = ''; // clear old QR before redrawing
+    const el = document.getElementById('qrCanvas');
+    el.innerHTML = '';
     if (!data) return;
-
-    new QRCode(container, {
-        text:         data,
-        width:        200,
-        height:       200,
-        colorDark:    '#000000',
-        colorLight:   '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
+    new QRCode(el, {
+        text: data, width: 200, height: 200,
+        colorDark: '#000000', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H,
     });
 }
 
-/* ── TIMER ────────────────────────────────────────────────────────────────
-   ✅ FIX: interval was 50000ms (counts down once per 50s) → fixed to 1000ms
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── TIMER ✅ 1000ms (เดิม 50000ms) ─────────────────────────── */
 function startTimer() {
     if (TIMER_ID) clearInterval(TIMER_ID);
     QR_SECS = 600;
     updateTimerUI();
     TIMER_ID = setInterval(() => {
         QR_SECS--;
-        if (QR_SECS <= 0) {
-            clearInterval(TIMER_ID);
-            onExpired();
-        } else {
-            updateTimerUI();
-        }
-    }, 1000); // ✅ 1 second
+        if (QR_SECS <= 0) { clearInterval(TIMER_ID); onExpired(); }
+        else updateTimerUI();
+    }, 1000);
 }
-
 function updateTimerUI() {
-    const m   = Math.floor(QR_SECS / 60);
-    const s   = QR_SECS % 60;
-    const txt = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    const el  = document.getElementById('navTimer');
+    const m = Math.floor(QR_SECS / 60), s = QR_SECS % 60;
+    const el = document.getElementById('navTimer');
     if (el) {
-        el.textContent = txt;
+        el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         el.classList.toggle('warn', QR_SECS <= 60);
     }
 }
-
 function onExpired() {
     clearInterval(_pollInterval);
     const el = document.getElementById('navTimer');
     if (el) el.textContent = 'EXPIRED';
     showToast('warn', 'QR expired', 'Tap Refresh to generate a new one');
     const btn = document.getElementById('confirmBtn');
-    btn.className  = 'confirm-btn idle';
+    btn.className   = 'confirm-btn idle';
     btn.textContent = 'QR EXPIRED — REFRESH';
     btn.onclick     = regenerate;
 }
 
-/* ── REGENERATE QR ───────────────────────────────────────────────────────
-   ✅ Calls backend with improved error handling
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── REGENERATE ✅ ใช้ PaymentAPI.create() จาก api.js ────────── */
 async function regenerate() {
     clearInterval(TIMER_ID);
     clearInterval(_pollInterval);
     const btn = document.getElementById('confirmBtn');
     btn.className   = 'confirm-btn loading';
     btn.textContent = 'Generating new QR…';
-
     try {
-        const data = await apiCall('POST', '/api/payment/create', {
+        const data = await PaymentAPI.create({
             items:    ORDER.items,
             subtotal: ORDER.subtotal,
             shipping: ORDER.shipping,
             total:    ORDER.total,
             address:  ORDER.address,
-            currency: 'USD' // ✅ explicitly request USD (840)
         });
-
         ORDER.orderId  = data.orderId;
         ORDER.qrString = data.qrString;
         sessionStorage.setItem('BARDS_ORDER', JSON.stringify(ORDER));
-
         _qrString = data.qrString;
         document.getElementById('qrRefId').textContent = data.orderId;
         drawQR(_qrString);
         startTimer();
         startAutoPoll();
-
-        btn.className = 'confirm-btn idle';
-        btn.innerHTML = "I'VE PAID — CONFIRM ORDER";
-        btn.onclick   = confirmPayment;
+        btn.className   = 'confirm-btn idle';
+        btn.textContent = "I'VE PAID — CONFIRM ORDER";
+        btn.onclick     = confirmPayment;
         showToast('ok', 'QR refreshed', 'New code valid for 10 minutes');
     } catch (err) {
-        btn.className = 'confirm-btn idle';
-        btn.innerHTML = 'QR EXPIRED — REFRESH';
-        btn.onclick   = regenerate;
-        showToast('err', 'Could not refresh QR', err.message);
+        btn.className   = 'confirm-btn idle';
+        btn.textContent = 'QR EXPIRED — REFRESH';
+        btn.onclick     = regenerate;
+        handleError(err, 'ไม่สามารถสร้าง QR ได้');
     }
 }
 
 function copyQR() {
-    if (!_qrString) {
-        showToast('warn', 'No QR to copy', 'Please wait for QR to load');
-        return;
-    }
+    if (!_qrString) { showToast('warn', 'No QR to copy', 'Please wait for QR to load'); return; }
     navigator.clipboard?.writeText(_qrString)
         .then(()  => showToast('ok',   'QR string copied', 'Paste in your banking app'))
-        .catch(()  => showToast('warn', 'Copy failed',      'Try a different browser'));
+        .catch(()  => showToast('warn', 'Copy failed', 'Try a different browser'));
 }
 
-/* ── AUTO-POLL ────────────────────────────────────────────────────────────
-   ✅ Every 5000ms to avoid 429 rate-limit errors
-   ✅ Detects server-offline vs payment-not-found
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── AUTO-POLL ✅ ใช้ PaymentAPI.verify() จาก api.js, 5000ms ─── */
 function startAutoPoll() {
     clearInterval(_pollInterval);
     _pollInterval = setInterval(async () => {
+        if (!ORDER?.orderId) return;
         try {
-            const data = await apiCall('GET', `/api/payment/verify/${ORDER.orderId}`);
+            const data = await PaymentAPI.verify(ORDER.orderId);
             if (data.status === 'paid') {
                 clearInterval(_pollInterval);
                 onPaymentSuccess();
             }
-            // 'pending' → keep polling silently
         } catch (err) {
-            // Silently retry; severe errors shown only on manual confirm tap
-            if (err.isOffline) {
-                console.warn('[AutoPoll] Server offline, will retry…');
-            }
+            // poll ล้มเหลว → เงียบๆ retry ไม่ spam toast
+            if (isOffline(err)) console.warn('[AutoPoll] Server offline, retrying…');
         }
-    }, 5000); // ✅ 5 seconds — safe from 429
+    }, 5000);
 }
 
-/* ── MANUAL CONFIRM ──────────────────────────────────────────────────────
-   ✅ Shows specific toast for server-offline vs payment pending
-   ──────────────────────────────────────────────────────────────────────── */
-let _confirming = false;
+/* ── MANUAL CONFIRM ✅ ใช้ PaymentAPI.verify() จาก api.js ────── */
 async function confirmPayment() {
     if (_confirming) return;
     _confirming = true;
-
     const btn = document.getElementById('confirmBtn');
     btn.className = 'confirm-btn loading';
-    btn.innerHTML = `
-        <svg style="animation:spin .8s linear infinite" width="18" height="18" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83
-                     M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-        </svg>Verifying…`;
-
+    btn.innerHTML = `<svg style="animation:spin .8s linear infinite" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Verifying…`;
     try {
-        const data = await apiCall('GET', `/api/payment/verify/${ORDER.orderId}`);
+        const data = await PaymentAPI.verify(ORDER.orderId);
         if (data.status === 'paid') {
             onPaymentSuccess();
         } else {
             _confirming = false;
-            btn.className = 'confirm-btn idle';
+            btn.className   = 'confirm-btn idle';
             btn.textContent = "I'VE PAID — CONFIRM ORDER";
-            showToast('warn', 'Payment not found yet', 'Please scan and pay first, then try again');
+            showToast('warn', 'ยังไม่พบการชำระเงิน', 'กรุณา Scan QR แล้วจ่ายก่อน แล้วลองใหม่');
         }
     } catch (err) {
         _confirming = false;
-        btn.className = 'confirm-btn idle';
+        btn.className   = 'confirm-btn idle';
         btn.textContent = "I'VE PAID — CONFIRM ORDER";
-
-        // ✅ FIX: Distinguish server-offline from other errors
-        if (err.isOffline) {
-            showToast('err', 'Cannot reach server', 'Make sure your backend (localhost:3000) is running');
-        } else {
-            showToast('err', 'Verification failed', err.message || 'Unknown error');
-        }
+        handleError(err, 'ยืนยันไม่สำเร็จ');
     }
 }
 
 function onPaymentSuccess() {
     clearInterval(TIMER_ID);
     clearInterval(_pollInterval);
-
     const btn = document.getElementById('confirmBtn');
     btn.className = 'confirm-btn success';
-    btn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-        </svg>PAYMENT CONFIRMED!`;
-
-    if (typeof Cart !== 'undefined') Cart.clear();
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>PAYMENT CONFIRMED!`;
+    Cart.clear();
     sessionStorage.removeItem('BARDS_ORDER');
     sessionStorage.removeItem('CHECKOUT_ITEMS');
-
     setTimeout(() => { location.href = 'success.html?order=' + ORDER.orderId; }, 700);
 }
 
-/* ── API HELPER ───────────────────────────────────────────────────────────
-   ✅ NEW: Central fetch wrapper with offline detection & error parsing
-   ──────────────────────────────────────────────────────────────────────── */
-async function apiCall(method, path, body) {
-    let response;
-    try {
-        response = await fetch(`${API_BASE}${path}`, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: body ? JSON.stringify(body) : undefined
-        });
-    } catch (networkErr) {
-        // fetch() throws TypeError when server is unreachable
-        const err = new Error('Server is offline or unreachable');
-        err.isOffline = true;
-        throw err;
+/* ── ERROR HELPER ─────────────────────────────────────────────
+   api.js ไม่มี err.isOffline — ตรวจจาก message แทน
+   TypeError: Failed to fetch  → server ปิดอยู่
+───────────────────────────────────────────────────────────── */
+function isOffline(err) {
+    return err instanceof TypeError && /fetch|network/i.test(err.message);
+}
+function handleError(err, fallbackTitle) {
+    if (isOffline(err)) {
+        showToast('err', 'Server ไม่ตอบสนอง', 'ตรวจสอบว่าเปิด Backend (localhost:3000) แล้ว');
+    } else {
+        showToast('err', fallbackTitle, err.message || 'Unknown error');
     }
-
-    if (!response.ok) {
-        let msg = `HTTP ${response.status}`;
-        try {
-            const json = await response.json();
-            msg = json.message || json.error || msg;
-        } catch (_) { /* ignore */ }
-
-        if (response.status === 429) {
-            const err = new Error('Too many requests — please wait a moment');
-            err.is429 = true;
-            throw err;
-        }
-        throw new Error(msg);
-    }
-
-    return response.json();
 }
 
-/* ── NOTE for api.js ──────────────────────────────────────────────────────
-   When building the KHQR payload in your backend (api.js / server),
-   make sure to set currency code 840 (USD) not 116 (KHR):
+function contactSupport() { showToast('ok', 'Support: +855 12 000 000', 'Telegram · WhatsApp'); }
+function fmtUSD(n) { return '$' + Number(n).toFixed(2); }
 
-   Example KHQRData object:
-   {
-     currency: 840,          // ✅ 840 = USD  |  116 = KHR
-     amount: orderTotal,     // numeric, e.g. 12.50
-     merchantName: "BARDS",
-     ...
-   }
-
-   This ensures ABA, Bakong etc. display the amount in USD dollars.
-   ──────────────────────────────────────────────────────────────────────── */
-
-function contactSupport() {
-    showToast('ok', 'Support: +855 12 000 000', 'Telegram · WhatsApp');
-}
-
-function fmtUSD(n) {
-    return '$' + Number(n).toFixed(2);
-}
-
-/* ── TOAST ────────────────────────────────────────────────────────────── */
+/* ── TOAST ────────────────────────────────────────────────── */
 const IC_OK   = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
 const IC_WARN = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
 const IC_ERR  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
-
 let _tt;
 function showToast(type, title, sub) {
+    const map = { ok: ['ok', IC_OK], warn: ['warn', IC_WARN], err: ['err', IC_ERR] };
+    const [cls, svg] = map[type] || map.warn;
     const ic = document.getElementById('toastIcon');
-    const iconMap = { ok: ['ok', IC_OK], warn: ['warn', IC_WARN], err: ['err', IC_ERR] };
-    const [cls, svg] = iconMap[type] || iconMap.warn;
     ic.className = 't-icon ' + cls;
     ic.innerHTML = svg;
     document.getElementById('toastTitle').textContent = title;
